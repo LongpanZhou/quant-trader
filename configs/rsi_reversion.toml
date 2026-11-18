@@ -1,0 +1,21 @@
+# Mean reversion: buy RSI(14) oversold, sell when it recovers. 5-minute bars.
+broker = "sim"
+symbols = ["AAPL", "MSFT", "NVDA", "AMZN", "GOOGL", "META", "TSLA", "SPY"]
+timeframe = "5m"
+poll_seconds = 30
+
+[strategy]
+kind = "rsi_reversion"
+period = 14
+oversold = 30.0
+exit_above = 55.0
+
+[risk]
+position_pct = 0.10
+max_positions = 5
+stop_loss_pct = 0.02
+take_profit_pct = 0.04
+slippage_bps = 1.0
+
+[backtest]
+days = 30

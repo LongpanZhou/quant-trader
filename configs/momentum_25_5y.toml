@@ -1,0 +1,43 @@
+# Your momentum strategy (active version: re-ranked every 30 minutes),
+# set up for a five-year test on 5-minute candles.
+#
+# Five years of 1-minute history only exists from Dukascopy, whose feed is
+# throttled to roughly 1,400 daily files an hour. The full 100-stock list
+# would take about four days to download, so this uses 25 of those stocks
+# (every 4th), which takes about a day. Run the download first:
+#
+#   powershell -ExecutionPolicy Bypass -File docs\download-history.ps1
+#
+# then:
+#
+#   .\target\release\quant-trader.exe backtest --config configs\momentum_25_5y.toml
+#
+# With 25 stocks, "top 20%" means 5 holdings (the 100-stock version holds
+# the top 10%, which is 10).
+broker = "sim"
+history = "dukascopy"
+symbols = ["SPY"]
+symbols_file = "universes/sp500_25.csv"
+timeframe = "5m"
+poll_seconds = 30
+
+[strategy]
+kind = "intraday_ls_momentum"
+lookback_days = 20
+skip_days = 0
+long_frac = 0.20
+short_frac = 0.0
+long_gross = 1.0
+short_gross = 0.0
+rebalance_band = 0.02
+rebalance_minutes = 30
+index = "SPY"
+
+[risk]
+position_pct = 0.10
+max_positions = 30
+slippage_bps = 1.0
+short_borrow_pct = 0.0
+
+[backtest]
+days = 1825

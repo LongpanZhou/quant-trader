@@ -1,0 +1,20 @@
+# Donchian breakout: buy a new 40-bar high, sell a new 20-bar low. 5-minute bars.
+broker = "sim"
+symbols = ["AAPL", "MSFT", "NVDA", "AMZN", "GOOGL", "META", "TSLA", "SPY"]
+timeframe = "5m"
+poll_seconds = 30
+
+[strategy]
+kind = "breakout"
+entry_lookback = 40
+exit_lookback = 20
+
+[risk]
+position_pct = 0.10
+max_positions = 5
+stop_loss_pct = 0.02
+take_profit_pct = 0.04
+slippage_bps = 1.0
+
+[backtest]
+days = 30

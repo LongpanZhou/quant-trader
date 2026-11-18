@@ -1,0 +1,30 @@
+# Multi-asset trend following (Moskowitz, Ooi & Pedersen, 2012; Hurst, Ooi &
+# Pedersen, 2017): long each asset that has been rising, short each that has
+# been falling, sized so every asset carries similar risk. Monthly.
+broker = "sim"
+# Stocks (US large, US tech, US small, developed, emerging), bonds
+# (7-10y and 20y Treasuries, corporates, inflation-linked), commodities
+# (gold, silver, broad basket, oil), currencies (dollar, euro, yen), real estate.
+symbols = ["SPY", "QQQ", "IWM", "EFA", "EEM", "IEF", "TLT", "LQD", "TIP", "GLD", "SLV", "DBC", "USO", "UUP", "FXE", "FXY", "VNQ"]
+timeframe = "1d"
+poll_seconds = 600
+
+[strategy]
+kind = "tsmom"
+lookback_days = [21, 63, 252]   # 1, 3 and 12 months, averaged
+vol_days = 60
+target_vol = 0.40               # per asset, before dividing by the number of assets
+max_weight = 0.25
+max_long = 1.0                  # no leverage
+max_short = 0.5
+allow_short = true
+rebalance_band = 0.02
+
+[risk]
+position_pct = 0.10
+max_positions = 20
+slippage_bps = 1.0
+short_borrow_pct = 0.005
+
+[backtest]
+days = 6820

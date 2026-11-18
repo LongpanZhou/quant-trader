@@ -1,0 +1,24 @@
+# VWAP trend on 1-minute bars across ten symbols (four index ETFs and six
+# large stocks): long above the session VWAP, short below, flat before the
+# close. 10% of the account per symbol.
+broker = "sim"
+symbols = ["QQQ", "SPY", "IWM", "DIA", "AAPL", "MSFT", "NVDA", "AMZN", "META", "TSLA"]
+timeframe = "1m"
+poll_seconds = 10
+
+[strategy]
+kind = "vwap_trend"
+position_weight = 0.10
+allow_short = true
+flatten_minutes = 3
+rebalance_band = 0.10
+
+[risk]
+position_pct = 0.10
+max_positions = 10
+slippage_bps = 1.0
+short_borrow_pct = 0.005
+flatten_before_close_minutes = 2
+
+[backtest]
+days = 28

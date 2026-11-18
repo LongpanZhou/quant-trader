@@ -1,0 +1,28 @@
+# Long/short momentum on the S&P 500 (Jegadeesh & Titman, 1993).
+# Monthly: long the strongest 10% of stocks (100% of equity in total),
+# short the weakest 10% (50% of equity in total).
+broker = "sim"
+symbols = ["SPY"]
+symbols_file = "universes/sp500.csv"
+timeframe = "1d"
+poll_seconds = 600
+
+[strategy]
+kind = "ls_momentum"
+lookback_days = 252
+skip_days = 21
+long_frac = 0.10
+short_frac = 0.10
+long_gross = 1.0
+short_gross = 0.5
+rebalance_band = 0.005
+index = "SPY"
+
+[risk]
+position_pct = 0.10
+max_positions = 120
+slippage_bps = 1.0
+short_borrow_pct = 0.005
+
+[backtest]
+days = 1825

@@ -1,0 +1,32 @@
+# Intraday variant of the cross-sectional momentum strategy: the same ranking
+# as configs/ls_momentum_long_only.toml, but the score is measured over the
+# last 20 trading days of 5-minute bars and the book is rebalanced once a day,
+# shortly before the close. Positions are held overnight.
+#
+# 5-minute bars are used because Yahoo keeps only ~30 days of 1-minute history,
+# which cannot hold the 20-day warm-up plus a month-long test.
+broker = "sim"
+symbols = ["SPY"]
+symbols_file = "universes/sp500.csv"
+timeframe = "5m"
+poll_seconds = 120
+
+[strategy]
+kind = "intraday_ls_momentum"
+lookback_days = 20
+skip_days = 1
+long_frac = 0.10
+short_frac = 0.0
+long_gross = 1.0
+short_gross = 0.0
+rebalance_band = 0.005
+index = "SPY"
+
+[risk]
+position_pct = 0.10
+max_positions = 120
+slippage_bps = 1.0
+short_borrow_pct = 0.0
+
+[backtest]
+days = 28

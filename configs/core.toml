@@ -1,0 +1,50 @@
+# Two complementary strategies on one account:
+#   50%  leverage rotation: 2x S&P 500 fund while SPY is above its 200-day
+#        average, otherwise short-term Treasuries (Gayed & Bilello, 2016)
+#   50%  multi-asset trend following, long/short (Moskowitz, Ooi & Pedersen, 2012)
+# The first earns in bull markets; the second is meant to hold up in crashes.
+broker = "sim"
+symbols = ["SPY", "QQQ", "IWM", "EFA", "EEM", "IEF", "TLT", "LQD", "TIP", "GLD", "SLV", "DBC", "USO", "UUP", "FXE", "FXY", "VNQ", "SSO", "SHY"]
+timeframe = "1d"
+poll_seconds = 600
+
+[strategy]
+kind = "combo"
+rebalance_band = 0.02
+max_long = 1.0
+max_short = 0.25
+
+[[strategy.parts]]
+allocation = 0.5
+[strategy.parts.strategy]
+kind = "leveraged_index"
+index = "SPY"
+risk_asset = "SSO"
+leverage = 2.0
+safe_asset = "SHY"
+sma_days = 200
+target_vol = 0.0
+vol_days = 20
+rebalance_band = 0.05
+
+[[strategy.parts]]
+allocation = 0.5
+[strategy.parts.strategy]
+kind = "tsmom"
+lookback_days = [21, 63, 252]
+vol_days = 60
+target_vol = 0.40
+max_weight = 0.25
+max_long = 1.0
+max_short = 0.5
+allow_short = true
+rebalance_band = 0.02
+
+[risk]
+position_pct = 0.10
+max_positions = 25
+slippage_bps = 1.0
+short_borrow_pct = 0.005
+
+[backtest]
+days = 6820

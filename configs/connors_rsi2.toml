@@ -1,0 +1,25 @@
+# Connors & Alvarez (2008), "Short Term Trading Strategies That Work".
+# Daily bars: buy a sharp pullback (2-day RSI < 5) in a stock above its
+# 200-day average; sell when it closes back above its 5-day average.
+# Trades fire once a day, shortly after the open, on the previous close.
+broker = "sim"
+symbols = ["AAPL","MSFT","NVDA","AMZN","GOOGL","META","TSLA","AVGO","JPM","V","MA","UNH","XOM","JNJ","PG","HD","COST","ABBV","MRK","KO","PEP","WMT","BAC","CVX","LLY","ORCL","CRM","ADBE","NFLX","AMD","CSCO","INTC","DIS","MCD","NKE","CAT","BA","GE","IBM","QCOM"]
+timeframe = "1d"
+poll_seconds = 300
+
+[strategy]
+kind = "connors_rsi2"
+rsi_period = 2
+entry_below = 5.0
+trend_sma = 200
+exit_sma = 5
+
+[risk]
+position_pct = 0.10
+max_positions = 10
+stop_loss_pct = 0.0    # the book found stops hurt this strategy
+take_profit_pct = 0.0
+slippage_bps = 1.0
+
+[backtest]
+days = 1825

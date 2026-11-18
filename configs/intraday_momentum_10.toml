@@ -1,0 +1,24 @@
+# Intraday momentum / noise area (Zarattini, Aziz & Barbon, 2024) across ten
+# symbols, long side only: buy when price leaves its normal intraday range,
+# trail a stop, flat before the close. The best risk-adjusted day-trading
+# result in the five-year 5-minute test.
+broker = "sim"
+symbols = ["QQQ", "SPY", "IWM", "DIA", "AAPL", "MSFT", "NVDA", "AMZN", "META", "TSLA"]
+timeframe = "5m"
+poll_seconds = 20
+
+[strategy]
+kind = "intraday_momentum"
+lookback_days = 14
+check_minutes = 30
+
+[risk]
+position_pct = 0.10
+max_positions = 10
+stop_loss_pct = 0.0
+take_profit_pct = 0.0
+slippage_bps = 1.0
+flatten_before_close_minutes = 2
+
+[backtest]
+days = 28

@@ -1,0 +1,33 @@
+# LIVE PAPER TEST of the intraday momentum strategy (long-only).
+#
+# - broker = "sim": built-in paper ledger, real Yahoo prices, no real orders.
+# About 100 S&P 500 names (every 5th constituent) so the live loop does not
+# hammer Yahoo with 500 symbols.
+# - The strategy only rebalances on the bar that starts at 15:50 ET, so there
+#   is no trading in the morning. Start the process around 15:35 ET and stop it
+#   after 16:00; running all day only wastes requests.
+broker = "sim"
+symbols = ["SPY"]
+symbols_file = "universes/sp500_100.csv"
+timeframe = "5m"
+poll_seconds = 240
+
+[strategy]
+kind = "intraday_ls_momentum"
+lookback_days = 20
+skip_days = 1
+long_frac = 0.10
+short_frac = 0.0
+long_gross = 1.0
+short_gross = 0.0
+rebalance_band = 0.005
+index = "SPY"
+
+[risk]
+position_pct = 0.10
+max_positions = 120
+slippage_bps = 1.0
+short_borrow_pct = 0.0
+
+[backtest]
+days = 28

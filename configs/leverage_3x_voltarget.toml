@@ -1,0 +1,26 @@
+# Leverage rotation with a volatility target (Gayed & Bilello, 2016; Moreira &
+# Muir, 2017): in an uptrend, blend SPY and the 3x fund (UPRO) to aim for 20%
+# volatility; below the 200-day average, Treasury bills (BIL).
+broker = "sim"
+symbols = ["SPY", "UPRO", "BIL"]
+timeframe = "1d"
+poll_seconds = 600
+
+[strategy]
+kind = "leveraged_index"
+index = "SPY"
+risk_asset = "UPRO"
+leverage = 3.0
+safe_asset = "BIL"
+sma_days = 200
+target_vol = 0.20          # 0 = full leverage whenever the index is in an uptrend
+vol_days = 20
+rebalance_band = 0.05
+
+[risk]
+position_pct = 1.0
+max_positions = 3
+slippage_bps = 1.0
+
+[backtest]
+days = 6200

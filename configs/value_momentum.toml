@@ -1,0 +1,30 @@
+# Value + momentum (Asness, Moskowitz & Pedersen, 2013): rank S&P 500 stocks
+# on one-year momentum and on five-year cheapness, average the two ranks,
+# buy the top 10% and short the bottom 10%. Monthly.
+broker = "sim"
+symbols = ["SPY"]
+symbols_file = "universes/sp500.csv"
+timeframe = "1d"
+poll_seconds = 600
+
+[strategy]
+kind = "value_momentum"
+momentum_days = 252      # one-year return...
+momentum_skip = 21       # ...skipping the latest month
+value_days = 1260        # five-year decline...
+value_skip = 252         # ...skipping the latest year
+long_frac = 0.10
+short_frac = 0.10
+long_gross = 1.0
+short_gross = 0.5
+rebalance_band = 0.005
+index = "SPY"
+
+[risk]
+position_pct = 0.10
+max_positions = 220
+slippage_bps = 1.0
+short_borrow_pct = 0.005
+
+[backtest]
+days = 1825
