@@ -444,7 +444,7 @@ does not.**
 | Synthetic fund cannot see future rates | Uses the last ^IRX observation at or before each bar | `synthetic_fund_ignores_later_rates` |
 | Total-return adjustment is not forecast | Signals are scale-invariant (price/SMA, returns); adjustment factors only add past dividends | by construction |
 
-All **51 unit tests pass**.
+All **52 unit tests pass**.
 
 ### 12.2 Tested on live data
 

@@ -741,9 +741,81 @@ mod tests {
         }
     }
 
+    /// Same test for the portfolio branch (`leveraged_index`), which is the
+    /// code path the Nasdaq strategy actually uses: universe slices, vol
+    /// targeting and open fills must all be causal.
     #[test]
-    fn synthetic_fund_compounds_leverage_daily() {
-        let index = vec![bar(0, 100.0), bar(DAY, 110.0)];
+    fn portfolio_strategy_later_bars_cannot_change_earlier_results() {
+        let mut c = cfg();
+        c.symbols = vec!["QQQ".into(), "TQQQ".into(), "BIL".into()];
+        c.timeframe = Timeframe::D1;
+        c.risk.max_positions = 3;
+        c.backtest.lag_bars = 1;
+        c.backtest.fill_open = true;
+        c.strategy = StrategyConfig::LeveragedIndex {
+            index: "QQQ".into(),
+            risk_asset: "TQQQ".into(),
+            leverage: 3.0,
+            safe_asset: "BIL".into(),
+            sma_days: 5,
+            target_vol: 0.40,
+            vol_days: 3,
+            rebalance_band: 0.05,
+        };
+
+        let make = |seed: f64| -> Vec<Bar> {
+            (0..120)
+                .map(|i| {
+                    let px = seed
+                        + 100.0
+                        + i as f64 * 0.25
+                        + (i as f64 * 0.55).sin() * 4.0;
+                    Bar {
+                        ts: 1_704_119_400 + i as i64 * DAY,
+                        open: px,
+                        high: px,
+                        low: px,
+                        close: px,
+                        volume: 1.0,
+                    }
+                })
+                .collect()
+        };
+        let mut data: HashMap<String, Vec<Bar>> = HashMap::from([
+            ("QQQ".to_string(), make(0.0)),
+            ("TQQQ".to_string(), make(3.0)),
+            ("BIL".to_string(), make(20.0)),
+        ]);
+
+        let clean = run_sim(&c, &data, 0);
+        let cut = 1_704_119_400 + 80 * DAY;
+
+        for bars in data.values_mut() {
+            for b in bars {
+                if b.ts > cut {
+                    b.open *= 1000.0;
+                    b.high *= 1000.0;
+                    b.low *= 1000.0;
+                    b.close *= 1000.0;
+                }
+            }
+        }
+        let dirty = run_sim(&c, &data, 0);
+
+        let before = |r: &Report| -> Vec<(i64, f64)> {
+            r.curve.iter().filter(|(ts, _)| *ts <= cut).copied().collect()
+        };
+        let (a, b) = (before(&clean), before(&dirty));
+        assert_eq!(a.len(), 81);
+        assert_eq!(a.len(), b.len());
+        for ((t1, e1), (t2, e2)) in a.iter().zip(&b) {
+            assert_eq!(t1, t2);
+            assert!((e1 - e2).abs() < 1e-9, "portfolio equity at {t1} changed: {e1} vs {e2}");
+        }
+    }
+
+    #[test]
+    fn synthetic_fund_compounds_leverage_daily() {        let index = vec![bar(0, 100.0), bar(DAY, 110.0)];
         let rates = vec![bar(0, 0.0)]; // zero T-bill yield, zero fee
         let s = synthetic_series(&index, 3.0, 0.0, &rates);
         assert!((s[0].close - 100.0).abs() < 1e-12);
