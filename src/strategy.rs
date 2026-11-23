@@ -1950,6 +1950,16 @@ pub struct LeveragedIndex {
     bars_per_year: f64,
 }
 
+/// Split an effective market exposure into a leveraged fund and the plain
+/// index. exposure 1.0 -> all index; exposure == leverage -> all risk asset.
+fn blend_exposure(exposure: f64, leverage: f64) -> (f64, f64) {
+    if leverage <= 1.0 {
+        return (0.0, 1.0);
+    }
+    let w = ((exposure - 1.0) / (leverage - 1.0)).clamp(0.0, 1.0);
+    (w, 1.0 - w)
+}
+
 impl LeveragedIndex {
     fn sma_bars(&self) -> usize {
         self.sma_days * self.bars_per_day
@@ -2016,16 +2026,17 @@ impl Strategy for LeveragedIndex {
             .map(|w| w[1] / w[0] - 1.0)
             .collect();
         let vol = stddev(&rets, rets.len()).unwrap_or(0.0) * self.bars_per_year.sqrt();
-        let exposure = if vol > 0.0 { (self.target_vol / vol).min(self.leverage) } else { self.leverage };
+        // A flat/degenerate vol estimate must not become full 3x leverage.
+        let exposure = if vol > 1e-9 { (self.target_vol / vol).min(self.leverage) } else { 1.0 };
         let mut out = Vec::new();
         if exposure >= 1.0 {
             // Blend the plain index with the leveraged fund.
-            let w_risk = (exposure - 1.0) / (self.leverage - 1.0);
+            let (w_risk, w_index) = blend_exposure(exposure, self.leverage);
             if w_risk > 0.0 {
                 out.push((self.risk_asset.clone(), w_risk));
             }
-            if w_risk < 1.0 {
-                out.push((self.index.clone(), 1.0 - w_risk));
+            if w_index > 0.0 {
+                out.push((self.index.clone(), w_index));
             }
         } else {
             out.push((self.index.clone(), exposure));
@@ -3012,6 +3023,19 @@ mod tests {
             bars_per_day: 1,
             bars_per_year: 252.0,
         }
+    }
+
+    #[test]
+    fn blend_exposure_splits_at_the_right_ratio() {
+        // 20% vol with a 40% target -> 2.0x exposure -> half TQQQ, half QQQ.
+        assert_eq!(blend_exposure(2.0, 3.0), (0.5, 0.5));
+        // 30% vol -> 1.333x -> one sixth in the 3x fund.
+        let (w, rest) = blend_exposure(0.40 / 0.30, 3.0);
+        assert!((w - 1.0 / 6.0).abs() < 1e-12, "{w}");
+        assert!((rest - 5.0 / 6.0).abs() < 1e-12, "{rest}");
+        // Full leverage -> all risk asset; 1.0x -> all index.
+        assert_eq!(blend_exposure(3.0, 3.0), (1.0, 0.0));
+        assert_eq!(blend_exposure(1.0, 3.0), (0.0, 1.0));
     }
 
     #[test]

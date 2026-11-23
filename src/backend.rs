@@ -6,7 +6,7 @@ use crate::sim::SimBroker;
 use crate::types::{Account, Bar, Fill, Position, Side};
 use crate::dukascopy::Dukascopy;
 use crate::yahoo::{Events, Yahoo};
-use anyhow::Result;
+use anyhow::{bail, Result};
 use std::collections::HashMap;
 use std::path::Path;
 
@@ -113,8 +113,9 @@ impl Backend {
     pub fn events(&self, symbol: &str, days: i64) -> Result<Events> {
         match self {
             Backend::Sim { data, .. } => data.events(symbol, days),
-            // Alpaca applies corporate actions to its own paper account.
-            Backend::Alpaca(_) => Ok(Events::default()),
+            // Alpaca has no event feed on the paper API; Yahoo is only used to
+            // *detect* actions, never to price a trade.
+            Backend::Alpaca(_) => Yahoo::new().events(symbol, days),
         }
     }
 
@@ -122,7 +123,7 @@ impl Backend {
     pub fn quote_age(&self, symbol: &str) -> Result<(i64, i64)> {
         match self {
             Backend::Sim { data, .. } => data.quote_age(symbol),
-            Backend::Alpaca(_) => Ok((chrono::Utc::now().timestamp(), 0)),
+            Backend::Alpaca(a) => a.quote_age(symbol),
         }
     }
 
@@ -161,11 +162,37 @@ impl Backend {
         }
     }
 
-    /// Apply splits and dividends that happened since the ledger last checked.    /// The paper broker keeps its own watermark (persisted), so a restart or a
-    /// weekend does not lose an action. Alpaca applies corporate actions to
-    /// its own paper account, so there is nothing to do there.
+    /// Apply splits and dividends that happened since the ledger last checked.
+    /// The sim broker keeps a persisted watermark. Alpaca paper does NOT apply
+    /// corporate actions, so for Alpaca we only detect a recent split and stop
+    /// trading rather than size against a corrupt position.
     pub fn apply_corporate_actions(&mut self) -> Result<usize> {
-        let Backend::Sim { broker, data, .. } = self else { return Ok(0) };
+        if let Backend::Alpaca(_) = self {
+            let held: Vec<String> = self.positions()?.keys().cloned().collect();
+            if held.is_empty() {
+                return Ok(0);
+            }
+            let yahoo = Yahoo::new();
+            let now = chrono::Utc::now().timestamp();
+            for symbol in held {
+                let events = yahoo.events(&symbol, 14)?;
+                if let Some((ts, ratio)) = events
+                    .splits
+                    .into_iter()
+                    .rev()
+                    .find(|(ts, _)| now - *ts <= 7 * 86_400)
+                {
+                    let when = chrono::DateTime::from_timestamp(ts, 0)
+                        .map(|d| d.date_naive().to_string())
+                        .unwrap_or_default();
+                    bail!(
+                        "{symbol} split {ratio}x on {when}, but Alpaca paper does not apply splits; reconcile or reset the paper account"
+                    );
+                }
+            }
+            return Ok(0);
+        }
+        let Backend::Sim { broker, data, .. } = self else { unreachable!() };
         let now = chrono::Utc::now().timestamp();
         let watermark = broker.last_action_ts();
         if watermark == 0 {
@@ -187,13 +214,13 @@ impl Backend {
             let events = data.events(&symbol, 400)?;
             for (ts, ratio) in events.splits {
                 if ts > watermark && ts <= now {
-                    broker.apply_split(&symbol, ratio)?;
+                    broker.apply_split(&symbol, ratio, ts)?;
                     applied += 1;
                 }
             }
             for (ts, amount) in events.dividends {
                 if ts > watermark && ts <= now {
-                    broker.apply_dividend(&symbol, amount)?;
+                    broker.apply_dividend(&symbol, amount, ts)?;
                     applied += 1;
                 }
             }

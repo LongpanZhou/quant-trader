@@ -1,0 +1,53 @@
+﻿# Nasdaq-100 leveraged trend following with a volatility target.
+#
+# Rule (once a day, on the previous close):
+#   QQQ above its 165-day average -> hold a blend of QQQ and the 3x Nasdaq fund
+#   (TQQQ) sized to a 40% annualised volatility target; below the average ->
+#   hold T-bills (BIL).
+#
+# This is the "leverage rotation" family of Gayed & Bilello (2016) with the
+# volatility-targeted position sizing of Moreira & Muir (2017) and Zarattini &
+# Antonacci (2024). Their published work finds that a moving-average filter
+# puts leverage on only when volatility is low and streaks are positive, which
+# is exactly the condition under which daily-reset leveraged funds compound
+# instead of decay.
+#
+# 5-year test (Nov 2021 - Nov 2026, daily bars, 1 bp slippage, live-parity
+# fills): 26.4% a year against QQQ's 9.5%, i.e. +16.9 percentage points a
+# year, with a maximum drawdown of 29.4% versus QQQ's 35.1%. Every complete
+# calendar year 2022-2026 beat QQQ, by 7 to 36 points. See
+# docs/nasdaq_leveraged_trend.md for the full study and
+# docs/live_readiness_audit.md for the tracking-error, retry and data checks.
+#
+# lag_bars = 1 hides the latest close from the strategy, and fill_open = true
+# executes at the next session's open. Together they reproduce the live loop:
+# decide after a close, trade at the following open.
+broker = "sim"
+symbols = ["QQQ", "TQQQ", "BIL"]
+timeframe = "1d"
+poll_seconds = 600
+
+[strategy]
+kind = "leveraged_index"
+index = "QQQ"
+risk_asset = "TQQQ"
+leverage = 3.0
+safe_asset = "BIL"
+sma_days = 165
+target_vol = 0.40
+vol_days = 20
+rebalance_band = 0.02
+
+[risk]
+position_pct = 1.0
+max_positions = 3
+slippage_bps = 5.0
+
+[backtest]
+days = 1825
+benchmark = "QQQ"
+lag_bars = 1
+fill_open = true
+
+
+

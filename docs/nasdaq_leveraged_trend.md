@@ -118,12 +118,12 @@ else:
         weight(TQQQ) = w_tqqq,  weight(QQQ) = 1 - w_tqqq
 ```
 
-At QQQ volatility of 20% the blend is 100% TQQQ; at 30% it is 33% TQQQ / 67%
-QQQ; at 40% it is all QQQ. So the portfolio's *risk* is held roughly constant
-while the *instrument* gets more aggressive as volatility falls — the Gayed &
-Bilello mechanism, expressed as a continuous weight rather than an on/off
-switch. Positions are only resized when they drift more than 5% of equity
-(`rebalance_band`).
+At QQQ volatility of 20% the exposure is 2.0x: **50% TQQQ / 50% QQQ**. At 30%
+it is 1.33x: **16.7% TQQQ / 83.3% QQQ**. At 40% it is 1.0x: **all QQQ**. So the
+portfolio's *risk* is held roughly constant while the *instrument* gets more
+aggressive as volatility falls — the Gayed & Bilello mechanism, expressed as a
+continuous weight rather than an on/off switch. Positions are only resized when
+they drift more than 2% of equity (`rebalance_band`).
 
 The strategy trades `QQQ`, `TQQQ` and `BIL` only. There is no stock universe,
 so there is **no survivorship bias** in the usual sense: the backtest holds the
@@ -211,7 +211,8 @@ the faster 165-day rule is not just a return-maximising choice.
 | Assumption | CAGR | Excess | Max DD | Sharpe |
 |---|---:|---:|---:|---:|
 | **Live-parity: 2% band, lag 1, next open, 1bp** | **26.4%** | **+16.9** | **29.4%** | **0.82** |
-| Same, 5bp slippage (5% band) | 25.3% | +15.9 | 28.8% | 0.80 |
+| Same, 5bp slippage | 25.3% | +15.8 | 29.5% | 0.79 |
+| Same, 10bp slippage | 24.0% | +14.5 | 29.7% | 0.77 |
 | One extra day of delay (lag 2, open fill, 5% band) | 29.2% | +19.0 | 29.4% | 0.87 |
 | Pessimistic: lag 2 + close fill (5% band) | 19.3% | +9.8 | 37.2% | 0.67 |
 
@@ -402,39 +403,40 @@ Same 16.4-year window (6000 days), same rule:
 
 | Series | CAGR | Max DD | Sharpe |
 |---|---:|---:|---:|
-| Synthetic 3x QQQ | 30.48% | 38.05% | 0.92 |
+| Synthetic 3x QQQ | 30.54% | 39.82% | 0.93 |
 | Real TQQQ | 29.86% | 40.03% | 0.91 |
 
-The synthetic model is **0.62pp/yr** from the real fund, so the 20-year
+The synthetic model is **0.68pp/yr** from the real fund, so the 20-year
 extension is a fair test rather than a different strategy.
 
 ### 11.3 Result
 
 ```
-Strategy return      : +10892.19%  (+26.52% a year)
+Strategy return      : +11720.13%  (+26.98% a year)
 QQQ buy & hold       :  +1526.51%  (+14.98% a year)
-Excess vs QQQ        : +11.54% a year
-Max drawdown         : 44.91%  (QQQ: 53.40%)
+Excess vs QQQ        : +12.00% a year
+Max drawdown         : 41.53%  (QQQ: 53.40%)
 Drawdown window      : 2007-10-31 to 2009-04-20
-Sharpe (annualised)  : 0.83
-Closed trades        : 261
-Weight tracking      : avg 0.66% of equity off target, worst 7.35%
+Sharpe (annualised)  : 0.84
+Closed trades        : 263
+Orders / turnover    : 2,869 fills, 9,006x starting equity
+Weight tracking      : avg 0.59% of equity off target, worst 6.42%
 ```
 
 Yearly excess (strategy minus QQQ, points):
 
 | 2007 | 2008 | 2009 | 2010 | 2011 | 2012 | 2013 | 2014 | 2015 | 2016 |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| +12.1 | +10.1 | +17.5 | +0.9 | **-22.4** | **-6.8** | +85.3 | +21.2 | +0.7 | **-19.4** |
+| +14.4 | +14.0 | +13.6 | **-5.1** | **-20.3** | **-10.7** | +72.4 | +14.5 | **-2.6** | **-10.8** |
 
 | 2017 | 2018 | 2019 | 2020 | 2021 | 2022 | 2023 | 2024 | 2025 | 2026 |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| +84.8 | **-4.6** | **-0.5** | +20.0 | +27.2 | +18.8 | +35.4 | +10.8 | +6.8 | +6.5 |
+| +82.8 | **-1.5** | **-5.3** | +22.9 | +29.3 | +20.1 | +37.4 | +16.5 | +9.0 | +8.7 |
 
-Fifteen of twenty years beat QQQ. The losing years cluster where trend
-following is supposed to lose: choppy, mean-reverting markets (2011, 2012,
-2016, 2018-19). The **worst drawdown was the global financial crisis**:
-October 2007 to April 2009, a 44.9% peak-to-trough loss, while QQQ fell 53%
+Thirteen of twenty years beat QQQ. The losing years cluster where trend
+following is supposed to lose: choppy, mean-reverting markets (2010-12, 2015-16,
+2018-19). The **worst drawdown was the global financial crisis**:
+October 2007 to April 2009, a 41.5% peak-to-trough loss, while QQQ fell 53%
 over the whole cycle.
 
 For comparison, the real **2x QLD** version over the same 20 years returns
@@ -455,7 +457,7 @@ does not.**
 | Synthetic fund cannot see future rates | Uses the last ^IRX observation at or before each bar | `synthetic_fund_ignores_later_rates` |
 | Total-return adjustment is not forecast | Signals are scale-invariant (price/SMA, returns); adjustment factors only add past dividends | by construction |
 
-All **53 unit tests pass**.
+All **54 unit tests pass**.
 
 ### 12.2 Tested on live data
 
@@ -529,7 +531,7 @@ unchanged by the split; the dividends add $97 of cash.
 
 - **Tracking error is bounded.** The preset uses a 2% rebalance band; measured
   drift is 0.69% of equity on average and 5.5% at worst, versus 2.0%/12.4% at
-  the old 5% band, with the same return and trade count.
+  the old 5% band, with the same return and about 9% more notional turnover.
 - **Failed orders are retried.** Up to 3 retries per bar on the following
   polls, after re-reading positions from the broker. The research and the
   residual duplicate risk are in `docs/live_readiness_audit.md`.

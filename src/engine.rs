@@ -128,6 +128,13 @@ impl Engine {
             self.cfg.timeframe.yahoo(),
             symbols.len(),
         ));
+        // Mark open positions with a real price before printing equity: after
+        // a restart the sim has no marks and would value them at cost.
+        for symbol in self.backend.positions()?.keys() {
+            if let Ok(px) = self.backend.last_price(symbol) {
+                self.backend.set_mark(symbol, px);
+            }
+        }
         let acct = self.backend.account()?;
         log(&format!("paper account: equity ${:.2}, cash ${:.2}", acct.equity, acct.cash));
         log("press Ctrl+C to stop");
@@ -441,22 +448,40 @@ impl Engine {
                 Ok(b) if !b.is_empty() => {
                     self.bars.insert(sym.clone(), (Instant::now(), b));
                 }
-                Ok(_) => failed.push(format!("{sym} (empty)")),
-                Err(e) => failed.push(format!("{sym} ({e})")),
+                Ok(_) => {
+                    failed.push(format!("{sym} (empty)"));
+                    // Never keep an old series as if it were current: a failed
+                    // refresh must not become a fill price hours later.
+                    self.bars.remove(sym);
+                }
+                Err(e) => {
+                    failed.push(format!("{sym} ({e})"));
+                    self.bars.remove(sym);
+                }
             }
         }
         let oldest = chrono::Utc::now().timestamp() - history * 86_400;
         let recent_results = self.backend.bars_many(&recent, tf, 2);
         for (sym, res) in recent.iter().zip(recent_results) {
-            match (res, self.bars.get_mut(sym)) {
+            let updated = match (res, self.bars.get_mut(sym)) {
                 (Ok(new), Some((at, old))) if !new.is_empty() => {
                     let cut = new[0].ts;
                     old.retain(|b| b.ts < cut && b.ts >= oldest);
                     old.extend(new);
                     *at = Instant::now();
+                    true
                 }
-                (Ok(_), _) => failed.push(format!("{sym} (empty)")),
-                (Err(e), _) => failed.push(format!("{sym} ({e})")),
+                (Ok(_), _) => {
+                    failed.push(format!("{sym} (empty)"));
+                    false
+                }
+                (Err(e), _) => {
+                    failed.push(format!("{sym} ({e})"));
+                    false
+                }
+            };
+            if !updated {
+                self.bars.remove(sym);
             }
         }
         if !failed.is_empty() {
@@ -518,7 +543,15 @@ impl Engine {
         match self.backend.apply_corporate_actions() {
             Ok(0) => {}
             Ok(n) => log(&format!("applied {n} corporate action(s) to the paper ledger")),
-            Err(e) => log(&format!("WARN could not apply corporate actions: {e}")),
+            Err(e) => {
+                log(&format!("WARN could not apply corporate actions: {e}"));
+                // A missed split would make every position size wrong. If we
+                // hold anything, wait for verification instead of trading.
+                if !self.backend.positions()?.is_empty() {
+                    log("skipping this tick: held positions need verified corporate actions");
+                    return Ok(());
+                }
+            }
         }
         let mut positions = self.backend.positions()?;
         self.refresh_bars(&positions);
@@ -625,48 +658,57 @@ impl Engine {
                 let retrying = self
                     .retry
                     .as_ref()
-                    .is_some_and(|(ts, n)| *ts == last.ts && *n < 3);
-                if new_bar || retrying {
-                    if new_bar {
-                        self.last_bar.insert(PORTFOLIO.to_string(), last.ts);
-                    }
-                    // Never trade on stale data (holidays, feed gaps).
-                    if fresh(&last) {
-                        let universe: HashMap<&str, &[Bar]> = complete
-                            .iter()
-                            .map(|(s, b)| (*s, &b[b.len().saturating_sub(lookback)..]))
-                            .collect();
-                        let held: Vec<&str> = symbols
-                            .iter()
-                            .filter(|s| positions.contains_key(*s))
-                            .map(|s| s.as_str())
-                            .collect();
-                        if let Some(targets) = self.strategy.targets(&universe, &held) {
-                            let (did, failed) = self.rebalance(&targets, &prices, positions)?;
-                            acted |= did;
-                            if failed > 0 {
-                                let attempts = self
-                                    .retry
-                                    .as_ref()
-                                    .filter(|(ts, _)| *ts == last.ts)
-                                    .map(|(_, n)| *n)
-                                    .unwrap_or(0);
-                                if attempts < 3 {
-                                    self.retry = Some((last.ts, attempts + 1));
-                                    log(&format!(
-                                        "WARN {failed} order(s) failed; retrying the rebalance on the next poll ({}/3)",
-                                        attempts + 1
-                                    ));
-                                } else {
-                                    log("WARN rebalance still incomplete after 3 retries; waiting for the next bar");
-                                    self.retry = None;
+                    .is_some_and(|(ts, n)| *ts == last.ts && *n <= 3);
+                if (new_bar || retrying) && fresh(&last) {
+                    let universe: HashMap<&str, &[Bar]> = complete
+                        .iter()
+                        .map(|(s, b)| (*s, &b[b.len().saturating_sub(lookback)..]))
+                        .collect();
+                    let held: Vec<&str> = symbols
+                        .iter()
+                        .filter(|s| positions.contains_key(*s))
+                        .map(|s| s.as_str())
+                        .collect();
+                    match self.strategy.targets(&universe, &held) {
+                        Some(targets) => {
+                            match self.rebalance(&targets, &prices, positions) {
+                                Ok((did, failed)) => {
+                                    // The bar counts as done only after a
+                                    // decision was actually made and executed.
+                                    self.last_bar.insert(PORTFOLIO.to_string(), last.ts);
+                                    acted |= did;
+                                    if failed > 0 {
+                                        let attempts = self
+                                            .retry
+                                            .as_ref()
+                                            .filter(|(ts, _)| *ts == last.ts)
+                                            .map(|(_, n)| *n)
+                                            .unwrap_or(0);
+                                        if attempts < 3 {
+                                            self.retry = Some((last.ts, attempts + 1));
+                                            log(&format!(
+                                                "WARN {failed} order(s) failed; retrying the rebalance on the next poll ({}/3)",
+                                                attempts + 1
+                                            ));
+                                        } else {
+                                            log("WARN rebalance still incomplete after 3 retries; waiting for the next bar");
+                                            self.retry = None;
+                                        }
+                                    } else {
+                                        self.retry = None;
+                                    }
                                 }
-                            } else {
-                                self.retry = None;
+                                Err(e) => {
+                                    log(&format!(
+                                        "WARN rebalance failed, will retry on the next poll: {e}"
+                                    ));
+                                }
                             }
-                        } else {
-                            // No decision on this bar: nothing to retry.
-                            self.retry = None;
+                        }
+                        None => {
+                            if new_bar {
+                                log("WARN strategy returned no target (missing or short data); will retry");
+                            }
                         }
                     }
                 }

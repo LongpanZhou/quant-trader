@@ -52,6 +52,10 @@ pub struct Report {
     pub max_single_error: f64,
     /// Buys that could not reach their target because cash ran out.
     pub cash_capped_buys: usize,
+    /// Executed fills and total |notional| traded, as a multiple of starting
+    /// equity. "Closed trades" counts round trips, not orders.
+    pub orders: usize,
+    pub traded_notional: f64,
 }
 
 /// Bars before `trade_from` are only used to warm up indicators; trading and
@@ -99,6 +103,8 @@ pub fn simulate(
     let mut gross_err_sum = 0.0f64;
     let mut max_single_err = 0.0f64;
     let mut cash_capped_buys = 0usize;
+    let mut orders = 0usize;
+    let mut traded_notional = 0.0f64;
     let mut last_want: Option<Vec<f64>> = None;
     let mut bh_curve = Vec::new();
     let (mut long_sum, mut short_sum) = (0.0, 0.0);
@@ -115,6 +121,8 @@ pub fn simulate(
         ($i:expr, $qty:expr, $price:expr) => {{
             let (i, qty): (usize, f64) = ($i, $qty);
             let px = $price * (1.0 + slip * qty.signum());
+            orders += 1;
+            traded_notional += (qty * px).abs();
             cash -= qty * px;
             let old = pos[i].unwrap_or(Position { qty: 0.0, avg_price: 0.0 });
             let new_qty = old.qty + qty;
@@ -454,6 +462,8 @@ pub fn simulate(
         avg_gross_error: if weight_err_n > 0 { gross_err_sum / weight_err_n as f64 } else { 0.0 },
         max_single_error: max_single_err,
         cash_capped_buys,
+        orders,
+        traded_notional,
     }
 }
 
@@ -495,17 +505,32 @@ fn synthetic_series(index: &[Bar], leverage: f64, fee_pct: f64, rates: &[Bar]) -
             continue;
         }
         let r = b.close / index[i - 1].close - 1.0;
+        // The fund's open must reflect the index's overnight gap, otherwise a
+        // next-open fill would silently use the previous close (same-bar fill).
+        let r_open = if b.open > 0.0 {
+            b.open / index[i - 1].close - 1.0
+        } else {
+            0.0
+        };
         let rate = rates
             .iter()
             .rev()
-            .find(|x| x.ts <= b.ts)
+            .find(|x| x.ts < b.ts)
             .map(|x| (x.close / 100.0).max(0.0))
             .unwrap_or(0.02);
         let financing = (leverage - 1.0) * rate / 252.0;
         let fee = fee_pct / 252.0;
         let prev = px;
-        px = (px * (1.0 + leverage * r - financing - fee)).max(0.01);
-        out.push(Bar { ts: b.ts, open: prev, high: prev.max(px), low: prev.min(px), close: px, volume: 1.0 });
+        let open = (prev * (1.0 + leverage * r_open)).max(0.01);
+        px = (prev * (1.0 + leverage * r - financing - fee)).max(0.01);
+        out.push(Bar {
+            ts: b.ts,
+            open,
+            high: open.max(px),
+            low: open.min(px),
+            close: px,
+            volume: 1.0,
+        });
     }
     out
 }
@@ -697,6 +722,13 @@ pub fn run(cfg: &Config, strat: &dyn Strategy, backend: &Backend) -> Result<()> 
         println!("Realised P&L by side : long ${:+.0}, short ${:+.0}", r.long_pnl, r.short_pnl);
     }
     println!("Closed trades        : {n}");
+    if r.orders > 0 {
+        println!(
+            "Orders / turnover    : {} fills, {:.2}x starting equity traded",
+            r.orders,
+            r.traded_notional / r.start_equity
+        );
+    }
     if n > 0 {
         println!("Win rate             : {:.1}%", wins.len() as f64 / n as f64 * 100.0);
         println!("Avg trade P&L        : ${:+.2}", r.trade_pnls.iter().sum::<f64>() / n as f64);

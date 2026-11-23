@@ -83,27 +83,26 @@ impl SimBroker {
 
     /// A split multiplies the share count and divides the cost basis, leaving
     /// cash and equity unchanged. Applies to short positions too (qty < 0).
-    pub fn apply_split(&mut self, symbol: &str, ratio: f64) -> Result<()> {
+    /// The event timestamp and the ledger are saved together, so a crash
+    /// cannot leave an action applied but unrecorded (or vice versa).
+    pub fn apply_split(&mut self, symbol: &str, ratio: f64, ts: i64) -> Result<()> {
         if !ratio.is_finite() || ratio <= 0.0 {
             bail!("invalid split ratio {ratio} for {symbol}");
         }
-        let mut changed = false;
         if let Some(p) = self.state.positions.get_mut(symbol) {
             if p.qty != 0.0 {
                 p.qty *= ratio;
                 p.avg_price /= ratio;
-                changed = true;
+                self.state.last_action_ts = self.state.last_action_ts.max(ts);
+                self.save()?;
             }
-        }
-        if changed {
-            self.save()?;
         }
         Ok(())
     }
 
     /// Cash dividend: longs receive, shorts pay. Credited on the ex-date, which
     /// is early, but keeps the paper account's total return right.
-    pub fn apply_dividend(&mut self, symbol: &str, per_share: f64) -> Result<()> {
+    pub fn apply_dividend(&mut self, symbol: &str, per_share: f64, ts: i64) -> Result<()> {
         if !per_share.is_finite() || per_share <= 0.0 {
             return Ok(());
         }
@@ -114,6 +113,7 @@ impl SimBroker {
         let cash = p.qty * per_share;
         self.state.cash += cash;
         self.state.realized_pnl += cash;
+        self.state.last_action_ts = self.state.last_action_ts.max(ts);
         self.save()
     }
 
@@ -220,13 +220,13 @@ mod tests {
         assert_eq!(b.account().equity, 1000.0);
 
         // 2:1 split: 10 shares at $50 -> 20 shares at $25.
-        b.apply_split("TQQQ", 2.0).unwrap();
+        b.apply_split("TQQQ", 2.0, 0).unwrap();
         let p = b.positions()["TQQQ"];
         assert_eq!((p.qty, p.avg_price), (20.0, 25.0));
         b.set_mark("TQQQ", 25.0);
         assert_eq!(b.account().equity, 1000.0);
         // 1% dividend on 20 shares at $25 = $5.
-        b.apply_dividend("TQQQ", 0.25).unwrap();
+        b.apply_dividend("TQQQ", 0.25, 0).unwrap();
         assert_eq!(b.account().cash, 505.0); // 500 left after buying + $5 dividend
         b.set_mark("TQQQ", 25.0);
         assert_eq!(b.account().equity, 1005.0);
@@ -242,7 +242,7 @@ mod tests {
     fn short_position_pays_a_dividend() {
         let (mut b, path) = broker("short-div", 1000.0);
         b.submit("X", Side::Sell, 5.0, 100.0).unwrap();
-        b.apply_dividend("X", 2.0).unwrap();
+        b.apply_dividend("X", 2.0, 0).unwrap();
         assert_eq!(b.account().cash, 1490.0); // 1500 proceeds - 10 dividend
         let _ = std::fs::remove_file(&path);
     }

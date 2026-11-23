@@ -858,6 +858,18 @@ impl Config {
         if !(0..=3650).contains(&self.backtest.end_days_ago) {
             bail!("config: backtest.end_days_ago must be in [0, 3650]");
         }
+        if self.backtest.fill_open && self.backtest.lag_bars == 0 {
+            bail!(
+                "config: backtest.fill_open needs lag_bars >= 1; otherwise it fills at the signal bar's own open"
+            );
+        }
+        if let StrategyConfig::LeveragedIndex { index, risk_asset, safe_asset, .. } = &self.strategy {
+            for s in [index, risk_asset, safe_asset] {
+                if !s.is_empty() && !self.symbols.iter().any(|x| x == s) {
+                    bail!("config: leveraged_index symbol '{s}' must be listed in symbols");
+                }
+            }
+        }
         if !self.backtest.synthetic_symbol.trim().is_empty() {
             if self.backtest.synthetic_index.trim().is_empty()
                 || self.backtest.synthetic_leverage < 1.0

@@ -13,12 +13,12 @@ Nothing here is real-money trading: the program has no live broker endpoint.
 
 | # | Finding | Severity | Status |
 |---|---|---|---|
-| F1 | 5% rebalance band left the book **2.0% of equity off target on average, 12.4% worst** | P1 | **Fixed**: band 2% → 0.69% / 5.5%, same return and trade count |
-| F2 | Per-leg band + cash cap can leave a buy unfunded ("low bucket") | P1 | **Mitigated**: warning logged; 1 material event at 2% band |
+| F1 | 5% rebalance band left the book **2.0% of equity off target on average, 12.4% worst** | P1 | **Fixed**: band 2% → 0.69% / 5.5%, same return, ~9% more notional turnover |
+| F2 | Per-leg band + cash cap can leave a buy unfunded ("low bucket") | P1 | **Mitigated**: warning logged; 1-2 material events at 2% band |
 | F3 | A failed order was not retried until the next day | P1 | **Fixed**: up to 3 retries per bar on following polls |
 | F4 | Closed-market polling could sleep through the open by 10 minutes | P1 | **Fixed**: 60-second polls while closed |
 | F5 | Backtest fills at the official open; live fills seconds-to-a-minute later | P2 | **Measured & documented** |
-| F6 | Alpaca paper does not credit dividends; BIL's ~4%/yr is missing | P1 | **Warned**: cannot be fixed client-side |
+| F6 | Alpaca paper does not credit dividends **or apply splits** | P1 | **Warned + split guard**: trading halts on a detected split |
 | F7 | Alpaca free feed is IEX only (~2-4% of volume) | P2 | **Warned** |
 | F8 | Alpaca bars are split-adjusted, not total-return | P2 | **Warned** |
 | F9 | Yahoo is an unofficial feed with no SLA | P2 | **Checked**: preflight reports quote age/delay |
@@ -87,18 +87,24 @@ TQQQ leg is a material change in effective leverage.
 
 Same strategy, same data, only `rebalance_band` changed:
 
-| Band | CAGR | Excess | Max DD | Closed trades | Avg drift | Worst drift | Worst single | Cash-limited buys |
+| Band | CAGR | Excess | Fills | Notional turnover | Avg drift | Worst drift | Worst single | Cash-limited buys |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 1% | 26.44% | +16.94 | 29.24% | 55 | 0.46% | 4.10% | 2.23% | 10 |
-| **2%** | **26.40%** | **+16.91** | **29.35%** | **54** | **0.69%** | **5.48%** | **2.77%** | **1** |
-| 3% | 26.22% | +16.73 | 29.35% | 55 | 1.09% | 7.77% | 3.93% | 1 |
-| 5% | 26.32% | +16.83 | 28.67% | 54 | 2.04% | 12.38% | 6.26% | 3 |
-| 10% | 26.30% | +16.81 | 28.58% | 54 | 4.17% | 20.72% | 10.45% | 3 |
+| 1% | 26.44% | +16.94 | 1,101 | 213.5x | 0.46% | 4.10% | 2.23% | 10 |
+| **2%** | **26.40%** | **+16.91** | **860** | **207.0x** | **0.69%** | **5.48%** | **2.77%** | **2** |
+| 3% | 26.23% | +16.73 | 715 | 199.6x | 1.09% | 7.77% | 3.93% | 3 |
+| 5% | 26.32% | +16.83 | 516 | 190.1x | 2.04% | 12.38% | 6.26% | 3 |
+| 10% | 26.30% | +16.81 | 318 | 171.5x | 4.17% | 20.72% | 10.45% | 3 |
 
-The key result: **tightening the band costs nothing in return or trade count**
-(the number of closed trades is 54-55 at every setting) but cuts tracking error
-by 3-4×. The strategy's trades are dominated by regime entries/exits; the band
-only controls resizing.
+The key result: **returns are flat** (26.2-26.4% at every band), while tracking
+error falls 3-4× as the band tightens. But it is **not free**: from 5% to 2%,
+fills rise 67% (516 → 860) and notional turnover rises 9% (190x → 207x). At
+1bp that is ~0.17% of starting equity over five years; at 5bp the 5-year excess
+falls from +16.9 to +15.8pp, and at 10bp to +14.5pp. The 2% band is the best
+tracking/cost compromise; 1% is not worth the extra turnover.
+
+The strategy's trades are dominated by regime entries/exits; the band only
+controls resizing. This is why "closed trades" (54 at every band) hid the
+turnover increase — the `Orders / turnover` metric was added after the review.
 
 **Decision: 2%** is the sweet spot. 1% tracks slightly better but creates 10
 cash-limited buys (the funding problem in F2); 2% has one.
@@ -246,10 +252,19 @@ and change the strategy.
 
 ### 6.3 Corporate actions
 
-Already fixed in the previous iteration: splits and dividends are applied to
-the sim ledger from Yahoo events, verified against TQQQ's 2025 2:1 split. The
-Alpaca path relies on Alpaca's own position accounting and does not need the
-local adjustment.
+The sim broker applies splits and dividends **atomically**: the ledger and the
+event timestamp are saved together, so a crash cannot leave an action applied
+but unrecorded. Verified against TQQQ's real 2025 2:1 split.
+
+**Alpaca paper does not apply corporate actions at all.** Alpaca staff state
+that paper accounts do not implement splits or dividends, and users report
+split-adjusted prices with unadjusted quantities
+([staff reply, 2024](https://forum.alpaca.markets/t/paper-account-nvda-stock-split-issue/14412),
+[staff reply, 2026](https://forum.alpaca.markets/t/corporate-actions-handeling/19325)).
+The earlier claim that Alpaca handles this was wrong and has been removed.
+The loop now detects a split in a held symbol from Yahoo events and **stops
+trading** with a message to reconcile or reset the paper account. Dividends are
+simply missing there; `preflight` warns.
 
 ---
 
@@ -305,11 +320,11 @@ The 2% band is now the preset. Live-parity results:
 
 | | 5 years | 10 years | 20 years (synthetic 3x) |
 |---|---:|---:|---:|
-| Strategy | 26.4%/yr | 37.4%/yr | 26.5%/yr |
+| Strategy | 26.4%/yr | 37.4%/yr | 27.0%/yr |
 | QQQ | 9.5% | 18.6% | 15.0% |
-| Excess | **+16.9pp** | **+18.8pp** | **+11.5pp** |
-| Max DD | 29.4% | 38.3% | 44.9% |
-| Avg weight drift | **0.69%** | **0.61%** | **0.66%** |
+| Excess | **+16.9pp** | **+18.8pp** | **+12.0pp** |
+| Max DD | 29.4% | 38.3% | 41.5% |
+| Avg weight drift | **0.69%** | **0.61%** | **0.59%** |
 
 The 2x QLD 20-year version is +7.3pp with 40.1% DD. The conclusion is unchanged:
 3x is required to clear the +10pp bar.
@@ -318,7 +333,7 @@ The 2x QLD 20-year version is +7.3pp with 40.1% DD. The conclusion is unchanged:
 
 ## 9. Pre-live checklist (revised)
 
-1. `cargo build --release && cargo test` — 53 tests.
+1. `cargo build --release && cargo test` - 54 tests.
 2. `preflight --config configs\nasdaq_leveraged_trend.toml` — require PASS;
    read the quote-age line and any Alpaca warnings.
 3. `replay` — confirm the order matches the target and the residual cash is
@@ -331,7 +346,34 @@ The 2x QLD 20-year version is +7.3pp with 40.1% DD. The conclusion is unchanged:
 6. `status` and `trades.csv` are the audit trail; the daily decision is in the
    log as a BUY/SELL with a reason.
 
-## 10. Sources
+## 10. Independent implementation review
+
+A separate reviewer traced `LeveragedIndex`, the live path and the backtest
+line by line, and reproduced the 5-year table to 0.01pp. Its verdict: **the
+rule is implemented exactly and the headline is reproducible, but the live
+layer had five P1 defects.** Its findings and my response:
+
+| Reviewer finding | Verified? | Action |
+|---|---|---|
+| A failed bar refresh left the old cache in place, so the engine could trade/fill at a day-old price | **Yes** | Failed/empty fetches now **evict** the cache entry; the tick has no price and skips instead of using stale data |
+| `last_bar` was marked done **before** `targets`; a missing QQQ series silently lost the day's only decision | **Yes** | The bar is marked only after `targets` returns a decision and `rebalance` completes; otherwise it retries on the next poll |
+| An `account()` error after `last_bar` was set lost the rebalance | **Yes** | Same fix: the bar is not marked on error, so the next poll retries |
+| Alpaca paper does **not** adjust splits/dividends; the code/audit assumed it did | **Yes** (Alpaca staff, 2024/2026) | Docs corrected; the loop now detects a split in a held symbol and **halts** with a reconcile/reset message |
+| A failed corporate-action fetch was ignored and trading continued | **Yes** | If anything is held, the tick is skipped until actions can be verified |
+| Corporate actions were applied and the watermark saved separately (non-idempotent) | **Yes** | Each action now updates the ledger and the watermark in **one save** |
+| The 20-year synthetic TQQQ filled at the previous close (same-bar fill) | **Yes** | The synthetic bar's **open** now uses QQQ's overnight gap; 20y moved from 26.52%/+11.5pp to **26.98%/+12.0pp** |
+| `fill_open=true` with `lag_bars=0` was a look-ahead footgun | **Yes** | Config validation now refuses it |
+| Retry off-by-one (only 2 real retries, not 3) | **Yes** | `n <= 3`; three retries now actually run |
+| `vol == 0` fell back to full 3x | **Yes** | Falls back to 1x |
+| Startup equity valued positions at cost after a restart | **Yes** | Open positions are marked with a real price before the equity log |
+| `index`/`risk_asset`/`safe_asset` could be missing from `symbols` and silently skip the downtrend target | **Yes** | Config validation added |
+| The doc's blend examples were wrong (20% vol is 50/50, not 100% TQQQ) | **Yes** | Corrected; an exact-weight unit test was added |
+| The band sweep's "same trade count" used closed round-trips, hiding a turnover increase | **Yes** | `Orders / turnover` added; the claim was corrected (2% vs 5%: 860 vs 516 fills, 207x vs 190x notional) |
+| DST spring-forward means the engine uses Thursday's bar until 10:30 | **No — rejected** | Friday's bar completes Saturday 14:30 UTC, long before Monday's open; the fixed `+86400` is safe because the loop never trades while closed |
+| Population vs sample σ makes exposure 2.6% high | Accepted (minor) | Not changed; documented |
+| No client-order-ID idempotency; restart loses `last_bar`; `status` can race `run`; Alpaca margin cushion is only 0.11% | Accepted | Documented as P2/P3; position reconciliation and the retry bound the risk |
+
+## 11. Sources
 
 - Rebalancing bands / 5-25 rule: Quant Decoded (threshold study), Guardfolio
   (5/25), Kitces & Daryanani (20% relative), RiskHub (band overshoot).

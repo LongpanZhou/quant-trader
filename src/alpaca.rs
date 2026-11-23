@@ -125,6 +125,20 @@ impl Alpaca {
         num(&v["trade"]["p"]).ok_or_else(|| anyhow!("no latest trade for {symbol}"))
     }
 
+    /// (timestamp of the latest trade, exchange delay in seconds).
+    pub fn quote_age(&self, symbol: &str) -> Result<(i64, i64)> {
+        let v = self.get(
+            &format!("{DATA_URL}/v2/stocks/{symbol}/trades/latest"),
+            &[("feed", self.feed.as_str())],
+        )?;
+        let ts = v["trade"]["t"]
+            .as_str()
+            .and_then(|t| chrono::DateTime::parse_from_rfc3339(t).ok())
+            .map(|t| t.timestamp())
+            .unwrap_or(0);
+        Ok((ts, 0))
+    }
+
     /// Submit a market order and wait briefly for the fill.
     pub fn submit(&self, symbol: &str, side: Side, qty: f64) -> Result<Fill> {
         let order = http::json(

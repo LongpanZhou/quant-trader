@@ -33,6 +33,8 @@ pub fn run(cfg: &Config, backend: &Backend, strategy: &dyn Strategy) -> Result<(
         println!();
         println!("NOTE: Alpaca paper does not credit dividends. A BIL/T-bill holding will");
         println!("      understate the safe-asset return; the sim broker does credit them.");
+        println!("NOTE: Alpaca paper does not apply stock splits. The loop halts on a split");
+        println!("      in a held symbol; the paper account must then be reconciled/reset.");
         if cfg.alpaca.feed.eq_ignore_ascii_case("iex") {
             println!("NOTE: Alpaca feed is IEX (one exchange, ~2-4% of consolidated volume).");
             println!("      Prices are close for QQQ/TQQQ but not the consolidated tape.");
