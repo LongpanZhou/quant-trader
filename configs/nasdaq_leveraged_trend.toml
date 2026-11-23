@@ -12,14 +12,16 @@
 # is exactly the condition under which daily-reset leveraged funds compound
 # instead of decay.
 #
-# 5-year test (Nov 2021 - Nov 2026, daily bars, 1 bp slippage): 25.7% a year
-# against QQQ's 9.5%, i.e. +16.2 percentage points a year, with a maximum
-# drawdown of 29.9% versus QQQ's 35.1%. Every calendar year 2022-2026 beat QQQ
-# by 10-31 points. See docs/nasdaq_leveraged_trend.md for the full study,
-# including the 10-year check and the parameter plateau.
+# 5-year test (Nov 2021 - Nov 2026, daily bars, 1 bp slippage, live-parity
+# fills): 26.3% a year against QQQ's 9.5%, i.e. +16.8 percentage points a
+# year, with a maximum drawdown of 28.7% versus QQQ's 35.1%. Every complete
+# calendar year 2022-2026 beat QQQ, by 7 to 35 points. See
+# docs/nasdaq_leveraged_trend.md for the full study, including the 10- and
+# 20-year checks, the parameter plateau and the execution sensitivity.
 #
-# lag_bars = 1 hides the latest close from the strategy, matching the live
-# loop, which acts at the next session rather than at the signal bar's close.
+# lag_bars = 1 hides the latest close from the strategy, and fill_open = true
+# executes at the next session's open. Together they reproduce the live loop:
+# decide after a close, trade at the following open.
 broker = "sim"
 symbols = ["QQQ", "TQQQ", "BIL"]
 timeframe = "1d"
@@ -45,4 +47,5 @@ slippage_bps = 1.0
 days = 1825
 benchmark = "QQQ"
 lag_bars = 1
+fill_open = true
 

@@ -67,6 +67,9 @@ pub fn simulate(
     // Per-symbol state, indexed like `symbols`.
     let mut next = vec![0usize; n];
     let mut last_px = vec![f64::NAN; n];
+    // Open of each symbol's current bar, used when fills are modelled at the
+    // next session's open.
+    let mut open_px = vec![f64::NAN; n];
     let mut pos: Vec<Option<Position>> = vec![None; n];
     // Profit already banked by trimming a position that is still open.
     let mut partial = vec![0.0f64; n];
@@ -132,6 +135,7 @@ pub fn simulate(
             next[i] = k + 1;
             let bar = bars[k];
             last_px[i] = bar.close;
+            open_px[i] = bar.open;
             if !trading {
                 continue;
             }
@@ -176,19 +180,21 @@ pub fn simulate(
             }
             let start = end.saturating_sub(lookback);
             let held = pos[i];
+            let fill = if cfg.backtest.fill_open { bar.open } else { bar.close };
+            let mark: &[f64] = if cfg.backtest.fill_open { &open_px } else { &last_px };
             match strat.signal(&bars[start..end], held.is_some()) {
                 Signal::Sell => {
                     if let Some(p) = held {
-                        trade!(i, -p.qty, bar.close);
+                        trade!(i, -p.qty, fill);
                     }
                 }
                 Signal::Buy
                     if held.is_none() && pos.iter().filter(|p| p.is_some()).count() < risk.max_positions =>
                 {
-                    let eq = cash + held_value(&pos, &last_px);
-                    let qty = order_qty(eq, cash + lev * eq, bar.close * (1.0 + slip), risk.position_pct);
+                    let eq = cash + held_value(&pos, mark);
+                    let qty = order_qty(eq, cash + lev * eq, fill * (1.0 + slip), risk.position_pct);
                     if qty >= 1.0 {
-                        trade!(i, qty, bar.close);
+                        trade!(i, qty, fill);
                     }
                 }
                 _ => {}
@@ -210,7 +216,11 @@ pub fn simulate(
             let held: Vec<&str> = (0..n).filter(|&i| pos[i].is_some()).map(|i| symbols[i].as_str()).collect();
             if let Some(targets) = strat.targets(&universe, &held) {
                 let band = strat.rebalance_band();
-                let eq = cash + held_value(&pos, &last_px);
+                // When fills are at the open, size against the same open
+                // prices: nothing from this bar's close is used before it is
+                // known. Otherwise mark at the current close.
+                let mark: &[f64] = if cfg.backtest.fill_open { &open_px } else { &last_px };
+                let eq = cash + held_value(&pos, mark);
                 let mut want = vec![0.0f64; n];
                 for (s, w) in &targets {
                     if let Some(&i) = index_of.get(s.as_str()) {
@@ -220,7 +230,7 @@ pub fn simulate(
                 // 1. Exits (including positions on the wrong side) and sell-side resizes.
                 for i in 0..n {
                     let Some(p) = pos[i] else { continue };
-                    let close = last_px[i];
+                    let close = mark[i];
                     if want[i] == 0.0 || want[i].signum() != p.qty.signum() {
                         trade!(i, -p.qty, close);
                         continue;
@@ -236,7 +246,7 @@ pub fn simulate(
                 // 2. New positions and buy-side resizes, highest priority first.
                 for (s, w) in &targets {
                     let Some(&i) = index_of.get(s.as_str()) else { continue };
-                    let close = last_px[i];
+                    let close = mark[i];
                     if !(close > 0.0) {
                         continue;
                     }
@@ -657,6 +667,7 @@ mod tests {
                 days: 1,
                 benchmark: "SPY".into(),
                 lag_bars: 0,
+                fill_open: false,
                 end_days_ago: 0,
                 synthetic_symbol: String::new(),
                 synthetic_index: String::new(),

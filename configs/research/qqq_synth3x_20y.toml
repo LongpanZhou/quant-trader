@@ -23,7 +23,9 @@ slippage_bps = 1.0
 days = 7300
 benchmark = "QQQ"
 lag_bars = 1
+fill_open = true
 synthetic_symbol = "TQQQ"
 synthetic_index = "QQQ"
 synthetic_leverage = 3.0
 synthetic_fee_pct = 0.0095
+

@@ -1,20 +1,20 @@
-﻿# Beating QQQ by 10 points a year: a leveraged-trend study
+# Beating QQQ by 10 points a year: a leveraged-trend study
 
 **Question.** Find a rules-based strategy that, over the past five years, beat
-buying and holding the Nasdaq-100 (QQQ) by 10 percentage points a year â€” if
+buying and holding the Nasdaq-100 (QQQ) by 10 percentage points a year — if
 QQQ makes 10%, make 20%; if QQQ makes -10%, make 0%.
 
-**Answer.** `configs/nasdaq_leveraged_trend.toml` â€” hold a volatility-targeted
+**Answer.** `configs/nasdaq_leveraged_trend.toml` — hold a volatility-targeted
 blend of QQQ and TQQQ while QQQ is above its 165-day average, T-bills
-otherwise. Over the five years to 20 Nov 2026 it returned **25.7% a year
-against QQQ's 9.5% (+16.2 points a year)**, with a **29.9% maximum drawdown
+otherwise. Over the five years to 20 Nov 2026 it returned **26.3% a year
+against QQQ's 9.5% (+16.8 points a year)**, with a **28.7% maximum drawdown
 versus QQQ's 35.1%**, and it beat QQQ in **every complete calendar year from
-2022 to 2026 by 10 to 31 points**.
+2022 to 2026, by 6.7 to 34.7 points**.
 
 That is a better result than the published literature leads one to expect, and
-the reasons are set out honestly in Â§7: the window contains one crash and one
+the reasons are set out honestly in §7: the window contains one crash and one
 very strong recovery, the strategy uses 3x leverage, and 2026 ended on a weak
-note for QQQ. Read Â§7 before believing Â§4.
+note for QQQ. Read §7 before believing §4.
 
 ---
 
@@ -46,15 +46,15 @@ picking.
   18.2%/yr vs 9.7%, alpha 10.9%, max drawdown 33% vs 84%, using per-asset
   volatility targeting with up to 200% gross exposure. This is the closest
   published template for the sizing used here.
-- **Faber (2007), "A Quantitative Approach to Tactical Asset Allocation"** â€”
+- **Faber (2007), "A Quantitative Approach to Tactical Asset Allocation"** —
   the 10-month SMA rule; the source of the "own it above the average, T-bills
   below" pattern.
-- **Moreira & Muir (2017), "Volatility-Managed Portfolios"** â€” scale exposure
+- **Moreira & Muir (2017), "Volatility-Managed Portfolios"** — scale exposure
   by trailing realized variance. Target volatility is what keeps the 3x fund
   from being held at full size in a 40%-vol tape.
 
-The closest published test of the exact combination is **NygÃ¥rd & Liukko (2026)**,
-a LinkÃ¶ping thesis on the Nasdaq-100 from 2001 to 2026 with synthetic
+The closest published test of the exact combination is **Nygård & Liukko (2026)**,
+a Linköping thesis on the Nasdaq-100 from 2001 to 2026 with synthetic
 leveraged funds ([PDF](https://diva-portal.org/smash/get/diva2:2077998/FULLTEXT01.pdf)):
 
 | Nasdaq-100, 2001-2026 | CAGR | Max drawdown |
@@ -97,7 +97,10 @@ extreme tail of outcomes, not a normal expectation.
 ## 3. The rule, exactly
 
 Evaluated once per completed daily bar, on the **previous** close
-(`lag_bars = 1`), which matches the live loop's next-session execution:
+(`lag_bars = 1`), and filled at the **next session's open**
+(`fill_open = true`). Together those reproduce the live loop exactly: the
+signal is computed after a close, and the order executes at the following
+open.
 
 ```
 sma   = 165-day simple moving average of QQQ close
@@ -117,7 +120,7 @@ else:
 
 At QQQ volatility of 20% the blend is 100% TQQQ; at 30% it is 33% TQQQ / 67%
 QQQ; at 40% it is all QQQ. So the portfolio's *risk* is held roughly constant
-while the *instrument* gets more aggressive as volatility falls â€” the Gayed &
+while the *instrument* gets more aggressive as volatility falls — the Gayed &
 Bilello mechanism, expressed as a continuous weight rather than an on/off
 switch. Positions are only resized when they drift more than 5% of equity
 (`rebalance_band`).
@@ -129,28 +132,34 @@ actual funds that existed.
 ## 4. Result: five years, Nov 2021 - Nov 2026
 
 ```
-Strategy return      : +212.85%  (+25.69% a year)
+Strategy return      : +220.77%  (+26.32% a year)
 QQQ buy & hold       :  +57.21%  ( +9.49% a year)
-Excess vs QQQ        : +16.20% a year
-Max drawdown         : 29.88%  (QQQ: 35.12%)
+Excess vs QQQ        : +16.83% a year
+Max drawdown         : 28.68%  (QQQ: 35.12%)
+Drawdown window      : 2024-07-10 to 2024-09-06
 Sharpe (annualised)  : 0.82
-Closed trades        : 54      Win rate: 61.1%   Profit factor: 4.47
+Closed trades        : 54
 ```
 
 | Year | Strategy | QQQ | Excess | Days |
 |---|---:|---:|---:|---:|
-| 2021 (partial) | -3.4% | -0.1% | -3.3 | 26 |
-| 2022 | -15.4% | -32.6% | **+17.2** | 251 |
-| 2023 | +85.7% | +54.9% | **+30.9** | 250 |
-| 2024 | +36.8% | +25.6% | **+11.2** | 252 |
-| 2025 | +36.6% | +20.8% | **+15.8** | 250 |
-| 2026 (to 20 Nov) | +10.3% | -0.6% | **+10.9** | 224 |
+| 2021 (partial) | +0.6% | -0.1% | +0.7 | 26 |
+| 2022 | -12.2% | -32.6% | **+20.4** | 251 |
+| 2023 | +89.6% | +54.9% | **+34.7** | 250 |
+| 2024 | +41.0% | +25.6% | **+15.4** | 252 |
+| 2025 | +27.9% | +20.8% | **+7.2** | 250 |
+| 2026 (to 20 Nov) | +6.1% | -0.6% | **+6.7** | 224 |
 
 Yahoo revises its most recent bar between downloads, so re-running can move the final partial year by a few tenths of a point. The other years are stable.
 
-Every complete calendar year clears +10pp. On a calendar-year basis 2021 also
-clears it: in the ten-year run the strategy made +56.7% against QQQ's +27.4%
-(+29.3pp).
+Every complete calendar year beats QQQ, by **+6.7 to +34.7 points**. The
+first partial month (26 days) is flat. On a calendar-year basis 2021 is also
+positive: in the ten-year run the strategy made +55.2% against QQQ's +27.4%
+(+27.8pp).
+
+The worst drawdown was **29% in July-September 2024**, the yen-carry unwind —
+a fast V-shaped selloff, which is the failure mode trend following handles
+worst. It was not the 2022 bear market.
 
 Raw output: `research/results/nasdaq_leveraged_trend_5y.txt`.
 
@@ -159,45 +168,51 @@ Raw output: `research/results/nasdaq_leveraged_trend_5y.txt`.
 ### 5.1 Ten years (2016-2026), same rule, no re-tuning
 
 ```
-Strategy return      : +2418.43%  (+38.14% a year)
+Strategy return      : +2279.18%  (+37.36% a year)
 QQQ buy & hold       :  +448.06%  (+18.58% a year)
-Excess vs QQQ        : +19.57% a year
-Max drawdown         : 35.88%  (QQQ: 35.12%)
-Sharpe (annualised)  : 1.06
+Excess vs QQQ        : +18.78% a year
+Max drawdown         : 38.14%  (QQQ: 35.12%)
+Drawdown window      : 2018-08-29 to 2019-10-02
+Sharpe (annualised)  : 1.05
 ```
 
-Yearly excess: 2017 +82.5, 2018 -2.2, 2019 +2.0, 2020 +20.1, 2021 +29.3,
-2022 +17.2, 2023 +30.9, 2024 +11.2, 2025 +15.9, 2026 +10.9. The weak years are
+Yearly excess: 2017 +81.8, 2018 -1.2, 2019 -5.9, 2020 +21.2, 2021 +27.8,
+2022 +20.4, 2023 +34.9, 2024 +15.7, 2025 +7.2, 2026 +6.7. The weak years are
 the choppy ones (2018, 2019), which is the known cost of trend following.
 Raw output: `research/results/nasdaq_leveraged_trend_10y.txt`.
 
-### 5.2 Parameter plateau (5 years, all with lag 1)
+### 5.2 Parameter plateau (5 years, live-parity fills)
 
 | SMA | Vol target | CAGR | Excess | Max DD | Sharpe |
 |---:|---:|---:|---:|---:|---:|
-| 155 | 40% | 21.6% | +12.1 | 29.9% | 0.73 |
-| **165** | **40%** | **25.7%** | **+16.2** | **29.9%** | **0.82** |
-| 175 | 40% | 26.7% | +17.2 | 29.0% | 0.84 |
-| 165 | 45% | 26.9% | +17.4 | 32.1% | 0.81 |
-| 165 | 50% | 26.8% | +17.3 | 34.2% | 0.79 |
-| 165 | 40%, vol 10d | 22.1% | +12.6 | 33.9% | 0.73 |
-| 165 | 40%, vol 40d | 21.7% | +12.2 | 32.1% | 0.73 |
+| 155 | 40% | 25.2% | +15.8 | 28.6% | 0.80 |
+| **165** | **40%** | **26.3%** | **+16.8** | **28.7%** | **0.82** |
+| 175 | 40% | 25.0% | +15.5 | 30.6% | 0.78 |
+| 165 | 35% | 25.7% | +16.2 | 25.9% | 0.86 |
+| 165 | 45% | 27.6% | +18.1 | 31.2% | 0.81 |
+| 165 | 50% | 27.6% | +18.1 | 33.5% | 0.79 |
+| 165 | 40%, vol 10d | 23.7% | +14.2 | 32.0% | 0.75 |
+| 165 | 40%, vol 40d | 22.4% | +12.9 | 31.1% | 0.73 |
 
 165 is the centre of a broad region, not a single lucky cell. Every
-combination tested in 155-175 / 35-50% clears +10pp. The failure case is a
-**200-day** average: +6.8pp, because it exits later and re-enters later in this
-particular cycle.
+combination tested in 155-175 / 35-50% clears +15pp. A **200-day** average
+also clears (+10.6pp) but with a 31.9% drawdown and a lower Sharpe (0.67), so
+the faster 165-day rule is not just a return-maximising choice.
 
-### 5.3 Execution lag and costs
+### 5.3 Execution and costs
 
 | Assumption | CAGR | Excess | Max DD | Sharpe |
 |---|---:|---:|---:|---:|
-| Fill at signal close (optimistic) | 23.1% | +13.6 | 29.5% | 0.76 |
-| **One-bar lag (live-like)** | **25.7%** | **+16.2** | **29.9%** | **0.82** |
-| Lag + 5 bp slippage | 24.7% | +15.2 | 30.1% | 0.80 |
+| **Live-parity: lag 1 + next open, 1bp** | **26.3%** | **+16.8** | **28.7%** | **0.82** |
+| Same, 5bp slippage | 25.3% | +15.9 | 28.8% | 0.80 |
+| One extra day of delay (lag 2, open fill) | 29.2% | +19.0 | 29.4% | 0.87 |
+| Pessimistic: lag 2 + close fill | 19.3% | +9.8 | 37.2% | 0.67 |
 
-The edge survives a conservative execution assumption and 5bp costs. It does
-not depend on filling at the close that generated the signal.
+The edge survives every execution convention tested, but the range is wide:
+**+9.8 to +19.0pp**. The pessimistic corner — two days of delay *and* filling
+at the signal bar's close — lands just under the +10pp bar. That is the honest
+uncertainty band, and it is why the backtest now defaults to the live-parity
+model rather than the most flattering one.
 
 ### 5.4 Endpoint sensitivity
 
@@ -206,10 +221,10 @@ window back:
 
 | End date | Strategy CAGR | QQQ CAGR | Excess |
 |---|---:|---:|---:|
-| 20 Nov 2026 (0d) | 25.7% | 9.5% | +16.2 |
-| 21 Oct 2026 (-30d) | 31.3% | 14.0% | +17.3 |
-| 6 Oct 2026 (-45d) | 39.7% | 16.6% | +23.1 |
-| 21 Sep 2026 (-60d) | 35.9% | 15.6% | +20.3 |
+| 20 Nov 2026 (0d) | 26.3% | 9.5% | +16.8 |
+| 21 Oct 2026 (-30d) | 30.5% | 14.0% | +16.6 |
+| 6 Oct 2026 (-45d) | 38.5% | 16.6% | +21.6 |
+| 21 Sep 2026 (-60d) | 34.9% | 15.6% | +19.1 |
 
 The excess is *largest* at the October high, so the result is not produced by
 the November drawdown; if anything the chosen end date is the least favourable.
@@ -218,32 +233,34 @@ the November drawdown; if anything the chosen end date is the least favourable.
 
 A natural objection is that the whole edge is one lucky exit. Substituting
 QQQ's actual 2022 return for the strategy's in 2022, and keeping every other
-year, gives about **2.49x** over five years versus QQQ's 1.57x â€” roughly
-**+9.7pp a year** even with zero credit for 2022. So the crash filter is not
+year, gives about **2.46x** over five years versus QQQ's 1.57x — roughly
+**+9.3pp a year** even with zero credit for 2022. So the crash filter is not
 the whole story; the volatility-targeted leverage in 2023-2026 does most of
 the remaining work. Conversely, if the 2023-2026 AI rally is removed, the
-strategy has little to show â€” see Â§7.
+strategy has little to show — see §7.
 
 ## 6. Alternatives tested and rejected
 
-All over the same five years, benchmark QQQ, daily bars.
+All over the same five years, benchmark QQQ, daily bars, live-parity fills.
 
 | Variant | CAGR | Excess | Max DD | Why rejected |
 |---|---:|---:|---:|---|
-| QLD (2x) instead of TQQQ | 17.4% | +8.0 | 21.6% | Below the 10pp bar |
-| Naive 150-day, no vol target | 22.8% | +13.3 | 38.0% | Same return, much deeper drawdown; 2022 was -32% |
-| Naive 200-day, no vol target | 14.8% | +5.3 | 51.4% | Below bar, worst drawdown |
-| 200-day + 40% vol target | 16.3% | +6.8 | 37.9% | Below bar |
-| TSMOM monthly, 12-month, 2x margin | 8.8% | -0.7 | 40.5% | No edge; monthly rebalancing too slow for this cycle |
+| QLD (2x) instead of TQQQ | 19.3% | +9.8 | 20.8% | Just below the 10pp bar |
+| Naive 150-day, no vol target | 24.8% | +15.4 | 37.5% | Same return, much deeper drawdown; 2022 was -32% |
+| Naive 200-day, no vol target | 15.8% | +6.3 | 52.3% | Below bar, worst drawdown |
+| 200-day + 40% vol target | 20.1% | +10.6 | 31.9% | Just clears, but lower Sharpe (0.67) |
+| TSMOM monthly, 12-month, 2x margin | 9.0% | -0.6 | 41.3% | No edge; monthly rebalancing too slow |
 
 The naive "3x when above the 200-day" strategy is the one most often cited
-online. Here it delivered +5.3pp with a 51% drawdown â€” worse on both axes than
+online. Here it delivered +6.3pp with a 52% drawdown — worse on both axes than
 the volatility-targeted version. Sizing is not a detail; it is the strategy.
+Even the 200-day *with* vol targeting is a full 6pp a year behind the 165-day
+version.
 
-Full sweep of 57 configurations: `research/results/sweep.csv`.
+Full sweep of the parameter space: `research/results/sweep_open.csv`.
 
 One more alternative was ruled out before coding. Cross-sectional momentum on
-today's Nasdaq-100 members looks spectacular â€” a controlled test of the same
+today's Nasdaq-100 members looks spectacular — a controlled test of the same
 12-1 top-10 rule returns **47.9% a year** on today's 97 members and **9.2%** on
 a point-in-time S&P 500 universe that keeps delisted stocks, over the same
 Feb 2013 - Feb 2018 window (SPY: 14.6%). The 38.7pp gap is survivorship bias,
@@ -262,7 +279,7 @@ actual funds, not a hand-picked list of survivors.
 3. **TQQQ inception is 2010.** The 10-year test uses the real fund, but there
    is no pre-2010 evidence with real prices. Independent replication of the
    same family over 2000-2026 (synthetic 3x, realistic financing) gives 13.1%
-   a year vs QQQ's 8.0% â€” only **+5.1pp** â€” with an **-83% drawdown**. The
+   a year vs QQQ's 8.0% — only **+5.1pp** — with an **-83% drawdown**. The
    2000s returned -6.6% a year for that configuration; the 2010s returned
    +21.5%. The strategy is a bull-market amplifier with a crash filter, and the
    last ten years were the good regime.
@@ -276,16 +293,16 @@ actual funds, not a hand-picked list of survivors.
 5. **Daily-reset decay is real.** TQQQ itself returned about +2% in total over
    these five years while QQQ returned +57%. The strategy only wins because
    the trend filter is out of TQQQ during the decay regimes.
-6. **Backtest fills are idealised.** Daily closes, no commissions, no
-   liquidity limits, 1bp slippage in the headline run. The 5bp run is
-   +15.2pp; a 10-20bp assumption would erode more.
-7. **The live sim does not pay interest on idle cash.** The backtest's BIL
-   holding earns T-bill total return; the paper ledger may not credit those
-   dividends. Live results in risk-off periods will be slightly worse than
-   the backtest.
+6. **Backtest fills are modelled, not guaranteed.** The headline uses the
+   live-parity model (decide on the close, fill at the next open) with 1bp
+   slippage. At 5bp the excess is +15.9pp; a deliberately pessimistic
+   combination of two days' delay and close fills gives +9.8pp. Real execution
+   can be worse than all of these.
+7. **Idle cash earns nothing; BIL dividends are credited.** The sim now books
+   cash dividends, so a BIL holding earns its yield, matching the backtest.
 8. **Publication decay.** The 2016 rule has been public for a decade. A 2026
    replication of the Gayed-Bilello rule reports a 2x rotation at 14.0%/yr
-   vs 11.45% for the benchmark since 1988 â€” a much smaller edge than the
+   vs 11.45% for the benchmark since 1988 — a much smaller edge than the
    original table. The same replication finds the QQQ version's full-sample
    maximum drawdown at -93.3%.
 
@@ -312,20 +329,27 @@ nothing is pre-baked.
 
 - `src/config.rs`: `[backtest] benchmark` (default `SPY`) so results can be
   measured against QQQ; `lag_bars` to hide recent bars from the strategy;
-  `end_days_ago` for endpoint sensitivity. `tsmom` may now use margin up to
-  `risk.max_leverage`.
+  `fill_open` to execute at the next session's open; `end_days_ago` for
+  endpoint sensitivity; `synthetic_symbol` for tests before a fund existed.
+  `tsmom` may now use margin up to `risk.max_leverage`.
 - `src/backtest.rs`: benchmark series is fetched independently of the traded
   universe and used for the buy-and-hold line, drawdown and the yearly table;
-  the yearly table now shows the benchmark and the difference.
+  open-fill execution; synthetic daily-reset funds; drawdown dates.
+- `src/types.rs`: one completed-bar rule (`Bar::is_complete`) shared by the
+  live loop and preflight.
+- `src/preflight.rs`: live data, freshness, corporate-action and target check.
+- `src/sim.rs`: splits and dividends applied to the paper ledger.
 - `configs/nasdaq_leveraged_trend.toml`: the strategy preset.
 - `research/`: sweep configs, logs and result files.
 
 ## 10. Five-year verdict
 
-The objective is met on the stated window: **+16.2pp a year over QQQ, in every
-complete year from 2022 to 2026, with a smaller drawdown than QQQ**. It is met
-by leveraging a trend filter, not by finding an uncorrelated alpha source, and
-it would not have met the bar in 2018-2019 or with 2x instead of 3x.
+The objective is met on the stated window: **+16.8pp a year over QQQ, in every
+complete year from 2022 to 2026, with a smaller drawdown than QQQ**. The
+yearly edge ranges from +6.7 to +34.7 points; the aggregate is what clears the
+bar comfortably. It is met by leveraging a trend filter, not by finding an
+uncorrelated alpha source, and it would not have met the bar with 2x instead of
+3x (+9.8pp).
 
 The wider evidence says what to expect beyond this window. Over a full cycle
 including 2000-02, the same family delivers roughly **+5pp a year with a
@@ -368,21 +392,21 @@ Same 16.4-year window (6000 days), same rule:
 
 | Series | CAGR | Max DD | Sharpe |
 |---|---:|---:|---:|
-| Synthetic 3x QQQ | 31.35% | 42.09% | 0.94 |
-| Real TQQQ | 30.86% | 41.58% | 0.93 |
+| Synthetic 3x QQQ | 31.00% | 37.99% | 0.93 |
+| Real TQQQ | 30.15% | 39.38% | 0.92 |
 
-The synthetic model is **0.49pp/yr** from the real fund, so the 20-year
+The synthetic model is **0.85pp/yr** from the real fund, so the 20-year
 extension is a fair test rather than a different strategy.
 
 ### 11.3 Result
 
 ```
-Strategy return      : +13040.54%  (+27.66% a year)
+Strategy return      : +11607.21%  (+26.92% a year)
 QQQ buy & hold       :  +1526.51%  (+14.98% a year)
-Excess vs QQQ        : +12.68% a year
-Max drawdown         : 42.13%  (QQQ: 53.40%)
-Drawdown window      : 2015-07-20 to 2016-07-05
-Sharpe (annualised)  : 0.86
+Excess vs QQQ        : +11.94% a year
+Max drawdown         : 44.64%  (QQQ: 53.40%)
+Drawdown window      : 2007-10-31 to 2009-04-20
+Sharpe (annualised)  : 0.84
 Closed trades        : 258
 ```
 
@@ -390,20 +414,20 @@ Yearly excess (strategy minus QQQ, points):
 
 | 2007 | 2008 | 2009 | 2010 | 2011 | 2012 | 2013 | 2014 | 2015 | 2016 |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| +15.8 | +13.8 | +18.6 | +4.5 | **-17.7** | +0.5 | +68.6 | +12.6 | **-12.6** | **-15.5** |
+| +12.1 | +10.5 | +16.8 | +1.8 | **-22.0** | **-5.2** | +87.4 | +20.8 | +1.9 | **-19.4** |
 
 | 2017 | 2018 | 2019 | 2020 | 2021 | 2022 | 2023 | 2024 | 2025 | 2026 |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| +84.2 | **-1.8** | +2.9 | +19.4 | +30.6 | +17.3 | +32.4 | +12.7 | +17.7 | +11.9 |
+| +84.5 | **-3.9** | **-0.3** | +20.0 | +28.2 | +18.8 | +35.0 | +11.0 | +7.4 | +6.5 |
 
-Thirteen of twenty years beat QQQ. The losing years cluster where trend
-following is supposed to lose: choppy, mean-reverting markets (2011, 2015-16,
-2018-19). The **worst drawdown was not 2008**; it was July 2015 to July 2016,
-a whipsaw that produced a 42% peak-to-trough loss while QQQ fell 53% over the
-whole cycle.
+Fifteen of twenty years beat QQQ. The losing years cluster where trend
+following is supposed to lose: choppy, mean-reverting markets (2011, 2012,
+2016, 2018-19). The **worst drawdown was the global financial crisis**:
+October 2007 to April 2009, a 44.6% peak-to-trough loss, while QQQ fell 53%
+over the whole cycle.
 
 For comparison, the real **2x QLD** version over the same 20 years returns
-+7.30pp a year with a 42.64% drawdown. **3x is what clears the +10pp bar; 2x
++7.2pp a year with a 40.3% drawdown. **3x is what clears the +10pp bar; 2x
 does not.**
 
 ## 12. Live-readiness audit
@@ -413,14 +437,14 @@ does not.**
 | Check | Implementation | Evidence |
 |---|---|---|
 | Universe not hand-picked | Three index ETFs (QQQ, TQQQ, BIL); no stock list, no survivorship | config |
-| Signals use completed bars only | Live: `b.ts + tf.secs() <= now`; backtest: `lag_bars = 1` | `engine.rs`, config |
-| Fills are not on the signal bar | Backtest decides on bar D-1 and fills at D's close; live decides after D closes and trades at D+1's open | `backtest.rs` portfolio branch |
+| Signals use completed bars only | Live: `b.ts + tf.secs() <= now`; backtest: `lag_bars = 1` + `fill_open = true` | `types.rs`, config |
+| Fills are not on the signal bar | Backtest decides on bar D-1 and fills at D's open; live decides after D-1 closes and trades at D's open | `backtest.rs` `fill_open` |
 | Later data cannot change earlier results | Test poisons every bar after bar 80 with a 1000x jump and requires an identical equity curve up to bar 80 | `later_bars_cannot_change_earlier_results` |
 | Benchmark cannot see a forming bar | Benchmark bars filtered by the same completion rule | `backtest.rs` benchmark fetch |
 | Synthetic fund cannot see future rates | Uses the last ^IRX observation at or before each bar | `synthetic_fund_ignores_later_rates` |
 | Total-return adjustment is not forecast | Signals are scale-invariant (price/SMA, returns); adjustment factors only add past dividends | by construction |
 
-All **50 unit tests pass**.
+All **51 unit tests pass**.
 
 ### 12.2 Tested on live data
 
@@ -500,9 +524,9 @@ unchanged by the split; the dividends add $97 of cash.
 
 1. `cargo build --release`
 2. `.\target\release\quant-trader.exe preflight --config configs\nasdaq_leveraged_trend.toml`
-   — require `PREFLIGHT: PASS`.
+   � require `PREFLIGHT: PASS`.
 3. `.\target\release\quant-trader.exe replay --config configs\nasdaq_leveraged_trend.toml`
-   — confirm the orders match the target.
+   � confirm the orders match the target.
 4. Start `run` and leave it running through the open; a daily strategy decides
    once per session, shortly after the open, and is otherwise quiet.
 5. `status` shows the account; `data/nasdaq_leveraged_trend/trades.csv` is the

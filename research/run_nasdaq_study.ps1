@@ -22,11 +22,11 @@ Show-Backtest "Headline, ten years" @("--config", $headline, "--days", "3650")
 & $exe backtest --config $headline --days 3650 2>&1 | Set-Content "research\results\nasdaq_leveraged_trend_10y.txt"
 
 $configs = @(
-    "plateau_s155_v040", "plateau_s165_v040", "plateau_s175_v040",
-    "plateau_s165_v045", "plateau_s165_v050",
-    "plateau_s165_v040_vd10", "plateau_s165_v040_vd40",
-    "qqq_tqqq_s165_v040_lag1_slip5", "qqq_tqqq_s200_v040_lag1",
-    "qqq_qld_s150_v040", "qqq_tsmom_12m_v040_x2"
+    "plateau_s155_v040_open", "plateau_s165_v040_open", "plateau_s175_v040_open",
+    "qqq_tqqq_s165_v035_open", "plateau_s165_v045_open", "plateau_s165_v050_open",
+    "plateau_s165_v040_vd10_open", "plateau_s165_v040_vd40_open",
+    "qqq_tqqq_s165_v040_lag1_slip5_open", "qqq_tqqq_s200_v040_open",
+    "qqq_qld_s150_v040_open", "qqq_tsmom_12m_v040_x2_open"
 )
 
 "`n=== Parameter plateau and rejected variants (5 years) ==="

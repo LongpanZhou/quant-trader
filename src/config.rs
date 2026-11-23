@@ -360,6 +360,11 @@ pub struct BacktestConfig {
     /// model the live loop's one-session execution delay. 0 = act on the close.
     #[serde(default)]
     pub lag_bars: usize,
+    /// Fill orders at the open of the bar after the signal bar, matching the
+    /// live loop (decide after a close, trade at the next session's open).
+    /// Default false = fill at the close of the bar being processed.
+    #[serde(default)]
+    pub fill_open: bool,
     /// End the test this many days before today. Non-zero shifts the whole
     /// window back, which shows how much of a result is the chosen end date.
     #[serde(default)]
@@ -463,6 +468,7 @@ fn default_backtest() -> BacktestConfig {
         days: 30,
         benchmark: default_benchmark(),
         lag_bars: 0,
+        fill_open: false,
         end_days_ago: 0,
         synthetic_symbol: String::new(),
         synthetic_index: String::new(),

@@ -1,0 +1,30 @@
+﻿# Research plateau check: plateau_s165_v040
+broker = "sim"
+symbols = ["QQQ", "TQQQ", "BIL"]
+timeframe = "1d"
+poll_seconds = 600
+
+[strategy]
+kind = "leveraged_index"
+index = "QQQ"
+risk_asset = "TQQQ"
+leverage = 3.0
+safe_asset = "BIL"
+sma_days = 165
+target_vol = 0.4
+vol_days = 20
+rebalance_band = 0.05
+
+[risk]
+position_pct = 1.0
+max_positions = 3
+slippage_bps = 1.0
+
+[backtest]
+days = 1825
+benchmark = "QQQ"
+
+
+lag_bars = 1
+fill_open = true
+
