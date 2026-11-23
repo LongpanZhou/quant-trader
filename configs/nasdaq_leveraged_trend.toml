@@ -1,4 +1,4 @@
-# Nasdaq-100 leveraged trend following with a volatility target.
+﻿# Nasdaq-100 leveraged trend following with a volatility target.
 #
 # Rule (once a day, on the previous close):
 #   QQQ above its 165-day average -> hold a blend of QQQ and the 3x Nasdaq fund
@@ -15,7 +15,7 @@
 # 5-year test (Nov 2021 - Nov 2026, daily bars, 1 bp slippage): 25.7% a year
 # against QQQ's 9.5%, i.e. +16.2 percentage points a year, with a maximum
 # drawdown of 29.9% versus QQQ's 35.1%. Every calendar year 2022-2026 beat QQQ
-# by 11-31 points. See docs/nasdaq_leveraged_trend.md for the full study,
+# by 10-31 points. See docs/nasdaq_leveraged_trend.md for the full study,
 # including the 10-year check and the parameter plateau.
 #
 # lag_bars = 1 hides the latest close from the strategy, matching the live
@@ -45,3 +45,4 @@ slippage_bps = 1.0
 days = 1825
 benchmark = "QQQ"
 lag_bars = 1
+

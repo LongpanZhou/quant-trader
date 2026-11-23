@@ -9,7 +9,7 @@ blend of QQQ and TQQQ while QQQ is above its 165-day average, T-bills
 otherwise. Over the five years to 20 Nov 2026 it returned **25.7% a year
 against QQQ's 9.5% (+16.2 points a year)**, with a **29.9% maximum drawdown
 versus QQQ's 35.1%**, and it beat QQQ in **every complete calendar year from
-2022 to 2026 by 11 to 31 points**.
+2022 to 2026 by 10 to 31 points**.
 
 That is a better result than the published literature leads one to expect, and
 the reasons are set out honestly in Â§7: the window contains one crash and one
@@ -145,6 +145,8 @@ Closed trades        : 54      Win rate: 61.1%   Profit factor: 4.47
 | 2024 | +36.8% | +25.6% | **+11.2** | 252 |
 | 2025 | +36.6% | +20.8% | **+15.8** | 250 |
 | 2026 (to 20 Nov) | +10.3% | -0.6% | **+10.9** | 224 |
+
+Yahoo revises its most recent bar between downloads, so re-running can move the final partial year by a few tenths of a point. The other years are stable.
 
 Every complete calendar year clears +10pp. On a calendar-year basis 2021 also
 clears it: in the ten-year run the strategy made +56.7% against QQQ's +27.4%
@@ -334,4 +336,5 @@ should size it as a satellite, expect a 30-50% drawdown in normal use and
 repeat.
 
 *Educational paper-trading research, not financial advice.*
+
 
