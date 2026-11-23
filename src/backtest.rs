@@ -652,6 +652,42 @@ pub fn run(cfg: &Config, strat: &dyn Strategy, backend: &Backend) -> Result<()> 
         println!("Drawdown window      : {from_date} to {to_date}", from_date = day(from), to_date = day(to));
     }
     println!("Sharpe (annualised)  : {:.2}", r.sharpe);
+    let vol = {
+        let rets: Vec<f64> = r
+            .curve
+            .windows(2)
+            .map(|w| {
+                let (a, b) = (w[0].1, w[1].1);
+                if a > 0.0 { b / a - 1.0 } else { 0.0 }
+            })
+            .collect();
+        if rets.len() > 1 {
+            let mean = rets.iter().sum::<f64>() / rets.len() as f64;
+            let var = rets.iter().map(|x| (x - mean).powi(2)).sum::<f64>() / (rets.len() - 1) as f64;
+            var.sqrt() * 252f64.sqrt()
+        } else {
+            0.0
+        }
+    };
+    println!("Volatility (ann.)    : {:.2}%", vol * 100.0);
+    if r.max_drawdown > 0.0 {
+        println!("Calmar (CAGR/max DD) : {:.2}", ann(total_ret) / 100.0 / r.max_drawdown);
+    }
+    let sortino = {
+        let rets: Vec<f64> = r
+            .curve
+            .windows(2)
+            .map(|w| if w[0].1 > 0.0 { w[1].1 / w[0].1 - 1.0 } else { 0.0 })
+            .collect();
+        if rets.len() > 1 {
+            let mean = rets.iter().sum::<f64>() / rets.len() as f64;
+            let down = (rets.iter().map(|x| x.min(0.0).powi(2)).sum::<f64>() / rets.len() as f64).sqrt();
+            if down > 0.0 { mean / down * 252f64.sqrt() } else { 0.0 }
+        } else {
+            0.0
+        }
+    };
+    println!("Sortino (annualised) : {:.2}", sortino);
     println!(
         "Avg exposure         : {:.0}% long, {:.0}% short",
         r.long_exposure * 100.0,
