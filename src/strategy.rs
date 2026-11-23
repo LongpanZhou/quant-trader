@@ -79,7 +79,11 @@ fn build_kind(
             short_gross,
             rebalance_band,
             index,
+            score,
+            seed,
         } => Box::new(LsMomentum {
+            score: score.clone(),
+            seed: *seed,
             lookback: *lookback_days,
             skip: *skip_days,
             long_frac: *long_frac,
@@ -1257,6 +1261,9 @@ pub struct LsMomentum {
     short_gross: f64,
     band: f64,
     index: String,
+    /// "", "return", "risk_adjusted", "high52" or "random" (see the config).
+    score: String,
+    seed: u64,
 }
 
 impl Strategy for LsMomentum {
@@ -1315,7 +1322,32 @@ impl Strategy for LsMomentum {
             if past <= 0.0 || bars[end - 1].close < 5.0 {
                 continue;
             }
-            scores.push((recent / past - 1.0, sym));
+            let ret = recent / past - 1.0;
+            let score = match self.score.as_str() {
+                "risk_adjusted" => {
+                    // Return per unit of daily volatility over the same window.
+                    let w = &bars[end - 1 - self.lookback..=end - 1 - self.skip];
+                    let rets: Vec<f64> = w.windows(2).map(|p| p[1].close / p[0].close - 1.0).collect();
+                    let mean = rets.iter().sum::<f64>() / rets.len() as f64;
+                    let sd = (rets.iter().map(|r| (r - mean).powi(2)).sum::<f64>() / rets.len() as f64).sqrt();
+                    ret / sd.max(1e-6)
+                }
+                "random" => {
+                    // A placebo: the same universe and rebalance dates, but
+                    // the picks are a fixed pseudo-random draw per month.
+                    use std::hash::{Hash, Hasher};
+                    let mut h = std::collections::hash_map::DefaultHasher::new();
+                    (self.seed, *sym, month_key(reference[j].ts)).hash(&mut h);
+                    (h.finish() >> 11) as f64 / (1u64 << 53) as f64
+                }
+                "high52" => {
+                    let lo = end.saturating_sub(252);
+                    let high = bars[lo..end].iter().map(|b| b.close).fold(f64::MIN, f64::max);
+                    bars[end - 1].close / high
+                }
+                _ => ret,
+            };
+            scores.push((score, sym));
         }
         scores.sort_by(|a, b| b.0.total_cmp(&a.0).then(a.1.cmp(b.1)));
 

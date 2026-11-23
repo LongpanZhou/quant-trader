@@ -15,6 +15,7 @@ use crate::config::Config;
 use crate::strategy::Strategy;
 use crate::types::{order_qty, Bar, Position, Signal};
 use anyhow::{bail, Result};
+use chrono::Datelike;
 use std::collections::{BTreeSet, HashMap};
 
 pub struct Report {
@@ -24,9 +25,9 @@ pub struct Report {
     pub end_equity: f64,
     pub buy_hold_return: f64,
     pub buy_hold_drawdown: f64,
-    /// SPY buy & hold over the same window, when SPY is among the symbols.
-    pub index_return: Option<f64>,
-    pub index_drawdown: Option<f64>,
+    /// Buy & hold of the configured benchmark over the same window.
+    pub benchmark_return: Option<f64>,
+    pub benchmark_drawdown: Option<f64>,
     pub max_drawdown: f64,
     pub sharpe: f64,
     /// Average long and short exposure as fractions of equity.
@@ -36,6 +37,8 @@ pub struct Report {
     /// Profit split by side.
     pub long_pnl: f64,
     pub short_pnl: f64,
+    /// Calendar-year results: (year, strategy return, benchmark return, days covered).
+    pub yearly: Vec<(i32, f64, Option<f64>, usize)>,
 }
 
 /// Bars before `trade_from` are only used to warm up indicators; trading and
@@ -44,6 +47,7 @@ pub fn simulate(
     cfg: &Config,
     strat: &dyn Strategy,
     data: &HashMap<String, Vec<Bar>>,
+    bench: &[Bar],
     trade_from: i64,
 ) -> Report {
     let lookback = strat.lookback();
@@ -72,6 +76,7 @@ pub fn simulate(
     let mut trade_pnls = Vec::new();
     let (mut long_pnl, mut short_pnl) = (0.0, 0.0);
     let mut curve = Vec::new();
+    let mut curve_ts: Vec<i64> = Vec::new();
     let mut bh_curve = Vec::new();
     let (mut long_sum, mut short_sum) = (0.0, 0.0);
     let (mut first_ts, mut last_ts) = (None, 0);
@@ -284,6 +289,7 @@ pub fn simulate(
         long_sum += longs / eq;
         short_sum += shorts / eq;
         curve.push(eq);
+        curve_ts.push(ts);
 
         // Equal-weight buy & hold of every symbol, for comparison.
         let (mut total, mut count) = (0.0, 0);
@@ -324,15 +330,41 @@ pub fn simulate(
     } else {
         0.0
     };
-    let index_return = data.get("SPY").and_then(|b| {
-        let first = b.iter().find(|x| x.ts >= trade_from)?;
-        Some(b.last()?.close / first.close - 1.0)
-    });
-    let index_drawdown = data.get("SPY").map(|b| {
-        let closes: Vec<f64> = b.iter().filter(|x| x.ts >= trade_from).map(|x| x.close).collect();
+    let benchmark_return = match bench.iter().find(|x| x.ts >= trade_from) {
+        Some(first) => bench.last().map(|l| l.close / first.close - 1.0),
+        None => None,
+    };
+    let benchmark_drawdown = bench.iter().any(|x| x.ts >= trade_from).then(|| {
+        let closes: Vec<f64> = bench.iter().filter(|x| x.ts >= trade_from).map(|x| x.close).collect();
         drawdown(&closes)
     });
     let bars = curve.len().max(1) as f64;
+
+    // Year by year: equity (and the benchmark) at each year's last bar against
+    // the previous year's. The first year starts from the starting equity.
+    let year_of = |ts: i64| chrono::DateTime::from_timestamp(ts, 0).map(|d| d.year()).unwrap_or(0);
+    let bench: Vec<&Bar> = bench.iter().filter(|x| x.ts >= trade_from).collect();
+    let mut yearly = Vec::new();
+    let (mut prev_eq, mut prev_bench) = (cfg.sim.starting_cash, bench.first().map(|b| b.close));
+    let mut days_in_year = 0usize;
+    for i in 0..curve.len() {
+        if i == 0 || year_of(curve_ts[i]) != year_of(curve_ts[i - 1]) {
+            days_in_year = 0;
+        }
+        if i == 0 || curve_ts[i] / 86_400 != curve_ts[i - 1] / 86_400 {
+            days_in_year += 1;
+        }
+        if i + 1 == curve.len() || year_of(curve_ts[i + 1]) != year_of(curve_ts[i]) {
+            let bench_end = bench.iter().rev().find(|b| b.ts <= curve_ts[i]).map(|b| b.close);
+            let bench_ret = match (bench_end, prev_bench) {
+                (Some(e), Some(p)) if p > 0.0 => Some(e / p - 1.0),
+                _ => None,
+            };
+            yearly.push((year_of(curve_ts[i]), curve[i] / prev_eq - 1.0, bench_ret, days_in_year));
+            prev_eq = curve[i];
+            prev_bench = bench_end.or(prev_bench);
+        }
+    }
 
     Report {
         bars: curve.len(),
@@ -341,8 +373,8 @@ pub fn simulate(
         end_equity,
         buy_hold_return: bh_curve.last().map(|v| v - 1.0).unwrap_or(0.0),
         buy_hold_drawdown: drawdown(&bh_curve),
-        index_return,
-        index_drawdown,
+        benchmark_return,
+        benchmark_drawdown,
         max_drawdown: drawdown(&curve),
         sharpe,
         long_exposure: long_sum / bars,
@@ -350,6 +382,7 @@ pub fn simulate(
         trade_pnls,
         long_pnl,
         short_pnl,
+        yearly,
     }
 }
 
@@ -398,7 +431,21 @@ pub fn run(cfg: &Config, strat: &dyn Strategy, backend: &Backend) -> Result<()> 
         println!("Skipped {}: {}{}", failed.len(), shown.join(", "), if failed.len() > 5 { ", ..." } else { "" });
     }
 
-    let r = simulate(cfg, strat, &data, trade_from);
+    // Buy & hold of the benchmark, always from daily closes so the comparison
+    // is the same whatever bar size the strategy trades.
+    let bench_sym = cfg.backtest.benchmark.clone();
+    let bench = match backend.bars(&bench_sym, crate::config::Timeframe::D1, cfg.backtest.days + 10) {
+        Ok(mut b) => {
+            b.retain(|x| x.ts <= now);
+            b
+        }
+        Err(e) => {
+            println!("Benchmark {bench_sym} unavailable: {e}");
+            Vec::new()
+        }
+    };
+
+    let r = simulate(cfg, strat, &data, &bench, trade_from);
     let wins: Vec<f64> = r.trade_pnls.iter().copied().filter(|p| *p > 0.0).collect();
     let losses: Vec<f64> = r.trade_pnls.iter().copied().filter(|p| *p <= 0.0).collect();
     let gross_win: f64 = wins.iter().sum();
@@ -421,14 +468,23 @@ pub fn run(cfg: &Config, strat: &dyn Strategy, backend: &Backend) -> Result<()> 
     };
     show("Strategy return", total_ret);
     show("Buy & hold (eq-wt)", r.buy_hold_return);
-    if let Some(ix) = r.index_return {
-        show("SPY buy & hold", ix);
+    if let Some(ix) = r.benchmark_return {
+        show(&format!("{bench_sym} buy & hold"), ix);
+        if years >= 1.0 {
+            println!(
+                "{:<21}: {:+.2}% a year",
+                format!("Excess vs {bench_sym}"),
+                ann(total_ret) - ann(ix)
+            );
+        }
     }
     println!(
         "Max drawdown         : {:.2}%  (buy & hold: {:.2}%{})",
         r.max_drawdown * 100.0,
         r.buy_hold_drawdown * 100.0,
-        r.index_drawdown.map(|d| format!(", SPY: {:.2}%", d * 100.0)).unwrap_or_default()
+        r.benchmark_drawdown
+            .map(|d| format!(", {bench_sym}: {:.2}%", d * 100.0))
+            .unwrap_or_default()
     );
     println!("Sharpe (annualised)  : {:.2}", r.sharpe);
     println!(
@@ -448,6 +504,15 @@ pub fn run(cfg: &Config, strat: &dyn Strategy, backend: &Backend) -> Result<()> 
         }
     }
     println!("=========================================");
+    if r.yearly.len() > 1 {
+        println!("\nYear by year (a year with few days is partial):");
+        println!("{:<6} {:>10} {:>10} {:>10} {:>6}", "Year", "Strategy", bench_sym, "Diff", "Days");
+        for (y, ret, bench, days) in &r.yearly {
+            let bench_txt = bench.map(|v| format!("{:+.1}%", v * 100.0)).unwrap_or_else(|| "-".into());
+            let diff = bench.map(|b| format!("{:+.1}", (ret - b) * 100.0)).unwrap_or_else(|| "-".into());
+            println!("{y:<6} {:>+9.1}% {bench_txt:>10} {diff:>10} {days:>6}", ret * 100.0);
+        }
+    }
     Ok(())
 }
 
@@ -483,14 +548,14 @@ mod tests {
                 flatten_before_close_minutes: 0,
             },
             sim: SimConfig { starting_cash: 1000.0 },
-            backtest: BacktestConfig { days: 1 },
+            backtest: BacktestConfig { days: 1, benchmark: "SPY".into() },
             alpaca: AlpacaConfig::default(),
         }
     }
 
     fn run_sim(c: &Config, data: &HashMap<String, Vec<Bar>>, from: i64) -> Report {
         let strat = strategy::build(c, Mode::Backtest, Path::new("data/cache")).unwrap();
-        simulate(c, strat.as_ref(), data, from)
+        simulate(c, strat.as_ref(), data, &[], from)
     }
 
     fn series(closes: &[f64]) -> HashMap<String, Vec<Bar>> {
@@ -576,6 +641,8 @@ mod tests {
             short_gross: 0.5,
             rebalance_band: 0.05,
             index: "SPY".into(),
+            score: String::new(),
+            seed: 0,
         };
         // One clear winner, one clear loser, two flat names.
         let data = HashMap::from([

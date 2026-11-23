@@ -170,6 +170,14 @@ pub enum StrategyConfig {
         short_gross: f64,
         rebalance_band: f64,
         index: String,
+        /// How stocks are ranked: "return" (default, past return),
+        /// "risk_adjusted" (past return per unit of volatility) or
+        /// "high52" (closeness to the 52-week high, George & Hwang 2004).
+        #[serde(default)]
+        score: String,
+        /// Only for score = "random": which random draw (a placebo test).
+        #[serde(default)]
+        seed: u64,
     },
     IntradayLsMomentum {
         lookback_days: usize,
@@ -345,6 +353,13 @@ pub struct SimConfig {
 #[derive(Debug, Clone, Deserialize)]
 pub struct BacktestConfig {
     pub days: i64,
+    /// Symbol whose buy & hold the results are measured against.
+    #[serde(default = "default_benchmark")]
+    pub benchmark: String,
+}
+
+fn default_benchmark() -> String {
+    "SPY".into()
 }
 
 #[derive(Debug, Clone, Deserialize, Default)]
@@ -418,7 +433,7 @@ fn default_sim() -> SimConfig {
     SimConfig { starting_cash: 100_000.0 }
 }
 fn default_backtest() -> BacktestConfig {
-    BacktestConfig { days: 30 }
+    BacktestConfig { days: 30, benchmark: default_benchmark() }
 }
 
 impl StrategyConfig {
@@ -515,8 +530,12 @@ impl StrategyConfig {
                 long_gross,
                 short_gross,
                 rebalance_band,
+                score,
                 ..
             } => {
+                if !matches!(score.as_str(), "" | "return" | "risk_adjusted" | "high52" | "random") {
+                    bail!("config: ls_momentum score must be return, risk_adjusted or high52");
+                }
                 if !daily {
                     bail!("config: ls_momentum needs timeframe = \"1d\"");
                 }
@@ -780,6 +799,9 @@ impl Config {
         }
         if self.poll_seconds == 0 {
             bail!("config: poll_seconds must be at least 1");
+        }
+        if self.backtest.benchmark.trim().is_empty() {
+            bail!("config: backtest.benchmark must name a symbol");
         }
         self.strategy.validate(self.timeframe, self.risk.max_leverage)?;
         if self.broker == BrokerKind::Alpaca
