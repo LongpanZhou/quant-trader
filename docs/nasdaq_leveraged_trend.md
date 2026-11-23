@@ -455,11 +455,11 @@ PREFLIGHT | Leverage rotation (TQQQ 3x while QQQ > 165-day average, 40% volatili
 now: 2026-11-23 02:33 UTC | history window: 270 days | warmup: 166 bars
 
 QQQ       187 bars | last 2026-11-20 14:30 | 1.5 days old | close 608.45 | fresh
-         corporate actions: dividend $0.8130 on 2026-06-22; ...
+         corporate actions: dividend $0.7510 on 2026-09-21; $0.8130 on 2026-06-22; $0.7330 on 2026-03-23
 TQQQ      187 bars | last 2026-11-20 14:30 | 1.5 days old | close 41.20 | fresh
-         corporate actions: split 2.0000x on 2025-11-20 14:30; dividend $0.1710 on 2026-06-24; ...
+         corporate actions: dividend $0.1560 on 2026-09-23; $0.1710 on 2026-06-24; $0.0720 on 2026-03-25
 BIL       187 bars | last 2026-11-20 14:30 | 1.5 days old | close 91.59 | fresh
-         corporate actions: dividend $0.3650 on 2025-12-18; ...
+         corporate actions: dividend $0.3080 on 2026-11-02; $0.2630 on 2026-10-01; $0.2800 on 2026-09-01
 
 current target: 100.0% gross
   BIL        100.0%
