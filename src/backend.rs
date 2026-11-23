@@ -5,7 +5,7 @@ use crate::config::{BrokerKind, Config, Timeframe};
 use crate::sim::SimBroker;
 use crate::types::{Account, Bar, Fill, Position, Side};
 use crate::dukascopy::Dukascopy;
-use crate::yahoo::Yahoo;
+use crate::yahoo::{Events, Yahoo};
 use anyhow::Result;
 use std::collections::HashMap;
 use std::path::Path;
@@ -109,6 +109,15 @@ impl Backend {
             .collect()
     }
 
+    /// Splits and dividends for a symbol over the last `days` calendar days.
+    pub fn events(&self, symbol: &str, days: i64) -> Result<Events> {
+        match self {
+            Backend::Sim { data, .. } => data.events(symbol, days),
+            // Alpaca applies corporate actions to its own paper account.
+            Backend::Alpaca(_) => Ok(Events::default()),
+        }
+    }
+
     pub fn last_price(&self, symbol: &str) -> Result<f64> {
         match self {
             Backend::Sim { data, .. } => data.last_price(symbol),
@@ -142,6 +151,47 @@ impl Backend {
             Backend::Sim { broker, .. } => Some(broker.realized_pnl()),
             Backend::Alpaca(_) => None,
         }
+    }
+
+    /// Apply splits and dividends that happened since the ledger last checked.    /// The paper broker keeps its own watermark (persisted), so a restart or a
+    /// weekend does not lose an action. Alpaca applies corporate actions to
+    /// its own paper account, so there is nothing to do there.
+    pub fn apply_corporate_actions(&mut self) -> Result<usize> {
+        let Backend::Sim { broker, data, .. } = self else { return Ok(0) };
+        let now = chrono::Utc::now().timestamp();
+        let watermark = broker.last_action_ts();
+        if watermark == 0 {
+            // A new (or upgraded) ledger starts its clock now: applying years
+            // of past dividends to today's position would be a windfall.
+            broker.set_action_watermark(now)?;
+            return Ok(0);
+        }
+        // Corporate actions are rare; checking once an hour is plenty and
+        // saves a request per poll.
+        if now - watermark < 3600 {
+            return Ok(0);
+        }
+        let held: Vec<String> = broker.positions().keys().cloned().collect();
+        let mut applied = 0usize;
+        for symbol in held {
+            // Long enough to catch a split that happened while the loop was
+            // stopped; anything before the watermark is ignored below.
+            let events = data.events(&symbol, 400)?;
+            for (ts, ratio) in events.splits {
+                if ts > watermark && ts <= now {
+                    broker.apply_split(&symbol, ratio)?;
+                    applied += 1;
+                }
+            }
+            for (ts, amount) in events.dividends {
+                if ts > watermark && ts <= now {
+                    broker.apply_dividend(&symbol, amount)?;
+                    applied += 1;
+                }
+            }
+        }
+        broker.set_action_watermark(now)?;
+        Ok(applied)
     }
 
     /// Market order. `market_price` is the latest real price, used by the simulator.

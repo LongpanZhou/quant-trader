@@ -320,7 +320,7 @@ nothing is pre-baked.
 - `configs/nasdaq_leveraged_trend.toml`: the strategy preset.
 - `research/`: sweep configs, logs and result files.
 
-## 10. Bottom line
+## 10. Five-year verdict
 
 The objective is met on the stated window: **+16.2pp a year over QQQ, in every
 complete year from 2022 to 2026, with a smaller drawdown than QQQ**. It is met
@@ -336,5 +336,188 @@ should size it as a satellite, expect a 30-50% drawdown in normal use and
 repeat.
 
 *Educational paper-trading research, not financial advice.*
+
+---
+
+# Part II: twenty years, and live readiness
+
+## 11. Twenty-year test (Nov 2006 - Nov 2026)
+
+### 11.1 Why a naive 20-year run is invalid
+
+TQQQ launched in **February 2010** and BIL in **May 2007**. Running the config
+with `--days 7300` makes the strategy hold cash through 2006-2009 because the
+instrument did not exist, not because the signal said so. That run shows
++11.1pp a year, but its 2009 is +18.6% against QQQ's +54.7%: it missed the
+recovery for the wrong reason. It is not evidence.
+
+To test the rule over 20 years, `[backtest] synthetic_symbol` builds a
+**daily-reset 3x QQQ series** from QQQ returns, T-bill financing from `^IRX`,
+and a 0.95%/yr fund fee:
+
+```
+r_fund = 3 * r_QQQ - 2 * T-bill/252 - 0.0095/252
+```
+
+Nothing after a bar is used: the rate is the last `^IRX` observation at or
+before that bar.
+
+### 11.2 Model validation on the real-fund overlap
+
+Same 16.4-year window (6000 days), same rule:
+
+| Series | CAGR | Max DD | Sharpe |
+|---|---:|---:|---:|
+| Synthetic 3x QQQ | 31.35% | 42.09% | 0.94 |
+| Real TQQQ | 30.86% | 41.58% | 0.93 |
+
+The synthetic model is **0.49pp/yr** from the real fund, so the 20-year
+extension is a fair test rather than a different strategy.
+
+### 11.3 Result
+
+```
+Strategy return      : +13040.54%  (+27.66% a year)
+QQQ buy & hold       :  +1526.51%  (+14.98% a year)
+Excess vs QQQ        : +12.68% a year
+Max drawdown         : 42.13%  (QQQ: 53.40%)
+Drawdown window      : 2015-07-20 to 2016-07-05
+Sharpe (annualised)  : 0.86
+Closed trades        : 258
+```
+
+Yearly excess (strategy minus QQQ, points):
+
+| 2007 | 2008 | 2009 | 2010 | 2011 | 2012 | 2013 | 2014 | 2015 | 2016 |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| +15.8 | +13.8 | +18.6 | +4.5 | **-17.7** | +0.5 | +68.6 | +12.6 | **-12.6** | **-15.5** |
+
+| 2017 | 2018 | 2019 | 2020 | 2021 | 2022 | 2023 | 2024 | 2025 | 2026 |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| +84.2 | **-1.8** | +2.9 | +19.4 | +30.6 | +17.3 | +32.4 | +12.7 | +17.7 | +11.9 |
+
+Thirteen of twenty years beat QQQ. The losing years cluster where trend
+following is supposed to lose: choppy, mean-reverting markets (2011, 2015-16,
+2018-19). The **worst drawdown was not 2008**; it was July 2015 to July 2016,
+a whipsaw that produced a 42% peak-to-trough loss while QQQ fell 53% over the
+whole cycle.
+
+For comparison, the real **2x QLD** version over the same 20 years returns
++7.30pp a year with a 42.64% drawdown. **3x is what clears the +10pp bar; 2x
+does not.**
+
+## 12. Live-readiness audit
+
+### 12.1 No forecast data
+
+| Check | Implementation | Evidence |
+|---|---|---|
+| Universe not hand-picked | Three index ETFs (QQQ, TQQQ, BIL); no stock list, no survivorship | config |
+| Signals use completed bars only | Live: `b.ts + tf.secs() <= now`; backtest: `lag_bars = 1` | `engine.rs`, config |
+| Fills are not on the signal bar | Backtest decides on bar D-1 and fills at D's close; live decides after D closes and trades at D+1's open | `backtest.rs` portfolio branch |
+| Later data cannot change earlier results | Test poisons every bar after bar 80 with a 1000x jump and requires an identical equity curve up to bar 80 | `later_bars_cannot_change_earlier_results` |
+| Benchmark cannot see a forming bar | Benchmark bars filtered by the same completion rule | `backtest.rs` benchmark fetch |
+| Synthetic fund cannot see future rates | Uses the last ^IRX observation at or before each bar | `synthetic_fund_ignores_later_rates` |
+| Total-return adjustment is not forecast | Signals are scale-invariant (price/SMA, returns); adjustment factors only add past dividends | by construction |
+
+All **50 unit tests pass**.
+
+### 12.2 Tested on live data
+
+`preflight` runs the live data path without trading:
+
+```
+PREFLIGHT | Leverage rotation (TQQQ 3x while QQQ > 165-day average, 40% volatility target, else BIL) | 1d bars | 3 symbols
+now: 2026-11-23 02:33 UTC | history window: 270 days | warmup: 166 bars
+
+QQQ       187 bars | last 2026-11-20 14:30 | 1.5 days old | close 608.45 | fresh
+         corporate actions: dividend $0.8130 on 2026-06-22; ...
+TQQQ      187 bars | last 2026-11-20 14:30 | 1.5 days old | close 41.20 | fresh
+         corporate actions: split 2.0000x on 2025-11-20 14:30; dividend $0.1710 on 2026-06-24; ...
+BIL       187 bars | last 2026-11-20 14:30 | 1.5 days old | close 91.59 | fresh
+         corporate actions: dividend $0.3650 on 2025-12-18; ...
+
+current target: 100.0% gross
+  BIL        100.0%
+paper account: equity $100000.00 | cash $100000.00 | 0 position(s)
+PREFLIGHT: PASS
+```
+
+Independent check on the same Yahoo data: QQQ closed **608.45** against a
+165-day SMA of **699.74** (trend down, so 100% T-bills), with 20-day volatility
+at **38.8%**; if the trend were up, the vol target would allow only **1.03x**
+exposure right now.
+
+`replay` then runs the same decision code bar by bar over the latest real
+session on a throwaway account:
+
+```
+REPLAY | Leverage rotation (...) on 1d bars
+BUY 1090 BIL @ $91.60 (rebalance)
+REPLAY DONE | 1 bars | 1 orders | equity $99990.02 (-0.01%)
+```
+
+### 12.3 Corporate actions
+
+A paper ledger that does not adjust for splits is silently wrong. TQQQ split
+**2:1 on 2025-11-20**; BIL pays monthly dividends (~4%/yr) that the old ledger
+never credited.
+
+The sim broker now applies splits (qty x ratio, cost basis / ratio) and cash
+dividends (longs receive, shorts pay) from Yahoo events, with a persisted
+watermark so a restart or a weekend does not lose one.
+
+End-to-end test against the real TQQQ split, starting from a ledger dated
+2025-11-13 holding 100 shares at $80:
+
+```
+BEFORE: qty 100, avg_price 80, cash 50000
+$ quant-trader status --config configs/research/action_test.toml
+Actions : applied 5 corporate action(s)
+SYMBOL  QTY  ENTRY  LAST
+TQQQ    200  40.00  41.20
+AFTER:  qty 200, avg_price 40, cash 50097
+```
+
+The 5 actions are the 2:1 split plus four quarterly dividends. Equity is
+unchanged by the split; the dividends add $97 of cash.
+
+### 12.4 Operational guards
+
+- **Backtest-only settings cannot leak into live trading.** `run`/`replay`
+  refuse a config with `backtest.synthetic_symbol` set.
+- **Stale data is never traded.** Daily bars may be at most 5 days old;
+  intraday bars at most one bar + 5 minutes. Preflight flags stale symbols.
+- **Insufficient history is caught.** Preflight fails if a symbol has fewer
+  bars than the strategy's warmup (166 here).
+- **Ledger robustness.** A UTF-8 BOM (common after editing JSON on Windows)
+  no longer corrupts the ledger; writes are atomic via a temp file.
+- **Config validation.** Target vol > 0, max leverage >= 1, synthetic
+  parameters consistent, benchmark non-empty.
+- **Paper only.** There is no real-money broker path; Alpaca is paper.
+
+### 12.5 Before running it for real (paper)
+
+1. `cargo build --release`
+2. `.\target\release\quant-trader.exe preflight --config configs\nasdaq_leveraged_trend.toml`
+   — require `PREFLIGHT: PASS`.
+3. `.\target\release\quant-trader.exe replay --config configs\nasdaq_leveraged_trend.toml`
+   — confirm the orders match the target.
+4. Start `run` and leave it running through the open; a daily strategy decides
+   once per session, shortly after the open, and is otherwise quiet.
+5. `status` shows the account; `data/nasdaq_leveraged_trend/trades.csv` is the
+   audit trail.
+
+### 12.6 Known limitations (unchanged)
+
+- Yahoo's endpoint is unofficial and can rate-limit or change; the client
+  retries, but a multi-hour outage means a missed daily signal.
+- The sim does not model taxes, bid/ask beyond 1bp slippage, or market impact.
+- Dividends are credited on the ex-date rather than the pay date.
+- Corporate actions rely on Yahoo reporting them within the 400-day window.
+- A restart re-evaluates the latest completed bar; the 5% rebalance band makes
+  the extra turnover small, but it is not zero.
+- The 20-year result uses a synthetic 3x fund before 2010; its 0.49pp error
+  versus the real fund is the best available estimate of that assumption's cost.
 
 

@@ -7,6 +7,7 @@ mod edgar;
 mod engine;
 mod http;
 mod indicators;
+mod preflight;
 mod sim;
 mod strategy;
 mod types;
@@ -29,6 +30,8 @@ COMMANDS:
     download    Fetch and cache multi-year 1-minute history for the config's
                 symbols (slow; safe to stop and restart)
     status      Show the paper account, positions and P&L
+    preflight   Check live data, freshness, corporate actions and the current
+                target without placing orders
     reset       Wipe the local sim ledger and logs (sim broker only)
 
 OPTIONS:
@@ -114,6 +117,9 @@ fn real_main() -> Result<()> {
     if command == "run" && !cfg.history.is_empty() {
         bail!("history = \"{}\" is for backtests and replays only; live trading uses the live price feed", cfg.history);
     }
+    if (command == "run" || command == "replay") && !cfg.backtest.synthetic_symbol.is_empty() {
+        bail!("backtest.synthetic_symbol is for backtests only; live trading uses the real symbol");
+    }
     // Each config gets its own paper account and logs: ./data/<config name>/
     let stem = Path::new(&config_path)
         .file_stem()
@@ -171,6 +177,11 @@ fn real_main() -> Result<()> {
         "status" => {
             let mut backend = backend::Backend::new(&cfg, &data_dir)?;
             engine::status(&cfg, &mut backend)
+        }
+        "preflight" => {
+            let backend = backend::Backend::new(&cfg, &data_dir)?;
+            let strategy = strategy::build(&cfg, strategy::Mode::Live, Path::new("data/cache"))?;
+            preflight::run(&cfg, &backend, strategy.as_ref())
         }
         "reset" => {
             if cfg.broker != config::BrokerKind::Sim {

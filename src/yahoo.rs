@@ -6,6 +6,15 @@ use crate::types::Bar;
 use anyhow::{anyhow, Result};
 use serde_json::Value;
 
+/// Splits and dividends for one symbol, oldest first.
+#[derive(Debug, Default, Clone)]
+pub struct Events {
+    /// (effective unix time, new shares per old share)
+    pub splits: Vec<(i64, f64)>,
+    /// (ex-date unix time, cash per share)
+    pub dividends: Vec<(i64, f64)>,
+}
+
 pub struct Yahoo {
     agent: ureq::Agent,
 }
@@ -34,6 +43,7 @@ impl Yahoo {
                     .query("period1", &from.to_string())
                     .query("period2", &to.to_string())
                     .query("includePrePost", "false")
+                    .query("events", "div,splits")
                     .call(),
             );
             match res {
@@ -103,6 +113,38 @@ impl Yahoo {
         }
         out.sort_by_key(|b| b.ts);
         out.dedup_by_key(|b| b.ts);
+        Ok(out)
+    }
+
+    /// Splits and dividends for `symbol` over the last `days` calendar days.
+    /// Used to keep the paper ledger correct when a held fund splits or pays.
+    pub fn events(&self, symbol: &str, days: i64) -> Result<Events> {
+        let to = now();
+        let from = to - days.clamp(1, 36500) * 86400;
+        let r = self.chart(symbol, "1d", from, to)?;
+        let mut out = Events::default();
+        if let Some(splits) = r["events"]["splits"].as_object() {
+            for v in splits.values() {
+                if let (Some(date), Some(num), Some(den)) =
+                    (v["date"].as_i64(), v["numerator"].as_f64(), v["denominator"].as_f64())
+                {
+                    if num > 0.0 && den > 0.0 && (num / den - 1.0).abs() > 1e-9 {
+                        out.splits.push((date, num / den));
+                    }
+                }
+            }
+        }
+        if let Some(divs) = r["events"]["dividends"].as_object() {
+            for v in divs.values() {
+                if let (Some(date), Some(amount)) = (v["date"].as_i64(), v["amount"].as_f64()) {
+                    if amount > 0.0 {
+                        out.dividends.push((date, amount));
+                    }
+                }
+            }
+        }
+        out.splits.sort_by_key(|s| s.0);
+        out.dividends.sort_by_key(|d| d.0);
         Ok(out)
     }
 

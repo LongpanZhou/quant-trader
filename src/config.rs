@@ -364,6 +364,24 @@ pub struct BacktestConfig {
     /// window back, which shows how much of a result is the chosen end date.
     #[serde(default)]
     pub end_days_ago: i64,
+    /// Replace this symbol's prices with a synthetic daily-reset leveraged
+    /// fund built from `synthetic_index`, for tests that start before the
+    /// real fund existed (e.g. TQQQ before 2010). Empty = use real prices.
+    #[serde(default)]
+    pub synthetic_symbol: String,
+    /// Index the synthetic fund tracks (e.g. QQQ).
+    #[serde(default)]
+    pub synthetic_index: String,
+    /// Daily leverage of the synthetic fund (e.g. 3.0).
+    #[serde(default)]
+    pub synthetic_leverage: f64,
+    /// Yearly fund fee charged by the synthetic series, as a fraction.
+    #[serde(default = "default_synth_fee")]
+    pub synthetic_fee_pct: f64,
+}
+
+fn default_synth_fee() -> f64 {
+    0.0095
 }
 
 fn default_benchmark() -> String {
@@ -441,7 +459,16 @@ fn default_sim() -> SimConfig {
     SimConfig { starting_cash: 100_000.0 }
 }
 fn default_backtest() -> BacktestConfig {
-    BacktestConfig { days: 30, benchmark: default_benchmark(), lag_bars: 0, end_days_ago: 0 }
+    BacktestConfig {
+        days: 30,
+        benchmark: default_benchmark(),
+        lag_bars: 0,
+        end_days_ago: 0,
+        synthetic_symbol: String::new(),
+        synthetic_index: String::new(),
+        synthetic_leverage: 0.0,
+        synthetic_fee_pct: default_synth_fee(),
+    }
 }
 
 impl StrategyConfig {
@@ -816,6 +843,16 @@ impl Config {
         }
         if !(0..=3650).contains(&self.backtest.end_days_ago) {
             bail!("config: backtest.end_days_ago must be in [0, 3650]");
+        }
+        if !self.backtest.synthetic_symbol.trim().is_empty() {
+            if self.backtest.synthetic_index.trim().is_empty()
+                || self.backtest.synthetic_leverage < 1.0
+                || self.backtest.synthetic_fee_pct < 0.0
+            {
+                bail!(
+                    "config: synthetic_symbol needs synthetic_index, synthetic_leverage >= 1 and synthetic_fee_pct >= 0"
+                );
+            }
         }
         self.strategy.validate(self.timeframe, self.risk.max_leverage)?;
         if self.broker == BrokerKind::Alpaca

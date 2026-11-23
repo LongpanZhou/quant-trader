@@ -16,6 +16,9 @@ struct State {
     cash: f64,
     realized_pnl: f64,
     positions: HashMap<String, Position>,
+    /// Last unix time corporate actions were applied (0 = never checked).
+    #[serde(default)]
+    last_action_ts: i64,
 }
 
 pub struct SimBroker {
@@ -31,10 +34,12 @@ impl SimBroker {
     pub fn open(path: PathBuf, starting_cash: f64, slippage_bps: f64) -> Result<Self> {
         let state = if path.exists() {
             let text = std::fs::read_to_string(&path)?;
-            serde_json::from_str(&text)
+            // Windows editors sometimes add a UTF-8 BOM; serde rejects it.
+            let text = text.trim_start_matches('\u{feff}');
+            serde_json::from_str(text)
                 .with_context(|| format!("corrupt ledger file {}", path.display()))?
         } else {
-            State { cash: starting_cash, realized_pnl: 0.0, positions: HashMap::new() }
+            State { cash: starting_cash, realized_pnl: 0.0, positions: HashMap::new(), last_action_ts: 0 }
         };
         Ok(SimBroker { state, path, slippage: slippage_bps / 10_000.0, marks: HashMap::new(), max_leverage: 1.0 })
     }
@@ -61,6 +66,55 @@ impl SimBroker {
 
     pub fn realized_pnl(&self) -> f64 {
         self.state.realized_pnl
+    }
+
+    /// When corporate actions were last applied (0 = never checked).
+    pub fn last_action_ts(&self) -> i64 {
+        self.state.last_action_ts
+    }
+
+    pub fn set_action_watermark(&mut self, ts: i64) -> Result<()> {
+        if ts > self.state.last_action_ts {
+            self.state.last_action_ts = ts;
+            self.save()?;
+        }
+        Ok(())
+    }
+
+    /// A split multiplies the share count and divides the cost basis, leaving
+    /// cash and equity unchanged. Applies to short positions too (qty < 0).
+    pub fn apply_split(&mut self, symbol: &str, ratio: f64) -> Result<()> {
+        if !ratio.is_finite() || ratio <= 0.0 {
+            bail!("invalid split ratio {ratio} for {symbol}");
+        }
+        let mut changed = false;
+        if let Some(p) = self.state.positions.get_mut(symbol) {
+            if p.qty != 0.0 {
+                p.qty *= ratio;
+                p.avg_price /= ratio;
+                changed = true;
+            }
+        }
+        if changed {
+            self.save()?;
+        }
+        Ok(())
+    }
+
+    /// Cash dividend: longs receive, shorts pay. Credited on the ex-date, which
+    /// is early, but keeps the paper account's total return right.
+    pub fn apply_dividend(&mut self, symbol: &str, per_share: f64) -> Result<()> {
+        if !per_share.is_finite() || per_share <= 0.0 {
+            return Ok(());
+        }
+        let Some(p) = self.state.positions.get(symbol).copied() else { return Ok(()) };
+        if p.qty == 0.0 {
+            return Ok(());
+        }
+        let cash = p.qty * per_share;
+        self.state.cash += cash;
+        self.state.realized_pnl += cash;
+        self.save()
     }
 
     pub fn positions(&self) -> HashMap<String, Position> {
@@ -156,6 +210,41 @@ mod tests {
         let path = std::env::temp_dir().join(format!("qt-sim-{name}-{}.json", std::process::id()));
         let _ = std::fs::remove_file(&path);
         (SimBroker::open(path.clone(), cash, 0.0).unwrap(), path)
+    }
+
+    #[test]
+    fn split_preserves_equity_and_dividend_adds_cash() {
+        let (mut b, path) = broker("actions", 1000.0);
+        b.submit("TQQQ", Side::Buy, 10.0, 50.0).unwrap(); // $1,000 invested
+        b.set_mark("TQQQ", 50.0);
+        assert_eq!(b.account().equity, 1000.0);
+
+        // 2:1 split: 10 shares at $50 -> 20 shares at $25.
+        b.apply_split("TQQQ", 2.0).unwrap();
+        let p = b.positions()["TQQQ"];
+        assert_eq!((p.qty, p.avg_price), (20.0, 25.0));
+        b.set_mark("TQQQ", 25.0);
+        assert_eq!(b.account().equity, 1000.0);
+        // 1% dividend on 20 shares at $25 = $5.
+        b.apply_dividend("TQQQ", 0.25).unwrap();
+        assert_eq!(b.account().cash, 505.0); // 500 left after buying + $5 dividend
+        b.set_mark("TQQQ", 25.0);
+        assert_eq!(b.account().equity, 1005.0);
+
+        // The watermark survives a restart.
+        b.set_action_watermark(12345).unwrap();
+        let b2 = SimBroker::open(path.clone(), 1.0, 0.0).unwrap();
+        assert_eq!(b2.last_action_ts(), 12345);
+        let _ = std::fs::remove_file(&path);
+    }
+
+    #[test]
+    fn short_position_pays_a_dividend() {
+        let (mut b, path) = broker("short-div", 1000.0);
+        b.submit("X", Side::Sell, 5.0, 100.0).unwrap();
+        b.apply_dividend("X", 2.0).unwrap();
+        assert_eq!(b.account().cash, 1490.0); // 1500 proceeds - 10 dividend
+        let _ = std::fs::remove_file(&path);
     }
 
     #[test]

@@ -11,6 +11,7 @@ cd $env:USERPROFILE\Desktop\quant-trader
 cargo build --release
 
 .\target\release\quant-trader.exe backtest   # test the strategy on recent real history
+.\target\release\quant-trader.exe preflight  # check live data, freshness and the current target
 .\target\release\quant-trader.exe run        # start trading (leave it running)
 .\target\release\quant-trader.exe replay     # rehearse: live code over the latest session's real prices
 .\target\release\quant-trader.exe status     # account, positions, P&L (any time)
@@ -161,7 +162,13 @@ buy & hold of that symbol, the excess return, and a year-by-year comparison.
 `lag_bars = 1` hides the latest bar from the strategy, which matches live
 execution (the loop acts on the next session, not at the signal bar's close).
 `end_days_ago` shifts the test window back, to check that a result is not an
-artefact of the chosen end date.
+artefact of the chosen end date. `synthetic_symbol` replaces a fund that did
+not exist yet with a daily-reset series built from an index (used for the
+20-year Nasdaq test); it is refused in live mode.
+
+**Corporate actions.** The paper ledger applies splits and cash dividends from
+Yahoo's event feed (TQQQ's 2:1 split of November 2025 included), with a
+persisted watermark, so a held fund's share count and cost basis stay correct.
 
 ## Output files (`data/<config name>/`)
 - `sim_ledger.json` – cash and positions of the sim account (survives restarts)
@@ -175,6 +182,7 @@ artefact of the chosen end date.
 | `src/main.rs` | CLI |
 | `src/config.rs` | `config.toml` schema and validation |
 | `src/engine.rs` | live trading loop, logging, `status` |
+| `src/preflight.rs` | live-data, freshness, corporate-action and target check |
 | `src/strategy.rs` | `Strategy` trait + all strategies, the combiner |
 | `src/dukascopy.rs` | Multi-year 1-minute history for backtests |
 | `src/edgar.rs` | SEC EDGAR financial reports and the earnings-surprise score |

@@ -476,6 +476,14 @@ impl Engine {
             }
             return Ok(());
         }
+        // Splits and dividends happen outside the API: apply anything since
+        // the last poll before taking the position snapshot or trading, so a
+        // held fund's price and share count stay consistent.
+        match self.backend.apply_corporate_actions() {
+            Ok(0) => {}
+            Ok(n) => log(&format!("applied {n} corporate action(s) to the paper ledger")),
+            Err(e) => log(&format!("WARN could not apply corporate actions: {e}")),
+        }
         let mut positions = self.backend.positions()?;
         self.refresh_bars(&positions);
         // Lend the cache out so orders (which need `&mut self`) can be sent
@@ -552,7 +560,7 @@ impl Engine {
             // only minute-aligned bars count as real intraday bars.)
             let done = bars
                 .iter()
-                .take_while(|b| b.ts + tf.secs() <= now && (tf == Timeframe::D1 || b.ts % 60 == 0))
+                .take_while(|b| b.is_complete(tf, now))
                 .count();
             if done > 0 {
                 complete.insert(symbol.as_str(), &bars[..done]);
@@ -658,6 +666,12 @@ pub fn status(cfg: &Config, backend: &mut Backend) -> Result<()> {
             Err(e) => format!("unknown ({e})"),
         }
     );
+    // A split or dividend may have happened while the loop was stopped.
+    match backend.apply_corporate_actions() {
+        Ok(n) if n > 0 => println!("Actions : applied {n} corporate action(s)"),
+        Ok(_) => {}
+        Err(e) => println!("Actions : WARN could not apply corporate actions: {e}"),
+    }
     let positions = backend.positions()?;
     let mut rows = Vec::new();
     for (sym, p) in &positions {

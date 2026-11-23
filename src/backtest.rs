@@ -39,6 +39,9 @@ pub struct Report {
     pub short_pnl: f64,
     /// Calendar-year results: (year, strategy return, benchmark return, days covered).
     pub yearly: Vec<(i32, f64, Option<f64>, usize)>,
+    /// Equity after every tested bar: (timestamp, equity). Used to prove that
+    /// later bars cannot change earlier results.
+    pub curve: Vec<(i64, f64)>,
 }
 
 /// Bars before `trade_from` are only used to warm up indicators; trading and
@@ -390,7 +393,61 @@ pub fn simulate(
         long_pnl,
         short_pnl,
         yearly,
+        curve: curve_ts.iter().copied().zip(curve.iter().copied()).collect(),
     }
+}
+
+/// Peak-to-trough dates of the deepest drawdown in an equity curve.
+fn drawdown_window(curve: &[(i64, f64)]) -> Option<(i64, i64, f64)> {
+    let (mut peak, mut peak_ts) = (f64::MIN, 0i64);
+    let (mut worst, mut from_ts, mut to_ts) = (0.0, 0i64, 0i64);
+    for &(ts, eq) in curve {
+        if eq > peak {
+            peak = eq;
+            peak_ts = ts;
+        }
+        let dd = if peak > 0.0 { 1.0 - eq / peak } else { 0.0 };
+        if dd > worst {
+            worst = dd;
+            from_ts = peak_ts;
+            to_ts = ts;
+        }
+    }
+    (worst > 0.0).then_some((from_ts, to_ts, worst))
+}
+
+fn day(ts: i64) -> String {
+    chrono::DateTime::from_timestamp(ts, 0)
+        .map(|d| d.format("%Y-%m-%d").to_string())
+        .unwrap_or_else(|| ts.to_string())
+}
+
+/// Build a synthetic daily-reset leveraged fund from an index series.
+/// `r_fund = L * r_index - (L-1) * T-bill/252 - fee/252`, compounded daily.
+/// Rates come from ^IRX closes (percent), using the last observation at or
+/// before each bar, so nothing later than the bar is used.
+fn synthetic_series(index: &[Bar], leverage: f64, fee_pct: f64, rates: &[Bar]) -> Vec<Bar> {
+    let mut out = Vec::with_capacity(index.len());
+    let mut px = 100.0f64;
+    for (i, b) in index.iter().enumerate() {
+        if i == 0 {
+            out.push(Bar { ts: b.ts, open: px, high: px, low: px, close: px, volume: 1.0 });
+            continue;
+        }
+        let r = b.close / index[i - 1].close - 1.0;
+        let rate = rates
+            .iter()
+            .rev()
+            .find(|x| x.ts <= b.ts)
+            .map(|x| (x.close / 100.0).max(0.0))
+            .unwrap_or(0.02);
+        let financing = (leverage - 1.0) * rate / 252.0;
+        let fee = fee_pct / 252.0;
+        let prev = px;
+        px = (px * (1.0 + leverage * r - financing - fee)).max(0.01);
+        out.push(Bar { ts: b.ts, open: prev, high: prev.max(px), low: prev.min(px), close: px, volume: 1.0 });
+    }
+    out
 }
 
 pub fn run(cfg: &Config, strat: &dyn Strategy, backend: &Backend) -> Result<()> {
@@ -442,6 +499,34 @@ pub fn run(cfg: &Config, strat: &dyn Strategy, backend: &Backend) -> Result<()> 
         println!("Skipped {}: {}{}", failed.len(), shown.join(", "), if failed.len() > 5 { ", ..." } else { "" });
     }
 
+    // A synthetic fund lets the same rule be tested before the real fund
+    // existed (TQQQ: 2010). It is built only from the index and from T-bill
+    // yields at or before each bar, so it cannot contain later information.
+    if !cfg.backtest.synthetic_symbol.is_empty() {
+        let sym = cfg.backtest.synthetic_symbol.clone();
+        let ix_sym = cfg.backtest.synthetic_index.clone();
+        let index = match data.get(&ix_sym) {
+            Some(b) => b.clone(),
+            None => backend
+                .bars(&ix_sym, tf, cfg.backtest.days + warmup_days + cfg.backtest.end_days_ago)
+                .unwrap_or_default(),
+        };
+        if index.len() < 2 {
+            bail!("synthetic {sym}: no daily data for index {ix_sym}");
+        }
+        let rates = backend
+            .bars("^IRX", crate::config::Timeframe::D1, cfg.backtest.days + 400 + cfg.backtest.end_days_ago)
+            .unwrap_or_default();
+        let synth = synthetic_series(&index, cfg.backtest.synthetic_leverage, cfg.backtest.synthetic_fee_pct, &rates);
+        println!(
+            "Note: {sym} replaced by a synthetic {}x {ix_sym} series (fee {:.2}%/yr, T-bill financing; {} bars)",
+            cfg.backtest.synthetic_leverage,
+            cfg.backtest.synthetic_fee_pct * 100.0,
+            synth.len()
+        );
+        data.insert(sym, synth);
+    }
+
     // Buy & hold of the benchmark, always from daily closes so the comparison
     // is the same whatever bar size the strategy trades.
     let bench_sym = cfg.backtest.benchmark.clone();
@@ -451,7 +536,9 @@ pub fn run(cfg: &Config, strat: &dyn Strategy, backend: &Backend) -> Result<()> 
         cfg.backtest.days + 10 + cfg.backtest.end_days_ago,
     ) {
         Ok(mut b) => {
-            b.retain(|x| x.ts <= now);
+            // Only completed daily bars, same rule as the traded symbols, so
+            // a still-forming bar cannot leak into the benchmark either.
+            b.retain(|x| x.ts + crate::config::Timeframe::D1.secs() <= now);
             b
         }
         Err(e) => {
@@ -501,6 +588,9 @@ pub fn run(cfg: &Config, strat: &dyn Strategy, backend: &Backend) -> Result<()> 
             .map(|d| format!(", {bench_sym}: {:.2}%", d * 100.0))
             .unwrap_or_default()
     );
+    if let Some((from, to, _)) = drawdown_window(&r.curve) {
+        println!("Drawdown window      : {from_date} to {to_date}", from_date = day(from), to_date = day(to));
+    }
     println!("Sharpe (annualised)  : {:.2}", r.sharpe);
     println!(
         "Avg exposure         : {:.0}% long, {:.0}% short",
@@ -563,7 +653,16 @@ mod tests {
                 flatten_before_close_minutes: 0,
             },
             sim: SimConfig { starting_cash: 1000.0 },
-            backtest: BacktestConfig { days: 1, benchmark: "SPY".into(), lag_bars: 0, end_days_ago: 0 },
+            backtest: BacktestConfig {
+                days: 1,
+                benchmark: "SPY".into(),
+                lag_bars: 0,
+                end_days_ago: 0,
+                synthetic_symbol: String::new(),
+                synthetic_index: String::new(),
+                synthetic_leverage: 0.0,
+                synthetic_fee_pct: 0.0095,
+            },
             alpaca: AlpacaConfig::default(),
         }
     }
@@ -588,6 +687,70 @@ mod tests {
         let r = run_sim_bench(&c, &data, &bench, 0);
         assert!((r.benchmark_return.unwrap() - 0.2).abs() < 1e-9);
         assert!(r.benchmark_drawdown.is_some());
+    }
+
+    fn bar(ts: i64, close: f64) -> Bar {
+        Bar { ts, open: close, high: close, low: close, close, volume: 1.0 }
+    }
+
+    /// The engine must never let a later bar change an earlier result: this
+    /// poisons everything after bar 80 (a 1000x jump) and requires the equity
+    /// curve up to bar 80 to be bit-identical.
+    #[test]
+    fn later_bars_cannot_change_earlier_results() {
+        let c = cfg();
+        let closes: Vec<f64> = (0..120)
+            .map(|i| 100.0 + (i as f64 * 0.7).sin() * 10.0 + i as f64 * 0.3)
+            .collect();
+        let data = series(&closes);
+        let clean = run_sim(&c, &data, 0);
+
+        let cut = 80 * 300;
+        let mut poisoned = data.clone();
+        for b in poisoned.get_mut("X").unwrap() {
+            if b.ts > cut {
+                b.open *= 1000.0;
+                b.high *= 1000.0;
+                b.low *= 1000.0;
+                b.close *= 1000.0;
+            }
+        }
+        let dirty = run_sim(&c, &poisoned, 0);
+
+        let before = |r: &Report| -> Vec<(i64, f64)> {
+            r.curve.iter().filter(|(ts, _)| *ts <= cut).copied().collect()
+        };
+        let a = before(&clean);
+        let b = before(&dirty);
+        assert_eq!(a.len(), b.len());
+        assert_eq!(a.len(), 81);
+        for ((t1, e1), (t2, e2)) in a.iter().zip(&b) {
+            assert_eq!(t1, t2);
+            assert!((e1 - e2).abs() < 1e-9, "equity at {t1} changed: {e1} vs {e2}");
+        }
+    }
+
+    #[test]
+    fn synthetic_fund_compounds_leverage_daily() {
+        let index = vec![bar(0, 100.0), bar(DAY, 110.0)];
+        let rates = vec![bar(0, 0.0)]; // zero T-bill yield, zero fee
+        let s = synthetic_series(&index, 3.0, 0.0, &rates);
+        assert!((s[0].close - 100.0).abs() < 1e-12);
+        assert!((s[1].close - 130.0).abs() < 1e-9);
+    }
+
+    #[test]
+    fn synthetic_fund_ignores_later_rates() {
+        let index = grow(0.001, 60);
+        let base = vec![bar(0, 2.0)];
+        let mut future_spike = base.clone();
+        future_spike.push(bar(1_704_119_400 + 30 * DAY, 20.0));
+        let a = synthetic_series(&index, 3.0, 0.0095, &base);
+        let b = synthetic_series(&index, 3.0, 0.0095, &future_spike);
+        for i in 0..30 {
+            assert!((a[i].close - b[i].close).abs() < 1e-12, "bar {i} used a later rate");
+        }
+        assert!((a[40].close - b[40].close).abs() > 1e-6);
     }
 
     fn series(closes: &[f64]) -> HashMap<String, Vec<Bar>> {
