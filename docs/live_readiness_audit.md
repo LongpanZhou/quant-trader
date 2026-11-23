@@ -392,7 +392,7 @@ full-cycle margin is thin.** Its substantive points and my response:
 | The +10pp margin is thin: 5bp or +50bp financing can push the full cycle below 10pp | **Yes** | Measured: +10.96 (1bp), +10.02 (5bp), +10.30 (+50bp), **+9.35 (both)** |
 | The 165-day SMA is window-specific; the 200-day standard is 5-6pp worse here | **Yes** | Disclosed in §5.2/§7; 200-day is +10.6pp over 5y, still above the bar but lower |
 | The "40% volatility target" is really a leverage target; realised vol 36%, cap binds 16.6-29.7% of invested days | **Yes** | Reframed in §7.1; the config name is historical |
-| Sharpe comparison was wrong ("barely above QQQ") | **Yes** | Corrected: 0.82 vs ~0.40 (5y), 1.05 vs ~0.81 (10y) |
+| Sharpe comparison was wrong ("barely above QQQ") | **Yes** | Corrected: 0.82 vs 0.50 (5y), 1.05 vs 0.86 (10y) |
 | Gap risk, FINRA holding warning, taxes, fund/index selection were not disclosed | **Yes** | Added to §7.6-7.9 |
 | Doc errors: blend examples (20% -> 50/50), 5% band, 2022 -15%, 2018/19 +2.0, avoided-2022 +9.3 | **Yes** | All corrected; exact-weight test added |
 | The 5/25 rule is off; the per-leg band + cash cap can starve a buy | **Yes** | 2% is tighter than 25% for the large sleeves; the optional rule exists; cash-starved buys are logged |

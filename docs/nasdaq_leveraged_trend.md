@@ -282,9 +282,9 @@ actual funds, not a hand-picked list of survivors.
 
 1. **Risk budget, not alpha.** It holds 1-3x Nasdaq exposure, averaging
    **2.4x when invested** (1.9x unconditional; 16.6% of invested days at the 3x
-   cap). Realised volatility is 36%. Its Sharpe is roughly **twice QQQ's raw
-   five-year Sharpe** (0.82 vs ~0.40) and 1.3x over ten years (1.05 vs ~0.81),
-   but at ~1.5x QQQ's volatility. 2022 lost **12.5%**, not 15%.
+   cap). Realised volatility is 36%. Its Sharpe is **1.6x QQQ's five-year
+   Sharpe** (0.82 vs 0.50) and 1.2x over ten years (1.05 vs 0.86), but at
+   ~1.5x QQQ's volatility. 2022 lost **12.5%**, not 15%.
 2. **Concentration.** Three ETFs is not diversification: QQQ holds ~104
    stocks, the top ten are **~46%** of assets, and technology plus
    communication services are ~69%. At 2.4x the effective top-ten exposure is
