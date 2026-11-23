@@ -388,6 +388,9 @@ pub struct BacktestConfig {
     /// Yearly fund fee charged by the synthetic series, as a fraction.
     #[serde(default = "default_synth_fee")]
     pub synthetic_fee_pct: f64,
+    /// Extra financing spread over the T-bill rate, as a yearly fraction.
+    #[serde(default)]
+    pub synthetic_spread_pct: f64,
 }
 
 fn default_synth_fee() -> f64 {
@@ -479,6 +482,7 @@ fn default_backtest() -> BacktestConfig {
         synthetic_index: String::new(),
         synthetic_leverage: 0.0,
         synthetic_fee_pct: default_synth_fee(),
+        synthetic_spread_pct: 0.0,
     }
 }
 
@@ -874,9 +878,10 @@ impl Config {
             if self.backtest.synthetic_index.trim().is_empty()
                 || self.backtest.synthetic_leverage < 1.0
                 || self.backtest.synthetic_fee_pct < 0.0
+                || !(0.0..=0.05).contains(&self.backtest.synthetic_spread_pct)
             {
                 bail!(
-                    "config: synthetic_symbol needs synthetic_index, synthetic_leverage >= 1 and synthetic_fee_pct >= 0"
+                    "config: synthetic_symbol needs synthetic_index, synthetic_leverage >= 1, synthetic_fee_pct >= 0 and synthetic_spread_pct in [0, 0.05]"
                 );
             }
         }

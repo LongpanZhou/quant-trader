@@ -496,7 +496,7 @@ fn day(ts: i64) -> String {
 /// `r_fund = L * r_index - (L-1) * T-bill/252 - fee/252`, compounded daily.
 /// Rates come from ^IRX closes (percent), using the last observation at or
 /// before each bar, so nothing later than the bar is used.
-fn synthetic_series(index: &[Bar], leverage: f64, fee_pct: f64, rates: &[Bar]) -> Vec<Bar> {
+fn synthetic_series(index: &[Bar], leverage: f64, fee_pct: f64, spread_pct: f64, rates: &[Bar]) -> Vec<Bar> {
     let mut out = Vec::with_capacity(index.len());
     let mut px = 100.0f64;
     for (i, b) in index.iter().enumerate() {
@@ -518,7 +518,7 @@ fn synthetic_series(index: &[Bar], leverage: f64, fee_pct: f64, rates: &[Bar]) -
             .find(|x| x.ts < b.ts)
             .map(|x| (x.close / 100.0).max(0.0))
             .unwrap_or(0.02);
-        let financing = (leverage - 1.0) * rate / 252.0;
+        let financing = (leverage - 1.0) * (rate + spread_pct) / 252.0;
         let fee = fee_pct / 252.0;
         let prev = px;
         let open = (prev * (1.0 + leverage * r_open)).max(0.01);
@@ -602,7 +602,13 @@ pub fn run(cfg: &Config, strat: &dyn Strategy, backend: &Backend) -> Result<()> 
         let rates = backend
             .bars("^IRX", crate::config::Timeframe::D1, cfg.backtest.days + 400 + cfg.backtest.end_days_ago)
             .unwrap_or_default();
-        let synth = synthetic_series(&index, cfg.backtest.synthetic_leverage, cfg.backtest.synthetic_fee_pct, &rates);
+        let synth = synthetic_series(
+            &index,
+            cfg.backtest.synthetic_leverage,
+            cfg.backtest.synthetic_fee_pct,
+            cfg.backtest.synthetic_spread_pct,
+            &rates,
+        );
         println!(
             "Note: {sym} replaced by a synthetic {}x {ix_sym} series (fee {:.2}%/yr, T-bill financing; {} bars)",
             cfg.backtest.synthetic_leverage,
@@ -804,6 +810,7 @@ mod tests {
                 synthetic_index: String::new(),
                 synthetic_leverage: 0.0,
                 synthetic_fee_pct: 0.0095,
+                synthetic_spread_pct: 0.0,
             },
             alpaca: AlpacaConfig::default(),
         }
@@ -948,7 +955,7 @@ mod tests {
     #[test]
     fn synthetic_fund_compounds_leverage_daily() {        let index = vec![bar(0, 100.0), bar(DAY, 110.0)];
         let rates = vec![bar(0, 0.0)]; // zero T-bill yield, zero fee
-        let s = synthetic_series(&index, 3.0, 0.0, &rates);
+        let s = synthetic_series(&index, 3.0, 0.0, 0.0, &rates);
         assert!((s[0].close - 100.0).abs() < 1e-12);
         assert!((s[1].close - 130.0).abs() < 1e-9);
     }
@@ -959,8 +966,8 @@ mod tests {
         let base = vec![bar(0, 2.0)];
         let mut future_spike = base.clone();
         future_spike.push(bar(1_704_119_400 + 30 * DAY, 20.0));
-        let a = synthetic_series(&index, 3.0, 0.0095, &base);
-        let b = synthetic_series(&index, 3.0, 0.0095, &future_spike);
+        let a = synthetic_series(&index, 3.0, 0.0095, 0.0, &base);
+        let b = synthetic_series(&index, 3.0, 0.0095, 0.0, &future_spike);
         for i in 0..30 {
             assert!((a[i].close - b[i].close).abs() < 1e-12, "bar {i} used a later rate");
         }

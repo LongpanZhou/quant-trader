@@ -329,6 +329,11 @@ The 2% band is now the preset. Live-parity results:
 The 2x QLD 20-year version is +7.3pp with 40.1% DD. The conclusion is unchanged:
 3x is required to clear the +10pp bar.
 
+The full cycle (2000-2026, synthetic 3x) is **20.37%/yr vs QQQ 9.40%,
++10.96pp, max DD 42.3%** at 1bp — but **+9.35pp** with 5bp slippage and a 50bp
+financing spread. The full-cycle margin is thin; the five-year result is above
+the full-cycle average.
+
 ---
 
 ## 9. Pre-live checklist (revised)
@@ -373,7 +378,31 @@ layer had five P1 defects.** Its findings and my response:
 | Population vs sample σ makes exposure 2.6% high | Accepted (minor) | Not changed; documented |
 | No client-order-ID idempotency; restart loses `last_bar`; `status` can race `run`; Alpaca margin cushion is only 0.11% | Accepted | Documented as P2/P3; position reconciliation and the retry bound the risk |
 
-## 11. Sources
+## 11. Independent design review
+
+A second reviewer checked the rule against the literature and re-ran the full
+cycle. Its verdict: **a legitimate trend/volatility-targeting family with
+causal code, but the five-year headline is a good-not-typical window and the
+full-cycle margin is thin.** Its substantive points and my response:
+
+| Design finding | Verified? | Response |
+|---|---|---|
+| It is a ~2.4x concentrated Nasdaq mega-cap bet, not "3 diversified ETFs"; effective top-10 ~110% of equity | **Yes** | Disclosed in study §7.1-7.2: 2.4x average, top-10 ~46% of QQQ, ~110% effective |
+| The study's 13.1% / +5.1pp / -83% full-cycle caveat is not reproducible; the 26y run gives +10.96pp / 42.3% | **Yes** | Replaced with the actual 26-year run and a cost matrix; the old figure was a different, slower variant |
+| The +10pp margin is thin: 5bp or +50bp financing can push the full cycle below 10pp | **Yes** | Measured: +10.96 (1bp), +10.02 (5bp), +10.30 (+50bp), **+9.35 (both)** |
+| The 165-day SMA is window-specific; the 200-day standard is 5-6pp worse here | **Yes** | Disclosed in §5.2/§7; 200-day is +10.6pp over 5y, still above the bar but lower |
+| The "40% volatility target" is really a leverage target; realised vol 36%, cap binds 16.6-29.7% of invested days | **Yes** | Reframed in §7.1; the config name is historical |
+| Sharpe comparison was wrong ("barely above QQQ") | **Yes** | Corrected: 0.82 vs ~0.40 (5y), 1.05 vs ~0.81 (10y) |
+| Gap risk, FINRA holding warning, taxes, fund/index selection were not disclosed | **Yes** | Added to §7.6-7.9 |
+| Doc errors: blend examples (20% -> 50/50), 5% band, 2022 -15%, 2018/19 +2.0, avoided-2022 +9.3 | **Yes** | All corrected; exact-weight test added |
+| The 5/25 rule is off; the per-leg band + cash cap can starve a buy | **Yes** | 2% is tighter than 25% for the large sleeves; the optional rule exists; cash-starved buys are logged |
+| The drift metric is gross weight, not effective exposure | **Yes** | The limit is disclosed; effective exposure is ~2.4x, so the economic error is smaller than the gross figure |
+| Adjusted-close SMA has a small dividend-adjustment look-ahead | **Yes** | Documented (~0.3% of SMA); no signal flipped in the tested history |
+| The synthetic 20y open was the prior close (same-bar fill) | **Yes** | Fixed before the design review landed; 20y moved to +12.0pp |
+| Cross-symbol freshness/alignment | **Yes** | The live loop now requires all symbols to end on the same completed bar |
+| Absolute-return vs risk-adjusted comparison flatters the drawdown | **Yes** | The 1.5x vol and 42% full-cycle DD are now stated next to the 29% 5y figure |
+
+## 12. Sources
 
 - Rebalancing bands / 5-25 rule: Quant Decoded (threshold study), Guardfolio
   (5/25), Kitces & Daryanani (20% relative), RiskHub (band overshoot).

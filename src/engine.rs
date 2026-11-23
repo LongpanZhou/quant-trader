@@ -654,12 +654,21 @@ impl Engine {
         } else if self.strategy.is_portfolio() {
             let newest = complete.values().filter_map(|b| b.last()).max_by_key(|b| b.ts).copied();
             if let Some(last) = newest {
+                let aligned = symbols.iter().all(|s| {
+                    complete
+                        .get(s.as_str())
+                        .and_then(|b| b.last())
+                        .is_some_and(|b| b.ts == last.ts)
+                });
                 let new_bar = self.last_bar.get(PORTFOLIO) != Some(&last.ts);
+                if !aligned && new_bar {
+                    log("WARN completed bars are not aligned across symbols; will retry");
+                }
                 let retrying = self
                     .retry
                     .as_ref()
                     .is_some_and(|(ts, n)| *ts == last.ts && *n <= 3);
-                if (new_bar || retrying) && fresh(&last) {
+                if aligned && (new_bar || retrying) && fresh(&last) {
                     let universe: HashMap<&str, &[Bar]> = complete
                         .iter()
                         .map(|(s, b)| (*s, &b[b.len().saturating_sub(lookback)..]))

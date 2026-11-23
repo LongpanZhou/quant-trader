@@ -244,8 +244,8 @@ the November drawdown; if anything the chosen end date is the least favourable.
 
 A natural objection is that the whole edge is one lucky exit. Substituting
 QQQ's actual 2022 return for the strategy's in 2022, and keeping every other
-year, gives about **2.46x** over five years versus QQQ's 1.57x — roughly
-**+9.3pp a year** even with zero credit for 2022. So the crash filter is not
+year, gives about **2.48x** over five years versus QQQ's 1.57x — roughly
+**+10.4pp a year** even with zero credit for 2022. So the crash filter is not
 the whole story; the volatility-targeted leverage in 2023-2026 does most of
 the remaining work. Conversely, if the 2023-2026 AI rally is removed, the
 strategy has little to show — see §7.
@@ -280,42 +280,54 @@ actual funds, not a hand-picked list of survivors.
 
 ## 7. Honest caveats
 
-1. **This is a risk-budget statement, not alpha.** It holds 1-3x Nasdaq
-   exposure. Its Sharpe (0.82 over 5y, 1.06 over 10y) is barely above QQQ's,
-   which means the excess return is mostly *more beta, timed*. A -30% to -50%
-   drawdown is a live possibility; 2022 still lost 15%.
-2. **The window is kind.** 2022 gave a clean, prolonged downtrend to exit, and
-   2023-2026 was one of the strongest tech rallies in history. The 2018-2019
-   stretch shows what happens when it is not kind: -2.2pp and +2.0pp.
-3. **TQQQ inception is 2010.** The 10-year test uses the real fund, but there
-   is no pre-2010 evidence with real prices. Independent replication of the
-   same family over 2000-2026 (synthetic 3x, realistic financing) gives 13.1%
-   a year vs QQQ's 8.0% — only **+5.1pp** — with an **-83% drawdown**. The
-   2000s returned -6.6% a year for that configuration; the 2010s returned
-   +21.5%. The strategy is a bull-market amplifier with a crash filter, and the
-   last ten years were the good regime.
-4. **The daily signal whipsaws.** Across 1999-2026 the plain daily 200-day
-   rule switched about 7 times a year and 77% of switches reversed within a
-   month. A 3% band cut that to 1.7 switches and improved results; this
-   implementation uses a 2%-of-equity rebalance band plus a 165-day average,
-   which lands in the same low-turnover family (9-10 trades a year over ten
-   years). It is still a daily decision, so a fast V-shaped crash (March 2020)
-   can hurt it before the exit fires.
-5. **Daily-reset decay is real.** TQQQ itself returned about +2% in total over
-   these five years while QQQ returned +57%. The strategy only wins because
-   the trend filter is out of TQQQ during the decay regimes.
-6. **Backtest fills are modelled, not guaranteed.** The headline uses the
-   live-parity model (decide on the close, fill at the next open) with 1bp
-   slippage. At 5bp the excess is +15.9pp; a deliberately pessimistic
-   combination of two days' delay and close fills gives +9.8pp. Real execution
-   can be worse than all of these.
-7. **Idle cash earns nothing; BIL dividends are credited.** The sim now books
-   cash dividends, so a BIL holding earns its yield, matching the backtest.
-8. **Publication decay.** The 2016 rule has been public for a decade. A 2026
-   replication of the Gayed-Bilello rule reports a 2x rotation at 14.0%/yr
-   vs 11.45% for the benchmark since 1988 — a much smaller edge than the
-   original table. The same replication finds the QQQ version's full-sample
-   maximum drawdown at -93.3%.
+1. **Risk budget, not alpha.** It holds 1-3x Nasdaq exposure, averaging
+   **2.4x when invested** (1.9x unconditional; 16.6% of invested days at the 3x
+   cap). Realised volatility is 36%. Its Sharpe is roughly **twice QQQ's raw
+   five-year Sharpe** (0.82 vs ~0.40) and 1.3x over ten years (1.05 vs ~0.81),
+   but at ~1.5x QQQ's volatility. 2022 lost **12.5%**, not 15%.
+2. **Concentration.** Three ETFs is not diversification: QQQ holds ~104
+   stocks, the top ten are **~46%** of assets, and technology plus
+   communication services are ~69%. At 2.4x the effective top-ten exposure is
+   **~110% of equity** and Apple alone ~22%; at the 3x cap the top ten is
+   ~137%. This is a leveraged mega-cap/AI bet.
+3. **The window is kind, but the endpoint is not the driver.** 2022 gave a
+   clean downtrend and 2023-2026 an exceptional rally. The 2018-2019 stretch
+   shows the cost: **-1.8pp and -6.2pp**. Shifting the end date earlier raises
+   the excess, so November 2026 is the least favourable end date.
+4. **The full cycle is +10.96pp at 1bp, and the margin is thin.** A 26-year
+   synthetic run (2000-2026, current preset) gives **20.37%/yr vs QQQ's 9.40%,
+   +10.96pp, max drawdown 42.3% (2000-2003), Sharpe 0.71**. At 5bp: +10.02pp.
+   With a 50bp financing spread: +10.30pp. With both: **+9.35pp — below the
+   bar.** The 2000s returned roughly +5%/yr. The old "13.1% / +5.1pp / -83%"
+   figure came from a different, slower variant (200-day, 25% vol target) and
+   has been removed to avoid confusion.
+5. **TQQQ inception is 2010.** Pre-2010 is synthetic, validated to 0.68pp/yr on
+   the real-fund overlap. The synthetic series floors at $0.01, so the 2000-02
+   share-count accounting is unreliable (the 26-year weight-drift statistic is
+   an artifact); the return path is still useful.
+6. **Daily reset and gap risk.** TQQQ returned +1.3% over these five years
+   while QQQ returned +57%. At ~70% TQQQ, a -20% overnight gap is **-14% of
+   equity in a day**; a -30% gap is -21%. FINRA warns that daily-reset
+   leveraged ETFs are unsuitable for holding longer than one session.
+7. **Fills are modelled.** Live-parity 1bp; 5bp gives +15.8pp and 10bp +14.5pp
+   over five years; a deliberately pessimistic two-day-delay/close-fill case
+   gives +9.8pp. TQQQ moved 0.87% on average in the first ten minutes after the
+   open.
+8. **Taxes are not modelled.** About 54 round trips and 170 resize fills a year
+   create short-term gains and wash-sale exposure in a taxable account; a
+   several-pp/yr drag would push the full-cycle excess below 10pp.
+9. **Fund and index selection.** TQQQ is a surviving 3x fund and QQQ is a
+   hindsight choice; the rule is not tested on SPY, IWM or global indices. BIL
+   did not exist before 2007, so pre-2007 down-states earn 0%.
+10. **Adjusted-close signal.** Yahoo's total-return adjustment factor varies
+    within the 165-day window as dividends are paid, a small (~0.3% of SMA)
+    look-ahead. It did not flip any tested signal, but it is not exactly zero.
+11. **Daily whipsaw.** The plain daily 200-day rule switches ~7 times a year
+    and 77% reverse within a month; the 165-day + 2% band is smoother (~9-10
+    closed round trips a year) but still reacts a day late to a V-shaped crash.
+12. **Publication decay.** The 2016 rule has been public for a decade. A 2026
+    replication of the Gayed-Bilello rule reports the 2x rotation at 14.0%/yr
+    vs 11.45% since 1988 — a much smaller edge than the original table.
 
 ## 8. Reproduce
 
@@ -357,18 +369,19 @@ nothing is pre-baked.
 
 The objective is met on the stated window: **+16.9pp a year over QQQ, in every
 complete year from 2022 to 2026, with a smaller drawdown than QQQ**. The
-yearly edge ranges from +7.4 to +36.1 points; the aggregate is what clears the
-bar comfortably. It is met by leveraging a trend filter, not by finding an
-uncorrelated alpha source, and it would not have met the bar with 2x instead of
-3x (+9.8pp over five years).
+yearly edge ranges from +7.4 to +36.1 points; the aggregate clears the bar.
+It is met by leveraging a trend filter, not by finding an uncorrelated alpha
+source, and it would not have met the bar with 2x instead of 3x (+9.8pp over
+five years).
 
-The wider evidence says what to expect beyond this window. Over a full cycle
-including 2000-02, the same family delivers roughly **+5pp a year with a
--65% to -83% drawdown** (independent 2000-2026 replications). The five-year
-result is therefore a best-case regime, not a forecast. Anyone running this
-should size it as a satellite, expect a 30-50% drawdown in normal use and
-65%+ in a 2000-style unwind, and should not expect the last five years to
-repeat.
+The wider evidence is thinner than the five-year headline. Over the full cycle
+(2000-2026) the same preset returns **20.37%/yr vs QQQ's 9.40%, +10.96pp, with
+a 42.3% drawdown** at 1bp — but **+9.35pp** once 5bp slippage and a 50bp
+financing spread are included. The five-year result is therefore above the
+full-cycle average and in the better part of the strategy's historical range,
+not a forecast. Anyone running this should size it as a satellite, expect a
+30-50% drawdown in normal use and 40%+ in a 2000-style unwind, and should not
+expect the last five years to repeat.
 
 *Educational paper-trading research, not financial advice.*
 
@@ -442,6 +455,25 @@ over the whole cycle.
 For comparison, the real **2x QLD** version over the same 20 years returns
 +7.3pp a year with a 40.1% drawdown. **3x is what clears the +10pp bar; 2x
 does not.**
+
+### 11.4 Full cycle (2000-2026)
+
+The 26-year synthetic run covers the dot-com crash and the GFC:
+
+| Assumption | CAGR | Excess vs QQQ | Max DD |
+|---|---:|---:|---:|
+| 1bp, T-bill financing | **20.37%** | **+10.96** | 42.27% |
+| 5bp | 19.43% | +10.02 | 43.11% |
+| 1bp, +50bp financing spread | 19.70% | +10.30 | 42.29% |
+| **5bp + 50bp financing** | **18.76%** | **+9.35** | **43.13%** |
+
+The worst drawdown ran from **2000-11-20 to 2003-03-31**. The 2000s returned
+roughly +5%/yr, with 2001 -16.8%, 2002 -16.3%, 2003 +45.5%, 2005 -21.3% and
+2008 -27.7%. The strategy clears the +10pp bar at 1bp but **not** once 5bp
+slippage and a 50bp financing spread are both charged. BIL did not exist before
+2007, so the pre-2007 down-state earns 0% cash (conservative). The synthetic
+fund's $0.01 floor makes the 2000-02 share-count accounting unreliable, so the
+weight-drift statistic from this run is not meaningful.
 
 ## 12. Live-readiness audit
 
@@ -577,11 +609,17 @@ unchanged by the split; the dividends add $97 of cash.
 - Corporate actions rely on Yahoo reporting them within the 400-day window.
 - A restart re-evaluates the latest completed bar; the 2% band limits the extra
   turnover, but it is not zero.
-- The 20-year result uses a synthetic 3x fund before 2010; its 0.62pp error
+- The 20-year result uses a synthetic 3x fund before 2010; its 0.68pp error
   versus the real fund is the best available estimate of that assumption's cost.
-- Alpaca paper does not credit dividends, and its free feed is IEX-only
-  (~2-4% of consolidated volume). The sim broker is the more faithful test for
+  The synthetic series floors at $0.01, so 2000-02 share-count accounting is
+  unreliable.
+- Alpaca paper does not credit dividends **and does not apply splits**; its
+  free feed is IEX-only (~2-4% of consolidated volume). The loop halts on a
+  detected split in a held symbol. The sim broker is the more faithful test for
   this strategy; see `docs/live_readiness_audit.md`.
+- The SMA/vol signal uses Yahoo's total-return adjusted closes. The adjustment
+  factor varies within the window as dividends are paid, a small (~0.3% of the
+  SMA) look-ahead that did not flip any tested signal but is not exactly zero.
 - There is no client-order-ID idempotency. The retry logic relies on
   re-reading positions from the broker before each attempt.
 - A real **cash** account would face T+1 settlement and free-riding rules; the
