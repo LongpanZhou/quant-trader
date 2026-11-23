@@ -71,18 +71,18 @@ pub fn run(cfg: &Config, backend: &Backend, strategy: &dyn Strategy) -> Result<(
 
         match backend.events(sym, 400) {
             Ok(ev) => {
-                let mut recent: Vec<String> = Vec::new();
+                let mut recent: Vec<(i64, String)> = Vec::new();
                 for (ts, ratio) in ev.splits {
-                    recent.push(format!("split {ratio:.4}x on {}", day(ts)));
+                    recent.push((ts, format!("split {ratio:.4}x on {}", day(ts))));
                 }
                 for (ts, amount) in ev.dividends {
-                    recent.push(format!("dividend ${amount:.4} on {}", day(ts)));
+                    recent.push((ts, format!("dividend ${amount:.4} on {}", day(ts))));
                 }
-                recent.sort();
+                recent.sort_by_key(|(ts, _)| *ts);
                 if recent.is_empty() {
                     println!("         corporate actions: none in 400 days");
                 } else {
-                    let shown: Vec<&str> = recent.iter().rev().take(3).map(|s| s.as_str()).collect();
+                    let shown: Vec<&str> = recent.iter().rev().take(3).map(|(_, s)| s.as_str()).collect();
                     println!("         corporate actions: {}", shown.join("; "));
                 }
             }
