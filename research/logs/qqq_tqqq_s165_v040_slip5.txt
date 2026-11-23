@@ -1,0 +1,29 @@
+﻿Backtest: Leverage rotation (TQQQ 3x while QQQ > 165-day average, 40% volatility target, else BIL) | 1d bars | last 1825 days | 4 symbols
+Loaded 5724 bars for 4 symbols
+
+================ RESULTS ================
+Period tested        : 1822 days (1253 bars)
+Starting equity      : $100000.00
+Ending equity        : $271435.91
+Strategy return      : +171.44%  (+22.16% a year)
+Buy & hold (eq-wt)   : +34.12%  (+6.06% a year)
+QQQ buy & hold       : +57.21%  (+9.49% a year)
+Excess vs QQQ        : +12.67% a year
+Max drawdown         : 29.80%  (buy & hold: 34.75%, QQQ: 35.12%)
+Sharpe (annualised)  : 0.74
+Avg exposure         : 100% long, 0% short
+Closed trades        : 54
+Win rate             : 46.3%
+Avg trade P&L        : $+3166.38
+Profit factor        : 3.29
+=========================================
+
+Year by year (a year with few days is partial):
+Year     Strategy        QQQ       Diff   Days
+2021        -2.6%      -0.1%       -2.5     26
+2022       -14.3%     -32.6%      +18.3    251
+2023       +87.5%     +54.9%      +32.6    250
+2024       +33.7%     +25.6%       +8.2    252
+2025       +24.3%     +20.8%       +3.5    250
+2026        +4.4%      -0.6%       +5.0    224
+

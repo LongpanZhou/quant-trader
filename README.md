@@ -87,6 +87,7 @@ Stale data (halts, holidays, feed gaps) is never traded on.
 | `orb_1m` | 1m | Zarattini & Aziz (2023) | Opening range breakout: one trade per symbol per day in the direction of the first 5 minutes, tight stop, 10x target, flat before the close |
 | `orb_tqqq_1m` | 1m | Zarattini & Aziz (2023) | The same opening range breakout on the 3x Nasdaq fund (TQQQ) |
 | `leverage_2x` | 1d | Gayed & Bilello (2016) | Hold the 2x S&P 500 fund (SSO) while SPY is above its 200-day average, otherwise short-term Treasuries |
+| `nasdaq_leveraged_trend` | 1d | Gayed & Bilello (2016); Moreira & Muir (2017) | Hold a volatility-targeted QQQ/TQQQ blend while QQQ is above its 165-day average, T-bills below it; +16pp a year over QQQ in the 2021-2026 test |
 | `leverage_3x`, `leverage_nasdaq_3x` | 1d | Gayed & Bilello (2016) | The same rule with the 3x S&P 500 fund (UPRO) or the 3x Nasdaq fund (TQQQ) |
 | `leverage_3x_voltarget` | 1d | Gayed & Bilello (2016); Moreira & Muir (2017) | In an uptrend, blend SPY and UPRO to aim for 20% volatility |
 | `trend_multi_asset`, `trend_multi_asset_long` | 1d | Moskowitz, Ooi & Pedersen (2012); Hurst, Ooi & Pedersen (2017) | Trend following across 17 ETFs (stocks, bonds, commodities, currencies): long what has been rising, short or flat what has been falling, sized by volatility |
@@ -155,8 +156,14 @@ Daily-bar strategies decide on the previous day's close and trade shortly
 after the next open. Leave them running through the open, or start them any
 time during the session.
 
-## Output files (`data/<config name>/`)
+**Benchmark.** `[backtest] benchmark = "QQQ"` makes every backtest report
+buy & hold of that symbol, the excess return, and a year-by-year comparison.
+`lag_bars = 1` hides the latest bar from the strategy, which matches live
+execution (the loop acts on the next session, not at the signal bar's close).
+`end_days_ago` shifts the test window back, to check that a result is not an
+artefact of the chosen end date.
 
+## Output files (`data/<config name>/`)
 - `sim_ledger.json` – cash and positions of the sim account (survives restarts)
 - `trades.csv` – every fill: time, symbol, side, qty, price, reason
 - `equity.csv` – account equity at every poll while the market is open

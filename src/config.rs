@@ -356,6 +356,14 @@ pub struct BacktestConfig {
     /// Symbol whose buy & hold the results are measured against.
     #[serde(default = "default_benchmark")]
     pub benchmark: String,
+    /// Hide the most recent N bars from the strategy before it decides, to
+    /// model the live loop's one-session execution delay. 0 = act on the close.
+    #[serde(default)]
+    pub lag_bars: usize,
+    /// End the test this many days before today. Non-zero shifts the whole
+    /// window back, which shows how much of a result is the chosen end date.
+    #[serde(default)]
+    pub end_days_ago: i64,
 }
 
 fn default_benchmark() -> String {
@@ -433,7 +441,7 @@ fn default_sim() -> SimConfig {
     SimConfig { starting_cash: 100_000.0 }
 }
 fn default_backtest() -> BacktestConfig {
-    BacktestConfig { days: 30, benchmark: default_benchmark() }
+    BacktestConfig { days: 30, benchmark: default_benchmark(), lag_bars: 0, end_days_ago: 0 }
 }
 
 impl StrategyConfig {
@@ -666,12 +674,12 @@ impl StrategyConfig {
                     bail!("config: tsmom needs at least one positive lookback and vol_days >= 2");
                 }
                 if *target_vol <= 0.0
-                    || !(*max_weight > 0.0 && *max_weight <= 1.0)
-                    || !(*max_long > 0.0 && *max_long <= 1.0)
-                    || !(0.0..=1.0).contains(max_short)
+                    || !(*max_weight > 0.0 && *max_weight <= max_leverage)
+                    || !(*max_long > 0.0 && *max_long <= max_leverage)
+                    || !(0.0..=max_leverage.min(1.0)).contains(max_short)
                     || *rebalance_band < 0.0
                 {
-                    bail!("config: tsmom needs target_vol > 0, max_weight and max_long in (0, 1], max_short in [0, 1]");
+                    bail!("config: tsmom needs target_vol > 0, max_weight and max_long in (0, risk.max_leverage], max_short in [0, 1]");
                 }
             }
             StrategyConfig::ValueMomentum {
@@ -802,6 +810,12 @@ impl Config {
         }
         if self.backtest.benchmark.trim().is_empty() {
             bail!("config: backtest.benchmark must name a symbol");
+        }
+        if self.backtest.lag_bars > 10 {
+            bail!("config: backtest.lag_bars must be 10 or less");
+        }
+        if !(0..=3650).contains(&self.backtest.end_days_ago) {
+            bail!("config: backtest.end_days_ago must be in [0, 3650]");
         }
         self.strategy.validate(self.timeframe, self.risk.max_leverage)?;
         if self.broker == BrokerKind::Alpaca

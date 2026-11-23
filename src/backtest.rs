@@ -167,9 +167,13 @@ pub fn simulate(
             }
 
             // Per-symbol strategies are long-only.
-            let start = (k + 1).saturating_sub(lookback);
+            let end = next[i].saturating_sub(cfg.backtest.lag_bars);
+            if end == 0 {
+                continue;
+            }
+            let start = end.saturating_sub(lookback);
             let held = pos[i];
-            match strat.signal(&bars[start..=k], held.is_some()) {
+            match strat.signal(&bars[start..end], held.is_some()) {
                 Signal::Sell => {
                     if let Some(p) = held {
                         trade!(i, -p.qty, bar.close);
@@ -194,8 +198,11 @@ pub fn simulate(
 
         if strat.is_portfolio() {
             let universe: HashMap<&str, &[Bar]> = (0..n)
-                .filter(|&i| next[i] > 0)
-                .map(|i| (symbols[i].as_str(), &data[symbols[i]][next[i].saturating_sub(lookback)..next[i]]))
+                .filter(|&i| next[i] > cfg.backtest.lag_bars)
+                .map(|i| {
+                    let end = next[i] - cfg.backtest.lag_bars;
+                    (symbols[i].as_str(), &data[symbols[i]][end.saturating_sub(lookback)..end])
+                })
                 .collect();
             let held: Vec<&str> = (0..n).filter(|&i| pos[i].is_some()).map(|i| symbols[i].as_str()).collect();
             if let Some(targets) = strat.targets(&universe, &held) {
@@ -398,7 +405,7 @@ pub fn run(cfg: &Config, strat: &dyn Strategy, backend: &Backend) -> Result<()> 
 
     // Load extra history in front of the test window so indicators are warm
     // on the first tested day.
-    let now = chrono::Utc::now().timestamp();
+    let now = chrono::Utc::now().timestamp() - cfg.backtest.end_days_ago * 86_400;
     let warmup_days = (strat.warmup() as f64 / tf.bars_per_day() as f64 * 1.5).ceil() as i64 + 5;
     let trade_from = now - cfg.backtest.days * 86_400;
 
@@ -407,7 +414,11 @@ pub fn run(cfg: &Config, strat: &dyn Strategy, backend: &Backend) -> Result<()> 
     }
     let mut data = HashMap::new();
     let mut failed = Vec::new();
-    let results = backend.bars_many(&cfg.symbols, tf, cfg.backtest.days + warmup_days);
+    let results = backend.bars_many(
+        &cfg.symbols,
+        tf,
+        cfg.backtest.days + warmup_days + cfg.backtest.end_days_ago,
+    );
     for (sym, res) in cfg.symbols.iter().zip(results) {
         match res {
             Ok(mut b) => {
@@ -434,7 +445,11 @@ pub fn run(cfg: &Config, strat: &dyn Strategy, backend: &Backend) -> Result<()> 
     // Buy & hold of the benchmark, always from daily closes so the comparison
     // is the same whatever bar size the strategy trades.
     let bench_sym = cfg.backtest.benchmark.clone();
-    let bench = match backend.bars(&bench_sym, crate::config::Timeframe::D1, cfg.backtest.days + 10) {
+    let bench = match backend.bars(
+        &bench_sym,
+        crate::config::Timeframe::D1,
+        cfg.backtest.days + 10 + cfg.backtest.end_days_ago,
+    ) {
         Ok(mut b) => {
             b.retain(|x| x.ts <= now);
             b
@@ -548,14 +563,31 @@ mod tests {
                 flatten_before_close_minutes: 0,
             },
             sim: SimConfig { starting_cash: 1000.0 },
-            backtest: BacktestConfig { days: 1, benchmark: "SPY".into() },
+            backtest: BacktestConfig { days: 1, benchmark: "SPY".into(), lag_bars: 0, end_days_ago: 0 },
             alpaca: AlpacaConfig::default(),
         }
     }
 
     fn run_sim(c: &Config, data: &HashMap<String, Vec<Bar>>, from: i64) -> Report {
+        run_sim_bench(c, data, &[], from)
+    }
+
+    fn run_sim_bench(c: &Config, data: &HashMap<String, Vec<Bar>>, bench: &[Bar], from: i64) -> Report {
         let strat = strategy::build(c, Mode::Backtest, Path::new("data/cache")).unwrap();
-        simulate(c, strat.as_ref(), data, &[], from)
+        simulate(c, strat.as_ref(), data, bench, from)
+    }
+
+    #[test]
+    fn benchmark_comes_from_its_own_series() {
+        let c = cfg();
+        let data = series(&[100.0, 100.0, 100.0, 100.0, 100.0]);
+        let bench = vec![
+            Bar { ts: 0, open: 100.0, high: 100.0, low: 100.0, close: 100.0, volume: 1.0 },
+            Bar { ts: 900, open: 120.0, high: 120.0, low: 120.0, close: 120.0, volume: 1.0 },
+        ];
+        let r = run_sim_bench(&c, &data, &bench, 0);
+        assert!((r.benchmark_return.unwrap() - 0.2).abs() < 1e-9);
+        assert!(r.benchmark_drawdown.is_some());
     }
 
     fn series(closes: &[f64]) -> HashMap<String, Vec<Bar>> {

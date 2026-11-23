@@ -1,6 +1,6 @@
-﻿# Parameter study: QQQ above its N-day average -> TQQQ, else T-bills.
+﻿# Research sweep: qqq_tqqq_s150_v035
 broker = "sim"
-symbols = ["QQQ", "TQQQ", "BIL"]
+symbols = ["QQQ", "TQQQ", "BIL", "SPY"]
 timeframe = "1d"
 poll_seconds = 600
 
@@ -17,7 +17,7 @@ rebalance_band = 0.05
 
 [risk]
 position_pct = 1.0
-max_positions = 3
+max_positions = 4
 slippage_bps = 1.0
 
 [backtest]

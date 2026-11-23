@@ -1,0 +1,29 @@
+﻿Backtest: Multi-asset trend following ([252]-day horizons, long/flat) | 1d bars | last 1825 days | 1 symbols
+Loaded 1550 bars for 1 symbols
+
+================ RESULTS ================
+Period tested        : 1822 days (1253 bars)
+Starting equity      : $100000.00
+Ending equity        : $150167.02
+Strategy return      : +50.17%  (+8.49% a year)
+Buy & hold (eq-wt)   : +57.21%  (+9.49% a year)
+QQQ buy & hold       : +57.21%  (+9.49% a year)
+Excess vs QQQ        : -1.00% a year
+Max drawdown         : 37.57%  (buy & hold: 35.12%, QQQ: 35.12%)
+Sharpe (annualised)  : 0.41
+Avg exposure         : 134% long, 0% short
+Closed trades        : 1
+Win rate             : 0.0%
+Avg trade P&L        : $-30531.01
+Profit factor        : -0.00
+=========================================
+
+Year by year (a year with few days is partial):
+Year     Strategy        QQQ       Diff   Days
+2021        -1.1%      -0.1%       -1.0     26
+2022       -31.1%     -32.6%       +1.5    251
+2023       +46.5%     +54.9%       -8.3    250
+2024       +39.1%     +25.6%      +13.5    252
+2025       +18.3%     +20.8%       -2.5    250
+2026        -8.6%      -0.6%       -8.0    224
+

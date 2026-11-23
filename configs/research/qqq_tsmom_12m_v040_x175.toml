@@ -1,0 +1,27 @@
+﻿# Research: qqq_tsmom_12m_v040_x175 (TSMOM on QQQ with margin, monthly rebalance)
+broker = "sim"
+symbols = ["QQQ"]
+timeframe = "1d"
+poll_seconds = 600
+
+[strategy]
+kind = "tsmom"
+lookback_days = [252]
+vol_days = 60
+target_vol = 0.4
+max_weight = 1.75
+max_long = 1.75
+max_short = 0.0
+allow_short = false
+rebalance_band = 0.05
+
+[risk]
+position_pct = 1.0
+max_positions = 1
+max_leverage = 1.75
+margin_rate_pct = 0.06
+slippage_bps = 1.0
+
+[backtest]
+days = 1825
+benchmark = "QQQ"
