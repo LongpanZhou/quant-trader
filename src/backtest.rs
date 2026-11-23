@@ -14,7 +14,7 @@ use crate::backend::Backend;
 use crate::config::Config;
 use crate::strategy::Strategy;
 use crate::types::{order_qty, Bar, Position, Signal};
-use anyhow::{bail, Result};
+use anyhow::{anyhow, bail, Result};
 use chrono::Datelike;
 use std::collections::{BTreeSet, HashMap};
 
@@ -535,6 +535,18 @@ fn synthetic_series(index: &[Bar], leverage: f64, fee_pct: f64, spread_pct: f64,
     out
 }
 
+/// End timestamp for a fixed `end_date`. A daily bar dated D is only complete
+/// after D's session ends, so the timestamp is advanced past D+1 to include D's
+/// close in the test.
+fn end_timestamp(end_date: &str, real_now: i64) -> Result<i64> {
+    let d = chrono::NaiveDate::parse_from_str(end_date.trim(), "%Y-%m-%d")
+        .map_err(|e| anyhow!("bad backtest.end_date: {e}"))?;
+    Ok(d.and_hms_opt(23, 59, 59)
+        .map(|t| (t + chrono::Duration::days(1)).and_utc().timestamp())
+        .unwrap_or(real_now)
+        .min(real_now))
+}
+
 pub fn run(cfg: &Config, strat: &dyn Strategy, backend: &Backend) -> Result<()> {
     let tf = cfg.timeframe;
     println!(
@@ -547,7 +559,14 @@ pub fn run(cfg: &Config, strat: &dyn Strategy, backend: &Backend) -> Result<()> 
 
     // Load extra history in front of the test window so indicators are warm
     // on the first tested day.
-    let now = chrono::Utc::now().timestamp() - cfg.backtest.end_days_ago * 86_400;
+    let real_now = chrono::Utc::now().timestamp();
+    let now = if cfg.backtest.end_date.trim().is_empty() {
+        real_now - cfg.backtest.end_days_ago * 86_400
+    } else {
+        end_timestamp(&cfg.backtest.end_date, real_now)?
+    };
+    // How far behind today the fixed end date is, so enough history is loaded.
+    let behind = ((real_now - now).max(0) / 86_400) + 1;
     let warmup_days = (strat.warmup() as f64 / tf.bars_per_day() as f64 * 1.5).ceil() as i64 + 5;
     let trade_from = now - cfg.backtest.days * 86_400;
 
@@ -559,7 +578,7 @@ pub fn run(cfg: &Config, strat: &dyn Strategy, backend: &Backend) -> Result<()> 
     let results = backend.bars_many(
         &cfg.symbols,
         tf,
-        cfg.backtest.days + warmup_days + cfg.backtest.end_days_ago,
+        cfg.backtest.days + warmup_days + behind,
     );
     for (sym, res) in cfg.symbols.iter().zip(results) {
         match res {
@@ -624,7 +643,7 @@ pub fn run(cfg: &Config, strat: &dyn Strategy, backend: &Backend) -> Result<()> 
     let bench = match backend.bars(
         &bench_sym,
         crate::config::Timeframe::D1,
-        cfg.backtest.days + 10 + cfg.backtest.end_days_ago,
+        cfg.backtest.days + 10 + behind,
     ) {
         Ok(mut b) => {
             // Only completed daily bars, same rule as the traded symbols, so
@@ -639,6 +658,14 @@ pub fn run(cfg: &Config, strat: &dyn Strategy, backend: &Backend) -> Result<()> 
     };
 
     let r = simulate(cfg, strat, &data, &bench, trade_from);
+    if std::env::var_os("QT_DEBUG_BENCH").is_some() {
+        if let (Some(f), Some(l)) = (bench.first(), bench.last()) {
+            println!(
+                "BENCH {} bars | first {} ({:.4}) | last {} ({:.4}) | trade_from {}",
+                bench.len(), f.ts, f.close, l.ts, l.close, trade_from
+            );
+        }
+    }
     let wins: Vec<f64> = r.trade_pnls.iter().copied().filter(|p| *p > 0.0).collect();
     let losses: Vec<f64> = r.trade_pnls.iter().copied().filter(|p| *p <= 0.0).collect();
     let gross_win: f64 = wins.iter().sum();
@@ -806,6 +833,7 @@ mod tests {
                 lag_bars: 0,
                 fill_open: false,
                 end_days_ago: 0,
+                end_date: String::new(),
                 synthetic_symbol: String::new(),
                 synthetic_index: String::new(),
                 synthetic_leverage: 0.0,
@@ -823,6 +851,30 @@ mod tests {
     fn run_sim_bench(c: &Config, data: &HashMap<String, Vec<Bar>>, bench: &[Bar], from: i64) -> Report {
         let strat = strategy::build(c, Mode::Backtest, Path::new("data/cache")).unwrap();
         simulate(c, strat.as_ref(), data, bench, from)
+    }
+
+    #[test]
+    fn fixed_end_date_includes_that_days_close() {
+        // 2026-11-22 00:00 UTC, a few days after the fixed end.
+        let real_now = chrono::NaiveDate::from_ymd_opt(2026, 11, 22)
+            .unwrap()
+            .and_hms_opt(0, 0, 0)
+            .unwrap()
+            .and_utc()
+            .timestamp();
+        let end = end_timestamp("2026-11-20", real_now).unwrap();
+        let close_bar = chrono::NaiveDate::from_ymd_opt(2026, 11, 20)
+            .unwrap()
+            .and_hms_opt(14, 30, 0)
+            .unwrap()
+            .and_utc()
+            .timestamp();
+        // The Nov 20 bar completes at Nov 21 14:30 and must be inside the run.
+        assert!(close_bar + 86_400 <= end);
+        // A bar dated Saturday Nov 21 would not be.
+        assert!(close_bar + 2 * 86_400 > end);
+        // A future end date is clamped to now.
+        assert_eq!(end_timestamp("2030-01-01", real_now).unwrap(), real_now);
     }
 
     #[test]

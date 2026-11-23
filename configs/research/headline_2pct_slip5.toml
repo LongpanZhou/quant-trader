@@ -44,10 +44,12 @@ max_positions = 3
 slippage_bps = 5.0
 
 [backtest]
-days = 1825
+end_date = "2026-11-20"
+days = 1824
 benchmark = "QQQ"
 lag_bars = 1
 fill_open = true
+
 
 
 

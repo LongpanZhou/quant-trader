@@ -11,13 +11,19 @@ the drawdown by 6–9 points, and slightly improves Sharpe — at the cost of
 
 ---
 
+Numbers are from a 2026-11-23 run with `end_date = "2026-11-20"`. Yahoo
+revises adjusted history, so re-runs can differ by ~0.1pp and a few trades
+(drawdowns by a few tenths); that is data revision, not a strategy change.
+
 ## 1. Test matrix (all measured in this repo)
 
 | Family | Period | Round trips | Return vs benchmark | Verdict |
 |---|---|---:|---:|---|
 | **Nasdaq core (baseline)** | 5y | 54 | **+16.9pp vs QQQ** | Best raw return |
-| **75/25 Nasdaq + multi-asset** | 5y | **98** | **+13.1pp vs QQQ** | **Best expansion** |
-| 75/25 Nasdaq + multi-asset | 10y | **183** | **+12.1pp vs QQQ** | Lower DD, more trades |
+| **95/2.5/2.5 max-trades** | 10y | **376** | **+17.4pp vs QQQ** | **Most trades, core edge** |
+| **80/10/10 balanced** | 10y | **310** | **+13.6pp vs QQQ** | Lower DD, meaningful sleeves |
+| **75/25 Nasdaq + multi-asset** | 5y | **98** | **+13.1pp vs QQQ** | Best 2-sleeve |
+| 75/25 Nasdaq + multi-asset | 10y | **182** | **+12.0pp vs QQQ** | Lower DD |
 | Trend on 100 stocks | 5y | **906** | −0.45pp vs SPY | Dilutes; biased universe |
 | Sector trend (29 ETFs) | 5y | **421** | −5.63pp vs SPY | Dilutes |
 | Multi-asset TSMOM (17 ETFs) | 5y | **306** | −8.11pp vs SPY | Trend drought |
@@ -47,21 +53,53 @@ Cost sensitivity of the intraday families (same trades, only slippage changes):
 
 | | 5 years | 10 years |
 |---|---:|---:|
-| Return | **22.62%/yr** | **30.64%/yr** |
+| Return | **22.61%/yr** | **30.67%/yr** |
 | QQQ | 9.49% | 18.58% |
-| Excess | **+13.13pp** | **+12.06pp** |
-| Max drawdown | **23.13%** | **29.36%** |
+| Excess | **+13.12pp** | **+12.10pp** |
+| Max drawdown | **23.13%** | **29.35%** |
 | Sharpe | **0.86** | **1.08** |
-| Round trips | **98** (19.6/yr) | **183** (18.3/yr) |
+| Round trips | **98** (19.6/yr) | **182** (18.2/yr) |
 | Fills | 1,050 | 1,953 |
 
 Versus the core alone (5y: 26.4%, 29.4% DD, 0.82 Sharpe, 54 trips; 10y: 37.4%,
-38.3% DD, 1.05 Sharpe, 97 trips): **~2x the round trips, 6–9pp lower CAGR,
+38.3% DD, 1.05 Sharpe, 97 trips): **~2x the round trips, 4–7pp lower CAGR,
 6–9pp lower drawdown, slightly higher Sharpe.**
 
-The sleeve is the only expansion that passes the correlation test:
+### 2b. Three sleeves: how far the trade count can go
+
+Adding a sector sleeve (XLK, XLF, XLE, XLV, XLI) on top of the multi-asset
+sleeve extends the frontier. Allocation is core / multi-asset / sectors:
+
+| Allocation | 5y CAGR | 5y excess | 5y DD | 5y Sharpe | 5y trips | 10y CAGR | 10y excess | 10y DD | 10y trips |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 100/0/0 core | 26.4% | +16.9 | 29.4% | 0.82 | 54 | 37.4% | +18.8 | 38.3% | 97 |
+| **95/2.5/2.5** | **25.5%** | **+16.0** | **28.2%** | **0.82** | **204** | **36.0%** | **+17.4** | **36.8%** | **376** |
+| 90/5/5 | 24.9% | +15.4 | 26.9% | 0.83 | 163 | 34.8% | +16.3 | 35.0% | 310 |
+| **80/10/10** | **23.4%** | **+13.9** | **24.4%** | **0.85** | **166** | **32.1%** | **+13.6** | **31.5%** | **310** |
+| 75/25 (2 sleeves) | 22.6% | +13.1 | 23.1% | 0.86 | 98 | 30.7% | +12.1 | 29.4% | 182 |
+| 60/20/20 | 19.4% | +10.0 | 19.4% | 0.87 | 166 | — | — | — | — |
+
+The trade count is set by the sleeves, not their size: even a 2.5% sleeve
+opens and closes its five ETFs. That is why 95/2.5/2.5 gives **4x the core's
+round trips (38/yr over 10y)** while keeping almost all of the core's return.
+The 60/20/20 allocation sits exactly at the +10pp bar (+9.95pp), so 80/10/10 is
+the meaningful-diversification limit.
+
+Two cautions on reading the table. **The 95/2.5/2.5 row has more return because
+it is 95% core, not because the sleeves add alpha** — its Sharpe (0.82) is the
+same as the core's. And **the sector sleeve does not pass the correlation
+test** (ρ 0.7-0.9 vs the 0.42 threshold); it is included only as a
+trade-count/breadth add-on, capped at 5-10%. The multi-asset sleeve is the
+only research-supported diversifier.
+
+The trade-off is cost: 95/2.5/2.5 turns over 1,548x starting equity over 10y
+(~155x/yr); at 5bp that is ~0.8%/yr of average equity, at 1bp ~0.15%/yr.
+
+The multi-asset sleeve is the only expansion that passes the correlation test:
 `SR_sleeve > ρ × SR_core`. Multi-asset trend has ρ ≈ 0–0.2 to equities; sector
-ETFs (ρ 0.7–0.9) and cross-sectional stock momentum (ρ 0.8–0.95) fail it.
+ETFs (ρ 0.7–0.9) and cross-sectional stock momentum (ρ 0.8–0.95) fail it. The
+sector sleeve in the 3-sleeve table is therefore a breadth/trade-count add-on,
+not an alpha source.
 
 ## 3. Why the other expansions fail
 
@@ -119,10 +157,16 @@ cost it saves. Faster signals are not the lever either: a 100-day SMA returned
 
 ## 4. Recommendation
 
-1. **If you want more trades:** run the 75/25 combo. Target **18–25 round
-   trips a year** — about 2x the core — not hundreds.
-2. **Do not add** sector/stock momentum, multi-asset TSMOM as a standalone,
-   intraday ORB/VWAP, PEAD, pairs, or RSI-2.
+1. **If you want more trades:** there are two presets.
+   - `configs/nasdaq_multi_sleeve_max_trades.toml` (95/2.5/2.5): **37-38 round
+     trips a year, +17.4pp vs QQQ over 10y, 36.8% max DD** — 4x the core's
+     trades with almost all of its edge. The sleeves are small, so this is a
+     trade-count maximizer, not a big diversification change.
+   - `configs/nasdaq_multi_sleeve.toml` (80/10/10): **31 round trips a year,
+     +13.6pp over 10y, 31.5% max DD** — the balanced choice; the sleeves are
+     large enough to matter, and the drawdown is 7pp lower than the core.
+2. **Do not add** sector/stock momentum as a standalone, multi-asset TSMOM as
+   a standalone, intraday ORB/VWAP, PEAD, pairs, or RSI-2.
 3. **If you want the core's fills lower:** a 5% band cuts fills from 861 to
    516 over 5 years with the same return, at the cost of more tracking error
    (2.0% vs 0.69%).

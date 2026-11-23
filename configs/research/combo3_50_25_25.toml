@@ -1,0 +1,66 @@
+﻿broker = "sim"
+symbols = ["QQQ", "TQQQ", "BIL", "TLT", "GLD", "DBC", "UUP", "EFA", "XLK", "XLF", "XLE", "XLV", "XLI", "SPY"]
+timeframe = "1d"
+poll_seconds = 600
+
+[strategy]
+kind = "combo"
+rebalance_band = 0.02
+max_long = 1.0
+max_short = 0.0
+
+[[strategy.parts]]
+allocation = 0.5
+[strategy.parts.strategy]
+kind = "leveraged_index"
+index = "QQQ"
+risk_asset = "TQQQ"
+leverage = 3.0
+safe_asset = "BIL"
+sma_days = 165
+target_vol = 0.40
+vol_days = 20
+rebalance_band = 0.02
+
+[[strategy.parts]]
+allocation = 0.25
+[strategy.parts.strategy]
+kind = "trend_vol_target"
+entry_lookback = 20
+exit_lookback = 40
+keltner_mult = 2.0
+vol_days = 14
+position_vol_target = 0.02
+max_weight = 0.50
+max_gross = 1.0
+rebalance_band = 0.02
+index = "SPY"
+index_sma = 200
+park_cash_in_index = false
+
+[[strategy.parts]]
+allocation = 0.25
+[strategy.parts.strategy]
+kind = "trend_vol_target"
+entry_lookback = 20
+exit_lookback = 40
+keltner_mult = 2.0
+vol_days = 14
+position_vol_target = 0.02
+max_weight = 0.50
+max_gross = 1.0
+rebalance_band = 0.02
+index = "SPY"
+index_sma = 200
+park_cash_in_index = false
+
+[risk]
+position_pct = 1.0
+max_positions = 20
+slippage_bps = 1.0
+
+[backtest]
+days = 1825
+benchmark = "QQQ"
+lag_bars = 1
+fill_open = true

@@ -20,6 +20,7 @@ max_positions = 3
 slippage_bps = 1
 
 [backtest]
+end_date = "2026-11-20"
 days = 7300
 benchmark = "QQQ"
 lag_bars = 1
@@ -32,4 +33,5 @@ synthetic_fee_pct = 0.0095
 
 
 synthetic_spread_pct = 0
+
 

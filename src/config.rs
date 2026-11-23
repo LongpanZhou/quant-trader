@@ -374,6 +374,10 @@ pub struct BacktestConfig {
     /// window back, which shows how much of a result is the chosen end date.
     #[serde(default)]
     pub end_days_ago: i64,
+    /// Fixed end date (YYYY-MM-DD) for a reproducible window. Empty = today.
+    /// Use this for published results; "last N days" otherwise moves daily.
+    #[serde(default)]
+    pub end_date: String,
     /// Replace this symbol's prices with a synthetic daily-reset leveraged
     /// fund built from `synthetic_index`, for tests that start before the
     /// real fund existed (e.g. TQQQ before 2010). Empty = use real prices.
@@ -478,6 +482,7 @@ fn default_backtest() -> BacktestConfig {
         lag_bars: 0,
         fill_open: false,
         end_days_ago: 0,
+        end_date: String::new(),
         synthetic_symbol: String::new(),
         synthetic_index: String::new(),
         synthetic_leverage: 0.0,
@@ -861,6 +866,14 @@ impl Config {
         }
         if !(0..=3650).contains(&self.backtest.end_days_ago) {
             bail!("config: backtest.end_days_ago must be in [0, 3650]");
+        }
+        if !self.backtest.end_date.trim().is_empty() {
+            if self.backtest.end_days_ago != 0 {
+                bail!("config: use either backtest.end_date or end_days_ago, not both");
+            }
+            if chrono::NaiveDate::parse_from_str(self.backtest.end_date.trim(), "%Y-%m-%d").is_err() {
+                bail!("config: backtest.end_date must be YYYY-MM-DD");
+            }
         }
         if self.backtest.fill_open && self.backtest.lag_bars == 0 {
             bail!(

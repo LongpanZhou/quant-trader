@@ -169,7 +169,7 @@ Raw output: `research/results/nasdaq_leveraged_trend_5y.txt`.
 ### 5.1 Ten years (2016-2026), same rule, no re-tuning
 
 ```
-Strategy return      : +2278.82%  (+37.35% a year)
+Strategy return      : +2283.15%  (+37.35% a year)
 QQQ buy & hold       :  +448.06%  (+18.58% a year)
 Excess vs QQQ        : +18.78% a year
 Max drawdown         : 38.32%  (QQQ: 35.12%)
@@ -295,13 +295,13 @@ actual funds, not a hand-picked list of survivors.
    shows the cost: **-1.8pp and -6.2pp**. Shifting the end date earlier raises
    the excess, so November 2026 is the least favourable end date.
 4. **The full cycle is +10.96pp at 1bp, and the margin is thin.** A 26-year
-   synthetic run (2000-2026, current preset) gives **20.37%/yr vs QQQ's 9.40%,
-   +10.96pp, max drawdown 42.3% (2000-2003), Sharpe 0.71**. At 5bp: +10.02pp.
-   With a 50bp financing spread: +10.30pp. With both: **+9.35pp — below the
+   synthetic run (2000-2026, current preset) gives **20.36%/yr vs QQQ's 9.40%,
+   +10.96pp, max drawdown 42.3% (2000-2003), Sharpe 0.71**. At 5bp: +10.01pp.
+   With a 50bp financing spread: +10.30pp. With both: **+9.36pp — below the
    bar.** The 2000s returned roughly +5%/yr. The old "13.1% / +5.1pp / -83%"
    figure came from a different, slower variant (200-day, 25% vol target) and
    has been removed to avoid confusion.
-5. **TQQQ inception is 2010.** Pre-2010 is synthetic, validated to 0.68pp/yr on
+5. **TQQQ inception is 2010.** Pre-2010 is synthetic, validated to 0.64pp/yr on
    the real-fund overlap. The synthetic series floors at $0.01, so the 2000-02
    share-count accounting is unreliable (the 26-year weight-drift statistic is
    an artifact); the return path is still useful.
@@ -345,6 +345,15 @@ cargo build --release
 .\research\run_nasdaq_study.ps1
 ```
 
+The study configs pin `end_date = "2026-11-20"` so the window does not move
+with the run date. `days = 1824` is the five-year window
+(Nov 24, 2021 - Nov 20, 2026); `days = 7299` is the twenty-year window.
+`--days` overrides still respect the fixed end date.
+
+Numbers are from the 2026-11-23 run. Yahoo revises adjusted history, so
+re-running can move a result by ~0.1pp and a few trades (drawdowns by a few
+tenths); that is data revision, not a strategy change.
+
 The backtester downloads daily adjusted closes from Yahoo Finance at run time;
 nothing is pre-baked.
 
@@ -375,8 +384,8 @@ source, and it would not have met the bar with 2x instead of 3x (+9.8pp over
 five years).
 
 The wider evidence is thinner than the five-year headline. Over the full cycle
-(2000-2026) the same preset returns **20.37%/yr vs QQQ's 9.40%, +10.96pp, with
-a 42.3% drawdown** at 1bp — but **+9.35pp** once 5bp slippage and a 50bp
+(2000-2026) the same preset returns **20.36%/yr vs QQQ's 9.40%, +10.96pp, with
+a 42.3% drawdown** at 1bp — but **+9.36pp** once 5bp slippage and a 50bp
 financing spread are included. The five-year result is therefore above the
 full-cycle average and in the better part of the strategy's historical range,
 not a forecast. Anyone running this should size it as a satellite, expect a
@@ -416,22 +425,22 @@ Same 16.4-year window (6000 days), same rule:
 
 | Series | CAGR | Max DD | Sharpe |
 |---|---:|---:|---:|
-| Synthetic 3x QQQ | 30.54% | 39.82% | 0.93 |
+| Synthetic 3x QQQ | 30.50% | 39.81% | 0.92 |
 | Real TQQQ | 29.86% | 40.03% | 0.91 |
 
-The synthetic model is **0.68pp/yr** from the real fund, so the 20-year
+The synthetic model is **0.64pp/yr** from the real fund, so the 20-year
 extension is a fair test rather than a different strategy.
 
 ### 11.3 Result
 
 ```
-Strategy return      : +11720.13%  (+26.98% a year)
+Strategy return      : +11727.06%  (+26.99% a year)
 QQQ buy & hold       :  +1526.51%  (+14.98% a year)
 Excess vs QQQ        : +12.00% a year
-Max drawdown         : 41.53%  (QQQ: 53.40%)
+Max drawdown         : 41.54%  (QQQ: 53.40%)
 Drawdown window      : 2007-10-31 to 2009-04-20
 Sharpe (annualised)  : 0.84
-Closed trades        : 263
+Closed trades        : 261
 Orders / turnover    : 2,869 fills, 9,006x starting equity
 Weight tracking      : avg 0.59% of equity off target, worst 6.42%
 ```
@@ -462,10 +471,10 @@ The 26-year synthetic run covers the dot-com crash and the GFC:
 
 | Assumption | CAGR | Excess vs QQQ | Max DD |
 |---|---:|---:|---:|
-| 1bp, T-bill financing | **20.37%** | **+10.96** | 42.27% |
-| 5bp | 19.43% | +10.02 | 43.11% |
+| 1bp, T-bill financing | **20.36%** | **+10.96** | 42.27% |
+| 5bp | 19.41% | +10.01 | 43.11% |
 | 1bp, +50bp financing spread | 19.70% | +10.30 | 42.29% |
-| **5bp + 50bp financing** | **18.76%** | **+9.35** | **43.13%** |
+| **5bp + 50bp financing** | **18.76%** | **+9.36** | **43.13%** |
 
 The worst drawdown ran from **2000-11-20 to 2003-03-31**. The 2000s returned
 roughly +5%/yr, with 2001 -16.8%, 2002 -16.3%, 2003 +45.5%, 2005 -21.3% and
@@ -609,7 +618,7 @@ unchanged by the split; the dividends add $97 of cash.
 - Corporate actions rely on Yahoo reporting them within the 400-day window.
 - A restart re-evaluates the latest completed bar; the 2% band limits the extra
   turnover, but it is not zero.
-- The 20-year result uses a synthetic 3x fund before 2010; its 0.68pp error
+- The 20-year result uses a synthetic 3x fund before 2010; its 0.64pp error
   versus the real fund is the best available estimate of that assumption's cost.
   The synthetic series floors at $0.01, so 2000-02 share-count accounting is
   unreliable.

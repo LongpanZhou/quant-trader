@@ -14,7 +14,7 @@ Nothing here is real-money trading: the program has no live broker endpoint.
 | # | Finding | Severity | Status |
 |---|---|---|---|
 | F1 | 5% rebalance band left the book **2.0% of equity off target on average, 12.4% worst** | P1 | **Fixed**: band 2% → 0.69% / 5.5%, same return, ~9% more notional turnover |
-| F2 | Per-leg band + cash cap can leave a buy unfunded ("low bucket") | P1 | **Mitigated**: warning logged; 1-2 material events at 2% band |
+| F2 | Per-leg band + cash cap can leave a buy unfunded ("low bucket") | P1 | **Mitigated**: warning logged; 1-3 material events at 2% band |
 | F3 | A failed order was not retried until the next day | P1 | **Fixed**: up to 3 retries per bar on following polls |
 | F4 | Closed-market polling could sleep through the open by 10 minutes | P1 | **Fixed**: 60-second polls while closed |
 | F5 | Backtest fills at the official open; live fills seconds-to-a-minute later | P2 | **Measured & documented** |
@@ -89,15 +89,15 @@ Same strategy, same data, only `rebalance_band` changed:
 
 | Band | CAGR | Excess | Fills | Notional turnover | Avg drift | Worst drift | Worst single | Cash-limited buys |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 1% | 26.44% | +16.94 | 1,101 | 213.5x | 0.46% | 4.10% | 2.23% | 10 |
-| **2%** | **26.40%** | **+16.91** | **860** | **207.0x** | **0.69%** | **5.48%** | **2.77%** | **2** |
-| 3% | 26.23% | +16.73 | 715 | 199.6x | 1.09% | 7.77% | 3.93% | 3 |
+| 1% | 26.44% | +16.94 | 1,102 | 213.7x | 0.46% | 4.10% | 2.23% | 9 |
+| **2%** | **26.40%** | **+16.91** | **862** | **207.1x** | **0.70%** | **5.48%** | **2.77%** | **3** |
+| 3% | 26.22% | +16.73 | 714 | 199.6x | 1.09% | 7.77% | 3.94% | 1 |
 | 5% | 26.32% | +16.83 | 516 | 190.1x | 2.04% | 12.38% | 6.26% | 3 |
 | 10% | 26.30% | +16.81 | 318 | 171.5x | 4.17% | 20.72% | 10.45% | 3 |
 
 The key result: **returns are flat** (26.2-26.4% at every band), while tracking
 error falls 3-4× as the band tightens. But it is **not free**: from 5% to 2%,
-fills rise 67% (516 → 860) and notional turnover rises 9% (190x → 207x). At
+fills rise 67% (516 → 862) and notional turnover rises 9% (190x → 207x). At
 1bp that is ~0.17% of starting equity over five years; at 5bp the 5-year excess
 falls from +16.9 to +15.8pp, and at 10bp to +14.5pp. The 2% band is the best
 tracking/cost compromise; 1% is not worth the extra turnover.
@@ -329,8 +329,8 @@ The 2% band is now the preset. Live-parity results:
 The 2x QLD 20-year version is +7.3pp with 40.1% DD. The conclusion is unchanged:
 3x is required to clear the +10pp bar.
 
-The full cycle (2000-2026, synthetic 3x) is **20.37%/yr vs QQQ 9.40%,
-+10.96pp, max DD 42.3%** at 1bp — but **+9.35pp** with 5bp slippage and a 50bp
+The full cycle (2000-2026, synthetic 3x) is **20.36%/yr vs QQQ 9.40%,
++10.96pp, max DD 42.3%** at 1bp - but **+9.36pp** with 5bp slippage and a 50bp
 financing spread. The full-cycle margin is thin; the five-year result is above
 the full-cycle average.
 
@@ -366,14 +366,14 @@ layer had five P1 defects.** Its findings and my response:
 | Alpaca paper does **not** adjust splits/dividends; the code/audit assumed it did | **Yes** (Alpaca staff, 2024/2026) | Docs corrected; the loop now detects a split in a held symbol and **halts** with a reconcile/reset message |
 | A failed corporate-action fetch was ignored and trading continued | **Yes** | If anything is held, the tick is skipped until actions can be verified |
 | Corporate actions were applied and the watermark saved separately (non-idempotent) | **Yes** | Each action now updates the ledger and the watermark in **one save** |
-| The 20-year synthetic TQQQ filled at the previous close (same-bar fill) | **Yes** | The synthetic bar's **open** now uses QQQ's overnight gap; 20y moved from 26.52%/+11.5pp to **26.98%/+12.0pp** |
+| The 20-year synthetic TQQQ filled at the previous close (same-bar fill) | **Yes** | The synthetic bar's **open** now uses QQQ's overnight gap; 20y moved from 26.52%/+11.5pp to **26.99%/+12.0pp** |
 | `fill_open=true` with `lag_bars=0` was a look-ahead footgun | **Yes** | Config validation now refuses it |
 | Retry off-by-one (only 2 real retries, not 3) | **Yes** | `n <= 3`; three retries now actually run |
 | `vol == 0` fell back to full 3x | **Yes** | Falls back to 1x |
 | Startup equity valued positions at cost after a restart | **Yes** | Open positions are marked with a real price before the equity log |
 | `index`/`risk_asset`/`safe_asset` could be missing from `symbols` and silently skip the downtrend target | **Yes** | Config validation added |
 | The doc's blend examples were wrong (20% vol is 50/50, not 100% TQQQ) | **Yes** | Corrected; an exact-weight unit test was added |
-| The band sweep's "same trade count" used closed round-trips, hiding a turnover increase | **Yes** | `Orders / turnover` added; the claim was corrected (2% vs 5%: 860 vs 516 fills, 207x vs 190x notional) |
+| The band sweep's "same trade count" used closed round-trips, hiding a turnover increase | **Yes** | `Orders / turnover` added; the claim was corrected (2% vs 5%: 862 vs 516 fills, 207x vs 190x notional) |
 | DST spring-forward means the engine uses Thursday's bar until 10:30 | **No — rejected** | Friday's bar completes Saturday 14:30 UTC, long before Monday's open; the fixed `+86400` is safe because the loop never trades while closed |
 | Population vs sample σ makes exposure 2.6% high | Accepted (minor) | Not changed; documented |
 | No client-order-ID idempotency; restart loses `last_bar`; `status` can race `run`; Alpaca margin cushion is only 0.11% | Accepted | Documented as P2/P3; position reconciliation and the retry bound the risk |
@@ -389,7 +389,7 @@ full-cycle margin is thin.** Its substantive points and my response:
 |---|---|---|
 | It is a ~2.4x concentrated Nasdaq mega-cap bet, not "3 diversified ETFs"; effective top-10 ~110% of equity | **Yes** | Disclosed in study §7.1-7.2: 2.4x average, top-10 ~46% of QQQ, ~110% effective |
 | The study's 13.1% / +5.1pp / -83% full-cycle caveat is not reproducible; the 26y run gives +10.96pp / 42.3% | **Yes** | Replaced with the actual 26-year run and a cost matrix; the old figure was a different, slower variant |
-| The +10pp margin is thin: 5bp or +50bp financing can push the full cycle below 10pp | **Yes** | Measured: +10.96 (1bp), +10.02 (5bp), +10.30 (+50bp), **+9.35 (both)** |
+| The +10pp margin is thin: 5bp or +50bp financing can push the full cycle below 10pp | **Yes** | Measured: +10.96 (1bp), +10.01 (5bp), +10.30 (+50bp), **+9.36 (both)** |
 | The 165-day SMA is window-specific; the 200-day standard is 5-6pp worse here | **Yes** | Disclosed in §5.2/§7; 200-day is +10.6pp over 5y, still above the bar but lower |
 | The "40% volatility target" is really a leverage target; realised vol 36%, cap binds 16.6-29.7% of invested days | **Yes** | Reframed in §7.1; the config name is historical |
 | Sharpe comparison was wrong ("barely above QQQ") | **Yes** | Corrected: 0.82 vs 0.50 (5y), 1.05 vs 0.86 (10y) |
