@@ -1,0 +1,37 @@
+﻿# Closest to the published test: Zarattini & Antonacci (2024), "A Century of
+# Profitable Industry Trends", on State Street sector and industry ETFs.
+# Long-only, no leverage (the paper allows 200%); unused capital stays in cash.
+# SPY is listed only as the benchmark and is never bought.
+broker = "sim"
+symbols = ["XLK","XLF","XLE","XLV","XLI","XLY","XLP","XLU","XLB","XLRE","XLC","XBI","XHB","XME","XOP","XRT","KRE","KBE","XSD","XAR","XPH","XES","KIE","KCE","XTN","XHE","XHS","XSW","XTL","SPY"]
+timeframe = "1d"
+poll_seconds = 300
+
+[strategy]
+kind = "trend_vol_target"
+entry_lookback = 20          # buy a close above the 20-day Donchian or Keltner upper band
+exit_lookback = 40           # trailing stop at the 40-day lower band, never lowered
+keltner_mult = 2.0
+vol_days = 14                # window for each position's volatility estimate
+position_vol_target = 0.02   # each position aims to add 2% annualised volatility
+max_weight = 0.20            # no single position above 20% of the account
+max_gross = 1.0              # never invest more than 100% (no leverage)
+rebalance_band = 0.03        # only resize a position when it is 3% of equity off target
+index = "SPY"
+index_sma = 200
+park_cash_in_index = true   # put unused capital in SPY while SPY is above its 200-day average
+
+[risk]
+position_pct = 0.10          # unused by this strategy (it sizes by volatility)
+max_positions = 45
+stop_loss_pct = 0.0          # the strategy has its own trailing stops
+take_profit_pct = 0.0
+slippage_bps = 1.0
+
+[backtest]
+benchmark = "SPY"
+lag_bars = 1
+fill_open = true
+days = 3650
+
+

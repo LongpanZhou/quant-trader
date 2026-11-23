@@ -1,0 +1,31 @@
+﻿# Clenow (2015), "Stocks on the Move". Daily bars, rebalanced weekly:
+# rank stocks by volatility-adjusted 90-day momentum, hold the top 8, drop
+# any that leave the top group or fall below their 100-day average, and only
+# open new positions while SPY is above its 200-day average.
+# SPY is used as the market filter and is never bought.
+broker = "sim"
+symbols = ["AAPL","MSFT","NVDA","AMZN","GOOGL","META","TSLA","AVGO","JPM","V","MA","UNH","XOM","JNJ","PG","HD","COST","ABBV","MRK","KO","PEP","WMT","BAC","CVX","LLY","ORCL","CRM","ADBE","NFLX","AMD","CSCO","INTC","DIS","MCD","NKE","CAT","BA","GE","IBM","QCOM","SPY"]
+timeframe = "1d"
+poll_seconds = 300
+
+[strategy]
+kind = "momentum_rotation"
+momentum_days = 90
+trend_sma = 100
+index_sma = 200
+top_n = 8
+index = "SPY"
+
+[risk]
+position_pct = 0.12
+max_positions = 8
+stop_loss_pct = 0.0
+take_profit_pct = 0.0
+slippage_bps = 1.0
+
+[backtest]
+benchmark = "SPY"
+lag_bars = 1
+fill_open = true
+days = 1825
+

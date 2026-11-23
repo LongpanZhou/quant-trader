@@ -1,0 +1,32 @@
+﻿# Opening range breakout on 5-minute candles (Zarattini & Aziz, 2023,
+# "Can Day Trading Really Be Profitable?"). One trade per symbol per day:
+# after the first 5 minutes, trade in the direction the session opened.
+# Stop = 10% of the average daily range, target = 10x the stop, and whatever
+# is still open is closed before the end of the session.
+broker = "sim"
+symbols = ["QQQ", "SPY"]
+timeframe = "5m"
+poll_seconds = 30
+
+[strategy]
+kind = "opening_range"
+range_minutes = 5
+atr_days = 14
+stop_atr = 0.10
+target_r = 10.0
+risk_pct = 0.01          # a stopped-out trade costs about 1% of the account...
+max_weight = 0.5         # ...but never more than half the account per symbol
+allow_short = true
+flatten_minutes = 3
+rebalance_band = 0.25    # one entry per day: never resize an open trade
+
+[risk]
+position_pct = 0.5
+max_positions = 2
+slippage_bps = 10
+short_borrow_pct = 0.005
+flatten_before_close_minutes = 2
+
+[backtest]
+days = 28
+
