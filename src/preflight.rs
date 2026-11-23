@@ -5,7 +5,7 @@
 //! target. Run it before starting `run` (and after changing a config).
 
 use crate::backend::Backend;
-use crate::config::Config;
+use crate::config::{BrokerKind, Config};
 use crate::strategy::Strategy;
 use crate::types::Bar;
 use anyhow::Result;
@@ -27,6 +27,17 @@ pub fn run(cfg: &Config, backend: &Backend, strategy: &dyn Strategy) -> Result<(
     println!("PREFLIGHT | {} | {} bars | {} symbols", strategy.name(), tf.yahoo(), cfg.symbols.len());
     println!("now: {} UTC | history window: {history} days | warmup: {} bars", day(now), strategy.warmup());
     println!("data: {}", backend.describe());
+    let market_open = backend.market_open().unwrap_or(false);
+    println!("market: {}", if market_open { "OPEN" } else { "closed" });
+    if cfg.broker == BrokerKind::Alpaca {
+        println!();
+        println!("NOTE: Alpaca paper does not credit dividends. A BIL/T-bill holding will");
+        println!("      understate the safe-asset return; the sim broker does credit them.");
+        if cfg.alpaca.feed.eq_ignore_ascii_case("iex") {
+            println!("NOTE: Alpaca feed is IEX (one exchange, ~2-4% of consolidated volume).");
+            println!("      Prices are close for QQQ/TQQQ but not the consolidated tape.");
+        }
+    }
     println!();
 
     let mut universe: HashMap<String, Vec<Bar>> = HashMap::new();
@@ -87,6 +98,18 @@ pub fn run(cfg: &Config, backend: &Backend, strategy: &dyn Strategy) -> Result<(
                 }
             }
             Err(e) => println!("         corporate actions: unavailable ({e})"),
+        }
+
+        match backend.quote_age(sym) {
+            Ok((ts, delay)) => {
+                let age = now - ts;
+                let delay_txt = if delay > 0 { format!(", exchange delay {delay}s") } else { String::new() };
+                println!("         quote: {:.1} min old{delay_txt}", age as f64 / 60.0);
+                if market_open && (delay > 0 || age > 900) {
+                    problems.push(format!("{sym}: quote is {age}s old or delayed {delay}s"));
+                }
+            }
+            Err(e) => println!("         quote: unavailable ({e})"),
         }
     }
 

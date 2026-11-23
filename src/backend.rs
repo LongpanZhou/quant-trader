@@ -118,6 +118,14 @@ impl Backend {
         }
     }
 
+    /// (last market data time, exchange delay in seconds) for a symbol.
+    pub fn quote_age(&self, symbol: &str) -> Result<(i64, i64)> {
+        match self {
+            Backend::Sim { data, .. } => data.quote_age(symbol),
+            Backend::Alpaca(_) => Ok((chrono::Utc::now().timestamp(), 0)),
+        }
+    }
+
     pub fn last_price(&self, symbol: &str) -> Result<f64> {
         match self {
             Backend::Sim { data, .. } => data.last_price(symbol),

@@ -12,7 +12,7 @@ safe_asset = "BIL"
 sma_days = 165
 target_vol = 0.40
 vol_days = 20
-rebalance_band = 0.05
+rebalance_band = 0.02
 
 [risk]
 position_pct = 1.0
@@ -28,4 +28,5 @@ synthetic_symbol = "TQQQ"
 synthetic_index = "QQQ"
 synthetic_leverage = 3.0
 synthetic_fee_pct = 0.0095
+
 

@@ -171,6 +171,12 @@ not exist yet with a daily-reset series built from an index (used for the
 Yahoo's event feed (TQQQ's 2:1 split of November 2025 included), with a
 persisted watermark, so a held fund's share count and cost basis stay correct.
 
+**Live audit.** `docs/live_readiness_audit.md` reports the measured weight
+drift (0.7% of equity on average at the current 2% band, 5.5% worst), the
+order-retry rules, quote-freshness checks and the Alpaca paper caveats
+(no dividends, IEX-only feed). `risk.rebalance_band_rel` enables the 5/25 rule
+if a strategy holds sleeves small enough to need it.
+
 ## Output files (`data/<config name>/`)
 - `sim_ledger.json` – cash and positions of the sim account (survives restarts)
 - `trades.csv` – every fill: time, symbol, side, qty, price, reason

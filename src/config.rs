@@ -343,6 +343,11 @@ pub struct RiskConfig {
     /// Uses the exchange's real closing time, so it also works on half-days.
     #[serde(default)]
     pub flatten_before_close_minutes: u32,
+    /// Cap the rebalance band at this fraction of a position's target weight
+    /// (the "5/25 rule": rebalance when drift exceeds the tighter of the
+    /// absolute band or 25% of the target). 0 = absolute band only.
+    #[serde(default)]
+    pub rebalance_band_rel: f64,
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -837,6 +842,9 @@ impl Config {
         }
         if self.risk.max_positions == 0 {
             bail!("config: risk.max_positions must be at least 1");
+        }
+        if !(0.0..=1.0).contains(&self.risk.rebalance_band_rel) {
+            bail!("config: risk.rebalance_band_rel must be in [0, 1]");
         }
         if self.poll_seconds == 0 {
             bail!("config: poll_seconds must be at least 1");

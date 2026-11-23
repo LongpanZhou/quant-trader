@@ -42,6 +42,16 @@ pub struct Report {
     /// Equity after every tested bar: (timestamp, equity). Used to prove that
     /// later bars cannot change earlier results.
     pub curve: Vec<(i64, f64)>,
+    /// Portfolio strategies: mean and worst sum of |actual weight - target|
+    /// measured right after a rebalance (fraction of equity).
+    pub avg_weight_error: f64,
+    pub max_weight_error: f64,
+    /// Mean signed gross exposure error (actual - target); negative means the
+    /// book is systematically under-invested.
+    pub avg_gross_error: f64,
+    pub max_single_error: f64,
+    /// Buys that could not reach their target because cash ran out.
+    pub cash_capped_buys: usize,
 }
 
 /// Bars before `trade_from` are only used to warm up indicators; trading and
@@ -83,6 +93,13 @@ pub fn simulate(
     let (mut long_pnl, mut short_pnl) = (0.0, 0.0);
     let mut curve = Vec::new();
     let mut curve_ts: Vec<i64> = Vec::new();
+    let mut weight_err_sum = 0.0f64;
+    let mut weight_err_max = 0.0f64;
+    let mut weight_err_n = 0usize;
+    let mut gross_err_sum = 0.0f64;
+    let mut max_single_err = 0.0f64;
+    let mut cash_capped_buys = 0usize;
+    let mut last_want: Option<Vec<f64>> = None;
     let mut bh_curve = Vec::new();
     let (mut long_sum, mut short_sum) = (0.0, 0.0);
     let (mut first_ts, mut last_ts) = (None, 0);
@@ -216,6 +233,8 @@ pub fn simulate(
             let held: Vec<&str> = (0..n).filter(|&i| pos[i].is_some()).map(|i| symbols[i].as_str()).collect();
             if let Some(targets) = strat.targets(&universe, &held) {
                 let band = strat.rebalance_band();
+                let rel = risk.rebalance_band_rel;
+                let band_for = |w: f64| if rel > 0.0 { band.min(rel * w.abs()) } else { band };
                 // When fills are at the open, size against the same open
                 // prices: nothing from this bar's close is used before it is
                 // known. Otherwise mark at the current close.
@@ -227,6 +246,7 @@ pub fn simulate(
                         want[i] = *w;
                     }
                 }
+                last_want = Some(want.clone());
                 // 1. Exits (including positions on the wrong side) and sell-side resizes.
                 for i in 0..n {
                     let Some(p) = pos[i] else { continue };
@@ -236,7 +256,7 @@ pub fn simulate(
                         continue;
                     }
                     let excess = p.qty * close - want[i] * eq;
-                    if excess > band * eq {
+                    if excess > band_for(want[i]) * eq {
                         let qty = (excess / close).floor();
                         if qty >= 1.0 {
                             trade!(i, -qty, close);
@@ -266,8 +286,11 @@ pub fn simulate(
                         }
                         Some(p) => {
                             let shortfall = w * eq - p.qty * close;
-                            if shortfall > band * eq {
+                            if shortfall > band_for(*w) * eq {
                                 let budget = if p.qty > 0.0 { shortfall.min(cash + lev * eq) } else { shortfall };
+                                if p.qty > 0.0 && budget + 0.005 * eq < shortfall {
+                                    cash_capped_buys += 1;
+                                }
                                 let qty = (budget / (close * (1.0 + slip))).floor();
                                 if qty >= 1.0 {
                                     trade!(i, qty, close);
@@ -276,6 +299,28 @@ pub fn simulate(
                         }
                     }
                 }
+            }
+        }
+
+        // Drift between rebalances: how far the book is from the latest target
+        // on every tested bar, not only on the bars where it traded.
+        if let Some(w) = &last_want {
+            let eq_now = cash + held_value(&pos, &last_px);
+            if eq_now > 0.0 {
+                let mut err = 0.0;
+                let mut gross_actual = 0.0;
+                for i in 0..n {
+                    let actual = pos[i].map(|p| p.qty * last_px[i]).unwrap_or(0.0) / eq_now;
+                    let d = actual - w[i];
+                    err += d.abs();
+                    gross_actual += actual.abs();
+                    max_single_err = max_single_err.max(d.abs());
+                }
+                let gross_target: f64 = w.iter().map(|x| x.abs()).sum();
+                gross_err_sum += gross_actual - gross_target;
+                weight_err_sum += err;
+                weight_err_max = weight_err_max.max(err);
+                weight_err_n += 1;
             }
         }
 
@@ -404,6 +449,11 @@ pub fn simulate(
         short_pnl,
         yearly,
         curve: curve_ts.iter().copied().zip(curve.iter().copied()).collect(),
+        avg_weight_error: if weight_err_n > 0 { weight_err_sum / weight_err_n as f64 } else { 0.0 },
+        max_weight_error: weight_err_max,
+        avg_gross_error: if weight_err_n > 0 { gross_err_sum / weight_err_n as f64 } else { 0.0 },
+        max_single_error: max_single_err,
+        cash_capped_buys,
     }
 }
 
@@ -618,6 +668,18 @@ pub fn run(cfg: &Config, strat: &dyn Strategy, backend: &Backend) -> Result<()> 
             println!("Profit factor        : {:.2}", gross_win / gross_loss);
         }
     }
+    if r.max_weight_error > 0.0 {
+        println!(
+            "Weight tracking      : avg {:.2}% of equity off target, worst {:.2}% | gross {:+.2}% | worst single {:.2}%",
+            r.avg_weight_error * 100.0,
+            r.max_weight_error * 100.0,
+            r.avg_gross_error * 100.0,
+            r.max_single_error * 100.0
+        );
+        if r.cash_capped_buys > 0 {
+            println!("Cash-limited buys    : {}", r.cash_capped_buys);
+        }
+    }
     println!("=========================================");
     if r.yearly.len() > 1 {
         println!("\nYear by year (a year with few days is partial):");
@@ -661,6 +723,7 @@ mod tests {
                 max_leverage: 1.0,
                 margin_rate_pct: 0.0,
                 flatten_before_close_minutes: 0,
+                rebalance_band_rel: 0.0,
             },
             sim: SimConfig { starting_cash: 1000.0 },
             backtest: BacktestConfig {

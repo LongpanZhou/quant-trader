@@ -6,10 +6,10 @@ QQQ makes 10%, make 20%; if QQQ makes -10%, make 0%.
 
 **Answer.** `configs/nasdaq_leveraged_trend.toml` — hold a volatility-targeted
 blend of QQQ and TQQQ while QQQ is above its 165-day average, T-bills
-otherwise. Over the five years to 20 Nov 2026 it returned **26.3% a year
-against QQQ's 9.5% (+16.8 points a year)**, with a **28.7% maximum drawdown
+otherwise. Over the five years to 20 Nov 2026 it returned **26.4% a year
+against QQQ's 9.5% (+16.9 points a year)**, with a **29.4% maximum drawdown
 versus QQQ's 35.1%**, and it beat QQQ in **every complete calendar year from
-2022 to 2026, by 6.7 to 34.7 points**.
+2022 to 2026, by 7.4 to 36.1 points**.
 
 That is a better result than the published literature leads one to expect, and
 the reasons are set out honestly in §7: the window contains one crash and one
@@ -132,30 +132,31 @@ actual funds that existed.
 ## 4. Result: five years, Nov 2021 - Nov 2026
 
 ```
-Strategy return      : +220.77%  (+26.32% a year)
+Strategy return      : +221.83%  (+26.40% a year)
 QQQ buy & hold       :  +57.21%  ( +9.49% a year)
-Excess vs QQQ        : +16.83% a year
-Max drawdown         : 28.68%  (QQQ: 35.12%)
+Excess vs QQQ        : +16.91% a year
+Max drawdown         : 29.35%  (QQQ: 35.12%)
 Drawdown window      : 2024-07-10 to 2024-09-06
 Sharpe (annualised)  : 0.82
 Closed trades        : 54
+Weight tracking      : avg 0.69% of equity off target, worst 5.48%
 ```
 
 | Year | Strategy | QQQ | Excess | Days |
 |---|---:|---:|---:|---:|
-| 2021 (partial) | +0.6% | -0.1% | +0.7 | 26 |
-| 2022 | -12.2% | -32.6% | **+20.4** | 251 |
-| 2023 | +89.6% | +54.9% | **+34.7** | 250 |
-| 2024 | +41.0% | +25.6% | **+15.4** | 252 |
-| 2025 | +27.9% | +20.8% | **+7.2** | 250 |
-| 2026 (to 20 Nov) | +6.1% | -0.6% | **+6.7** | 224 |
+| 2021 (partial) | +0.2% | -0.1% | +0.3 | 26 |
+| 2022 | -12.5% | -32.6% | **+20.0** | 251 |
+| 2023 | +90.9% | +54.9% | **+36.1** | 250 |
+| 2024 | +40.4% | +25.6% | **+14.8** | 252 |
+| 2025 | +28.2% | +20.8% | **+7.4** | 250 |
+| 2026 (to 20 Nov) | +6.9% | -0.6% | **+7.5** | 224 |
 
 Yahoo revises its most recent bar between downloads, so re-running can move the final partial year by a few tenths of a point. The other years are stable.
 
-Every complete calendar year beats QQQ, by **+6.7 to +34.7 points**. The
+Every complete calendar year beats QQQ, by **+7.4 to +36.1 points**. The
 first partial month (26 days) is flat. On a calendar-year basis 2021 is also
-positive: in the ten-year run the strategy made +55.2% against QQQ's +27.4%
-(+27.8pp).
+positive: in the ten-year run the strategy made +55.0% against QQQ's +27.4%
+(+27.6pp).
 
 The worst drawdown was **29% in July-September 2024**, the yen-carry unwind —
 a fast V-shaped selloff, which is the failure mode trend following handles
@@ -168,20 +169,26 @@ Raw output: `research/results/nasdaq_leveraged_trend_5y.txt`.
 ### 5.1 Ten years (2016-2026), same rule, no re-tuning
 
 ```
-Strategy return      : +2279.18%  (+37.36% a year)
+Strategy return      : +2278.82%  (+37.35% a year)
 QQQ buy & hold       :  +448.06%  (+18.58% a year)
 Excess vs QQQ        : +18.78% a year
-Max drawdown         : 38.14%  (QQQ: 35.12%)
+Max drawdown         : 38.32%  (QQQ: 35.12%)
 Drawdown window      : 2018-08-29 to 2019-10-02
 Sharpe (annualised)  : 1.05
+Weight tracking      : avg 0.61% of equity off target, worst 6.24%
 ```
 
-Yearly excess: 2017 +81.8, 2018 -1.2, 2019 -5.9, 2020 +21.2, 2021 +27.8,
-2022 +20.4, 2023 +34.9, 2024 +15.7, 2025 +7.2, 2026 +6.7. The weak years are
+Yearly excess: 2017 +81.2, 2018 -1.8, 2019 -6.2, 2020 +22.6, 2021 +27.6,
+2022 +20.0, 2023 +35.9, 2024 +14.8, 2025 +7.4, 2026 +7.5. The weak years are
 the choppy ones (2018, 2019), which is the known cost of trend following.
 Raw output: `research/results/nasdaq_leveraged_trend_10y.txt`.
 
-### 5.2 Parameter plateau (5 years, live-parity fills)
+### 5.2 Parameter plateau (5 years, 5% band sweep)
+
+The plateau below was measured before the live audit. The audit's band sweep
+shows that changing the band from 1% to 10% moves CAGR by less than 0.2pp, so
+the plateau conclusion is unaffected; the preset now uses the 2% band for
+tracking accuracy.
 
 | SMA | Vol target | CAGR | Excess | Max DD | Sharpe |
 |---:|---:|---:|---:|---:|---:|
@@ -203,10 +210,10 @@ the faster 165-day rule is not just a return-maximising choice.
 
 | Assumption | CAGR | Excess | Max DD | Sharpe |
 |---|---:|---:|---:|---:|
-| **Live-parity: lag 1 + next open, 1bp** | **26.3%** | **+16.8** | **28.7%** | **0.82** |
-| Same, 5bp slippage | 25.3% | +15.9 | 28.8% | 0.80 |
-| One extra day of delay (lag 2, open fill) | 29.2% | +19.0 | 29.4% | 0.87 |
-| Pessimistic: lag 2 + close fill | 19.3% | +9.8 | 37.2% | 0.67 |
+| **Live-parity: 2% band, lag 1, next open, 1bp** | **26.4%** | **+16.9** | **29.4%** | **0.82** |
+| Same, 5bp slippage (5% band) | 25.3% | +15.9 | 28.8% | 0.80 |
+| One extra day of delay (lag 2, open fill, 5% band) | 29.2% | +19.0 | 29.4% | 0.87 |
+| Pessimistic: lag 2 + close fill (5% band) | 19.3% | +9.8 | 37.2% | 0.67 |
 
 The edge survives every execution convention tested, but the range is wide:
 **+9.8 to +19.0pp**. The pessimistic corner — two days of delay *and* filling
@@ -221,10 +228,13 @@ window back:
 
 | End date | Strategy CAGR | QQQ CAGR | Excess |
 |---|---:|---:|---:|
-| 20 Nov 2026 (0d) | 26.3% | 9.5% | +16.8 |
+| 20 Nov 2026 (0d) | 26.4% | 9.5% | +16.9 |
 | 21 Oct 2026 (-30d) | 30.5% | 14.0% | +16.6 |
 | 6 Oct 2026 (-45d) | 38.5% | 16.6% | +21.6 |
 | 21 Sep 2026 (-60d) | 34.9% | 15.6% | +19.1 |
+
+The shifted rows were measured with the 5% band; the 2% band changes the
+headline by +0.1pp and does not change the pattern.
 
 The excess is *largest* at the October high, so the result is not produced by
 the November drawdown; if anything the chosen end date is the least favourable.
@@ -286,7 +296,7 @@ actual funds, not a hand-picked list of survivors.
 4. **The daily signal whipsaws.** Across 1999-2026 the plain daily 200-day
    rule switched about 7 times a year and 77% of switches reversed within a
    month. A 3% band cut that to 1.7 switches and improved results; this
-   implementation uses a 5%-of-equity rebalance band plus a 165-day average,
+   implementation uses a 2%-of-equity rebalance band plus a 165-day average,
    which lands in the same low-turnover family (9-10 trades a year over ten
    years). It is still a daily decision, so a fast V-shaped crash (March 2020)
    can hurt it before the exit fires.
@@ -344,12 +354,12 @@ nothing is pre-baked.
 
 ## 10. Five-year verdict
 
-The objective is met on the stated window: **+16.8pp a year over QQQ, in every
+The objective is met on the stated window: **+16.9pp a year over QQQ, in every
 complete year from 2022 to 2026, with a smaller drawdown than QQQ**. The
-yearly edge ranges from +6.7 to +34.7 points; the aggregate is what clears the
+yearly edge ranges from +7.4 to +36.1 points; the aggregate is what clears the
 bar comfortably. It is met by leveraging a trend filter, not by finding an
 uncorrelated alpha source, and it would not have met the bar with 2x instead of
-3x (+9.8pp).
+3x (+9.8pp over five years).
 
 The wider evidence says what to expect beyond this window. Over a full cycle
 including 2000-02, the same family delivers roughly **+5pp a year with a
@@ -392,42 +402,43 @@ Same 16.4-year window (6000 days), same rule:
 
 | Series | CAGR | Max DD | Sharpe |
 |---|---:|---:|---:|
-| Synthetic 3x QQQ | 31.00% | 37.99% | 0.93 |
-| Real TQQQ | 30.15% | 39.38% | 0.92 |
+| Synthetic 3x QQQ | 30.48% | 38.05% | 0.92 |
+| Real TQQQ | 29.86% | 40.03% | 0.91 |
 
-The synthetic model is **0.85pp/yr** from the real fund, so the 20-year
+The synthetic model is **0.62pp/yr** from the real fund, so the 20-year
 extension is a fair test rather than a different strategy.
 
 ### 11.3 Result
 
 ```
-Strategy return      : +11607.21%  (+26.92% a year)
+Strategy return      : +10892.19%  (+26.52% a year)
 QQQ buy & hold       :  +1526.51%  (+14.98% a year)
-Excess vs QQQ        : +11.94% a year
-Max drawdown         : 44.64%  (QQQ: 53.40%)
+Excess vs QQQ        : +11.54% a year
+Max drawdown         : 44.91%  (QQQ: 53.40%)
 Drawdown window      : 2007-10-31 to 2009-04-20
-Sharpe (annualised)  : 0.84
-Closed trades        : 258
+Sharpe (annualised)  : 0.83
+Closed trades        : 261
+Weight tracking      : avg 0.66% of equity off target, worst 7.35%
 ```
 
 Yearly excess (strategy minus QQQ, points):
 
 | 2007 | 2008 | 2009 | 2010 | 2011 | 2012 | 2013 | 2014 | 2015 | 2016 |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| +12.1 | +10.5 | +16.8 | +1.8 | **-22.0** | **-5.2** | +87.4 | +20.8 | +1.9 | **-19.4** |
+| +12.1 | +10.1 | +17.5 | +0.9 | **-22.4** | **-6.8** | +85.3 | +21.2 | +0.7 | **-19.4** |
 
 | 2017 | 2018 | 2019 | 2020 | 2021 | 2022 | 2023 | 2024 | 2025 | 2026 |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| +84.5 | **-3.9** | **-0.3** | +20.0 | +28.2 | +18.8 | +35.0 | +11.0 | +7.4 | +6.5 |
+| +84.8 | **-4.6** | **-0.5** | +20.0 | +27.2 | +18.8 | +35.4 | +10.8 | +6.8 | +6.5 |
 
 Fifteen of twenty years beat QQQ. The losing years cluster where trend
 following is supposed to lose: choppy, mean-reverting markets (2011, 2012,
 2016, 2018-19). The **worst drawdown was the global financial crisis**:
-October 2007 to April 2009, a 44.6% peak-to-trough loss, while QQQ fell 53%
+October 2007 to April 2009, a 44.9% peak-to-trough loss, while QQQ fell 53%
 over the whole cycle.
 
 For comparison, the real **2x QLD** version over the same 20 years returns
-+7.2pp a year with a 40.3% drawdown. **3x is what clears the +10pp bar; 2x
++7.3pp a year with a 40.1% drawdown. **3x is what clears the +10pp bar; 2x
 does not.**
 
 ## 12. Live-readiness audit
@@ -444,7 +455,7 @@ does not.**
 | Synthetic fund cannot see future rates | Uses the last ^IRX observation at or before each bar | `synthetic_fund_ignores_later_rates` |
 | Total-return adjustment is not forecast | Signals are scale-invariant (price/SMA, returns); adjustment factors only add past dividends | by construction |
 
-All **52 unit tests pass**.
+All **53 unit tests pass**.
 
 ### 12.2 Tested on live data
 
@@ -452,20 +463,28 @@ All **52 unit tests pass**.
 
 ```
 PREFLIGHT | Leverage rotation (TQQQ 3x while QQQ > 165-day average, 40% volatility target, else BIL) | 1d bars | 3 symbols
-now: 2026-11-23 02:33 UTC | history window: 270 days | warmup: 166 bars
+now: 2026-11-23 02:56 UTC | history window: 270 days | warmup: 166 bars
+data: local paper ledger + Yahoo Finance live prices
+market: closed
 
 QQQ       187 bars | last 2026-11-20 14:30 | 1.5 days old | close 608.45 | fresh
          corporate actions: dividend $0.7510 on 2026-09-21; $0.8130 on 2026-06-22; $0.7330 on 2026-03-23
+         quote: 3236.3 min old
 TQQQ      187 bars | last 2026-11-20 14:30 | 1.5 days old | close 41.20 | fresh
          corporate actions: dividend $0.1560 on 2026-09-23; $0.1710 on 2026-06-24; $0.0720 on 2026-03-25
+         quote: 3236.3 min old
 BIL       187 bars | last 2026-11-20 14:30 | 1.5 days old | close 91.59 | fresh
          corporate actions: dividend $0.3080 on 2026-11-02; $0.2630 on 2026-10-01; $0.2800 on 2026-09-01
+         quote: 3236.3 min old
 
 current target: 100.0% gross
   BIL        100.0%
 paper account: equity $100000.00 | cash $100000.00 | 0 position(s)
 PREFLIGHT: PASS
 ```
+
+The quote age is expected over a weekend; during the session preflight fails
+if a quote is more than 15 minutes old or the exchange reports a delay.
 
 Independent check on the same Yahoo data: QQQ closed **608.45** against a
 165-day SMA of **699.74** (trend down, so 100% T-bills), with 20-day volatility
@@ -508,6 +527,19 @@ unchanged by the split; the dividends add $97 of cash.
 
 ### 12.4 Operational guards
 
+- **Tracking error is bounded.** The preset uses a 2% rebalance band; measured
+  drift is 0.69% of equity on average and 5.5% at worst, versus 2.0%/12.4% at
+  the old 5% band, with the same return and trade count.
+- **Failed orders are retried.** Up to 3 retries per bar on the following
+  polls, after re-reading positions from the broker. The research and the
+  residual duplicate risk are in `docs/live_readiness_audit.md`.
+- **The open is not missed.** While the market is closed the loop wakes every
+  60 seconds, so the first decision lands within a minute of the open.
+  Unit-tested (`closed_market_polls_at_least_every_minute`).
+- **Cash-starved buys are logged.** `WARN ...: buy limited by cash, wanted ...`
+  fires when a buy cannot reach its target.
+- **Quote freshness is checked.** Preflight reports the age and exchange delay
+  of each quote and fails during the session if it is stale or delayed.
 - **Backtest-only settings cannot leak into live trading.** `run`/`replay`
   refuse a config with `backtest.synthetic_symbol` set.
 - **Stale data is never traded.** Daily bars may be at most 5 days old;
@@ -524,24 +556,34 @@ unchanged by the split; the dividends add $97 of cash.
 
 1. `cargo build --release`
 2. `.\target\release\quant-trader.exe preflight --config configs\nasdaq_leveraged_trend.toml`
-   � require `PREFLIGHT: PASS`.
+   - require `PREFLIGHT: PASS`.
 3. `.\target\release\quant-trader.exe replay --config configs\nasdaq_leveraged_trend.toml`
-   � confirm the orders match the target.
-4. Start `run` and leave it running through the open; a daily strategy decides
-   once per session, shortly after the open, and is otherwise quiet.
+   - confirm the orders match the target.
+4. Start `run` before 9:25 ET; while the market is closed the loop wakes every
+   minute, so the first decision lands at the open.
 5. `status` shows the account; `data/nasdaq_leveraged_trend/trades.csv` is the
-   audit trail.
+   audit trail. Watch for `buy limited by cash` and rebalance-retry warnings.
 
-### 12.6 Known limitations (unchanged)
+### 12.6 Known limitations
 
 - Yahoo's endpoint is unofficial and can rate-limit or change; the client
   retries, but a multi-hour outage means a missed daily signal.
 - The sim does not model taxes, bid/ask beyond 1bp slippage, or market impact.
+  TQQQ moved 0.87% on average in the first ten minutes after the open over the
+  last 35 sessions, so a delayed start is much more expensive than 1bp.
 - Dividends are credited on the ex-date rather than the pay date.
 - Corporate actions rely on Yahoo reporting them within the 400-day window.
-- A restart re-evaluates the latest completed bar; the 5% rebalance band makes
-  the extra turnover small, but it is not zero.
-- The 20-year result uses a synthetic 3x fund before 2010; its 0.49pp error
+- A restart re-evaluates the latest completed bar; the 2% band limits the extra
+  turnover, but it is not zero.
+- The 20-year result uses a synthetic 3x fund before 2010; its 0.62pp error
   versus the real fund is the best available estimate of that assumption's cost.
+- Alpaca paper does not credit dividends, and its free feed is IEX-only
+  (~2-4% of consolidated volume). The sim broker is the more faithful test for
+  this strategy; see `docs/live_readiness_audit.md`.
+- There is no client-order-ID idempotency. The retry logic relies on
+  re-reading positions from the broker before each attempt.
+- A real **cash** account would face T+1 settlement and free-riding rules; the
+  sim and Alpaca paper are margin-enabled. This preset sells and buys on the
+  same day.
 
 

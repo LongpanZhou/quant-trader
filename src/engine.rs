@@ -33,6 +33,17 @@ fn stamp() -> String {
     }
 }
 
+/// How long to sleep between polls. While the market is closed, wake at least
+/// once a minute so the first decision lands at the open rather than up to
+/// `poll_seconds` later.
+fn poll_interval(open: Option<bool>, poll_seconds: u64) -> u64 {
+    if open == Some(true) {
+        poll_seconds
+    } else {
+        poll_seconds.min(60)
+    }
+}
+
 pub fn log(msg: &str) {
     println!("[{}] {msg}", stamp());
 }
@@ -77,6 +88,9 @@ pub struct Engine {
     trades_today: usize,
     /// When the last "still running" line was printed.
     last_heartbeat: Option<Instant>,
+    /// (bar ts, attempts) for a rebalance that had failed orders and should be
+    /// retried on the next poll rather than waiting for the next day.
+    retry: Option<(i64, u8)>,
     /// Last market-open answer and when it was asked (saves a request per poll).
     market_checked: Option<(Instant, bool)>,
 }
@@ -95,6 +109,7 @@ impl Engine {
             day_start_equity: None,
             trades_today: 0,
             last_heartbeat: None,
+            retry: None,
             market_checked: None,
         }
     }
@@ -121,7 +136,10 @@ impl Engine {
             if let Err(e) = self.tick() {
                 log(&format!("WARN tick failed, will retry: {e}"));
             }
-            std::thread::sleep(Duration::from_secs(self.cfg.poll_seconds));
+            // While the market is closed, wake at least once a minute so the
+            // first decision lands at the open, not up to poll_seconds later.
+            let sleep = poll_interval(self.market_was_open, self.cfg.poll_seconds);
+            std::thread::sleep(Duration::from_secs(sleep));
         }
     }
 
@@ -228,28 +246,40 @@ impl Engine {
         targets: &[(String, f64)],
         prices: &HashMap<String, f64>,
         positions: &mut Positions,
-    ) -> Result<bool> {
+    ) -> Result<(bool, usize)> {
         let band = self.strategy.rebalance_band();
+        let rel = self.cfg.risk.rebalance_band_rel;
+        let band_for = |w: f64| if rel > 0.0 { band.min(rel * w.abs()) } else { band };
         let equity = self.backend.account()?.equity;
         let symbols = self.cfg.symbols.clone();
         let weight = |s: &str| targets.iter().find(|t| t.0 == s).map(|t| t.1).unwrap_or(0.0);
         let mut acted = false;
+        let mut failed = 0usize;
+        macro_rules! attempt {
+            ($e:expr) => {{
+                let ok = $e;
+                acted |= ok;
+                if !ok {
+                    failed += 1;
+                }
+            }};
+        }
 
         // 1. Exits (including positions on the wrong side) and reductions.
         for s in &symbols {
             let (Some(p), Some(&px)) = (positions.get(s).copied(), prices.get(s)) else { continue };
             let w = weight(s);
             if w == 0.0 || w.signum() != p.qty.signum() {
-                acted |= self.close(s, px, "rebalance", positions);
+                attempt!(self.close(s, px, "rebalance", positions));
                 continue;
             }
             // Signed dollars the position is over its target.
             let excess = p.qty * px - w * equity;
-            if excess > band * equity {
+            if excess > band_for(w) * equity {
                 let qty = (excess / px).floor();
                 if qty >= 1.0 {
                     // Trim a long, or add to a short.
-                    acted |= self.order(s, Side::Sell, qty, px, "resize", positions);
+                    attempt!(self.order(s, Side::Sell, qty, px, "resize", positions));
                 }
             }
         }
@@ -257,21 +287,27 @@ impl Engine {
         for (s, w) in targets {
             let Some(&px) = prices.get(s) else { continue };
             match positions.get(s).copied() {
-                None => acted |= self.open(s, px, *w, "rebalance", positions),
+                None => attempt!(self.open(s, px, *w, "rebalance", positions)),
                 Some(p) => {
                     let shortfall = w * equity - p.qty * px;
-                    if shortfall > band * equity {
+                    if shortfall > band_for(*w) * equity {
                         // Add to a long (limited by cash), or cover part of a short.
                         let budget = if p.qty > 0.0 { shortfall.min(self.buying_power(&self.backend.account()?)) } else { shortfall };
+                        if p.qty > 0.0 && budget + 0.005 * equity < shortfall {
+                            log(&format!(
+                                "WARN {s}: buy limited by cash, wanted ${:.0}, can spend ${:.0}",
+                                shortfall, budget
+                            ));
+                        }
                         let qty = (budget / (px * self.fill_margin())).floor();
                         if qty >= 1.0 {
-                            acted |= self.order(s, Side::Buy, qty, px, "resize", positions);
+                            attempt!(self.order(s, Side::Buy, qty, px, "resize", positions));
                         }
                     }
                 }
             }
         }
-        Ok(acted)
+        Ok((acted, failed))
     }
 
     /// Calendar days of history to load: enough to warm up the strategy
@@ -585,8 +621,15 @@ impl Engine {
         } else if self.strategy.is_portfolio() {
             let newest = complete.values().filter_map(|b| b.last()).max_by_key(|b| b.ts).copied();
             if let Some(last) = newest {
-                if self.last_bar.get(PORTFOLIO) != Some(&last.ts) {
-                    self.last_bar.insert(PORTFOLIO.to_string(), last.ts);
+                let new_bar = self.last_bar.get(PORTFOLIO) != Some(&last.ts);
+                let retrying = self
+                    .retry
+                    .as_ref()
+                    .is_some_and(|(ts, n)| *ts == last.ts && *n < 3);
+                if new_bar || retrying {
+                    if new_bar {
+                        self.last_bar.insert(PORTFOLIO.to_string(), last.ts);
+                    }
                     // Never trade on stale data (holidays, feed gaps).
                     if fresh(&last) {
                         let universe: HashMap<&str, &[Bar]> = complete
@@ -599,7 +642,31 @@ impl Engine {
                             .map(|s| s.as_str())
                             .collect();
                         if let Some(targets) = self.strategy.targets(&universe, &held) {
-                            acted |= self.rebalance(&targets, &prices, positions)?;
+                            let (did, failed) = self.rebalance(&targets, &prices, positions)?;
+                            acted |= did;
+                            if failed > 0 {
+                                let attempts = self
+                                    .retry
+                                    .as_ref()
+                                    .filter(|(ts, _)| *ts == last.ts)
+                                    .map(|(_, n)| *n)
+                                    .unwrap_or(0);
+                                if attempts < 3 {
+                                    self.retry = Some((last.ts, attempts + 1));
+                                    log(&format!(
+                                        "WARN {failed} order(s) failed; retrying the rebalance on the next poll ({}/3)",
+                                        attempts + 1
+                                    ));
+                                } else {
+                                    log("WARN rebalance still incomplete after 3 retries; waiting for the next bar");
+                                    self.retry = None;
+                                }
+                            } else {
+                                self.retry = None;
+                            }
+                        } else {
+                            // No decision on this bar: nothing to retry.
+                            self.retry = None;
                         }
                     }
                 }
@@ -708,4 +775,18 @@ pub fn status(cfg: &Config, backend: &mut Backend) -> Result<()> {
         }
     }
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::poll_interval;
+
+    #[test]
+    fn closed_market_polls_at_least_every_minute() {
+        assert_eq!(poll_interval(Some(true), 600), 600);
+        assert_eq!(poll_interval(Some(false), 600), 60);
+        assert_eq!(poll_interval(None, 600), 60);
+        assert_eq!(poll_interval(Some(false), 30), 30);
+        assert_eq!(poll_interval(Some(true), 30), 30);
+    }
 }

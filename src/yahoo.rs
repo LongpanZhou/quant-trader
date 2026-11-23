@@ -116,6 +116,16 @@ impl Yahoo {
         Ok(out)
     }
 
+    /// Last market-data timestamp and the exchange's reported delay, in
+    /// seconds. Used by preflight to catch a stale or delayed quote.
+    pub fn quote_age(&self, symbol: &str) -> Result<(i64, i64)> {
+        let to = now();
+        let r = self.chart(symbol, "1d", to - 5 * 86400, to)?;
+        let ts = r["meta"]["regularMarketTime"].as_i64().unwrap_or(0);
+        let delay = r["meta"]["exchangeDataDelayedBy"].as_i64().unwrap_or(0).max(0) * 60;
+        Ok((ts, delay))
+    }
+
     /// Splits and dividends for `symbol` over the last `days` calendar days.
     /// Used to keep the paper ledger correct when a held fund splits or pays.
     pub fn events(&self, symbol: &str, days: i64) -> Result<Events> {
