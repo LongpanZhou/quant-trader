@@ -97,9 +97,9 @@ export type PerformanceData = {
   trades: number[];
 };
 
-export const WINDOWS: { id: WindowId; label: string; years: string; note?: string }[] = [
+export const WINDOWS: { id: WindowId; label: string; years: string }[] = [
   { id: "5y", label: "5 years", years: "2021–2026" },
   { id: "10y", label: "10 years", years: "2016–2026" },
-  { id: "20y", label: "20 years", years: "2006–2026", note: "synthetic 3x" },
-  { id: "26y", label: "26 years", years: "2000–2026", note: "synthetic 3x" },
+  { id: "20y", label: "20 years", years: "2006–2026" },
+  { id: "26y", label: "26 years", years: "2000–2026" },
 ];
