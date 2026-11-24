@@ -5,8 +5,8 @@ while the Nasdaq-100 is trending up, and size it to a fixed risk level.**
 
 It never places real-money orders.
 
-**Dashboard:** `cd web && bun install && bun run dev` → http://localhost:3000
-(see [Website](#website)).
+**Dashboard:** [longpanzhou.github.io/quant-trader](https://longpanzhou.github.io/quant-trader/)
+· run it locally with `cd web && bun install && bun run dev` (see [Website](#website)).
 
 ## The idea
 
@@ -240,6 +240,8 @@ Long-run tests:
 
 ## Website
 
+Live: **[longpanzhou.github.io/quant-trader](https://longpanzhou.github.io/quant-trader/)**
+
 The `web/` folder is a Next.js dashboard for the same results: equity curve,
 drawdowns, yearly and monthly returns, trade statistics, the exact rule and
 the paper trail. It reads static JSON exported by the Rust backtester, so the
@@ -257,6 +259,10 @@ Regenerate the JSON after changing the strategy or refreshing the data:
 ```powershell
 .\scripts\export-web-data.ps1
 ```
+
+Pushes to `main` deploy `web/out` to GitHub Pages through
+`.github/workflows/pages.yml`. The build uses a `/quant-trader` base path, which
+matches the project Pages URL.
 
 ## Read more
 
