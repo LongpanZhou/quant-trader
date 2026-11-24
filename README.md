@@ -113,6 +113,64 @@ table.
 | 1bp + 50bp financing spread | 19.7% | +10.3pp | 42.3% |
 | 5bp + 50bp financing spread | 18.8% | +9.4pp | 43.1% |
 
+### Trade statistics
+
+| Window | Closed trades | Wins | Losses | Win rate | Per year | Profit factor |
+|---|---:|---:|---:|---:|---:|---:|
+| 5 years | 54 | 29 | 25 | **53.7%** | 10.8 | 4.16 |
+| 10 years | 97 | 51 | 46 | **52.6%** | 9.7 | 5.18 |
+| 20 years | 261 | 123 | 138 | **47.1%** | 13.1 | 5.05 |
+| 26 years | 319 | 138 | 181 | **43.3%** | 12.3 | 4.96 |
+
+A **closed trade** is a round trip: an entry and its exit. A fill is one order,
+including volatility-target resizes, so there are many more fills than trades.
+**Profit factor** is gross wins divided by gross losses.
+
+Over the full 26-year test that is **319 round trips and 3,497 fills**; the
+10-year real-TQQQ record is **97 round trips and 1,501 fills**.
+
+The edge is not a high hit rate. Over the full cycle only 43% of trades win, but
+winners are much larger than losers (profit factor about 4-5 across the windows).
+That is normal for trend following: many small losses, a few large trend years.
+
+## How it is implemented
+
+The exact rule, as the code runs it:
+
+```
+sma  = 165-day simple moving average of QQQ close
+vol  = standard deviation of the last 20 QQQ daily returns * sqrt(252)
+trend = QQQ close > sma
+
+if not trend:
+    weight(BIL) = 1
+else:
+    exposure = min(0.40 / vol, 3.0)     # 1.0 if vol is zero
+    if exposure <= 1:
+        weight(QQQ) = exposure
+        weight(BIL) = 1 - exposure
+    else:
+        w_tqqq = (exposure - 1) / 2
+        weight(TQQQ) = w_tqqq
+        weight(QQQ)  = 1 - w_tqqq
+```
+
+The signal is computed on the previous close and the order is filled at the
+next open (`lag_bars = 1`, `fill_open = true`). Positions are only resized when
+they drift more than 2% of equity from target.
+
+| File | What it does |
+|---|---|
+| `src/strategy.rs` | The rule. `LeveragedIndex` computes the SMA and volatility, then `blend_exposure` splits exposure between QQQ and TQQQ. `SmaCross` remains only as a test fixture. |
+| `src/config.rs` | Parses `config.toml`, checks the parameters, and verifies that QQQ, TQQQ and BIL are in `symbols`. |
+| `src/backtest.rs` | Loads adjusted daily bars, builds the synthetic 3x series when requested, runs the event loop, applies lag/open fills and costs, and reports returns, drawdown, win rate and yearly results. |
+| `src/engine.rs` | The live paper loop. Once per completed daily bar it fetches data, asks the strategy for targets, applies the 2% band, and sends orders. It also handles retries, stale data and corporate actions. |
+| `src/sim.rs` | The local paper broker: cash, positions, fills, splits and dividends. |
+| `src/alpaca.rs` | Optional Alpaca paper broker. The endpoint is hard-wired to paper trading. |
+| `src/preflight.rs` | Checks data freshness, corporate actions and the current target without placing orders. |
+| `src/yahoo.rs` | Downloads daily adjusted closes and corporate-action events. |
+| `src/indicators.rs` | The SMA and standard-deviation helpers. |
+
 ## Which research paper it follows
 
 The strategy is closest to **Gayed & Bilello (2016), "Leverage for the Long

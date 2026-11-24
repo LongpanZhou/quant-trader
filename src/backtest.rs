@@ -762,7 +762,14 @@ pub fn run(cfg: &Config, strat: &dyn Strategy, backend: &Backend) -> Result<()> 
         );
     }
     if n > 0 {
+        let flat = r.trade_pnls.iter().filter(|p| **p == 0.0).count();
         println!("Win rate             : {:.1}%", wins.len() as f64 / n as f64 * 100.0);
+        println!(
+            "Wins / losses        : {} / {}{}",
+            wins.len(),
+            losses.len() - flat,
+            if flat > 0 { format!(" ({flat} flat)") } else { String::new() }
+        );
         println!("Avg trade P&L        : ${:+.2}", r.trade_pnls.iter().sum::<f64>() / n as f64);
         if gross_loss > 0.0 {
             println!("Profit factor        : {:.2}", gross_win / gross_loss);
