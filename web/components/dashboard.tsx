@@ -45,8 +45,7 @@ export function Dashboard() {
     const controller = new AbortController();
     setLoading(true);
     setError(null);
-    const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
-    fetch(`${basePath}/data/${windowId}.json`, { signal: controller.signal })
+    fetch(`/data/${windowId}.json`, { signal: controller.signal })
       .then((response) => {
         if (!response.ok) throw new Error(`Could not load ${windowId} data`);
         return response.json() as Promise<PerformanceData>;

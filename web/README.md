@@ -1,8 +1,6 @@
 # quant-trader web
 
-Live: **https://longpanzhou.github.io/quant-trader/**
-
-A static Next.js dashboard for the Nasdaq leveraged-trend strategy.
+A local Next.js dashboard for the Nasdaq leveraged-trend strategy.
 
 It reads four JSON files from `public/data/` (`5y`, `10y`, `20y`, `26y`) that
 are produced by the Rust backtester. No database or API server is required.
