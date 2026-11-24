@@ -5,6 +5,9 @@ while the Nasdaq-100 is trending up, and size it to a fixed risk level.**
 
 It never places real-money orders.
 
+**Dashboard:** `cd web && bun install && bun run dev` → http://localhost:3000
+(see [Website](#website)).
+
 ## The idea
 
 - **Trend:** if QQQ is above its 165-day average, be invested. If not, hold
@@ -59,7 +62,7 @@ yield.
 | 2018 | -2.0% | -0.1% | -1.8 |
 | 2019 | +32.8% | +39.0% | -6.2 |
 | 2020 | +71.0% | +48.4% | +22.6 |
-| 2021 | +55.3% | +27.4% | +27.8 |
+| 2021 | +55.0% | +27.4% | +27.6 |
 | 2022 | -12.5% | -32.6% | +20.0 |
 | 2023 | +90.8% | +54.9% | +35.9 |
 | 2024 | +40.3% | +25.6% | +14.8 |
@@ -126,8 +129,8 @@ A **closed trade** is a round trip: an entry and its exit. A fill is one order,
 including volatility-target resizes, so there are many more fills than trades.
 **Profit factor** is gross wins divided by gross losses.
 
-Over the full 26-year test that is **319 round trips and 3,497 fills**; the
-10-year real-TQQQ record is **97 round trips and 1,501 fills**.
+Over the full 26-year test that is **319 round trips and 3,493 fills**; the
+10-year real-TQQQ record is **97 round trips and 1,502 fills**.
 
 The edge is not a high hit rate. Over the full cycle only 43% of trades win, but
 winners are much larger than losers (profit factor about 4-5 across the windows).
@@ -235,6 +238,26 @@ Long-run tests:
 .\target\release\quant-trader.exe backtest --config configs\nasdaq_synthetic_20y.toml --days 9500
 ```
 
+## Website
+
+The `web/` folder is a Next.js dashboard for the same results: equity curve,
+drawdowns, yearly and monthly returns, trade statistics, the exact rule and
+the paper trail. It reads static JSON exported by the Rust backtester, so the
+site has no database or API server.
+
+```powershell
+cd web
+bun install
+bun run dev      # http://localhost:3000
+bun run build    # static site in web/out
+```
+
+Regenerate the JSON after changing the strategy or refreshing the data:
+
+```powershell
+.\scripts\export-web-data.ps1
+```
+
 ## Read more
 
 - [The study](docs/nasdaq_leveraged_trend.md) - why 165 days, why 40%, the
@@ -259,5 +282,7 @@ Long-run tests:
 src/       backtester, live loop, paper broker, data feeds, strategy
 configs/   live/5-year preset and 20-year research preset
 docs/      full study, audit, research map, expansion research
+web/       Next.js dashboard and exported JSON
+scripts/   data export for the dashboard
 config.toml  default config (same as the live preset)
 ```

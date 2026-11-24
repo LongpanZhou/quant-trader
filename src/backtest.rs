@@ -11,11 +11,12 @@
 //! borrow fee is charged on the short value.
 
 use crate::backend::Backend;
-use crate::config::Config;
+use crate::config::{Config, StrategyConfig};
 use crate::strategy::Strategy;
 use crate::types::{order_qty, Bar, Position, Signal};
 use anyhow::{anyhow, bail, Result};
 use chrono::Datelike;
+use serde_json::json;
 use std::collections::{BTreeSet, HashMap};
 
 pub struct Report {
@@ -546,7 +547,7 @@ fn end_timestamp(end_date: &str, real_now: i64) -> Result<i64> {
         .min(real_now))
 }
 
-pub fn run(cfg: &Config, strat: &dyn Strategy, backend: &Backend) -> Result<()> {
+pub fn run(cfg: &Config, strat: &dyn Strategy, backend: &Backend, json_path: Option<&str>) -> Result<()> {
     let tf = cfg.timeframe;
     println!(
         "Backtest: {} | {} bars | last {} days | {} symbols",
@@ -797,7 +798,194 @@ pub fn run(cfg: &Config, strat: &dyn Strategy, backend: &Backend) -> Result<()> 
             println!("{y:<6} {:>+9.1}% {bench_txt:>10} {diff:>10} {days:>6}", ret * 100.0);
         }
     }
+    if let Some(path) = json_path {
+        export_json(cfg, strat, &r, &bench, path)?;
+        println!("\nJSON report written to {path}");
+    }
     Ok(())
+}
+
+/// Write the same numbers the CLI prints as a JSON document for the web app.
+/// Equity and benchmark are rebased to 100 at the first tested bar; drawdowns
+/// are negative fractions. All returns are fractions (0.26 = 26%).
+fn export_json(
+    cfg: &Config,
+    strat: &dyn Strategy,
+    r: &Report,
+    bench: &[Bar],
+    path: &str,
+) -> Result<()> {
+    let first_ts = r.curve.first().map(|p| p.0).unwrap_or(0);
+    let last_ts = r.curve.last().map(|p| p.0).unwrap_or(0);
+    let first_eq = r.curve.first().map(|p| p.1).unwrap_or(r.start_equity);
+    let first_bench = bench.iter().find(|b| b.ts >= first_ts).map(|b| b.close);
+
+    let mut b_i = 0usize;
+    let mut last_bench: Option<f64> = None;
+    let mut peak_eq = first_eq;
+    let mut peak_bench = first_bench.map(|_| 1.0);
+    let mut series = Vec::with_capacity(r.curve.len());
+    for &(ts, eq) in &r.curve {
+        while b_i < bench.len() && bench[b_i].ts <= ts {
+            last_bench = Some(bench[b_i].close);
+            b_i += 1;
+        }
+        peak_eq = peak_eq.max(eq);
+        let strategy = eq / first_eq * 100.0;
+        let drawdown = -(1.0 - eq / peak_eq);
+        let qqq = match (last_bench, first_bench) {
+            (Some(c), Some(f)) if f > 0.0 => Some(c / f * 100.0),
+            _ => None,
+        };
+        let qqq_drawdown = match (last_bench, first_bench) {
+            (Some(c), Some(f)) if f > 0.0 => {
+                let v = c / f;
+                peak_bench = Some(peak_bench.unwrap_or(v).max(v));
+                Some(-(1.0 - v / peak_bench.unwrap()))
+            }
+            _ => None,
+        };
+        series.push(json!({
+            "date": iso_day(ts),
+            "strategy": strategy,
+            "qqq": qqq,
+            "drawdown": drawdown,
+            "qqqDrawdown": qqq_drawdown,
+        }));
+    }
+
+    let total_ret = r.end_equity / r.start_equity - 1.0;
+    let years = r.span_days / 365.25;
+    let ann = |x: f64| {
+        if years > 0.0 {
+            (1.0 + x).powf(1.0 / years) - 1.0
+        } else {
+            0.0
+        }
+    };
+    let cagr = ann(total_ret);
+    let bench_cagr = r.benchmark_return.map(ann);
+    let excess = bench_cagr.map(|b| cagr - b);
+
+    let rets: Vec<f64> = r.curve.windows(2).map(|w| w[1].1 / w[0].1 - 1.0).collect();
+    let (vol, sortino) = if rets.len() > 1 {
+        let mean = rets.iter().sum::<f64>() / rets.len() as f64;
+        let var = rets.iter().map(|x| (x - mean).powi(2)).sum::<f64>() / (rets.len() - 1) as f64;
+        let vol = var.sqrt() * 252f64.sqrt();
+        let down = (rets.iter().map(|x| x.min(0.0).powi(2)).sum::<f64>() / rets.len() as f64).sqrt();
+        (vol, if down > 0.0 { mean / down * 252f64.sqrt() } else { 0.0 })
+    } else {
+        (0.0, 0.0)
+    };
+    let calmar = if r.max_drawdown > 0.0 { cagr / r.max_drawdown } else { 0.0 };
+
+    let n = r.trade_pnls.len();
+    let wins = r.trade_pnls.iter().filter(|p| **p > 0.0).count();
+    let losses = r.trade_pnls.iter().filter(|p| **p < 0.0).count();
+    let flat = n - wins - losses;
+    let gross_win: f64 = r.trade_pnls.iter().filter(|p| **p > 0.0).sum();
+    let gross_loss: f64 = -r.trade_pnls.iter().filter(|p| **p < 0.0).sum::<f64>();
+    let profit_factor = if gross_loss > 0.0 { gross_win / gross_loss } else { 0.0 };
+    let win_rate = if n > 0 { wins as f64 / n as f64 } else { 0.0 };
+    let avg_trade = if n > 0 { r.trade_pnls.iter().sum::<f64>() / n as f64 } else { 0.0 };
+
+    let params = match &cfg.strategy {
+        StrategyConfig::LeveragedIndex {
+            index,
+            risk_asset,
+            leverage,
+            safe_asset,
+            sma_days,
+            target_vol,
+            vol_days,
+            rebalance_band,
+        } => json!({
+            "kind": "leveraged_index",
+            "index": index,
+            "riskAsset": risk_asset,
+            "leverage": leverage,
+            "safeAsset": safe_asset,
+            "smaDays": sma_days,
+            "targetVol": target_vol,
+            "volDays": vol_days,
+            "rebalanceBand": rebalance_band,
+        }),
+        StrategyConfig::SmaCross { fast, slow } => json!({
+            "kind": "sma_cross",
+            "fast": fast,
+            "slow": slow,
+        }),
+    };
+
+    let yearly: Vec<_> = r
+        .yearly
+        .iter()
+        .map(|(year, strategy, qqq, days)| {
+            json!({
+                "year": year,
+                "strategy": strategy,
+                "qqq": qqq,
+                "diff": qqq.map(|q| strategy - q),
+                "days": days,
+            })
+        })
+        .collect();
+
+    let doc = json!({
+        "name": strat.name(),
+        "benchmark": cfg.backtest.benchmark,
+        "synthetic": !cfg.backtest.synthetic_symbol.is_empty(),
+        "timeframe": cfg.timeframe.yahoo(),
+        "start": iso_day(first_ts),
+        "end": iso_day(last_ts),
+        "params": params,
+        "metrics": {
+            "cagr": cagr,
+            "totalReturn": total_ret,
+            "benchmarkCagr": bench_cagr,
+            "excess": excess,
+            "maxDrawdown": r.max_drawdown,
+            "benchmarkMaxDrawdown": r.benchmark_drawdown,
+            "sharpe": r.sharpe,
+            "volatility": vol,
+            "sortino": sortino,
+            "calmar": calmar,
+            "startEquity": r.start_equity,
+            "endEquity": r.end_equity,
+            "closedTrades": n,
+            "wins": wins,
+            "losses": losses,
+            "flat": flat,
+            "winRate": win_rate,
+            "profitFactor": profit_factor,
+            "avgTradePnl": avg_trade,
+            "fills": r.orders,
+            "turnover": r.traded_notional / r.start_equity,
+            "longExposure": r.long_exposure,
+            "shortExposure": r.short_exposure,
+            "years": years,
+            "buyHoldReturn": r.buy_hold_return,
+            "buyHoldDrawdown": r.buy_hold_drawdown,
+        },
+        "series": series,
+        "yearly": yearly,
+        "trades": r.trade_pnls,
+    });
+    let text = serde_json::to_string(&doc)?;
+    if let Some(parent) = std::path::Path::new(path)
+        .parent()
+        .filter(|parent| !parent.as_os_str().is_empty())
+    {
+        std::fs::create_dir_all(parent)?;
+    }
+    std::fs::write(path, text)?;
+    Ok(())
+}
+
+fn iso_day(ts: i64) -> String {
+    chrono::DateTime::from_timestamp(ts, 0)
+        .map(|d| d.date_naive().to_string())
+        .unwrap_or_default()
 }
 
 #[cfg(test)]

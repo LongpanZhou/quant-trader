@@ -34,6 +34,7 @@ OPTIONS:
     --config <FILE>    Config file to use [default: config.toml]
     --days <N>         Backtest the last N days instead of the config's setting
     --timeframe <TF>   Use this candle size instead of the config's: 1m, 5m, 15m, 1h, 1d
+    --json <FILE>      Also write the full backtest report as JSON (for the web app)
 ";
 
 fn main() {
@@ -49,6 +50,7 @@ fn real_main() -> Result<()> {
     let mut config_path = "config.toml".to_string();
     let mut days: Option<i64> = None;
     let mut timeframe: Option<config::Timeframe> = None;
+    let mut json: Option<String> = None;
     let mut i = 0;
     while i < args.len() {
         match args[i].as_str() {
@@ -73,6 +75,13 @@ fn real_main() -> Result<()> {
                     _ => bail!("--days needs a positive number"),
                 }
             }
+            "--json" => {
+                i += 1;
+                match args.get(i) {
+                    Some(p) => json = Some(p.clone()),
+                    None => bail!("--json needs a file path"),
+                }
+            }
             "-h" | "--help" | "help" => {
                 print!("{USAGE}");
                 return Ok(());
@@ -86,6 +95,9 @@ fn real_main() -> Result<()> {
         print!("{USAGE}");
         return Ok(());
     };
+    if json.is_some() && command != "backtest" {
+        bail!("--json is only used with the backtest command");
+    }
 
     let mut cfg = config::Config::load(&config_path)?;
     if let Some(d) = days {
@@ -114,7 +126,7 @@ fn real_main() -> Result<()> {
         "backtest" => {
             let backend = backend::Backend::new(&cfg, &data_dir)?;
             let strategy = strategy::build(&cfg);
-            backtest::run(&cfg, strategy.as_ref(), &backend)
+            backtest::run(&cfg, strategy.as_ref(), &backend, json.as_deref())
         }
         "replay" => {
             // Always the built-in simulator with a throwaway account, so a
