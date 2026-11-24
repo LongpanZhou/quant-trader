@@ -53,7 +53,7 @@ picking.
   by trailing realized variance. Target volatility is what keeps the 3x fund
   from being held at full size in a 40%-vol tape.
 
-The closest published test of the exact combination is **Nygård & Liukko (2026)**,
+The closest independent test of this shape we found is **Nygård & Liukko (2026)**,
 a Linköping thesis on the Nasdaq-100 from 2001 to 2026 with synthetic
 leveraged funds ([PDF](https://diva-portal.org/smash/get/diva2:2077998/FULLTEXT01.pdf)):
 
@@ -63,12 +63,11 @@ leveraged funds ([PDF](https://diva-portal.org/smash/get/diva2:2077998/FULLTEXT0
 | 1x + 200-day SMA | 8.6% | -31.4% |
 | 3x buy & hold | 21.2% | -96.0% |
 | 3x + 200-day SMA | 20.9% | -69.4% |
-| **3x + 200-day SMA + volatility filter** | **22.0%** | **-64.8%** |
+| **3x + 200-day SMA + implied-vol filter** | **22.0%** | **-64.8%** |
 
 That is the honest full-cycle version of the claim: **+10pp over 1x, but with a
 -65% drawdown**, not the -30% seen in the last five years. The thesis also
-finds the volatility filter is what keeps the 3x sleeve from being wiped out in
-2000-02.
+finds the combined rule cuts the 3x maximum drawdown from -96% to -65%.
 
 Two counterweights matter:
 
@@ -155,8 +154,8 @@ Yahoo revises its most recent bar between downloads, so re-running can move the 
 
 Every complete calendar year beats QQQ, by **+7.4 to +36.1 points**. The
 first partial month (26 days) is flat. On a calendar-year basis 2021 is also
-positive: in the ten-year run the strategy made +55.0% against QQQ's +27.4%
-(+27.6pp).
+positive: in the ten-year run the strategy made +55.3% against QQQ's +27.4%
+(+27.8pp).
 
 The worst drawdown was **29% in July-September 2024**, the yen-carry unwind —
 a fast V-shaped selloff, which is the failure mode trend following handles
@@ -169,16 +168,16 @@ Reproduce it with `quant-trader backtest --config configs/nasdaq_leveraged_trend
 ### 5.1 Ten years (2016-2026), same rule, no re-tuning
 
 ```
-Strategy return      : +2283.15%  (+37.35% a year)
+Strategy return      : +2283.14%  (+37.38% a year)
 QQQ buy & hold       :  +448.06%  (+18.58% a year)
-Excess vs QQQ        : +18.78% a year
+Excess vs QQQ        : +18.80% a year
 Max drawdown         : 38.32%  (QQQ: 35.12%)
 Drawdown window      : 2018-08-29 to 2019-10-02
 Sharpe (annualised)  : 1.05
 Weight tracking      : avg 0.61% of equity off target, worst 6.24%
 ```
 
-Yearly excess: 2017 +81.2, 2018 -1.8, 2019 -6.2, 2020 +22.6, 2021 +27.6,
+Yearly excess: 2017 +81.2, 2018 -1.8, 2019 -6.2, 2020 +22.6, 2021 +27.8,
 2022 +20.0, 2023 +35.9, 2024 +14.8, 2025 +7.4, 2026 +7.5. The weak years are
 the choppy ones (2018, 2019), which is the known cost of trend following.
 Add `--days 3650` to the headline command to reproduce it.
