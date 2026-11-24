@@ -20,10 +20,12 @@ export function DrawdownChart({
   series,
   strategyMax,
   qqqMax,
+  benchmark,
 }: {
   series: SeriesPoint[];
   strategyMax: number;
   qqqMax: number | null;
+  benchmark: string;
 }) {
   const data = useMemo(() => downsample(series, 1500), [series]);
   const ticks = useMemo(() => yearTicks(data, 12), [data]);
@@ -38,7 +40,7 @@ export function DrawdownChart({
         </div>
         <div className="flex items-center gap-3">
           <LegendDot color="#fb7185" label={`Strategy ${pct(-strategyMax)}`} />
-          <LegendDot color="#71717a" label={`QQQ ${pct(qqqMax == null ? null : -qqqMax)}`} />
+          <LegendDot color="#71717a" label={`${benchmark} ${pct(qqqMax == null ? null : -qqqMax)}`} />
         </div>
       </div>
       <div className="h-[240px] w-full min-w-0">
@@ -97,7 +99,7 @@ export function DrawdownChart({
             <Area
               type="monotone"
               dataKey="qqqDrawdown"
-              name="QQQ"
+              name={benchmark}
               stroke="#52525b"
               strokeWidth={1.1}
               fill="transparent"

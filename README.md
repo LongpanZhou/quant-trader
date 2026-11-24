@@ -240,10 +240,16 @@ Long-run tests:
 
 ## Website
 
-The `web/` folder is a local Next.js dashboard for the same results: equity
-curve, drawdowns, yearly and monthly returns, trade statistics, the exact rule
-and the paper trail. It reads static JSON exported by the Rust backtester, so
-it needs no database or API server.
+The `web/` folder is a local Next.js portal for systematic strategies. The
+landing page lists every strategy in `web/public/data/strategies.json`; each
+one opens its own performance page with equity, drawdowns, yearly and monthly
+returns, trade statistics, the exact rule and its paper trail. The site reads
+static JSON exported by the Rust backtester, so it needs no database or API
+server.
+
+The catalog ships with the promoted Nasdaq rule plus two research variants:
+the original S&P 500 2x rotation and a Nasdaq 3x trend without the volatility
+target. They are website research entries, not live presets.
 
 ```powershell
 cd web

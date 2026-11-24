@@ -21,10 +21,14 @@ export function EquityChart({
   series,
   start,
   end,
+  benchmark,
+  accent,
 }: {
   series: SeriesPoint[];
   start: string;
   end: string;
+  benchmark: string;
+  accent: string;
 }) {
   const [scale, setScale] = useState<"linear" | "log">("log");
   const data = useMemo(() => downsample(series, 1500), [series]);
@@ -56,8 +60,8 @@ export function EquityChart({
         </div>
         <div className="flex items-center gap-3">
           <div className="hidden items-center gap-3 sm:flex">
-            <LegendDot color="#9ae6a5" label="Strategy" />
-            <LegendDot color="#71717a" label="QQQ" />
+            <LegendDot color={accent} label="Strategy" />
+            <LegendDot color="#71717a" label={benchmark} />
           </div>
           <div className="flex rounded-lg border border-white/10 bg-black/20 p-0.5">
             {(["linear", "log"] as const).map((option) => (
@@ -81,8 +85,8 @@ export function EquityChart({
           <ComposedChart data={data} margin={{ top: 8, right: 8, bottom: 4, left: -12 }}>
             <defs>
               <linearGradient id="equityFill" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#9ae6a5" stopOpacity={0.22} />
-                <stop offset="100%" stopColor="#9ae6a5" stopOpacity={0.01} />
+                <stop offset="0%" stopColor={accent} stopOpacity={0.22} />
+                <stop offset="100%" stopColor={accent} stopOpacity={0.01} />
               </linearGradient>
             </defs>
             <CartesianGrid stroke="#22262c" strokeDasharray="4 6" vertical={false} />
@@ -125,17 +129,17 @@ export function EquityChart({
               type="monotone"
               dataKey="strategy"
               name="Strategy"
-              stroke="#9ae6a5"
+              stroke={accent}
               strokeWidth={2}
               fill="url(#equityFill)"
               dot={false}
               isAnimationActive={false}
-              activeDot={{ r: 3, fill: "#9ae6a5", stroke: "#08090b", strokeWidth: 2 }}
+              activeDot={{ r: 3, fill: accent, stroke: "#08090b", strokeWidth: 2 }}
             />
             <Line
               type="monotone"
               dataKey="qqq"
-              name="QQQ"
+              name={benchmark}
               stroke="#71717a"
               strokeWidth={1.4}
               dot={false}
@@ -153,5 +157,6 @@ export function EquityChart({
     </div>
   );
 }
+
 
 

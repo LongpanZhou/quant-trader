@@ -1,5 +1,31 @@
 export type WindowId = "5y" | "10y" | "20y" | "26y";
 
+export type StrategyStatus = "current" | "research" | "ablation";
+
+export type PaperId =
+  | "gayed-bilello-2016"
+  | "faber-2007"
+  | "moreira-muir-2017"
+  | "zarattini-antonacci-2024";
+
+export type StrategyMeta = {
+  slug: string;
+  name: string;
+  tagline: string;
+  description: string;
+  status: StrategyStatus;
+  asOf: string;
+  accent: string;
+  tags: string[];
+  windows: WindowId[];
+  defaultWindow: WindowId;
+  syntheticWindows: WindowId[];
+  dataNote: string;
+  papers: PaperId[];
+  replication: boolean;
+  researchMap: boolean;
+};
+
 export type SeriesPoint = {
   date: string;
   strategy: number;

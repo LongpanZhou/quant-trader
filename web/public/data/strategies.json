@@ -1,0 +1,61 @@
+{
+  "updated": "2026-11-20",
+  "strategies": [
+    {
+      "slug": "nasdaq-leveraged-trend",
+      "name": "Nasdaq Leveraged Trend",
+      "tagline": "Trend-followed Nasdaq leverage with a volatility budget.",
+      "description": "Own a volatility-sized mix of QQQ and TQQQ while the Nasdaq-100 is above its 165-day average. When the trend breaks, move to T-bills.",
+      "status": "current",
+      "asOf": "2026-11-20",
+      "accent": "#9ae6a5",
+      "tags": ["QQQ", "TQQQ", "BIL", "daily"],
+      "windows": ["5y", "10y", "20y", "26y"],
+      "defaultWindow": "5y",
+      "syntheticWindows": ["20y", "26y"],
+      "dataNote": "5- and 10-year tests use real TQQQ. The 20- and 26-year tests use a synthetic 3x QQQ series for the whole window, including after 2010, to keep one consistent price path.",
+      "papers": [
+        "gayed-bilello-2016",
+        "faber-2007",
+        "moreira-muir-2017",
+        "zarattini-antonacci-2024"
+      ],
+      "replication": true,
+      "researchMap": true
+    },
+    {
+      "slug": "sp500-2x-trend",
+      "name": "S&P 500 2x Trend",
+      "tagline": "The original leverage rotation, applied to the S&P 500.",
+      "description": "Hold the 2x S&P 500 fund (SSO) while SPY is above its 200-day average; hold short-term Treasuries (SHY) below it. No volatility target.",
+      "status": "research",
+      "asOf": "2026-11-20",
+      "accent": "#93c5fd",
+      "tags": ["SPY", "SSO", "SHY", "daily"],
+      "windows": ["5y", "10y", "20y"],
+      "defaultWindow": "5y",
+      "syntheticWindows": [],
+      "dataNote": "All windows use real SSO prices. SSO started in June 2006, so the 20-year window is the full listed history.",
+      "papers": ["gayed-bilello-2016", "faber-2007"],
+      "replication": false,
+      "researchMap": false
+    },
+    {
+      "slug": "nasdaq-3x-simple",
+      "name": "Nasdaq 3x Simple Trend",
+      "tagline": "The same Nasdaq rule without the volatility target.",
+      "description": "Hold TQQQ at full size while QQQ is above its 200-day average; hold BIL below it. An ablation that shows what the volatility target adds.",
+      "status": "ablation",
+      "asOf": "2026-11-20",
+      "accent": "#fcd34d",
+      "tags": ["QQQ", "TQQQ", "BIL", "daily"],
+      "windows": ["5y", "10y", "20y", "26y"],
+      "defaultWindow": "5y",
+      "syntheticWindows": ["20y", "26y"],
+      "dataNote": "5- and 10-year tests use real TQQQ. The 20- and 26-year tests use a synthetic 3x QQQ series for the whole window.",
+      "papers": ["gayed-bilello-2016"],
+      "replication": false,
+      "researchMap": false
+    }
+  ]
+}

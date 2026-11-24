@@ -16,7 +16,7 @@ import { pct } from "@/lib/format";
 import { ChartTooltip } from "./chart-tooltip";
 import { LegendDot } from "./ui";
 
-export function YearlyChart({ yearly }: { yearly: YearRow[] }) {
+export function YearlyChart({ yearly, benchmark }: { yearly: YearRow[]; benchmark: string }) {
   const data = yearly.map((row) => ({
     ...row,
     label: row.year,
@@ -31,7 +31,7 @@ export function YearlyChart({ yearly }: { yearly: YearRow[] }) {
         </div>
         <div className="flex items-center gap-3">
           <LegendDot color="#9ae6a5" label="Strategy" />
-          <LegendDot color="#52525b" label="QQQ" />
+          <LegendDot color="#52525b" label={benchmark} />
         </div>
       </div>
       <div className="h-[270px] w-full min-w-0">
@@ -81,7 +81,7 @@ export function YearlyChart({ yearly }: { yearly: YearRow[] }) {
             </Bar>
             <Bar
               dataKey="qqq"
-              name="QQQ"
+              name={benchmark}
               fill="#52525b"
               radius={[3, 3, 0, 0]}
               maxBarSize={18}

@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Nasdaq Leveraged Trend — strategy dashboard",
+  title: "Strategy lab — systematic strategy research",
   description:
-    "A visual research dashboard for a volatility-targeted QQQ/TQQQ trend strategy: equity curve, drawdowns, yearly returns, trade statistics and the exact code.",
+    "A visual research portal for systematic strategies: equity curves, drawdowns, yearly and monthly returns, trade statistics and the exact rules.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

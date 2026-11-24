@@ -1,0 +1,30 @@
+# Research variant for the website. Not a live preset.
+# Gayed & Bilello's 2x S&P 500 rule: SSO while SPY is above its 200-day
+# average, short-term Treasuries (SHY) below it.
+broker = "sim"
+symbols = ["SPY", "SSO", "SHY"]
+timeframe = "1d"
+poll_seconds = 600
+
+[strategy]
+kind = "leveraged_index"
+index = "SPY"
+risk_asset = "SSO"
+leverage = 2.0
+safe_asset = "SHY"
+sma_days = 200
+target_vol = 0.0
+vol_days = 20
+rebalance_band = 0.05
+
+[risk]
+position_pct = 1.0
+max_positions = 3
+slippage_bps = 1.0
+
+[backtest]
+end_date = "2026-11-20"
+days = 1824
+benchmark = "SPY"
+lag_bars = 1
+fill_open = true
