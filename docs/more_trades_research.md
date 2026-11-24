@@ -9,6 +9,11 @@ sleeve** alongside the Nasdaq core. It roughly doubles the round trips, cuts
 the drawdown by 6–9 points, and slightly improves Sharpe — at the cost of
 4–7pp of CAGR. Every intraday family is breakeven or negative at 5bp costs.
 
+**Scope note.** This document is the research trail, not the shipped strategy.
+The combo engine and the sleeve presets used for the expansion tests were
+exploratory and have been removed. What remains in the repo is the core; the
+tables here record what else was tried and why it was not promoted.
+
 ---
 
 Numbers are from a 2026-11-23 run with `end_date = "2026-11-20"`. Yahoo
@@ -45,7 +50,7 @@ Cost sensitivity of the intraday families (same trades, only slippage changes):
 
 ## 2. The expansion that works
 
-`configs/research/combo_core_multi.toml`:
+The measured 75/25 allocation (exploratory combo build, since removed):
 
 - **75%** Nasdaq core: QQQ/TQQQ/BIL, 165-day SMA, 40% vol target.
 - **25%** multi-asset trend sleeve: TLT, GLD, DBC, UUP, EFA; 20/40-day
@@ -157,14 +162,11 @@ cost it saves. Faster signals are not the lever either: a 100-day SMA returned
 
 ## 4. Recommendation
 
-1. **If you want more trades:** there are two presets.
-   - `configs/nasdaq_multi_sleeve_max_trades.toml` (95/2.5/2.5): **37-38 round
-     trips a year, +17.4pp vs QQQ over 10y, 36.8% max DD** — 4x the core's
-     trades with almost all of its edge. The sleeves are small, so this is a
-     trade-count maximizer, not a big diversification change.
-   - `configs/nasdaq_multi_sleeve.toml` (80/10/10): **31 round trips a year,
-     +13.6pp over 10y, 31.5% max DD** — the balanced choice; the sleeves are
-     large enough to matter, and the drawdown is 7pp lower than the core.
+1. **The core is the only shipped preset.** An earlier exploratory build could
+   raise the trade count with a second sleeve: 95/2.5/2.5 measured **37-38 round
+   trips a year, +17.4pp over 10y, 36.8% max DD**; 80/10/10 measured **31 round
+   trips, +13.6pp, 31.5% max DD**. That engine is not part of the repo. It is a
+   trade-count tweak, not a new source of edge.
 2. **Do not add** sector/stock momentum as a standalone, multi-asset TSMOM as
    a standalone, intraday ORB/VWAP, PEAD, pairs, or RSI-2.
 3. **If you want the core's fills lower:** a 5% band cuts fills from 861 to
@@ -178,26 +180,16 @@ cost it saves. Faster signals are not the lever either: a 100-day SMA returned
 
 ## 5. Reproduce
 
+The shipped core is what can be reproduced in this repo:
+
 ```powershell
-# the expansion
-.\target\release\quant-trader.exe backtest --config configs\research\combo_core_multi.toml
-.\target\release\quant-trader.exe backtest --config configs\research\combo_core_multi.toml --days 3650
-
-# the rejects
-.\target\release\quant-trader.exe backtest --config configs\research\more_trend100.toml --days 1825
-.\target\release\quant-trader.exe backtest --config configs\research\more_sectors.toml --days 1825
-.\target\release\quant-trader.exe backtest --config configs\research\more_multi_asset.toml --days 1825
-.\target\release\quant-trader.exe backtest --config configs\research\more_momentum_rot.toml --days 1825
-.\target\release\quant-trader.exe backtest --config configs\research\more_qqq_rsi2.toml
-
-# intraday cost sensitivity
-.\target\release\quant-trader.exe backtest --config configs\research\more_orb_5m.toml --days 28
-.\target\release\quant-trader.exe backtest --config configs\research\orb_5m_slip5.toml --days 28
-.\target\release\quant-trader.exe backtest --config configs\research\more_vwap_5m.toml --days 28
-.\target\release\quant-trader.exe backtest --config configs\research\vwap_5m_slip5.toml --days 28
-.\target\release\quant-trader.exe backtest --config configs\research\more_noise_spy_5m.toml --days 55
-.\target\release\quant-trader.exe backtest --config configs\research\noise_spy_slip5.toml --days 55
+.\target\release\quant-trader.exe backtest --config configs\nasdaq_leveraged_trend.toml
+.\target\release\quant-trader.exe backtest --config configs\nasdaq_leveraged_trend.toml --days 3650
 ```
+
+The expansion and intraday sweep configs were removed with their exploratory
+engines. The tables above are the record of those tests; they are not claims
+that the current code can rerun them.
 
 ## 6. Caveats
 

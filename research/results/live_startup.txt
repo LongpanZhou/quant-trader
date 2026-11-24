@@ -1,5 +1,0 @@
-[2026-11-22 21:37:13] quant-trader started | local paper ledger + Yahoo Finance live prices
-[2026-11-22 21:37:13] strategy: Leverage rotation (TQQQ 3x while QQQ > 165-day average, 40% volatility target, else BIL) on 1d bars | 3 symbols: QQQ, TQQQ, BIL
-[2026-11-22 21:37:13] paper account: equity $100000.00, cash $100000.00
-[2026-11-22 21:37:13] press Ctrl+C to stop
-[2026-11-22 21:37:14] market is CLOSED - waiting for the next session (US regular hours 9:30-16:00 ET)

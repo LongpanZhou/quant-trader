@@ -9,7 +9,6 @@ pub struct Bar {
     pub high: f64,
     pub low: f64,
     pub close: f64,
-    pub volume: f64,
 }
 
 impl Bar {
@@ -76,7 +75,7 @@ mod tests {
 
     #[test]
     fn a_bar_is_complete_only_after_its_period() {
-        let b = Bar { ts: 1_000_000, open: 1.0, high: 1.0, low: 1.0, close: 1.0, volume: 1.0 };
+        let b = Bar { ts: 1_000_000, open: 1.0, high: 1.0, low: 1.0, close: 1.0 };
         assert!(!b.is_complete(Timeframe::D1, b.ts + 86_399));
         assert!(b.is_complete(Timeframe::D1, b.ts + 86_400));
 

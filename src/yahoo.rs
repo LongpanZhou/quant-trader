@@ -105,7 +105,6 @@ impl Yahoo {
                         high: high * k,
                         low: low * k,
                         close: close * k,
-                        volume: get("volume").unwrap_or(0.0),
                     });
                 }
             }

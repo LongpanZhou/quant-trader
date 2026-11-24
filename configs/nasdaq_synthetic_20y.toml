@@ -1,0 +1,42 @@
+# Research preset: the same rule over the full cycle.
+#
+# TQQQ only exists from 2010, so `synthetic_symbol` replaces TQQQ before then
+# with a daily-reset 3x QQQ series (0.95%/yr fee, T-bill financing). From 2010
+# onward the synthetic series is still used, which keeps the whole test on one
+# consistent price path. The synthetic model was checked against real TQQQ over
+# 2010-2026: 30.50%/yr vs 29.86%/yr, a 0.64pp difference.
+#
+# 20-year window (Nov 2006 - Nov 2026): 26.99%/yr, +12.00pp vs QQQ, 41.5% max DD.
+# 26-year window (Nov 2000 - Nov 2026): 20.36%/yr, +10.96pp vs QQQ, 42.3% max DD.
+# Add `--days 9500` for the 26-year window.
+broker = "sim"
+symbols = ["QQQ", "TQQQ", "BIL"]
+timeframe = "1d"
+poll_seconds = 600
+
+[strategy]
+kind = "leveraged_index"
+index = "QQQ"
+risk_asset = "TQQQ"
+leverage = 3.0
+safe_asset = "BIL"
+sma_days = 165
+target_vol = 0.40
+vol_days = 20
+rebalance_band = 0.02
+
+[risk]
+position_pct = 1.0
+max_positions = 3
+slippage_bps = 1.0
+
+[backtest]
+end_date = "2026-11-20"
+days = 7299
+benchmark = "QQQ"
+lag_bars = 1
+fill_open = true
+synthetic_symbol = "TQQQ"
+synthetic_index = "QQQ"
+synthetic_leverage = 3.0
+synthetic_fee_pct = 0.0095

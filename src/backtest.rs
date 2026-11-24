@@ -501,7 +501,7 @@ fn synthetic_series(index: &[Bar], leverage: f64, fee_pct: f64, spread_pct: f64,
     let mut px = 100.0f64;
     for (i, b) in index.iter().enumerate() {
         if i == 0 {
-            out.push(Bar { ts: b.ts, open: px, high: px, low: px, close: px, volume: 1.0 });
+            out.push(Bar { ts: b.ts, open: px, high: px, low: px, close: px });
             continue;
         }
         let r = b.close / index[i - 1].close - 1.0;
@@ -529,7 +529,6 @@ fn synthetic_series(index: &[Bar], leverage: f64, fee_pct: f64, spread_pct: f64,
             high: open.max(px),
             low: open.min(px),
             close: px,
-            volume: 1.0,
         });
     }
     out
@@ -798,8 +797,7 @@ pub fn run(cfg: &Config, strat: &dyn Strategy, backend: &Backend) -> Result<()> 
 mod tests {
     use super::*;
     use crate::config::*;
-    use crate::strategy::{self, Mode};
-    use std::path::Path;
+    use crate::strategy;
 
     const DAY: i64 = 86_400;
 
@@ -807,10 +805,6 @@ mod tests {
         Config {
             broker: BrokerKind::Sim,
             symbols: vec!["X".into()],
-            symbols_file: None,
-            ciks: HashMap::new(),
-            edgar: EdgarConfig::default(),
-            history: String::new(),
             timeframe: Timeframe::M5,
             poll_seconds: 30,
             strategy: StrategyConfig::SmaCross { fast: 2, slow: 4 },
@@ -849,7 +843,7 @@ mod tests {
     }
 
     fn run_sim_bench(c: &Config, data: &HashMap<String, Vec<Bar>>, bench: &[Bar], from: i64) -> Report {
-        let strat = strategy::build(c, Mode::Backtest, Path::new("data/cache")).unwrap();
+        let strat = strategy::build(c);
         simulate(c, strat.as_ref(), data, bench, from)
     }
 
@@ -882,8 +876,8 @@ mod tests {
         let c = cfg();
         let data = series(&[100.0, 100.0, 100.0, 100.0, 100.0]);
         let bench = vec![
-            Bar { ts: 0, open: 100.0, high: 100.0, low: 100.0, close: 100.0, volume: 1.0 },
-            Bar { ts: 900, open: 120.0, high: 120.0, low: 120.0, close: 120.0, volume: 1.0 },
+            Bar { ts: 0, open: 100.0, high: 100.0, low: 100.0, close: 100.0 },
+            Bar { ts: 900, open: 120.0, high: 120.0, low: 120.0, close: 120.0 },
         ];
         let r = run_sim_bench(&c, &data, &bench, 0);
         assert!((r.benchmark_return.unwrap() - 0.2).abs() < 1e-9);
@@ -891,7 +885,7 @@ mod tests {
     }
 
     fn bar(ts: i64, close: f64) -> Bar {
-        Bar { ts, open: close, high: close, low: close, close, volume: 1.0 }
+        Bar { ts, open: close, high: close, low: close, close }
     }
 
     /// The engine must never let a later bar change an earlier result: this
@@ -966,7 +960,6 @@ mod tests {
                         high: px,
                         low: px,
                         close: px,
-                        volume: 1.0,
                     }
                 })
                 .collect()
@@ -1030,7 +1023,7 @@ mod tests {
         let bars = closes
             .iter()
             .enumerate()
-            .map(|(i, &c)| Bar { ts: i as i64 * 300, open: c, high: c, low: c, close: c, volume: 1.0 })
+            .map(|(i, &c)| Bar { ts: i as i64 * 300, open: c, high: c, low: c, close: c })
             .collect();
         HashMap::from([("X".to_string(), bars)])
     }
@@ -1040,7 +1033,7 @@ mod tests {
         (0..days)
             .map(|i| {
                 let p = 100.0 * (1.0f64 + rate).powi(i);
-                Bar { ts: 1_704_119_400 + i as i64 * DAY, open: p, high: p, low: p, close: p, volume: 1.0 }
+                Bar { ts: 1_704_119_400 + i as i64 * DAY, open: p, high: p, low: p, close: p }
             })
             .collect()
     }
@@ -1075,59 +1068,34 @@ mod tests {
     }
 
     #[test]
-    fn portfolio_strategy_rotates_into_the_leader() {
+    fn leveraged_index_buys_the_uptrend_and_holds_cash_in_the_downtrend() {
         let mut c = cfg();
         c.timeframe = Timeframe::D1;
-        c.symbols = vec!["FAST".into(), "SLOW".into()];
-        c.strategy = StrategyConfig::MomentumRotation {
-            momentum_days: 20,
-            trend_sma: 10,
-            index_sma: 10,
-            top_n: 1,
-            index: "SPY".into(),
+        c.symbols = vec!["QQQ".into(), "TQQQ".into(), "BIL".into()];
+        c.strategy = StrategyConfig::LeveragedIndex {
+            index: "QQQ".into(),
+            risk_asset: "TQQQ".into(),
+            leverage: 3.0,
+            safe_asset: "BIL".into(),
+            sma_days: 20,
+            target_vol: 0.40,
+            vol_days: 10,
+            rebalance_band: 0.02,
         };
-        let data = HashMap::from([("FAST".to_string(), grow(0.01, 60)), ("SLOW".to_string(), grow(0.002, 60))]);
-        let r = run_sim(&c, &data, 0);
-        // Bought the faster stock on a weekly rebalance and still holds it at a profit.
-        assert!(r.trade_pnls.is_empty());
-        assert!(r.end_equity > 1000.0, "equity {}", r.end_equity);
-        assert!(r.long_exposure > 0.0 && r.short_exposure == 0.0);
-    }
-
-    #[test]
-    fn long_short_momentum_profits_on_both_sides() {
-        let mut c = cfg();
-        c.timeframe = Timeframe::D1;
-        c.risk.max_positions = 10;
-        c.sim.starting_cash = 100_000.0;
-        c.strategy = StrategyConfig::LsMomentum {
-            lookback_days: 40,
-            skip_days: 5,
-            long_frac: 0.25,
-            short_frac: 0.25,
-            long_gross: 0.5,
-            short_gross: 0.5,
-            rebalance_band: 0.05,
-            index: "SPY".into(),
-            score: String::new(),
-            seed: 0,
-        };
-        // One clear winner, one clear loser, two flat names.
+        // A rising, slightly choppy index gives the portfolio path a real target.
+        let qqq: Vec<Bar> = (0..60)
+            .map(|i| {
+                let p = 100.0 * 1.002f64.powi(i) * if i % 2 == 0 { 1.01 } else { 0.99 };
+                Bar { ts: 1_704_119_400 + i as i64 * DAY, open: p, high: p, low: p, close: p }
+            })
+            .collect();
         let data = HashMap::from([
-            ("UP".to_string(), grow(0.004, 150)),
-            ("DOWN".to_string(), grow(-0.004, 150)),
-            ("FLAT1".to_string(), grow(0.0001, 150)),
-            ("FLAT2".to_string(), grow(-0.0001, 150)),
+            ("QQQ".to_string(), qqq),
+            ("TQQQ".to_string(), grow(0.006, 60)),
+            ("BIL".to_string(), grow(0.0001, 60)),
         ]);
         let r = run_sim(&c, &data, 0);
-        // Long the winner and short the loser: both sides make money, and a
-        // short that falls in value is a gain.
-        assert!(r.long_exposure > 0.3 && r.short_exposure > 0.1, "{} / {}", r.long_exposure, r.short_exposure);
-        assert!(r.end_equity > 110_000.0, "equity {}", r.end_equity);
-        // The same portfolio loses on the short side once borrowing is very expensive.
-        c.risk.short_borrow_pct = 2.0;
-        let costly = run_sim(&c, &data, 0);
-        assert!(costly.end_equity < r.end_equity);
-        assert!(costly.short_pnl < 0.0);
+        assert!(r.long_exposure > 0.0 && r.short_exposure == 0.0);
+        assert!(r.end_equity > 1000.0, "equity {}", r.end_equity);
     }
 }

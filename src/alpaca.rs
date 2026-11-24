@@ -106,7 +106,7 @@ impl Alpaca {
                 if let (Some(ts), Some(open), Some(high), Some(low), Some(close)) =
                     (ts, num(&b["o"]), num(&b["h"]), num(&b["l"]), num(&b["c"]))
                 {
-                    out.push(Bar { ts, open, high, low, close, volume: num(&b["v"]).unwrap_or(0.0) });
+                    out.push(Bar { ts, open, high, low, close });
                 }
             }
             match v["next_page_token"].as_str() {

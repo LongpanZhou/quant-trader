@@ -1,232 +1,150 @@
 # quant-trader
 
-An automatic quantitative trading system in Rust. It watches **real, live US
-stock prices**, runs a rule-based strategy on them, and trades **paper money
-only** — it has no code path that can place a real-money order.
+A small Rust backtester and **paper-trading** loop for one strategy: a
+volatility-targeted, leveraged Nasdaq-100 trend follower. It has no code path
+that can place a real-money order.
 
-## Quick start
+The strategy holds a blend of **QQQ** and **TQQQ** while QQQ is above its
+165-day average, sized to a 40% annualised volatility target, and parks in
+**BIL** (T-bills) otherwise.
+
+## The rule
+
+Evaluated once per completed daily bar, using the previous close, with orders
+filled at the next session's open:
+
+```
+sma  = 165-day simple moving average of QQQ close
+vol  = annualised standard deviation of QQQ daily returns, 20 days
+
+if QQQ close <= sma:
+    weight(BIL) = 1
+else:
+    exposure = min(0.40 / vol, 3.0)
+    if exposure <= 1:
+        weight(QQQ) = exposure, weight(BIL) = 1 - exposure
+    else:
+        weight(TQQQ) = (exposure - 1) / 2
+        weight(QQQ)  = 1 - weight(TQQQ)
+```
+
+Positions are only resized when they drift more than **2% of equity** from
+target. Backtests use a one-bar decision lag and next-open fills, matching the
+live loop.
+
+## Results
+
+All windows end **20 November 2026** and use 1bp slippage. Benchmark is QQQ
+total return.
+
+| Window | Strategy | QQQ | Excess | Max drawdown | Sharpe | Round trips |
+|---|---:|---:|---:|---:|---:|---:|
+| 5 years | **26.4%** | 9.5% | **+16.9pp** | 29.4% (QQQ 35.1%) | 0.82 | 54 |
+| 10 years | **37.4%** | 18.6% | **+18.8pp** | 38.3% (QQQ 35.1%) | 1.05 | 97 |
+| 20 years* | **27.0%** | 15.0% | **+12.0pp** | 41.5% (QQQ 53.4%) | 0.84 | 261 |
+| 26 years* | **20.4%** | 9.4% | **+11.0pp** | 42.3% (QQQ 73.0%) | 0.71 | 319 |
+
+\* TQQQ only exists from 2010. Before that the backtest uses a synthetic
+daily-reset 3x QQQ series. It was validated against real TQQQ over 2010-2026:
+**30.50%/yr synthetic vs 29.86%/yr real**, a 0.64pp difference.
+
+The full-cycle edge is cost-sensitive: **+10.96pp** at 1bp, **+10.01pp** at
+5bp, **+10.30pp** with a 50bp financing spread, and **+9.36pp** with both.
+That is the honest margin, not the five-year number.
+
+## Run it
 
 ```powershell
-cd $env:USERPROFILE\Desktop\quant-trader
 cargo build --release
+cargo test                 # offline unit tests
 
-.\target\release\quant-trader.exe backtest   # test the strategy on recent real history
-.\target\release\quant-trader.exe preflight  # check live data, freshness and the current target
-.\target\release\quant-trader.exe run        # start trading (leave it running)
-.\target\release\quant-trader.exe replay     # rehearse: live code over the latest session's real prices
-.\target\release\quant-trader.exe status     # account, positions, P&L (any time)
-.\target\release\quant-trader.exe reset      # wipe the sim account and start over
+# five-year backtest (config.toml is the same preset)
+.\target\release\quant-trader.exe backtest
+
+# ten-year robustness
+.\target\release\quant-trader.exe backtest --days 3650
+
+# full cycle, synthetic 3x before 2010
+.\target\release\quant-trader.exe backtest --config configs\nasdaq_synthetic_20y.toml
+.\target\release\quant-trader.exe backtest --config configs\nasdaq_synthetic_20y.toml --days 9500
+
+# live paper loop (Yahoo prices, local ledger, no account or key)
+.\target\release\quant-trader.exe preflight   # check data + current target
+.\target\release\quant-trader.exe run         # trade the paper account
+.\target\release\quant-trader.exe status
+.\target\release\quant-trader.exe replay      # rehearse the live code on the last session
+.\target\release\quant-trader.exe reset       # wipe the paper account
 ```
 
-It works immediately with no account or API key. The loop only trades during
-the US regular session (9:30–16:00 Eastern, Mon–Fri); outside it, it waits.
+`broker = "sim"` is the default and needs no setup. Alpaca paper trading is
+optional: set `APCA_API_KEY_ID` and `APCA_API_SECRET_KEY`, then change
+`broker` in the config.
 
-Each strategy has a ready-made preset in `configs/`. Pick one with `--config`:
+## Why this design
 
-```powershell
-.\target\release\quant-trader.exe backtest --config configs\connors_rsi2.toml
-.\target\release\quant-trader.exe run      --config configs\connors_rsi2.toml
-```
+The rule is not stock picking; it is **trend-followed leverage with a risk
+budget**:
 
-Every config file gets its own paper account and logs under `data\<config name>\`,
-so several strategies can run side by side in separate terminals.
+- **Trend filter:** Faber (2007) and Gayed & Bilello (2016) show that a
+  long moving-average filter puts leverage on only in regimes where forward
+  volatility is lower and positive streaks are longer. That is exactly when a
+  daily-reset leveraged fund compounds instead of decays.
+- **Volatility target:** Moreira & Muir (2017) scale exposure by trailing
+  realised variance. Zarattini & Antonacci (2024) apply the same idea with
+  per-asset volatility targeting and up to 200% gross exposure.
+- **Why 165 days and 40%:** the parameter sweep is in the study. The 200-day
+  no-vol-target version returned +6.3pp with a 52% drawdown; 2x QQQ (QLD)
+  returned +9.8pp, just below the target. Sizing, not the signal, is what
+  makes the result.
 
-## Two backends
+Primary sources:
 
-Set `broker` in `config.toml`:
+- Gayed & Bilello (2016), *Leverage for the Long Run* —
+  [SSRN 2741701](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2741701)
+- Faber (2007), *A Quantitative Approach to Tactical Asset Allocation*
+- Moreira & Muir (2017), *Volatility-Managed Portfolios*
+- Zarattini & Antonacci (2024), *A Century of Profitable Industry Trends* —
+  [SSRN 4857230](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4857230)
+- Nygård & Liukko (2026), Nasdaq-100 2001-2026 replication —
+  [thesis PDF](https://diva-portal.org/smash/get/diva2:2077998/FULLTEXT01.pdf)
 
-| `broker`  | Market data                  | Paper account                         | Setup            |
-|-----------|------------------------------|---------------------------------------|------------------|
-| `"sim"`   | Yahoo Finance (live, keyless) | Built-in ledger in `data/sim_ledger.json` | none            |
-| `"alpaca"`| Alpaca real-time IEX feed    | Alpaca paper account (realistic order simulator, web dashboard) | free API keys |
+Counter-evidence is part of the design record too: Cederburg, O'Doherty, Wang
+& Yan (2020) find volatility management does not systematically beat unmanaged
+portfolios out of sample, and Massaad et al. (2024) find published trend
+results degrade under robust testing. This implementation uses only trailing
+information and no fitted constants, but the caveats remain.
 
-**Alpaca** is the better option once you want more realism: an official,
-documented API, real-time data, and fills simulated against the live quote.
-To use it:
+## Read more
 
-1. Sign up at <https://alpaca.markets> (free, paper-only accounts are available).
-2. In the dashboard switch to **Paper Trading** and generate API keys.
-3. Set the keys, then set `broker = "alpaca"`:
-
-```powershell
-$env:APCA_API_KEY_ID = "PK..."
-$env:APCA_API_SECRET_KEY = "..."
-```
-
-The Yahoo endpoint used by `sim` is unofficial: fine for paper trading, but it
-can rate-limit or change without notice.
-
-## How it trades
-
-Every `poll_seconds` the loop, for each symbol:
-
-1. Pulls the latest bars and marks open positions to the live price.
-2. **Risk exits** – sells if the position hit its stop-loss or take-profit.
-3. **Strategy** – once per newly completed bar, asks the strategy for
-   buy / sell / hold.
-4. **Sizing** – a buy uses `position_pct` of account equity (whole shares),
-   capped by cash and by `max_positions`. Long-only, market orders.
-
-Stale data (halts, holidays, feed gaps) is never traded on.
-
-## Strategies
-
-| Preset (`configs/`) | Bars | Source | Rule in one line |
-|---|---|---|---|
-| `sma_cross` | 5m | textbook | Buy when the fast average crosses above the slow one; sell when it drops below |
-| `rsi_reversion` | 5m | textbook | Buy RSI(14) oversold; sell when it recovers |
-| `breakout` | 5m | textbook (Donchian) | Buy a new 40-bar high; sell a new 20-bar low |
-| `intraday_momentum` | 5m | Zarattini, Aziz & Barbon (2024) | Buy SPY/QQQ when price leaves its normal intraday range; trail a stop at max(range edge, VWAP); flat before the close |
-| `connors_rsi2` | 1d | Connors & Alvarez (2008) | Buy a 2-day RSI < 5 pullback in a stock above its 200-day average; sell above the 5-day average |
-| `bollinger` | 1d | Chan (2013) | Buy 2 standard deviations below the 20-day average; sell back at the average |
-| `monthly_trend` | 1d | Faber (2007) | Hold each of 5 asset-class ETFs only while above its 10-month average |
-| `momentum_rotation` | 1d | Clenow (2015) | Weekly, hold the 8 stocks with the strongest volatility-adjusted 90-day momentum |
-| `trend_stocks` (also the default `config.toml`) | 1d | Zarattini & Antonacci (2024); Zarattini, Pagani & Wilcox (2025) | Buy 20-day channel breakouts, trail a stop at the 40-day lower band, size positions by inverse volatility, park unused capital in SPY while SPY is above its 200-day average |
-| `trend_sectors` | 1d | Zarattini & Antonacci (2024) | The same trend rules on 29 sector and industry ETFs, unused capital in cash |
-
-| `vwap_1m` | 1m | Zarattini & Aziz (2023) | Every minute: long QQQ/SPY above the session VWAP, short below it, flat before the close |
-| `orb_1m` | 1m | Zarattini & Aziz (2023) | Opening range breakout: one trade per symbol per day in the direction of the first 5 minutes, tight stop, 10x target, flat before the close |
-| `orb_tqqq_1m` | 1m | Zarattini & Aziz (2023) | The same opening range breakout on the 3x Nasdaq fund (TQQQ) |
-| `leverage_2x` | 1d | Gayed & Bilello (2016) | Hold the 2x S&P 500 fund (SSO) while SPY is above its 200-day average, otherwise short-term Treasuries |
-| `nasdaq_leveraged_trend` | 1d | Gayed & Bilello (2016); Moreira & Muir (2017) | Hold a volatility-targeted QQQ/TQQQ blend while QQQ is above its 165-day average, T-bills below it; +17pp a year over QQQ in the 2021-2026 test |
-| `leverage_3x`, `leverage_nasdaq_3x` | 1d | Gayed & Bilello (2016) | The same rule with the 3x S&P 500 fund (UPRO) or the 3x Nasdaq fund (TQQQ) |
-| `leverage_3x_voltarget` | 1d | Gayed & Bilello (2016); Moreira & Muir (2017) | In an uptrend, blend SPY and UPRO to aim for 20% volatility |
-| `trend_multi_asset`, `trend_multi_asset_long` | 1d | Moskowitz, Ooi & Pedersen (2012); Hurst, Ooi & Pedersen (2017) | Trend following across 17 ETFs (stocks, bonds, commodities, currencies): long what has been rising, short or flat what has been falling, sized by volatility |
-| `value_momentum`, `value_momentum_long` | 1d | Asness, Moskowitz & Pedersen (2013) | Rank S&P 500 stocks on one-year momentum and five-year cheapness; hold the best 10% (and optionally short the worst 10%) |
-| `profitability`, `profitability_long` | 1d | Novy-Marx (2013) | Hold the 20% of S&P 500 companies with the highest return on assets, from SEC filings |
-| `core` | 1d | combination | 50% leverage rotation (2x S&P 500) + 50% multi-asset trend following |
-| `orb_stocks_5m` | 5m | Zarattini, Barbon & Aziz (2024) | Opening range breakout on "stocks in play": of about 100 S&P 500 stocks, trade the 20 with the most unusual opening volume |
-| `intraday_momentum_10`, `vwap_10_1m` | 5m / 1m | as above | Intraday momentum and VWAP trend across ten symbols (four index ETFs, six large stocks) |
-| `trend_sp500` | 1d | same as `trend_stocks` | The trend rules across the whole S&P 500, holding up to 40 of the strongest trends |
-| `ls_momentum` | 1d | Jegadeesh & Titman (1993) | Monthly: long the strongest 10% of the S&P 500, short the weakest 10% |
-| `earnings` | 1d | Ball & Brown (1968); Bernard & Thomas (1989) | Reads each company's quarterly report from SEC EDGAR; the next day goes long a strongly positive profit surprise and short a strongly negative one, 20% of the account each |
-| `combo` | 1d | — | 50% trend + 30% long/short momentum + 20% RSI(2) pullbacks on one account |
-
-**Short selling.** Portfolio strategies can return negative weights. A short
-adds its proceeds to cash and is marked to market as a liability; total short
-exposure may not exceed account equity. Backtests charge a borrow fee
-(`risk.short_borrow_pct`).
-
-**Large universes.** `symbols_file` adds symbols from a file
-(`universes/sp500.csv`, one `SYMBOL,CIK` per line). Prices download in
-parallel, and in live trading daily bars for stocks that are not held are
-re-fetched at most hourly.
-
-**Combining strategies.** `kind = "combo"` runs several strategies as parts
-of one account; see `configs/combo.toml`. Each part gets an `allocation`, and
-the parts' target weights are added per symbol.
-
-**Financial reports.** The earnings strategy pulls quarterly net income from
-the SEC's free EDGAR API (cached in `data/cache/edgar`) and scores each report
-by how far profit departed from the company's own year-over-year pattern.
-It works from the numbers in the filing, not the text, and from the filing
-date, which is often days after the company's press release.
-
-**Flat before the close.** `risk.flatten_before_close_minutes` makes the live loop close every position and stop trading that many minutes before the exchange's real closing time (half-days included), whatever the strategy says. The 1-minute presets set it.
-
-**Long intraday history.** The live price source keeps only about 60 days of
-5-minute candles. Adding `--source dukascopy` to a backtest reads years of
-1-minute history from Dukascopy's public datafeed instead (no key). It has
-SPY, QQQ and large US stocks, regular session only. The first run is slow,
-because the feed throttles downloads (five years of one symbol takes over an
-hour); everything is kept in `data/cache/dukascopy`, so later runs are quick.
-Prices are quotes for Dukascopy's contract on the stock, not exchange trades,
-the volume is Dukascopy's own, and prices are not adjusted for stock splits,
-so use it for SPY and QQQ and be wary of single stocks.
-
-```powershell
-.\target\release\quant-trader.exe backtest --config configs\orb_5m.toml --source dukascopy --days 1825
-```
-
-**Replay.** `replay` feeds the latest session's recorded bars, one at a time,
-through the same code that trades live, using a throwaway account in
-`data/<config name>-replay/`. Use it to rehearse a strategy before the open.
-
-The trend strategy is a portfolio strategy: it outputs a target weight for
-every symbol and the engine moves the account towards those weights, only
-resizing a position when it drifts outside a tolerance band (to limit trading
-costs). It is a combination of published rules, not a replication of one paper.
-
-Departures from the sources: nothing uses leverage on the long side, the
-per-symbol strategies and the intraday momentum strategy are long-only (the
-paper also shorts and uses leverage), pairs trading from Chan's book is not
-included, and momentum rotation uses equal position sizes instead of the
-book's volatility-based sizing.
-
-Daily-bar strategies decide on the previous day's close and trade shortly
-after the next open. Leave them running through the open, or start them any
-time during the session.
-
-**Benchmark.** `[backtest] benchmark = "QQQ"` makes every backtest report
-buy & hold of that symbol, the excess return, and a year-by-year comparison.
-`lag_bars = 1` hides the latest bar from the strategy, and `fill_open = true`
-fills at the next session's open. Together they reproduce live execution (the
-loop decides after a close and trades at the following open).
-`end_days_ago` shifts the test window back, to check that a result is not an
-artefact of the chosen end date. `synthetic_symbol` replaces a fund that did
-not exist yet with a daily-reset series built from an index (used for the
-20-year Nasdaq test); it is refused in live mode.
-
-**Corporate actions.** The paper ledger applies splits and cash dividends from
-Yahoo's event feed (TQQQ's 2:1 split of November 2025 included), with a
-persisted watermark, so a held fund's share count and cost basis stay correct.
-
-**Live audit.** `docs/live_readiness_audit.md` reports the measured weight
-drift (0.7% of equity on average at the current 2% band, 5.5% worst), the
-order-retry rules, quote-freshness checks and the Alpaca paper caveats
-(no dividends, IEX-only feed). `risk.rebalance_band_rel` enables the 5/25 rule
-if a strategy holds sleeves small enough to need it.
-
-## Output files (`data/<config name>/`)
-- `sim_ledger.json` – cash and positions of the sim account (survives restarts)
-- `trades.csv` – every fill: time, symbol, side, qty, price, reason
-- `equity.csv` – account equity at every poll while the market is open
-
-## Code map
-
-| File | Purpose |
-|------|---------|
-| `src/main.rs` | CLI |
-| `src/config.rs` | `config.toml` schema and validation |
-| `src/engine.rs` | live trading loop, logging, `status` |
-| `src/preflight.rs` | live-data, freshness, corporate-action and target check |
-| `src/strategy.rs` | `Strategy` trait + all strategies, the combiner |
-| `src/dukascopy.rs` | Multi-year 1-minute history for backtests |
-| `src/edgar.rs` | SEC EDGAR financial reports and the earnings-surprise score |
-| `src/indicators.rs` | SMA, standard deviation, RSI, linear regression |
-| `src/backtest.rs` | historical simulation and statistics |
-| `src/backend.rs` | common interface over the two backends |
-| `src/sim.rs` / `src/yahoo.rs` | local ledger / Yahoo data |
-| `src/alpaca.rs` | Alpaca paper trading + data |
-
-To add a strategy: implement `Strategy` in `strategy.rs`, add a variant to
-`StrategyConfig` in `config.rs`, and wire it up in `strategy::build`.
-
-Run the tests with `cargo test`.
+- [`docs/nasdaq_leveraged_trend.md`](docs/nasdaq_leveraged_trend.md) — full
+  study: literature, parameter sweep, yearly returns, drawdowns, caveats.
+- [`docs/live_readiness_audit.md`](docs/live_readiness_audit.md) — look-ahead
+  audit, tracking error, execution lag, corporate actions, cost matrix.
+- [`docs/more_trades_research.md`](docs/more_trades_research.md) — attempts to
+  add trades (multi-asset trend, sectors, intraday, PEAD, pairs) and why they
+  were rejected.
 
 ## Caveats
 
-- This is an educational paper-trading system, not financial advice. The
-  bundled strategies are textbook examples and are not expected to be profitable.
-- Backtest fills are idealised (bar close + slippage, no commissions, no
-  liquidity limits); real results would be worse.
-- The 40-stock presets use today's large companies, i.e. stocks already known
-  to have done well. That flatters both the strategy and the buy-and-hold
-  numbers in multi-year backtests (survivorship bias).
-- The S&P 500 file lists today's members only, so every S&P 500 backtest
-  picks from companies already known to have survived and grown. Results on
-  it are optimistic, most of all for strategies that buy past winners.
-- Yahoo keeps about 29 days of 1-minute history, so 1-minute backtests cover
-  roughly a month. Very active strategies are dominated by trading costs:
-  check how the result changes with `risk.slippage_bps`.
-- The value + momentum result is the one most inflated by the S&P 500 list:
-  a stock that fell for five years and is still in the index today is, by
-  construction, one that recovered. Stocks that kept falling were removed
-  from the index and are missing from the test.
-- Daily bars are dividend-adjusted (total return), so dividends count for
-  both the strategy and buy-and-hold. Intraday bars are not adjusted.
-- The leverage presets get their leverage from leveraged ETFs. Those funds
-  can lose most of their value in a crash; the 3x funds did not exist in
-  2008, so their backtests have never seen one.
-- Yahoo only serves about 59 days of 5-minute history, so intraday backtests
-  cover a very short window. Alpaca provides years of intraday history.
+- **This is leverage.** It holds 1-3x Nasdaq exposure (about 2.4x when
+  invested), so a 30% index drawdown can be a 40%+ account drawdown. The
+  2022 loss was -12.5%, not -30%, but that is the trend filter working, not a
+  guarantee.
+- **The five-year window is kind.** It contains the 2022 crash and a strong
+  2023-2026 recovery. The 20- and 26-year numbers are the better guide.
+- **The edge is thin at realistic costs.** The full cycle is +9.36pp after 5bp
+  slippage and 50bp financing. Do not assume the five-year +16.9pp persists.
+- **Yahoo data is revised.** Re-runs can differ by about 0.1pp and a few
+  trades. The configs pin `end_date = "2026-11-20"` so the window does not
+  move with the run date.
+- **Paper only.** Nothing here is investment advice, and the live loop trades
+  a simulator.
+
+## Layout
+
+```
+src/        engine, backtester, sim broker, Yahoo/Alpaca data, strategy
+configs/    nasdaq_leveraged_trend.toml (live/5y), nasdaq_synthetic_20y.toml
+docs/       study, live-readiness audit, expansion research
+config.toml default config, same as the Nasdaq preset
+```

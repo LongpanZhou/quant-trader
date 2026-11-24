@@ -1,85 +1,55 @@
-# ---------------------------------------------------------------------------
-# quant-trader configuration (default strategy: volatility-sized trend following)
+﻿# Nasdaq-100 leveraged trend following with a volatility target.
 #
-# Every other strategy has a complete ready-to-run file in configs/ - use one
-# with:  --config configs\<name>.toml
-# ---------------------------------------------------------------------------
-
-# Which backend to trade against:
-#   "sim"    - built-in paper ledger + live Yahoo Finance prices. No account or
-#              API key needed. Works out of the box.
-#   "alpaca" - Alpaca paper-trading account (free). Real-time IEX market data,
-#              and orders are routed to Alpaca's paper exchange simulator.
-#              Needs API keys, see the [alpaca] section.
+# Rule (once a day, on the previous close):
+#   QQQ above its 165-day average -> hold a blend of QQQ and the 3x Nasdaq fund
+#   (TQQQ) sized to a 40% annualised volatility target; below the average ->
+#   hold T-bills (BIL).
+#
+# This is the "leverage rotation" family of Gayed & Bilello (2016) with the
+# volatility-targeted position sizing of Moreira & Muir (2017) and Zarattini &
+# Antonacci (2024). Their published work finds that a moving-average filter
+# puts leverage on only when volatility is low and streaks are positive, which
+# is exactly the condition under which daily-reset leveraged funds compound
+# instead of decay.
+#
+# 5-year test (Nov 2021 - Nov 2026, daily bars, 1 bp slippage, live-parity
+# fills): 26.4% a year against QQQ's 9.5%, i.e. +16.9 percentage points a
+# year, with a maximum drawdown of 29.4% versus QQQ's 35.1%. Every complete
+# calendar year 2022-2026 beat QQQ, by 7 to 36 points. See
+# docs/nasdaq_leveraged_trend.md for the full study and
+# docs/live_readiness_audit.md for the tracking-error, retry and data checks.
+#
+# lag_bars = 1 hides the latest close from the strategy, and fill_open = true
+# executes at the next session's open. Together they reproduce the live loop:
+# decide after a close, trade at the following open.
 broker = "sim"
-
-# Stocks to trade. SPY is the market index: it is used as the regime filter
-# and as the place to park unused capital.
-symbols = [
-    "AAPL", "MSFT", "NVDA", "AMZN", "GOOGL", "META", "TSLA", "AVGO", "JPM", "V",
-    "MA", "UNH", "XOM", "JNJ", "PG", "HD", "COST", "ABBV", "MRK", "KO",
-    "PEP", "WMT", "BAC", "CVX", "LLY", "ORCL", "CRM", "ADBE", "NFLX", "AMD",
-    "CSCO", "INTC", "DIS", "MCD", "NKE", "CAT", "BA", "GE", "IBM", "QCOM",
-    "SPY",
-]
-
-# Bar size the strategy runs on: "1m", "5m", "15m", "1h" or "1d".
-# Daily strategies decide on yesterday's close and trade shortly after the open.
+symbols = ["QQQ", "TQQQ", "BIL"]
 timeframe = "1d"
+poll_seconds = 600
 
-# How often the live loop polls for new prices (seconds).
-poll_seconds = 300
-
-# ---------------------------------------------------------------------------
-# Strategy: volatility-sized trend following (long-only, no leverage)
-#
-#   Entry   - close breaks above the 20-day Donchian or Keltner upper band
-#   Exit    - trailing stop at the 40-day lower band; the stop only moves up
-#   Sizing  - inverse volatility: every position targets the same risk, so
-#             calm stocks get more capital than wild ones
-#   Costs   - a position is only resized when it drifts outside a band
-#   Cash    - unused capital is held in SPY while SPY is above its 200-day
-#             average, and in cash otherwise
-#
-# Sources: Zarattini & Antonacci, "A Century of Profitable Industry Trends"
-# (2024); Zarattini, Pagani & Wilcox, "Does Trend-Following Still Work on
-# Stocks?" (2025); Faber (2007) for the market filter.
-# ---------------------------------------------------------------------------
 [strategy]
-kind = "trend_vol_target"
-entry_lookback = 20
-exit_lookback = 40
-keltner_mult = 2.0
-vol_days = 14                # window for each position's volatility estimate
-position_vol_target = 0.02   # each position aims to add 2% annualised volatility
-max_weight = 0.20            # no single position above 20% of the account
-max_gross = 1.0              # never invest more than 100% (no leverage)
-rebalance_band = 0.03        # resize only when 3% of equity off target
-index = "SPY"
-index_sma = 200
-park_cash_in_index = true
+kind = "leveraged_index"
+index = "QQQ"
+risk_asset = "TQQQ"
+leverage = 3.0
+safe_asset = "BIL"
+sma_days = 165
+target_vol = 0.40
+vol_days = 20
+rebalance_band = 0.02
 
-# ---------------------------------------------------------------------------
-# Risk management
-# ---------------------------------------------------------------------------
 [risk]
-position_pct = 0.10      # per-position size for strategies that do not size by volatility
-max_positions = 45       # never hold more than this many symbols at once
-stop_loss_pct = 0.0      # extra hard stop below entry (0 = off; this strategy trails its own)
-take_profit_pct = 0.0    # extra profit target above entry (0 = off)
-slippage_bps = 1.0       # simulated fill slippage, sim + backtest only
-
-# ---------------------------------------------------------------------------
-[sim]
-starting_cash = 100000.0
+position_pct = 1.0
+max_positions = 3
+slippage_bps = 1.0
 
 [backtest]
-days = 1825              # history to test on (Yahoo caps: 1m=7d, 5m/15m=59d)
+end_date = "2026-11-20"
+days = 1824
+benchmark = "QQQ"
+lag_bars = 1
+fill_open = true
 
-[alpaca]
-# Create free paper keys at https://app.alpaca.markets (Paper Trading > API Keys).
-# Either paste them here, or (better) set the environment variables
-# APCA_API_KEY_ID and APCA_API_SECRET_KEY, which take priority.
-key_id = ""
-secret_key = ""
-feed = "iex"             # "iex" is free real-time; "sip" needs a paid data plan
+
+
+

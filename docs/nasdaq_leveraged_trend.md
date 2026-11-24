@@ -162,7 +162,7 @@ The worst drawdown was **29% in July-September 2024**, the yen-carry unwind —
 a fast V-shaped selloff, which is the failure mode trend following handles
 worst. It was not the 2022 bear market.
 
-Raw output: `research/results/nasdaq_leveraged_trend_5y.txt`.
+Reproduce it with `quant-trader backtest --config configs/nasdaq_leveraged_trend.toml`.
 
 ## 5. Robustness
 
@@ -181,7 +181,7 @@ Weight tracking      : avg 0.61% of equity off target, worst 6.24%
 Yearly excess: 2017 +81.2, 2018 -1.8, 2019 -6.2, 2020 +22.6, 2021 +27.6,
 2022 +20.0, 2023 +35.9, 2024 +14.8, 2025 +7.4, 2026 +7.5. The weak years are
 the choppy ones (2018, 2019), which is the known cost of trend following.
-Raw output: `research/results/nasdaq_leveraged_trend_10y.txt`.
+Add `--days 3650` to the headline command to reproduce it.
 
 ### 5.2 Parameter plateau (5 years, 5% band sweep)
 
@@ -268,7 +268,8 @@ the volatility-targeted version. Sizing is not a detail; it is the strategy.
 Even the 200-day *with* vol targeting is a full 6pp a year behind the 165-day
 version.
 
-Full sweep of the parameter space: `research/results/sweep_open.csv`.
+The full parameter sweep was run in the exploratory build; this repo keeps
+only the chosen setting, which is the point of the study.
 
 One more alternative was ruled out before coding. Cross-sectional momentum on
 today's Nasdaq-100 members looks spectacular — a controlled test of the same
@@ -332,7 +333,6 @@ actual funds, not a hand-picked list of survivors.
 ## 8. Reproduce
 
 ```powershell
-cd C:\Users\27175\Desktop\quant-trader-research
 cargo build --release
 
 # headline, five years
@@ -341,8 +341,9 @@ cargo build --release
 # ten-year robustness
 .\target\release\quant-trader.exe backtest --config configs\nasdaq_leveraged_trend.toml --days 3650
 
-# the parameter sweep used above
-.\research\run_nasdaq_study.ps1
+# full cycle, synthetic 3x before TQQQ existed
+.\target\release\quant-trader.exe backtest --config configs\nasdaq_synthetic_20y.toml
+.\target\release\quant-trader.exe backtest --config configs\nasdaq_synthetic_20y.toml --days 9500
 ```
 
 The study configs pin `end_date = "2026-11-20"` so the window does not move
@@ -361,9 +362,9 @@ nothing is pre-baked.
 
 - `src/config.rs`: `[backtest] benchmark` (default `SPY`) so results can be
   measured against QQQ; `lag_bars` to hide recent bars from the strategy;
-  `fill_open` to execute at the next session's open; `end_days_ago` for
-  endpoint sensitivity; `synthetic_symbol` for tests before a fund existed.
-  `tsmom` may now use margin up to `risk.max_leverage`.
+  `fill_open` to execute at the next session's open; `end_date` for a
+  reproducible window; `end_days_ago` for endpoint sensitivity;
+  `synthetic_symbol` for tests before a fund existed.
 - `src/backtest.rs`: benchmark series is fetched independently of the traded
   universe and used for the buy-and-hold line, drawdown and the yearly table;
   open-fill execution; synthetic daily-reset funds; drawdown dates.
@@ -371,8 +372,8 @@ nothing is pre-baked.
   live loop and preflight.
 - `src/preflight.rs`: live data, freshness, corporate-action and target check.
 - `src/sim.rs`: splits and dividends applied to the paper ledger.
-- `configs/nasdaq_leveraged_trend.toml`: the strategy preset.
-- `research/`: sweep configs, logs and result files.
+- `configs/nasdaq_leveraged_trend.toml`: the live/5-year preset.
+- `configs/nasdaq_synthetic_20y.toml`: the long-run research preset.
 
 ## 10. Five-year verdict
 
@@ -558,7 +559,6 @@ End-to-end test against the real TQQQ split, starting from a ledger dated
 
 ```
 BEFORE: qty 100, avg_price 80, cash 50000
-$ quant-trader status --config configs/research/action_test.toml
 Actions : applied 5 corporate action(s)
 SYMBOL  QTY  ENTRY  LAST
 TQQQ    200  40.00  41.20
