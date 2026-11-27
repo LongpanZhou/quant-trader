@@ -1,0 +1,129 @@
+{
+  "agent": "stop-reentry-recovery",
+  "original": "research/agents2/stop-reentry-recovery",
+  "status": "retired_overlay_only",
+  "idea": "Buy TQQQ after a leveraged-ETF downside overshoot (TQQQ falls >=3% intraday and underperforms 3x QQQ by >=1pp), scaling in 50% then 100% after a recovery close, with a 2% stop and a 3-session hold.",
+  "hypothesis": "The relative downside overshoot is a rebalancing/flow effect that reverses over the next 1-3 sessions; a gradual scale-in captures it with low correlation to the 165-day trend base.",
+  "universe": [
+    "TQQQ (long)",
+    "BIL (cash)",
+    "QQQ (signal only)"
+  ],
+  "frozen_commit": null,
+  "variants_tried": 1,
+  "corr_vs_165d_baseline": -0.0010749501235614797,
+  "max_corr_vs_other_rebuilds": null,
+  "windows": {
+    "dev": {
+      "1bp": {
+        "cagr": 0.012549984524346636,
+        "max_drawdown": 0.01814957555398533,
+        "sharpe": 0.803921997939103,
+        "sortino": 1.1237538087961683,
+        "volatility": 0.015723533804611303,
+        "fills": 5,
+        "turnover": 3.078438353499035,
+        "exposure": 0.9999987210313603,
+        "ending_equity": 110470.62217116888
+      },
+      "5bp": {
+        "cagr": 0.012398986195756967,
+        "max_drawdown": 0.018531039943796568,
+        "sharpe": 0.7952280226379669,
+        "sortino": 1.110148464165672,
+        "volatility": 0.01570689006597116,
+        "fills": 5,
+        "turnover": 3.0759548913389883,
+        "exposure": 0.9999987210313603,
+        "ending_equity": 110339.156054668
+      },
+      "10bp": {
+        "cagr": 0.012210412465650577,
+        "max_drawdown": 0.019007000200330304,
+        "sharpe": 0.7840798058896525,
+        "sortino": 1.0926914377077819,
+        "volatility": 0.01569147106652676,
+        "fills": 5,
+        "turnover": 3.072855200993942,
+        "exposure": 0.9999987210313603,
+        "ending_equity": 110175.16725213826
+      },
+      "subperiods": {
+        "2016-19": {
+          "cagr": 0.011448729374608169,
+          "max_drawdown": 0.0008751784806968477
+        },
+        "2020-21": {
+          "cagr": -0.004051417656423251,
+          "max_drawdown": 0.01793485680012996
+        },
+        "2022-23": {
+          "cagr": 0.03188304923222729,
+          "max_drawdown": 0.00043781470679116197
+        }
+      }
+    },
+    "holdout": null,
+    "10y": null,
+    "5y": null
+  },
+  "marks": "1m",
+  "benchmarks": {
+    "baseline_165d": {
+      "cagr": 0.44764720668821134,
+      "max_drawdown": 0.5876387357729533,
+      "sharpe": 1.0250944101451582,
+      "fills": 59
+    },
+    "tqqq": {
+      "cagr": 0.36152361155523893,
+      "max_drawdown": 0.8229021592363336,
+      "sharpe": 0.8011510649133299
+    },
+    "qqq": {
+      "cagr": 0.18910021530222187,
+      "max_drawdown": 0.3730047872557426,
+      "sharpe": 0.89984613657449
+    },
+    "bil": {
+      "cagr": 0.013937758410987211,
+      "max_drawdown": 0.0024388417668438356,
+      "sharpe": 0.9240502609003339
+    },
+    "spy": {
+      "cagr": 0.133661627756694,
+      "max_drawdown": 0.337172572108114,
+      "volatility": 0.1839215077935271,
+      "years": 7.983572895277208
+    },
+    "original": null
+  },
+  "diagnostics": {
+    "signal_mode": "intraday",
+    "params": {
+      "drop": 0.03,
+      "excess": 0.01,
+      "hold": 3,
+      "stop": 0.02,
+      "size0": 0.5,
+      "size1": 1.0,
+      "addon": true,
+      "gap_cancel": 0.0
+    },
+    "events": 1,
+    "entries": 1,
+    "stops": 1,
+    "addons": 0,
+    "event_dates": [
+      "2020-03-12"
+    ],
+    "entry_dates": [
+      "2020-03-13"
+    ],
+    "stop_dates": [
+      "2020-03-13"
+    ],
+    "addon_dates": []
+  },
+  "status_note": "preliminary hard-bar check only; the lead must also verify sub-periods, placebo, bootstrap and max correlation vs other rebuilds"
+}

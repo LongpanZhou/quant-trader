@@ -1,0 +1,1 @@
+{"slug": "gap-fill-fade", "mode": "dev", "calls": 30, "error": null, "seconds": 54.9, "restored": [], "match_score": null, "found": true, "kw": {"band": 0.02, "slippage_bps": 1, "start_equity": 100000.0}, "bars": 781880, "k": 4}

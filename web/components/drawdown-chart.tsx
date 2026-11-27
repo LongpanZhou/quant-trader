@@ -4,6 +4,7 @@ import { useMemo } from "react";
 import {
   Area,
   AreaChart,
+  Brush,
   CartesianGrid,
   ReferenceLine,
   ResponsiveContainer,
@@ -12,7 +13,7 @@ import {
   YAxis,
 } from "recharts";
 import type { SeriesPoint } from "@/lib/types";
-import { downsample, pct, yearTicks } from "@/lib/format";
+import { downsample, formatSeriesDate, pct, xTickLabel, xTicks } from "@/lib/format";
 import { ChartTooltip } from "./chart-tooltip";
 import { LegendDot } from "./ui";
 
@@ -21,15 +22,17 @@ export function DrawdownChart({
   strategyMax,
   qqqMax,
   benchmark,
+  timeframe = "1d",
 }: {
   series: SeriesPoint[];
   strategyMax: number;
   qqqMax: number | null;
   benchmark: string;
+  timeframe?: string;
 }) {
   const data = useMemo(() => downsample(series, 1500), [series]);
-  const ticks = useMemo(() => yearTicks(data, 12), [data]);
-  const tickFormatter = (value: string) => value.slice(0, 4);
+  const ticks = useMemo(() => xTicks(data, timeframe, 12), [data, timeframe]);
+  const tickFormatter = (value: string) => xTickLabel(value, timeframe, data);
 
   return (
     <div className="min-w-0">
@@ -73,14 +76,7 @@ export function DrawdownChart({
             <Tooltip
               content={
                 <ChartTooltip
-                  labelFormatter={(value) =>
-                    new Date(`${value}T00:00:00Z`).toLocaleDateString("en-US", {
-                      month: "short",
-                      day: "numeric",
-                      year: "numeric",
-                      timeZone: "UTC",
-                    })
-                  }
+                  labelFormatter={(value) => formatSeriesDate(value)}
                   valueFormatter={(value) => pct(value)}
                 />
               }
@@ -106,6 +102,14 @@ export function DrawdownChart({
               dot={false}
               connectNulls
               isAnimationActive={false}
+            />
+            <Brush
+              dataKey="date"
+              height={24}
+              stroke="#3f3f46"
+              fill="#0b0d10"
+              travellerWidth={8}
+              tickFormatter={(value: string) => value.slice(0, 4)}
             />
           </AreaChart>
         </ResponsiveContainer>

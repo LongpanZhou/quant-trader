@@ -1,0 +1,156 @@
+{
+  "slug": "drawdown-stop-overlay",
+  "name": "165-day SMA threshold stop",
+  "tagline": "Exit intraday at the exact 165-day SMA threshold; re-enter on a regime cross or a new 10-day TQQQ high.",
+  "summary": "Daily regime: hold TQQQ while QQQ's close is above its 165-day SMA, otherwise BIL. The 165-day SMA is converted into an exact threshold T_t = mean of the prior 164 QQQ closes; if QQQ trades at or below 0.995 x T_t intraday, the strategy sells TQQQ at the next minute open. After a stop it waits for a new 10-day TQQQ high, unless the daily regime goes bearish first - a bearish close clears the stop state and the next bullish close re-enters at the next open. In March 2020 it exits on 2020-02-28, is stopped out again at the 2020-03-11 open, and avoids the 2020-03-12 collapse; 10y 43.27% CAGR / 45.23% DD, 5y 29.46% / 42.96%. V4 (55% vol target) is the stronger variant: 10y 43.66% / 43.10%, 5y 34.88% / 36.64%.",
+  "decision_process": "At each 1-minute bar i the strategy sees QQQ and TQQQ closes through i. The daily regime uses the last completed daily close (on the 15:59 bar, that session's close). The threshold uses thr_d = rolling(164).mean().shift(1), so thr_d[d] = mean(closes d-164..d-1) is known before day d opens; the code maps it with same_day, not the old per_bar one-day-stale value. If the regime is bullish and QQQ's minute close is at or below 0.995 x T_t, the target flips to BIL; otherwise it stays TQQQ. After a stop, the target stays BIL until either the daily regime resets (bearish then bullish) or TQQQ prints a new 10-day high while the regime remains bullish. The target set at bar i is filled at bar i+1's open by research/bt.py; there are no same-bar fills. Long-only, TQQQ/BIL, weights sum to 1.",
+  "rules": [
+    "Regime: hold TQQQ while QQQ's last completed daily close is above its 165-day SMA; otherwise hold BIL.",
+    "Threshold: T_t = mean(QQQ daily closes t-164..t-1); a close at price p today is above the 165-day SMA if and only if p > T_t.",
+    "Intraday stop: while long, if QQQ's 1-minute close is <= 0.995 x T_t, sell TQQQ at the next minute open and move to BIL.",
+    "Re-entry after a stop: if the daily regime goes bearish, clear the stop state and re-enter at the next open after a bullish close (baseline behavior); if the regime stays bullish, re-enter only when TQQQ's 1-minute close >= max(prior 10 daily TQQQ closes).",
+    "Timing and costs: signals use data through bar i only; fills at bar i+1 open; 2% band; 1 bp primary and 5 bp sensitivity; long-only TQQQ/BIL."
+  ],
+  "status": "Verified",
+  "metrics": {
+    "cagr10": 0.4327,
+    "dd10": 0.4523,
+    "cagr5": 0.2946,
+    "dd5": 0.4296,
+    "cagr10_5bp": 0.4270,
+    "dd10_5bp": 0.4584,
+    "cagr5_5bp": 0.2891,
+    "dd5_5bp": 0.4314
+  },
+  "verdict": "V1 passes TQQQ on both windows at 1 bp and 5 bp: 10y 43.27% / 45.23% (5 bp 42.70% / 45.84%), 5y 29.46% / 42.96% (5 bp 28.91% / 43.14%). It does NOT beat the daily baseline's 10y CAGR (43.27% vs 45.31%); it cuts the 10y max DD (45.23% vs 58.71%) but has a worse 5y CAGR and DD than the baseline (29.46% / 42.96% vs 34.61% / 36.86%). The 10y return gain is concentrated in March 2020; 2018 is the worst year (-11.6% vs -4.3% baseline) and 2023/2024 also whipsaw. V4 (55% vol target) dominates V1 on all four headline metrics: 10y 43.66% / 43.10%, 5y 34.88% / 36.64% (5 bp 43.07% / 43.55%, 34.28% / 36.66%). The 10y max DD of 45.23% is the 2018-2019 episode, not COVID (2020 DD was 44.87%).",
+  "sources": [
+    {
+      "idea": "Use a 10-month / 165-200 day simple moving average as the trend filter for the QQQ-to-TQQQ regime.",
+      "source": "Meb Faber (2007) / A Quantitative Approach to Tactical Asset Allocation",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=962461",
+      "source_type": "paper",
+      "role": "inspired rule",
+      "evidence": "The 10-month SMA timing rule is the template for the 165-day regime; the paper reports it keeps most of the equity return with much smaller drawdowns. I used the rule shape, not the paper's exact monthly rebalance.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "TQQQ + QQQ 200-day SMA baseline and the diagnosis that the March 2020 whipsaw causes the -60.9% drawdown.",
+      "source": "FinLab (Oct 2026) / TQQQ 200-Day Moving Average Strategy: 7 Leveraged ETF Rules",
+      "url": "https://finlab.finance/en/blog/leveraged-etf-timing-backtest",
+      "source_type": "blog",
+      "role": "inspired rule",
+      "evidence": "Reports 45.1% CAGR, -60.9% max DD, 0.99 daily Sharpe, 4/9 neighbouring settings beating QQQ. Documents the exact March 2020 whipsaw: sell 2020-03-10, buy back 2020-03-11, take TQQQ's -27.4% day on 2020-03-12; in 6 of 8 exits TQQQ rose while the rule was out. This is the failure mode the intraday threshold stop targets.",
+      "confidence": "high"
+    },
+    {
+      "idea": "165-day SMA baseline metrics used as the comparison bar: 45.31% CAGR / 58.71% DD 10y and 34.61% / 36.86% 5y.",
+      "source": "quant-trader-research README (repo baseline)",
+      "url": null,
+      "source_type": "data",
+      "role": "benchmark",
+      "evidence": "The README specifies the daily QQQ 165-day SMA -> TQQQ / BIL baseline with a 2% band and next-open fills. I reproduced it at 45.31% / 58.71% (10y) and 34.61% / 36.86% (5y) before adding the overlay.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Generic trailing-stop / ATR stop-loss mechanics and the point-in-time bias taxonomy for stop research.",
+      "source": "Fonseca / Point-in-Time Backtesting of Momentum-Trend Equity Strategies",
+      "url": "https://pure.buas.nl/ws/files/39878068/Fonseca_Point-in-Time_backtesting_of_momentum-trend_equity_strategies.pdf",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Provides the ATR trailing-stop literature and the bias taxonomy used to check that stops and re-entries use only data available at the bar. I did not take the ATR parameter or the exact stop rule from it.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Definition of a trailing stop and its three costs: whipsaw, slippage and profit giveback.",
+      "source": "Investopedia / Trailing Stop",
+      "url": "https://www.investopedia.com/terms/t/trailingstop.asp",
+      "source_type": "blog",
+      "role": "supports assumption",
+      "evidence": "Used as the plain-language definition of a trailing stop and the risk list that motivated a re-entry filter rather than a next-day re-entry.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Whipsaw is the central weakness of trailing stops in range-bound markets.",
+      "source": "ShareScope / Trend following and trailing stops: methods to capture trends",
+      "url": "https://knowledge.sharescope.co.uk/2022/08/26/trend-following-and-trailing-stops-methods-to-capture-trends/",
+      "source_type": "blog",
+      "role": "supports assumption",
+      "evidence": "The article compares trailing methods and highlights whipsaw in range-bound markets; this is the reason the strategy uses a new-high re-entry rather than an immediate re-entry after the stop.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Inverse-volatility position sizing can raise the Sharpe ratio because volatility changes are not matched by expected-return changes.",
+      "source": "Moreira & Muir (2017) / Volatility-Managed Portfolios",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2659431",
+      "source_type": "paper",
+      "role": "inspired rule",
+      "evidence": "This supports only variant V4 (w_TQQQ = min(1, 0.55 / 20-day realised TQQQ vol)), not the V1 threshold stop. V4: 10y 43.66% / 43.10%, 5y 34.88% / 36.64%.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Caveat that volatility scaling does not improve every factor; V4 should be treated as a robust alternative, not a universal law.",
+      "source": "Cederburg, O'Doherty, Wang & Yan (2020) / On the performance of volatility-managed portfolios",
+      "url": "https://www.sciencedirect.com/science/article/abs/pii/S0304405X2030132X",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "The abstract reports higher Sharpe from volatility scaling for only five of the nine equity factors examined. Used to keep the V4 claim modest and to explain why V4 is an alternative rather than the primary recommendation.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Practical impact of volatility targeting on portfolio risk and drawdown.",
+      "source": "Man Group / The Impact of Volatility Targeting",
+      "url": "https://man.com/insights/the-impact-of-volatility-targeting",
+      "source_type": "blog",
+      "role": "supports assumption",
+      "evidence": "Background for the V4 volatility-target sizing; it did not set the 55% target. The 55% target was chosen from the monotone 50/55/60% stability table.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Historical evidence that simple moving-average trading rules can have predictive value.",
+      "source": "Brock, Lakonishok & LeBaron (1992) / Simple Technical Trading Rules and the Stochastic Properties of Stock Returns",
+      "url": "https://doi.org/10.1111/j.1540-6261.1992.tb04681.x",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Cited as the original 200-day MA evidence in the FinLab article; I did not use its exact rule or sample. It supports the general plausibility of the SMA leg, not the minute overlay.",
+      "confidence": "low"
+    },
+    {
+      "idea": "Exact overlay parameters: 0.5% threshold buffer, 10-day-high re-entry lookback, regime-reset state machine, and the correct threshold alignment.",
+      "source": "Own test / no external source",
+      "url": null,
+      "source_type": "data",
+      "role": "inspired rule",
+      "evidence": "No external source specifies these values. Corrected stability: 0.25/0.50/0.75/1.00% buffers give 10y 41.83/43.27/45.95/47.07% at 44.71/45.23/45.76/45.76% DD and 5y 26.23/29.46/31.04/29.67%; all pass both windows. The 10-day high is a round momentum window chosen before the detailed grid. The threshold must be same_day(thr_d): the earlier per_bar(thr_d) was one day stale and inflated V1 from 43.27% to 46.89% (10y) and from 29.46% to 32.40% (5y).",
+      "confidence": "high"
+    }
+  ],
+  "rejected_sources": [
+    {
+      "source": "Quant Arenas / Chandelier / ATR Exit",
+      "url": "https://quantarenas.com/strategy/trend-17-chandelier-exit",
+      "why_rejected": "Listed on the current web page but not used to derive V1. A Chandelier/ATR exit was not tested. The tested V3 was a fixed 15% trailing stop from the TQQQ position peak with a QQQ 20-day-high re-entry; it was parameter-sensitive (10y 39.76% at 15%, but 35.17% at 8%, 36.75% at 10%, 37.87% at 18%, 36.59% at 20%) and failed the 10y 5 bp bar (38.74% < 39.28%)."
+    },
+    {
+      "source": "Cesar Alvarez / Stop-Loss Studies",
+      "url": "https://bettersystemtrader.com/037-cesar-alvarez-studies-stop-losses",
+      "why_rejected": "Listed on the current web page but not used. The stop here is an SMA-threshold stop, not a generic percentage stop-loss; no rule or parameter was taken from this source."
+    },
+    {
+      "source": "FinLab / Leveraged ETF Decay",
+      "url": "https://finlab.finance/en/blog/leveraged-etf-decay",
+      "why_rejected": "Listed on the current web page but used only as background on TQQQ path dependence and decay. It did not inspire or parameterise the threshold stop; the relevant FinLab source for this strategy is the 200-day timing article."
+    }
+  ],
+  "corrections": [
+    "The current web page's V1 metrics (46.89% / 45.32% 10y, 32.40% / 42.96% 5y) are stale. They come from the earlier `thr_m = per_bar(thr_d)` code, which used a threshold one day behind today's exact SMA level. The corrected `thr_m = same_day(thr_d)` code produces 43.27% / 45.23% (10y) and 29.46% / 42.96% (5y) with 97/53 fills; 5 bp is 42.70% / 45.84% and 28.91% / 43.14%. Regenerate the page and the markdown copy from the corrected report.md; do not use the old 46.89% numbers.",
+    "The tagline/summary claim 'refuses to re-enter on the weak bounce' is inaccurate. V1 did re-enter on the 2020-03-10 bullish close because the daily regime briefly reset; the intraday stop then fired again at the 2020-03-11 09:30 bar and it exited at 09:31, avoiding the 2020-03-12 collapse. Replace with: 'exits intraday at the exact threshold; re-enters on a regime cross or a new 10-day high; in March 2020 it was stopped out again at the 2020-03-11 open.'",
+    "V4 now dominates V1 on all four headline metrics: 10y 43.66% / 43.10% vs 43.27% / 45.23%, 5y 34.88% / 36.64% vs 29.46% / 42.96% (5 bp 43.07% / 43.55% and 34.28% / 36.66%). If the page is meant to show the best variant, feature V4; if it is specifically the minute-stop page, keep V1 but state that V4 is the stronger alternative.",
+    "V2 no longer passes. With the corrected threshold, V2 is 10y 37.12% / 51.47% (5 bp 36.67% / 52.01%), below the 39.28% CAGR bar; it passes only the 5y window (24.13% / 34.28%). Any page text that calls V2 a pass must be corrected.",
+    "Add the 5 bp metrics to the web page: V1 10y 42.70% CAGR / 45.84% DD, 5y 28.91% / 43.14%. The page currently shows only 1 bp.",
+    "Label the drawdown metrics. V1's dd10 = 45.23% and dd5 = 42.96% are 1-minute-path drawdowns; the daily-close drawdowns are 43.60% and 42.46%. The page compares dd5 (42.96%) with the daily baseline's 36.86% without noting that the baseline is measured on daily closes. The direction of the verdict is unchanged, but the measurement difference should be stated.",
+    "Clarify the max-DD attribution. The 10y max DD of 45.23% is the August-2018 to June-2019 episode, not COVID; the March 2020 drawdown was cut to 44.87%. The page's '10y improvement is concentrated in March 2020' is correct for the return improvement, but it should not imply the 10y max DD is a COVID number. Also add that V1's 2018 return is -11.6% vs -4.3% for the baseline; the Q4-2018 chop is the main reason the 10y CAGR is now below the baseline.",
+    "Make the regime-reset explicit in the decision text. The page says 'Re-enter on the next regime cross or a new 10-day TQQQ high'; add that a bearish daily close clears the stop state, so the next bullish close re-enters unconditionally. This is the mechanism behind the 2020-03-10/11 re-entry.",
+    "result.json has been regenerated from the corrected strategy.py and now matches the report: V1 43.27% / 45.23% (10y), 29.46% / 42.96% (5y), 97/53 fills, 5 bp 42.70% / 45.84% and 28.91% / 43.14%. The previous audit's claim that result.json was stale is withdrawn; the earlier inconsistency was the old per_bar threshold in the report, not the regenerated result.",
+    "Optional rename: 'Drawdown threshold stop' is less precise than '165-day SMA threshold stop'. The stop is not a fixed drawdown percentage; it is an exact moving-average threshold."
+  ]
+}

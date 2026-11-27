@@ -1,0 +1,133 @@
+{
+  "slug": "time-of-day",
+  "name": "Overnight + first 30m",
+  "tagline": "Hold TQQQ only from 15:59 to 10:01 the next morning, and only while QQQ is above its 165-day SMA with a 2% hysteresis band.",
+  "summary": "Almost all of TQQQ's return accrues outside the cash session, and the last 30 minutes of the session are the worst block of the day. The strategy therefore owns TQQQ from the 15:59 open until the 10:01 open the next morning (overnight gap plus the first half hour), and holds cash the rest of the day. A daily QQQ 165-day SMA with a 2% hysteresis band switches the whole block off in downtrends, which is what produces the drawdown protection.",
+  "decision_process": "Once per day, using only the previous day's QQQ close: regime ON if close > SMA165 * 1.02, OFF if close < SMA165 * 0.98, otherwise unchanged (hysteresis). If ON, a target of 100% TQQQ is written on the 15:58:00 bar and filled at the 15:59:00 open of the last bar of the session. A target of 0 is written on the 10:00:00 bar of the next session and filled at the 10:01:00 open, so the position spans the overnight gap plus the first 31 minutes. Between decision points the target is held; drift is only rebalanced when the position moves more than 2% of book. Everything outside the block is cash (no BIL leg).",
+  "rules": [
+    "Regime: QQQ close (previous day) above its 165-day SMA by more than 2% -> ON; below by more than 2% -> OFF; inside the band the state persists.",
+    "If the regime is ON, buy TQQQ at the 15:59:00 open of the session's last 1-minute bar.",
+    "Sell TQQQ at the 10:01:00 open of the next session (captures the overnight gap plus the first 30 minutes).",
+    "Otherwise hold cash; no BIL sleeve while flat.",
+    "Long-only, 0% or 100% TQQQ; no shorting, no borrowing, no leverage beyond TQQQ's own 3x daily reset."
+  ],
+  "status": "Fragile",
+  "metrics": {
+    "cagr10": 0.4923,
+    "dd10": 0.4266,
+    "cagr5": 0.2889,
+    "dd5": 0.3454,
+    "cagr10_5bp": 0.2640,
+    "dd10_5bp": 0.4326,
+    "cagr5_5bp": 0.1085,
+    "dd5_5bp": 0.3673
+  },
+  "verdict": "Beats TQQQ on CAGR and drawdown on both windows at 1 bp (49.23%/42.66% 10y, 28.89%/34.54% 5y), but fails the CAGR test at 3 bp and 5 bp, loses to the plain daily SMA baseline on 5y CAGR, and its level moves +/-5 pp across innocent parameter choices. The edge is real (78% of TQQQ's log return is earned overnight) but the implementation cost decides whether it pays.",
+  "sources": [
+    {
+      "idea": "Essentially all of the U.S. equity premium is earned outside trading hours, so a leveraged ETF's exposure can be narrowed to the overnight block.",
+      "source": "Cliff, Cooper & Gulen (2008) - Return Differences between Trading and Non-Trading Hours: Like Night and Day",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=1004081",
+      "source_type": "paper",
+      "role": "inspired rule",
+      "evidence": "Documents that from 1993 onward the entire equity premium of major U.S. indices accrues in the non-trading (close-to-open) period while intraday returns are roughly flat. This is the origin of the 'own TQQQ only overnight' rule; my own measurement on QQQ/TQQQ 1-minute bars reproduces the same split (78.4% of TQQQ log return overnight).",
+      "confidence": "high"
+    },
+    {
+      "idea": "Overnight and intraday returns behave like two separate assets with separate clienteles, so the overnight block can carry a persistent premium.",
+      "source": "Lou, Polk & Skouras (2019) - A Tug of War: Overnight versus Intraday Expected Returns (JFE)",
+      "url": "https://ifr.hkust.edu.hk/uploads/upload/files/20250212/445bce5ab83ffca69c4fe4b56c8055e1.pdf",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Models overnight and intraday returns as driven by different investor clienteles and shows the overnight-minus-intraday spread forecasts returns; supports treating the overnight block as a distinct, persistent exposure rather than noise. This is the PDF I actually read (DOI 10.1016/j.jfineco.2019.03.011).",
+      "confidence": "high"
+    },
+    {
+      "idea": "The first half hour of the session carries a large positive return and predicts the last half hour, so the exit should be after 10:00 rather than at 09:30.",
+      "source": "Gao, Han, Li & Zhou (2018) - Market Intraday Momentum (JFE 129(2), 394-414)",
+      "url": "https://doi.org/10.1016/j.jfineco.2018.05.009",
+      "source_type": "paper",
+      "role": "inspired rule",
+      "evidence": "Shows the first half-hour market return is large, positive and significantly predicts the last half-hour return on SPY, i.e. the opening half hour is an information-heavy, positively-drifting block. Supports extending the holding window from 09:31 to 10:01. My own measurement agrees on the sign (TQQQ 09:30->10:00 block +8.09% CAGR standalone) but shows the size is era-dependent.",
+      "confidence": "high"
+    },
+    {
+      "idea": "U.S. equity returns are large and positive during the opening hours of the U.S. session, tied to the overlap with European markets.",
+      "source": "New York Fed Staff Report 917 - The Opening Hours of European Markets and U.S. Equity Returns",
+      "url": "https://www.newyorkfed.org/medialibrary/media/research/staff_reports/sr917.pdf",
+      "source_type": "report",
+      "role": "supports assumption",
+      "evidence": "Documents economically large and statistically significant positive U.S. equity returns in the opening hours, which is the mechanism behind the positive first-30-minutes block the strategy captures by exiting at 10:01 instead of 09:31.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Independent decomposition of SPY/QQQ returns into overnight and intraday legs confirms the direction of the overnight effect outside my own sample construction.",
+      "source": "Tideline / JBP Capital - Overnight vs Intraday Returns: SPY and QQQ, 1999-2026",
+      "url": "https://tideline.jbpscapital.com/learn/overnight-vs-intraday",
+      "source_type": "blog",
+      "role": "supports assumption",
+      "evidence": "Reports that the overnight leg grew far more than the intraday leg for both SPY and QQQ over 1999-2026, with the QQQ intraday leg materially weaker. Used only as a cross-check on the sign of the effect; not used to set any parameter.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "The last 30 minutes of the session are negative for TQQQ in this sample, so the position should be flat into the close.",
+      "source": "Own test / no external source",
+      "url": null,
+      "source_type": "data",
+      "role": "inspired rule",
+      "evidence": "Measured on local 1-minute TQQQ bars, 2,700 sessions: the 15:30->16:00 block has -5.74% CAGR standalone and -1.48 bp/day mean, with a 64% drawdown. This is a sample-specific finding, not taken from a paper.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "A 165-day SMA on QQQ with a 2% hysteresis band is a sufficient regime filter for a 3x long position.",
+      "source": "Own test / no external source (165-day SMA taken from research/README.md daily baseline)",
+      "url": null,
+      "source_type": "data",
+      "role": "inspired rule",
+      "evidence": "The 165-day SMA is the repository's reference baseline, not fitted here. The 2% hysteresis band is my addition and is the single largest fitted choice: it cuts regime switches from 41 to 11 in 10.7 years and is worth ~8 pp of CAGR. Band 1%, 2%, 3% and 5% all pass, so the sign is stable even though the magnitude is not.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Benchmark and target to beat: TQQQ buy-and-hold on the same 1-minute bars and windows.",
+      "source": "Repository benchmark (research/README.md and research/bt.py)",
+      "url": null,
+      "source_type": "data",
+      "role": "benchmark",
+      "evidence": "TQQQ 39.28% CAGR / 81.68% max DD over 10y and 13.47% / 81.68% over 5y; daily SMA baseline 45.31% / 58.71% and 34.61% / 36.86%. Re-measured on the 1-minute panel: TQQQ 39.38% / 82.29% and 14.29% / 82.29%.",
+      "confidence": "high"
+    }
+  ],
+  "rejected_sources": [
+    {
+      "source": "McConnell & Xu (2008) - Equity Returns at the Turn of the Month (Financial Analysts Journal 64(2))",
+      "url": "https://business.purdue.edu/faculty/mcconnell/publications/Equity-Returns-at-the-Turn-of-the-Month.pdf",
+      "why_rejected": "Tested as a 24h-hold overlay on the turn-of-month window (last 1 + first 3 trading days). It improved the backtest to 55.29%/34.25% 10y and 35.63%/31.60% 5y at 1 bp and cut fills from 4,069 to 3,293, but failed the stability screen: TOM day-sessions beat non-TOM in only 7 of 11 years, per-year t-stats on the difference are mostly below 2 (max 1.98), and the width sweep rises monotonically toward wider windows (49.2% at 0 days to 68.4% at 11 days), so the gain cannot be separated from simply holding more market beta in a bull decade. Not used in the published strategy."
+    },
+    {
+      "source": "Lakonishok & Smidt (1988) - Are Seasonal Anomalies Real? A Ninety-Year Perspective (RFS 1(4))",
+      "url": null,
+      "why_rejected": "The origin of the 'turn-of-the-month effect' label and the four-day window tested above; rejected for the same reason - the effect is not stable enough in 2017-2026 to justify an overlay, and widening the window just adds exposure."
+    },
+    {
+      "source": "Own test of day-of-week and month-of-year effects / no external source",
+      "url": null,
+      "why_rejected": "Monday is the strongest close-to-close day in both eras (33.4 bp/day in 2017-2021, 56.7 bp in 2022-2026) but the overnight component rotates (Tuesday/Wednesday nights +44.1/+32.1 bp then +1.5/+27.4 bp) and Thursday's session flips from +14.0 to -24.6 bp. September is the only month negative in both eras (-33.1%, -21.8%) but screening it out lowered CAGR from 49.23% to 46.39%. No weekday or month filter is used."
+    },
+    {
+      "source": "Haghani, Ragulin & Dewey - Night Moves: Overnight Drift (Elm Wealth)",
+      "url": "https://elmwealth.com/wp-content/uploads/2026/04/Elm-Night-Moves-Overnight-Drift.pdf",
+      "why_rejected": "Listed on the current web card but not part of my research: I did not consult it and no number in the report comes from it. If it stays on the page it should be labelled 'supports assumption', not 'inspired rule', because the overnight-drift rule in this strategy comes from Cliff-Cooper-Gulen and Lou-Polk-Skouras."
+    }
+  ],
+  "corrections": [
+    "MOST IMPORTANT - section 6 'Where the P&L comes from', BIL bullet is wrong: it claims 'BIL instead of cash ... (46.71% / 36.18% vs 50.23% / 42.66% on 10y)'. 50.23% / 42.66% is not a number that appears anywhere in my results, and the 46.71% BIL figure was measured on a different configuration (exit 09:31 + turn-of-month overlay), not on V2. The measurement I actually have is: same configuration with BIL 46.71% / 36.18% 10y and 37.52% / 31.18% 5y versus cash 50.86% / 35.93% 10y and 40.83% / 31.61% 5y. Either restate it that way or delete the bullet. Direction (BIL is worse) is unchanged.",
+    "Section 4.2 says '5 wins / 5 losses' against TQQQ by calendar year. The table shows 4 wins / 6 losses (wins: 2018, 2020, 2022, 2025; losses: 2017, 2019, 2021, 2023, 2024, 2026 YTD). The follow-on sentence 'every win is a year when TQQQ lost or barely made money' is also wrong: 2020 was +104.1% for TQQQ. Correct wording: the decisive wins are the two big down years (2018 -20.8%, 2022 -79.4%), plus 2020 (+161.9% vs +104.1%) and a marginal 2025 (+32.2% vs +32.1%).",
+    "Section 7 turn-of-month width table is mislabelled and its last value comes from a different exit time. At exit 10:01 the measured sequence is 0 days 49.2%, 3 days 47.4%, 4 days 50.6% and 55.3%, 5 days 52.4%, 6 days 56.2%, 8 days 56.9%, 9 days 61.0%, 11 days 68.4%. The table's '11 -> 58.8%' is the exit-09:31 variant's 7+4 value and should not be in this table. The conclusion is unchanged and in fact stronger: the curve keeps rising to 68.4% at the widest window.",
+    "Status should be downgraded from 'Verified' to 'Fragile'. The strategy clears TQQQ at 1 bp and 2 bp but fails the CAGR bar at 3 bp (37.34% / 19.53%) and 5 bp (26.40% / 10.85%), it loses to the plain daily SMA baseline on 5y CAGR (28.89% vs 34.61%), and its 10y level ranges 40-50% across one-at-a-time parameter changes. 'Verified' overstates how much of the headline survives real execution cost.",
+    "Card decision text says 'Signals use only data through the current bar'. Be precise: the regime uses the previous day's QQQ close (one full day of lag), the entry decision uses the 15:58 bar and fills at the 15:59:00 open, and the exit decision uses the 10:00 bar and fills at the 10:01:00 open.",
+    "Card tagline omits the regime gate ('Hold TQQQ only from 15:59 to 10:01 the next morning'). Add '...and only while QQQ is above its 165-day SMA (2% band)', otherwise the page implies the block is held every day, which would be the much weaker V1-with-no-band variant (34.00% / 51.70%).",
+    "Card paper list double-counts Lou-Polk-Skouras: the 'ifr.hkust.edu.hk' entry is the same paper as the 'Lou, Polk & Skouras (2019)' entry. Keep one, preferably with the DOI 10.1016/j.jfineco.2019.03.011, and drop the raw PDF link or label it as the PDF.",
+    "Minor precision: 'all 21 neighbouring settings pass' in sections 5.1 and 8 counts the headline configuration once per sweep. There are 18 distinct neighbours plus 3 repeats of the headline; also section 3 cross-references section 6 for the '~8 pp' band effect, but that comparison lives in section 5.1 (41.51% at band 0 vs 49.23% at band 2%).",
+    "Not a correction but worth keeping visible: the 10y TQQQ Sharpe in section 4.1 is quoted as 0.83 from the README, while the same-series minute-bar measurement gives 0.84 and the daily-sampled V2 Sharpe (1.35) is not directly comparable to a fully-invested buy-and-hold Sharpe because the strategy is flat 46% of the time."
+  ]
+}

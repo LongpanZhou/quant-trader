@@ -1,0 +1,110 @@
+{
+  "agent": "donchian-breakout",
+  "original": "research/agents/donchian-breakout",
+  "status": "pending_audit",
+  "idea": "A Donchian breakout is only worth leveraging when short, medium and long breakout horizons agree; the alignment count is the trend/sizing signal.",
+  "hypothesis": "Scaling from BIL to QQQ to TQQQ with three-horizon breakout alignment captures trend persistence while cutting whipsaw exposure, with low correlation to the old 165-day MA base.",
+  "universe": [
+    "QQQ",
+    "TQQQ",
+    "BIL"
+  ],
+  "frozen_commit": null,
+  "variants_tried": 31,
+  "corr_vs_165d_baseline": 0.4685068964258571,
+  "max_corr_vs_other_rebuilds": null,
+  "windows": {
+    "dev": {
+      "1bp": {
+        "cagr": 0.13404216359383891,
+        "max_drawdown": 0.1502095777240805,
+        "sharpe": 0.9970382422907494,
+        "sortino": 1.3907494852033218,
+        "volatility": 0.13588211499921904,
+        "fills": 1187,
+        "turnover": 1510.8074880592071,
+        "exposure": 0.9999987210313603,
+        "ending_equity": 273008.7831555666,
+        "years": 7.984312495246787
+      },
+      "5bp": {
+        "cagr": 0.08163316069669824,
+        "max_drawdown": 0.19837387798193418,
+        "sharpe": 0.6469265311319559,
+        "sortino": 0.9000204542964151,
+        "volatility": 0.13605270676569595,
+        "fills": 1187,
+        "turnover": 1214.3038803176105,
+        "exposure": 0.9999987210313603,
+        "ending_equity": 187113.58388260342,
+        "years": 7.984312495246787
+      },
+      "10bp": {
+        "cagr": 0.019527794280898236,
+        "max_drawdown": 0.25475840693976104,
+        "sharpe": 0.21041288616815507,
+        "sortino": 0.2911960654416312,
+        "volatility": 0.13663944636270653,
+        "fills": 1187,
+        "turnover": 939.1356677859354,
+        "exposure": 0.9999987210313603,
+        "ending_equity": 116697.29768006186,
+        "years": 7.984312495246787
+      }
+    },
+    "holdout": {},
+    "10y": {},
+    "5y": {}
+  },
+  "marks": "1m",
+  "info": {
+    "params": {
+      "fast_entry": 20,
+      "fast_exit": 10,
+      "med_entry": 55,
+      "med_exit": 20,
+      "slow_entry": 390,
+      "slow_exit": 156,
+      "atr_k": 2.5,
+      "target_vol": 0.3,
+      "min_tqqq": 0.2,
+      "rule": "1h"
+    },
+    "align_counts": [
+      3714,
+      3963,
+      3291,
+      3086
+    ],
+    "align_changes": 680,
+    "avg_align": 1.4090650348655187,
+    "last_tqqq_weight": 0.8181233096606773
+  },
+  "benchmarks": {
+    "tqqq": {
+      "cagr": 0.3615406632934588,
+      "total_return": 10.752826498520793,
+      "max_drawdown": 0.8229021592363336,
+      "volatility": 0.6654592718640882,
+      "sharpe": 0.8011699599655372,
+      "ending_equity": 1175282.6498520793,
+      "years": 7.984312495246787
+    },
+    "qqq": {
+      "cagr": 0.18912874422247206,
+      "total_return": 2.9870424941803697,
+      "max_drawdown": 0.3730047872557426,
+      "volatility": 0.2201773147609827,
+      "sharpe": 0.8999556826271142,
+      "ending_equity": 398704.249418037,
+      "years": 7.984312495246787
+    },
+    "spy": {
+      "available": false,
+      "reason": "no 2016-2023 SPY daily/1-minute data locally; dukascopy cache is 2026 only"
+    },
+    "original": {
+      "note": "compare after the frozen run; original result.json carries the 10y/5y windows"
+    }
+  }
+}

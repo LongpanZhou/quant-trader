@@ -1,0 +1,2 @@
+{'cagr': -0.0634, 'dd': 0.7604, 'sharpe': -0.0475, 'fills': 768.0, 'corr': 0.453, 'cagr_16-19': 0.0046, 'cagr_20-21': 0.3396, 'cagr_22-23': -0.4394}
+placebo cagr mean 0.1651 sd 0.0870; share >= real 0.975; sharpe mean 0.703 share>=real 0.975

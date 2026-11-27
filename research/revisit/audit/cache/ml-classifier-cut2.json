@@ -1,0 +1,1 @@
+{"slug": "ml-classifier", "mode": "cut2", "calls": 5, "error": null, "seconds": 25.5, "restored": ["restored result.json"], "match_score": 1.0, "found": true, "kw": {"band": 0.02, "slippage_bps": 1.0, "start_equity": 100000.0}, "bars": 556916, "k": 3}

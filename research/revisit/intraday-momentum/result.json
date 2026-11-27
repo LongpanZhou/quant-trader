@@ -1,0 +1,828 @@
+{
+  "agent": "intraday-momentum",
+  "original": "research/agents/intraday-momentum",
+  "status": "pending",
+  "idea": "A weekly three-state leverage ladder on the Nasdaq-100: 3x TQQQ when the overnight-minus-intraday spread and the first-hour return are both above their 26-week medians, 1x QQQ when only one is, and BIL otherwise.",
+  "hypothesis": "Weeks with an unusually strong overnight-vs-intraday spread and first-hour momentum have a stronger time-of-day drift; a 3x/1x/0x ladder should beat static QQQ/TQQQ on a risk-adjusted basis with low correlation to the 165-day price-trend base.",
+  "universe": [
+    "QQQ",
+    "TQQQ",
+    "BIL"
+  ],
+  "frozen_commit": null,
+  "variants_tried": 7,
+  "corr_vs_165d_baseline": 0.6158104039312767,
+  "max_corr_vs_other_rebuilds": null,
+  "windows": {
+    "dev": {
+      "1bp": {
+        "cagr": 0.1350982917314303,
+        "max_drawdown": 0.6397500065346307,
+        "sharpe": 0.5709816337850725,
+        "fills": 401.0,
+        "turnover": 897.1599244190709
+      },
+      "5bp": {
+        "cagr": 0.11252239670319297,
+        "max_drawdown": 0.6480116021705308,
+        "sharpe": 0.5047204202233792,
+        "fills": 401.0,
+        "turnover": 818.5224095079903
+      },
+      "10bp": {
+        "cagr": 0.08493291595671759,
+        "max_drawdown": 0.6580726808315067,
+        "sharpe": 0.42178508089011524,
+        "fills": 401.0,
+        "turnover": 731.746545601275
+      }
+    },
+    "holdout": null,
+    "10y": null,
+    "5y": null
+  },
+  "marks": "1m",
+  "benchmarks": {
+    "tqqq": {
+      "cagr": 0.35981497741031854,
+      "max_drawdown": 0.8167775208998822,
+      "sharpe": 0.7990068659930886
+    },
+    "qqq": {
+      "cagr": 0.18864415062519613,
+      "max_drawdown": 0.3511213723088823,
+      "sharpe": 0.8744780521611336
+    },
+    "spy": null,
+    "spy_note": "No local SPY daily history in data/intraday-hf; needs the data subagent.",
+    "original": {
+      "agent": "intraday-momentum",
+      "strategy": "Regime-gated overnight drift + first-hour intraday momentum (QQQ/TQQQ/BIL)",
+      "generated": "2026-11-25",
+      "universe": [
+        "QQQ",
+        "TQQQ",
+        "BIL"
+      ],
+      "data": "adjusted 1-minute regular-session bars, 2016-01-04..2026-10-23; daily closes for the regime",
+      "harness": "research/bt.py; long-only; next-bar-open fills; band=0.02; 1bp primary, 5bp sensitivity",
+      "windows": {
+        "10y": [
+          "2017-01-03",
+          "2026-10-23"
+        ],
+        "5y": [
+          "2021-10-25",
+          "2026-10-23"
+        ]
+      },
+      "rules": {
+        "regime": "QQQ close > 165-day SMA of QQQ closes, evaluated on the prior day's close; otherwise 100% BIL",
+        "overnight": "risk-on: buy TQQQ at the 15:59 open (decision on the 15:58 close) and hold to the next 09:31 open",
+        "first_hour_signal": "r60 = QQQ close(10:29) / QQQ open(09:30) - 1",
+        "afternoon": "r60 >= 0 -> hold TQQQ from the 10:30 open to the 15:59 open; r60 < 0 -> cash until the 15:59 open",
+        "costs": "1bp per side on traded notional (5bp sensitivity)",
+        "lookahead": "none; every signal uses bars <= i and fills at the open of bar i+1"
+      },
+      "benchmarks": {
+        "tqqq_buy_hold_official": {
+          "10y": {
+            "cagr": 0.3928,
+            "max_drawdown": 0.8168,
+            "sharpe": 0.83
+          },
+          "5y": {
+            "cagr": 0.1347,
+            "max_drawdown": 0.8168,
+            "sharpe": 0.53
+          }
+        },
+        "daily_baseline_sma165_official": {
+          "10y": {
+            "cagr": 0.4531,
+            "max_drawdown": 0.5871,
+            "sharpe": 1.0
+          },
+          "5y": {
+            "cagr": 0.3461,
+            "max_drawdown": 0.3686,
+            "sharpe": 0.88
+          }
+        },
+        "tqqq_buy_hold_harness_minute_marks": {
+          "10y": {
+            "cagr": 0.3938,
+            "max_drawdown": 0.8229,
+            "sharpe": 0.84
+          },
+          "5y": {
+            "cagr": 0.1429,
+            "max_drawdown": 0.8229,
+            "sharpe": 0.54
+          }
+        },
+        "daily_baseline_reproduced": {
+          "10y": {
+            "cagr": 0.4531,
+            "max_drawdown": 0.5871,
+            "sharpe": 1.0,
+            "fills": 81,
+            "turnover": 794.5
+          },
+          "5y": {
+            "cagr": 0.3461,
+            "max_drawdown": 0.3686,
+            "sharpe": 0.88,
+            "fills": 45,
+            "turnover": 81.9
+          }
+        }
+      },
+      "primary": {
+        "10y": {
+          "1bp": {
+            "cagr": 0.556285,
+            "max_drawdown": 0.44892,
+            "sharpe": 1.2364,
+            "sortino": 1.7246,
+            "volatility": 0.437289,
+            "daily_marks": {
+              "cagr": 0.55628,
+              "max_drawdown": 0.445933,
+              "sharpe": 1.2383,
+              "volatility": 0.434078
+            },
+            "fills": 1995,
+            "turnover_x": 41224.9,
+            "ending_equity": 7636281,
+            "tqqq_bar_share": 0.49532,
+            "non_cash_exposure": 0.668584
+          },
+          "5bp": {
+            "cagr": 0.434606,
+            "max_drawdown": 0.468978,
+            "sharpe": 1.0492,
+            "volatility": 0.437346,
+            "daily_marks": {
+              "cagr": 0.434465,
+              "max_drawdown": 0.454835,
+              "sharpe": 1.0474
+            },
+            "fills": 1995,
+            "turnover_x": 22152.7,
+            "ending_equity": 3438072
+          }
+        },
+        "5y": {
+          "1bp": {
+            "cagr": 0.463632,
+            "max_drawdown": 0.326359,
+            "sharpe": 1.1388,
+            "sortino": 1.5996,
+            "volatility": 0.41127,
+            "daily_marks": {
+              "cagr": 0.459905,
+              "max_drawdown": 0.303659,
+              "sharpe": 1.1218,
+              "volatility": 0.414099
+            },
+            "fills": 935,
+            "turnover_x": 3241.1,
+            "ending_equity": 670290,
+            "tqqq_bar_share": 0.43931,
+            "non_cash_exposure": 0.696449
+          },
+          "5bp": {
+            "cagr": 0.358037,
+            "max_drawdown": 0.344959,
+            "sharpe": 0.9555,
+            "volatility": 0.411334,
+            "daily_marks": {
+              "cagr": 0.354394,
+              "max_drawdown": 0.32257,
+              "sharpe": 0.9377
+            },
+            "fills": 935,
+            "turnover_x": 2536.9,
+            "ending_equity": 461144
+          }
+        },
+        "yearly_1bp": {
+          "2017": {
+            "strategy": 0.974,
+            "tqqq": 1.145,
+            "daily_baseline": 1.121
+          },
+          "2018": {
+            "strategy": 0.168,
+            "tqqq": -0.208,
+            "daily_baseline": -0.076
+          },
+          "2019": {
+            "strategy": 0.509,
+            "tqqq": 1.482,
+            "daily_baseline": 0.471
+          },
+          "2020": {
+            "strategy": 1.03,
+            "tqqq": 1.041,
+            "daily_baseline": 0.7
+          },
+          "2021": {
+            "strategy": 0.716,
+            "tqqq": 0.811,
+            "daily_baseline": 0.909
+          },
+          "2022": {
+            "strategy": -0.189,
+            "tqqq": -0.794,
+            "daily_baseline": -0.243
+          },
+          "2023": {
+            "strategy": 1.234,
+            "tqqq": 1.92,
+            "daily_baseline": 1.185
+          },
+          "2024": {
+            "strategy": 0.809,
+            "tqqq": 0.624,
+            "daily_baseline": 0.539
+          },
+          "2025": {
+            "strategy": 0.573,
+            "tqqq": 0.321,
+            "daily_baseline": 0.358
+          },
+          "2026_ytd": {
+            "strategy": 0.117,
+            "tqqq": 0.226,
+            "daily_baseline": 0.181
+          }
+        },
+        "yearly_5bp": {
+          "2017": 0.79,
+          "2018": 0.082,
+          "2019": 0.377,
+          "2020": 0.871,
+          "2021": 0.559,
+          "2022": -0.196,
+          "2023": 1.036,
+          "2024": 0.636,
+          "2025": 0.453,
+          "2026_ytd": 0.039
+        },
+        "max_drawdown_episodes_daily_marks": {
+          "10y": {
+            "peak": "2020-02-19",
+            "trough": "2020-04-13",
+            "depth": -0.4459
+          },
+          "5y": {
+            "peak": "2021-12-10",
+            "trough": "2023-03-01",
+            "depth": -0.3037
+          }
+        },
+        "subperiods_1bp": {
+          "first_half_2017-01-03..2021-10-22": {
+            "cagr": 0.6523,
+            "max_drawdown": 0.4459,
+            "sharpe": 1.34
+          },
+          "second_half_2021-10-25..2026-10-23": {
+            "cagr": 0.4636,
+            "max_drawdown": 0.3264,
+            "sharpe": 1.14
+          }
+        }
+      },
+      "signal_evidence_2016_2026": {
+        "tqqq_overnight": {
+          "mean_bp_per_day": 13.83,
+          "t_stat": 2.81,
+          "annualized_compound": 0.3022
+        },
+        "tqqq_intraday": {
+          "mean_bp_per_day": 7.73,
+          "t_stat": 1.22,
+          "annualized_compound": 0.0593
+        },
+        "qqq_overnight": {
+          "mean_bp_per_day": 5.22,
+          "t_stat": 3.16,
+          "annualized_compound": 0.13
+        },
+        "qqq_intraday": {
+          "mean_bp_per_day": 2.93,
+          "t_stat": 1.38,
+          "annualized_compound": 0.0603
+        },
+        "qqq_first30_sign_to_tqqq_rest_of_day_10y": {
+          "r30_positive": {
+            "mean_bp": 15.67,
+            "t_stat": 1.92,
+            "n": 1310
+          },
+          "r30_nonpositive": {
+            "mean_bp": -9.9,
+            "t_stat": -1.09,
+            "n": 1156
+          }
+        },
+        "qqq_first60_sign_to_tqqq_afternoon_10y_regime_on": {
+          "r60_positive": {
+            "mean_bp": 9.7,
+            "t_stat": 1.45,
+            "n": 1066
+          },
+          "r60_nonpositive": {
+            "mean_bp": -6.27,
+            "t_stat": -0.79,
+            "n": 973
+          }
+        },
+        "qqq_first60_sign_to_tqqq_afternoon_5y_regime_on": {
+          "r60_positive": {
+            "mean_bp": 21.65,
+            "t_stat": 2.29,
+            "n": 481
+          },
+          "r60_nonpositive": {
+            "mean_bp": -11.0,
+            "t_stat": -0.98,
+            "n": 452
+          }
+        },
+        "last_30min_gao_effect_absent": {
+          "10y_r30_positive_mean_bp": -1.6,
+          "5y_r30_positive_mean_bp": -2.43,
+          "note": "the first-half-hour -> last-half-hour effect documented by Gao et al. (2018) is not present in QQQ/TQQQ 2016-2026; the predictability sits in the midday/afternoon"
+        }
+      },
+      "variants_1bp_minute_marks": {
+        "P1_pure_intraday_30m": {
+          "description": "long TQQQ 10:00-15:59 if QQQ first-30m > 0, else BIL; no regime",
+          "10y": {
+            "cagr": 0.1289,
+            "max_drawdown": 0.5119,
+            "sharpe": 0.528,
+            "fills": 5241
+          },
+          "5y": {
+            "cagr": 0.108,
+            "max_drawdown": 0.4901,
+            "sharpe": 0.472,
+            "fills": 2677
+          }
+        },
+        "P2_pure_intraday_60m": {
+          "description": "long TQQQ 10:30-15:59 if QQQ first-60m > 0, else BIL; no regime",
+          "10y": {
+            "cagr": 0.0896,
+            "max_drawdown": 0.6518,
+            "sharpe": 0.435,
+            "fills": 5133
+          },
+          "5y": {
+            "cagr": 0.3226,
+            "max_drawdown": 0.3165,
+            "sharpe": 1.096,
+            "fills": 2573
+          }
+        },
+        "P3_intraday_30m_plus_regime": {
+          "description": "P1 gated by QQQ > 165d SMA",
+          "10y": {
+            "cagr": 0.1033,
+            "max_drawdown": 0.3106,
+            "sharpe": 0.524
+          },
+          "5y": {
+            "cagr": 0.0696,
+            "max_drawdown": 0.287,
+            "sharpe": 0.411
+          }
+        },
+        "P4_overnight_plus_regime": {
+          "description": "hold TQQQ overnight only (15:59->09:31) when QQQ > 165d SMA",
+          "10y": {
+            "cagr": 0.2766,
+            "max_drawdown": 0.4718,
+            "sharpe": 0.947
+          },
+          "5y": {
+            "cagr": 0.1442,
+            "max_drawdown": 0.3469,
+            "sharpe": 0.609
+          },
+          "5bp": {
+            "10y": {
+              "cagr": -0.0846,
+              "max_drawdown": 0.6309
+            },
+            "5y": {
+              "cagr": -0.1512,
+              "max_drawdown": 0.6065
+            }
+          }
+        },
+        "P5_overnight_no_regime": {
+          "10y": {
+            "cagr": 0.2511,
+            "max_drawdown": 0.6356,
+            "sharpe": 0.752
+          },
+          "5y": {
+            "cagr": 0.064,
+            "max_drawdown": 0.5564,
+            "sharpe": 0.358
+          }
+        },
+        "D0_daily_baseline_minute_execution": {
+          "description": "QQQ > 165d SMA -> TQQQ else BIL, held continuously, minute-native fills",
+          "10y": {
+            "cagr": 0.4473,
+            "max_drawdown": 0.565,
+            "sharpe": 0.996,
+            "fills": 91
+          },
+          "5y": {
+            "cagr": 0.3323,
+            "max_drawdown": 0.4217,
+            "sharpe": 0.853,
+            "fills": 47
+          },
+          "5bp": {
+            "10y": {
+              "cagr": 0.4419,
+              "max_drawdown": 0.5657
+            },
+            "5y": {
+              "cagr": 0.3273,
+              "max_drawdown": 0.4217
+            }
+          }
+        },
+        "E2_primary": {
+          "10y": {
+            "cagr": 0.5563,
+            "max_drawdown": 0.4489,
+            "sharpe": 1.236,
+            "fills": 1995
+          },
+          "5y": {
+            "cagr": 0.4636,
+            "max_drawdown": 0.3264,
+            "sharpe": 1.139,
+            "fills": 935
+          }
+        },
+        "E3_threshold_minus_0.3pct": {
+          "description": "E2 but exit only when r60 < -0.3% (about half the trades)",
+          "10y": {
+            "cagr": 0.5671,
+            "max_drawdown": 0.5149,
+            "sharpe": 1.21,
+            "fills": 993
+          },
+          "5y": {
+            "cagr": 0.4624,
+            "max_drawdown": 0.3766,
+            "sharpe": 1.101,
+            "fills": 509
+          },
+          "5bp": {
+            "10y": {
+              "cagr": 0.5048,
+              "max_drawdown": 0.518
+            },
+            "5y": {
+              "cagr": 0.404,
+              "max_drawdown": 0.3875
+            }
+          }
+        },
+        "E5_no_regime": {
+          "description": "E2 without the 165d SMA filter",
+          "10y": {
+            "cagr": 0.5977,
+            "max_drawdown": 0.7411,
+            "sharpe": 1.097
+          },
+          "5y": {
+            "cagr": 0.4518,
+            "max_drawdown": 0.6674,
+            "sharpe": 0.932
+          },
+          "5bp": {
+            "10y": {
+              "cagr": 0.4513,
+              "max_drawdown": 0.7432
+            },
+            "5y": {
+              "cagr": 0.3166,
+              "max_drawdown": 0.6964
+            }
+          }
+        }
+      },
+      "sensitivity_1bp": {
+        "sma_length": {
+          "120": {
+            "10y": {
+              "cagr": 0.4355,
+              "max_drawdown": 0.5378,
+              "sharpe": 1.07
+            },
+            "5y": {
+              "cagr": 0.4056,
+              "max_drawdown": 0.4899,
+              "sharpe": 1.07
+            }
+          },
+          "150": {
+            "10y": {
+              "cagr": 0.5552,
+              "max_drawdown": 0.4489,
+              "sharpe": 1.23
+            },
+            "5y": {
+              "cagr": 0.4303,
+              "max_drawdown": 0.4158,
+              "sharpe": 1.08
+            }
+          },
+          "165": {
+            "10y": {
+              "cagr": 0.5563,
+              "max_drawdown": 0.4489,
+              "sharpe": 1.24
+            },
+            "5y": {
+              "cagr": 0.4636,
+              "max_drawdown": 0.3264,
+              "sharpe": 1.14
+            }
+          },
+          "180": {
+            "10y": {
+              "cagr": 0.5616,
+              "max_drawdown": 0.4578,
+              "sharpe": 1.24
+            },
+            "5y": {
+              "cagr": 0.4809,
+              "max_drawdown": 0.3423,
+              "sharpe": 1.16
+            }
+          },
+          "200": {
+            "10y": {
+              "cagr": 0.5017,
+              "max_drawdown": 0.5292,
+              "sharpe": 1.15
+            },
+            "5y": {
+              "cagr": 0.4163,
+              "max_drawdown": 0.48,
+              "sharpe": 1.05
+            }
+          },
+          "250": {
+            "10y": {
+              "cagr": 0.4501,
+              "max_drawdown": 0.5598,
+              "sharpe": 1.05
+            },
+            "5y": {
+              "cagr": 0.3544,
+              "max_drawdown": 0.5598,
+              "sharpe": 0.93
+            }
+          }
+        },
+        "r60_threshold": {
+          "-0.5%": {
+            "10y": {
+              "cagr": 0.5435,
+              "max_drawdown": 0.5584,
+              "sharpe": 1.16
+            },
+            "5y": {
+              "cagr": 0.4003,
+              "max_drawdown": 0.3617,
+              "sharpe": 0.99
+            }
+          },
+          "-0.3%": {
+            "10y": {
+              "cagr": 0.5671,
+              "max_drawdown": 0.5149,
+              "sharpe": 1.21
+            },
+            "5y": {
+              "cagr": 0.4624,
+              "max_drawdown": 0.3766,
+              "sharpe": 1.1
+            }
+          },
+          "-0.1%": {
+            "10y": {
+              "cagr": 0.6031,
+              "max_drawdown": 0.5149,
+              "sharpe": 1.29
+            },
+            "5y": {
+              "cagr": 0.5188,
+              "max_drawdown": 0.3457,
+              "sharpe": 1.21
+            }
+          },
+          "0.0%": {
+            "10y": {
+              "cagr": 0.5563,
+              "max_drawdown": 0.4489,
+              "sharpe": 1.24
+            },
+            "5y": {
+              "cagr": 0.4636,
+              "max_drawdown": 0.3264,
+              "sharpe": 1.14
+            }
+          },
+          "+0.1%": {
+            "10y": {
+              "cagr": 0.5094,
+              "max_drawdown": 0.4489,
+              "sharpe": 1.18
+            },
+            "5y": {
+              "cagr": 0.3615,
+              "max_drawdown": 0.3384,
+              "sharpe": 0.97
+            }
+          },
+          "+0.3%": {
+            "10y": {
+              "cagr": 0.4706,
+              "max_drawdown": 0.4964,
+              "sharpe": 1.15
+            },
+            "5y": {
+              "cagr": 0.2683,
+              "max_drawdown": 0.4101,
+              "sharpe": 0.81
+            }
+          }
+        },
+        "sma_length_5bp": {
+          "150": {
+            "10y": {
+              "cagr": 0.4336,
+              "max_drawdown": 0.4533
+            },
+            "5y": {
+              "cagr": 0.3263,
+              "max_drawdown": 0.436
+            }
+          },
+          "165": {
+            "10y": {
+              "cagr": 0.4346,
+              "max_drawdown": 0.469
+            },
+            "5y": {
+              "cagr": 0.358,
+              "max_drawdown": 0.345
+            }
+          },
+          "180": {
+            "10y": {
+              "cagr": 0.4394,
+              "max_drawdown": 0.474
+            },
+            "5y": {
+              "cagr": 0.3738,
+              "max_drawdown": 0.3595
+            }
+          },
+          "200": {
+            "10y": {
+              "cagr": 0.3826,
+              "max_drawdown": 0.5551
+            },
+            "5y": {
+              "cagr": 0.3127,
+              "max_drawdown": 0.496
+            }
+          }
+        }
+      },
+      "pass_fail": {
+        "vs_tqqq_1bp": {
+          "10y": {
+            "pass": true,
+            "cagr_gt": 0.3928,
+            "dd_lt": 0.8168,
+            "cagr": 0.5563,
+            "dd": 0.4489
+          },
+          "5y": {
+            "pass": true,
+            "cagr_gt": 0.1347,
+            "dd_lt": 0.8168,
+            "cagr": 0.4636,
+            "dd": 0.3264
+          }
+        },
+        "vs_tqqq_5bp": {
+          "10y": {
+            "pass": true,
+            "cagr": 0.4346,
+            "dd": 0.469
+          },
+          "5y": {
+            "pass": true,
+            "cagr": 0.358,
+            "dd": 0.345
+          }
+        },
+        "vs_daily_baseline_1bp": {
+          "10y": {
+            "pass": true,
+            "strategy": [
+              0.5563,
+              0.4489,
+              1.236
+            ],
+            "baseline": [
+              0.4531,
+              0.5871,
+              1.0
+            ]
+          },
+          "5y": {
+            "pass": true,
+            "strategy": [
+              0.4636,
+              0.3264,
+              1.139
+            ],
+            "baseline": [
+              0.3461,
+              0.3686,
+              0.88
+            ]
+          }
+        },
+        "vs_daily_baseline_5bp": {
+          "10y": {
+            "pass": false,
+            "reason": "CAGR 43.46% < baseline 45.31% (DD 46.90% < 58.71% and Sharpe 1.05 > 1.00)"
+          },
+          "5y": {
+            "pass": true,
+            "reason": "CAGR 35.80% > 34.61%, DD 34.50% < 36.86%"
+          }
+        },
+        "pure_intraday_momentum": {
+          "10y": {
+            "pass": false,
+            "reason": "P1 12.89% and P2 8.96% CAGR, far below TQQQ 39.28%"
+          },
+          "5y": {
+            "pass": false,
+            "reason": "P1 10.80% < 13.47%; P2 passes 5y (32.26%/31.65%) but fails 10y"
+          }
+        }
+      },
+      "caveats": [
+        "Pure intraday momentum (30m or 60m signal, flat overnight) cannot reach TQQQ's CAGR: TQQQ's drift is mostly overnight (30.2%/yr vs 5.9%/yr intraday).",
+        "The first-hour effect is weak (t about 1.4-2.3) and not present in every year; 2019 and 2023 had positive afternoons after negative first hours.",
+        "The strategy round-trips roughly 100 times per year; at 5bp the 10y CAGR falls from 55.6% to 43.5%.",
+        "The max drawdown is the COVID crash (-44.6%, 2020-02-19..2020-04-13); an intraday signal cannot avoid overnight gap risk.",
+        "TQQQ is a 3x daily-reset product with path dependence and end-of-day rebalancing flows (Cheng & Madhavan 2009); realized tracking and future flows may differ.",
+        "No shorting, no leverage beyond 100% TQQQ; cash earns zero during afternoon exits."
+      ]
+    }
+  },
+  "diagnostics": {
+    "params": {
+      "rebalance_every": 5,
+      "median_weeks": 26,
+      "min_history": 13,
+      "vol_window": 20,
+      "vol_cap_qqq": 0.6,
+      "vol_cap_bil": 0.8,
+      "fh_bars": 60
+    },
+    "sessions": 2012,
+    "rebalances": 389,
+    "first_rebalance": "2016-04-13 15:59:00-04:00",
+    "state_counts": {
+      "TQQQ": 64,
+      "QQQ": 267,
+      "BIL": 58
+    }
+  }
+}

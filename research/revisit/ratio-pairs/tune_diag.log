@@ -1,0 +1,42 @@
+C:\Users\27175\Desktop\quant-trader-research\research\revisit\ratio-pairs\tune.py:168: Pandas4Warning: Inferring datetime64 from data containing datetime.date objects is deprecated. In a future version, these will be left as object dtype. Use pd.to_datetime to explicitly convert to datetime64.
+  df["state"] = st.reindex(df.index).to_numpy()
+C:\Users\27175\Desktop\quant-trader-research\research\revisit\ratio-pairs\tune.py:195: Pandas4Warning: Inferring datetime64 from data containing datetime.date objects is deprecated. In a future version, these will be left as object dtype. Use pd.to_datetime to explicitly convert to datetime64.
+  s = st.reindex(df.index)
+dev slice 2016-01-04 09:30:00-05:00 .. 2023-12-29 15:59:00-05:00
+fix0 original (no warmup, drops 12-29):  18.96%  34.59% 1.106
+fix1 +window incl 12-29            :  18.96%  34.59% 1.106
+fix2 +daily warm-up                :  18.96%  34.59% 1.106
+info old {'sessions': 2012, 'risk_off_sessions': 452, 'deep_buy_sessions': 46, 'core_sessions': 1514, 'mean_equity': 0.6927932405566601, 'mean_tqqq': 0.009145129224652087}
+info new {'sessions': 2012, 'risk_off_sessions': 452, 'deep_buy_sessions': 46, 'core_sessions': 1514, 'mean_equity': 0.6927932405566601, 'mean_tqqq': 0.009145129224652087}
+sessions whose target changed with warm-up: 0 last None
+corr old-baseline / warm-baseline: fix0w 0.528 0.54  fixed 0.528 0.54
+first-dev ext/stress/turn finite: True
+exposure {'min_TQQQ>0': 0.0229, 'min_QQQ>0': 0.775, 'min_BIL_only': 0.225, 'min_BIL>0': 1.0, 'avg_TQQQ_w': 0.0092, 'avg_QQQ_w': 0.6838, 'avg_BIL_w': 0.3071, 'avg_gross_lev': 0.7113, 'synthetic_short': 0.0}
+  strategy                               CAGR  18.96% DD  34.59% Sh 1.11 corr 0.54
+  TQQQ@avg_lev (0.237 TQQQ/rest BIL)     CAGR  12.99% DD  29.09% Sh 0.85 corr 0.72
+  QQQ@avg_lev (0.711 QQQ/rest BIL)       CAGR  14.12% DD  27.64% Sh 0.92 corr 0.72
+  QQQ 100%                               CAGR  18.91% DD  37.30% Sh 0.90 corr 0.72
+  QQQ90/BIL10                            CAGR  17.40% DD  33.99% Sh 0.91 corr 0.72
+  TQQQ 100%                              CAGR  36.15% DD  82.29% Sh 0.80 corr 0.72
+2016 {'strat': '  8.05%', 'tqqq': ' 18.63%', 'qqq': '  9.34%', 'base165': '  6.28%'}
+2017 {'strat': ' 31.28%', 'tqqq': '118.35%', 'qqq': ' 32.63%', 'base165': '118.35%'}
+2018 {'strat': ' -3.34%', 'tqqq': '-19.58%', 'qqq': ' -0.12%', 'base165': '  0.39%'}
+2019 {'strat': ' 34.91%', 'tqqq': '133.11%', 'qqq': ' 38.94%', 'base165': ' 47.47%'}
+2020 {'strat': ' 49.79%', 'tqqq': '109.61%', 'qqq': ' 48.36%', 'base165': ' 82.13%'}
+2021 {'strat': ' 25.33%', 'tqqq': ' 82.97%', 'qqq': ' 27.39%', 'base165': ' 82.97%'}
+2022 {'strat': '-24.28%', 'tqqq': '-79.07%', 'qqq': '-32.52%', 'base165': '-21.99%'}
+2023 {'strat': ' 52.05%', 'tqqq': '198.37%', 'qqq': ' 54.81%', 'base165': '120.75%'}
+log-return sum by state (strategy / QQQ / TQQQ):
+                    s               q               t      
+                  sum count       sum count       sum count
+state                                                      
+cash_froth   0.104246   386 -0.246259   386 -0.935182   386
+cash_stress  0.013943    66  0.194574    66  0.297162    66
+core         1.065256  1513  1.293661  1513  2.763886  1513
+deep         0.202361    46  0.137691    46  0.327874    46
+QQQ up >1% days: 390 of which in cash: 72  missed QQQ log-ret on cash days total: -0.0517
+costs {'1bp': {'cagr': 0.1896, 'max_drawdown': 0.3459, 'sharpe': 1.1062, 'fills': 288.0}, '5bp': {'cagr': 0.1766, 'max_drawdown': 0.3493, 'sharpe': 1.0415, 'fills': 288.0}, '10bp': {'cagr': 0.1606, 'max_drawdown': 0.3536, 'sharpe': 0.9605, 'fills': 288.0}} fills/yr 36.0
+turnover x/yr 66.26
+cash_froth {'episodes': 50, 'sessions': 386, 'hit_rate': 0.74, 'mean_edge_log': 0.0065, 'sum_edge_log': 0.3239, 'placebo_p': 0.0078}
+cash_stress {'episodes': 8, 'sessions': 66, 'hit_rate': 0.0, 'mean_edge_log': -0.0206, 'sum_edge_log': -0.1651, 'placebo_p': 0.9252}
+deep {'episodes': 8, 'sessions': 46, 'hit_rate': 0.75, 'mean_edge_log': 0.0097, 'sum_edge_log': 0.0774, 'placebo_p': 0.0914}

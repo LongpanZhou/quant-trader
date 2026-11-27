@@ -1,0 +1,34 @@
+{
+ "weights_max_abs_diff_before_vs_after": 0.0,
+ "event_dates_first5_after": [
+  "2016-01-07",
+  "2016-01-13",
+  "2016-01-15",
+  "2016-01-20",
+  "2016-02-05"
+ ],
+ "event_study_dev_fixed": {
+  "n_events": 88,
+  "n_clusters": 43,
+  "mean": 0.009867391332742413,
+  "median": 0.009530239831637477,
+  "win_rate": 0.5795454545454546,
+  "p_mean_le_0": 0.0678,
+  "ci95": [
+   -0.0026246344328140934,
+   0.020920394353614584
+  ]
+ },
+ "event_dates_range": [
+  "2016-01-07",
+  "2022-12-22"
+ ],
+ "cut_2020-03-12 11:07": {
+  "bars_compared": 409457,
+  "rows_differing": 0
+ },
+ "cut_2022-09-13 10:41": {
+  "bars_compared": 654956,
+  "rows_differing": 0
+ }
+}

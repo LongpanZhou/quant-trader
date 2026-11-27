@@ -1,0 +1,163 @@
+capturing dev headlines
+  [ 1/26] dev  vol-scaled-crash-stop        ok
+  [ 2/26] dev  time-of-day                  ok
+  [ 3/26] dev  intraday-mean-reversion      ok
+  [ 4/26] dev  gap-fill-fade                ok
+  [ 5/26] dev  dynamic-leverage-throttle    ok
+  [ 6/26] dev  letf-rebalance-flow          ok
+  [ 7/26] dev  volume-orderflow             ok
+  [ 8/26] dev  opening-range-breakout       ok
+  [ 9/26] dev  gap-capitulation-reversal    ok
+  [10/26] dev  drawdown-stop-overlay        ok
+  [11/26] dev  daily-regime-minute-entry    ok
+  [12/26] dev  event-risk-overlay           ok
+  [13/26] dev  donchian-breakout            ok
+  [14/26] dev  ml-crash-overlay-winner      ok
+  [15/26] dev  risk-parity-hrp              ok
+  [16/26] dev  dual-speed-regime            ok
+  [17/26] dev  intraday-seasonality         ok
+  [18/26] dev  vol-kelly-overlay            ok
+  [19/26] dev  drawdown-regime              ok
+  [20/26] dev  overnight-crash-filter       ok
+  [21/26] dev  ml-classifier                ok
+  [22/26] dev  stop-reentry-recovery        ok
+  [23/26] dev  ratio-pairs                  ok
+  [24/26] dev  intraday-momentum            ok
+  [25/26] dev  ensemble-signals             ok
+  [26/26] dev  winner-ensemble-blend        ok
+  dev: 115s
+re-running on full 2016-2026 data
+  [ 1/26] full intraday-mean-reversion      ok
+  [ 2/26] full time-of-day                  ok
+  [ 3/26] full gap-fill-fade                ok
+  [ 4/26] full vol-scaled-crash-stop        ok
+  [ 5/26] full letf-rebalance-flow          ok
+  [ 6/26] full dynamic-leverage-throttle    ok
+  [ 7/26] full volume-orderflow             ok
+  [ 8/26] full event-risk-overlay           ok
+  [ 9/26] full opening-range-breakout       ok
+  [10/26] full gap-capitulation-reversal    ok
+  [11/26] full drawdown-stop-overlay        ok
+  [12/26] full daily-regime-minute-entry    ok
+  [13/26] full donchian-breakout            ok
+  [14/26] full ml-crash-overlay-winner      ok
+  [15/26] full risk-parity-hrp              ok
+  [16/26] full dual-speed-regime            ok
+  [17/26] full intraday-seasonality         ok
+  [18/26] full overnight-crash-filter       ok
+  [19/26] full stop-reentry-recovery        ok
+  [20/26] full vol-kelly-overlay            ok
+  [21/26] full ensemble-signals             ok
+  [22/26] full ratio-pairs                  ok
+  [23/26] full intraday-momentum            ok
+  [24/26] full drawdown-regime              ok
+  [25/26] full ml-classifier                ok
+  [26/26] full winner-ensemble-blend        ok
+  full: 157s
+re-running with data cut intraday (cut1)
+  [ 1/26] cut1 time-of-day                  ok
+  [ 2/26] cut1 dynamic-leverage-throttle    ok
+  [ 3/26] cut1 gap-fill-fade                ok
+  [ 4/26] cut1 vol-scaled-crash-stop        ok
+  [ 5/26] cut1 winner-ensemble-blend        FAILED rc=3 (attempt 2)
+  [ 6/26] cut1 daily-regime-minute-entry    ok
+  [ 7/26] cut1 intraday-mean-reversion      FAILED rc=3 (attempt 2)
+  [ 8/26] cut1 letf-rebalance-flow          ok
+  [ 9/26] cut1 volume-orderflow             ok
+  [10/26] cut1 event-risk-overlay           ok
+  [11/26] cut1 gap-capitulation-reversal    ok
+  [12/26] cut1 intraday-seasonality         ok
+  [13/26] cut1 risk-parity-hrp              ok
+  [14/26] cut1 drawdown-stop-overlay        ok
+  [15/26] cut1 opening-range-breakout       ok
+  [16/26] cut1 ml-crash-overlay-winner      ok
+  [17/26] cut1 donchian-breakout            ok
+  [18/26] cut1 stop-reentry-recovery        ok
+  [19/26] cut1 overnight-crash-filter       ok
+  [20/26] cut1 dual-speed-regime            ok
+  [21/26] cut1 ratio-pairs                  ok
+  [22/26] cut1 ensemble-signals             ok
+  [23/26] cut1 vol-kelly-overlay            ok
+  [24/26] cut1 drawdown-regime              FAILED rc=3 (attempt 2)
+  [25/26] cut1 ml-classifier                ok
+  [26/26] cut1 intraday-momentum            ok
+  cut1: 74s
+re-running with data cut intraday (cut2)
+  [ 1/26] cut2 winner-ensemble-blend        FAILED rc=3 (attempt 2)
+  [ 2/26] cut2 vol-scaled-crash-stop        ok
+  [ 3/26] cut2 intraday-mean-reversion      FAILED rc=3 (attempt 2)
+  [ 4/26] cut2 volume-orderflow             ok
+  [ 5/26] cut2 daily-regime-minute-entry    ok
+  [ 6/26] cut2 gap-fill-fade                ok
+  [ 7/26] cut2 time-of-day                  ok
+  [ 8/26] cut2 event-risk-overlay           ok
+  [ 9/26] cut2 dynamic-leverage-throttle    ok
+  [10/26] cut2 letf-rebalance-flow          ok
+  [11/26] cut2 gap-capitulation-reversal    ok
+  [12/26] cut2 opening-range-breakout       ok
+  [13/26] cut2 ml-crash-overlay-winner      ok
+  [14/26] cut2 drawdown-stop-overlay        ok
+  [15/26] cut2 intraday-seasonality         ok
+  [16/26] cut2 risk-parity-hrp              ok
+  [17/26] cut2 donchian-breakout            ok
+  [18/26] cut2 overnight-crash-filter       ok
+  [19/26] cut2 dual-speed-regime            ok
+  [20/26] cut2 stop-reentry-recovery        ok
+  [21/26] cut2 ensemble-signals             ok
+  [22/26] cut2 ratio-pairs                  ok
+  [23/26] cut2 vol-kelly-overlay            ok
+  [24/26] cut2 drawdown-regime              FAILED rc=3 (attempt 2)
+  [25/26] cut2 intraday-momentum            ok
+  [26/26] cut2 ml-classifier                ok
+  cut2: 118s
+1-minute panel 1,056,144 bars 2016-01-04 .. 2026-10-23
+daily-regime-minute-entry    OK  10y CAGR   3.55%  DD  64.2%
+    - synthetic short column(s) [1]; held overnight on 0 sessions
+donchian-breakout            OK  10y CAGR  -0.14%  DD  34.8%
+drawdown-regime              ISSUE 10y CAGR  -0.13%  DD  48.8%
+    ! cut1: truncated run not captured (ValueError: QQQ daily history missing 1 sessions, e.g. [datetime.date(2020, 3, 12)], best overlap -1.0)
+    ! cut2: truncated run not captured (ValueError: QQQ daily history missing 1 sessions, e.g. [datetime.date(2022, 9, 13)], best overlap -1.0)
+    - no position changes after 2023 (constant weights [0.0, 0.0, 1.0])
+drawdown-stop-overlay        OK  10y CAGR  -3.02%  DD  57.7%
+dual-speed-regime            OK  10y CAGR   4.27%  DD  38.0%
+    - cut2: only the last 1 bar(s) before the cut differ (end-of-data)
+dynamic-leverage-throttle    OK  10y CAGR   2.61%  DD  16.3%
+ensemble-signals             OK  10y CAGR  -0.27%  DD  76.0%
+event-risk-overlay           OK  10y CAGR  19.71%  DD  39.0%
+    - dev run ends 2023-12-29 09:30, before the 2023-12-29 session
+gap-capitulation-reversal    OK  10y CAGR   5.41%  DD  12.5%
+gap-fill-fade                OK  10y CAGR   2.41%  DD   0.5%
+    - synthetic short column(s) [3]; held overnight on 0 sessions
+intraday-mean-reversion      ISSUE 10y CAGR  14.19%  DD  31.5%
+    ! cut1: truncated run not captured (IndexError: index -1 is out of bounds for axis 0 with size 0, best overlap -1.0)
+    ! cut2: truncated run not captured (IndexError: index -1 is out of bounds for axis 0 with size 0, best overlap -1.0)
+intraday-momentum            OK  10y CAGR  13.94%  DD  64.0%
+intraday-seasonality         OK  10y CAGR  28.50%  DD  43.8%
+    - cut1: only the last 1 bar(s) before the cut differ (end-of-data)
+letf-rebalance-flow          OK  10y CAGR  13.27%  DD  44.1%
+ml-classifier                ISSUE 10y CAGR  17.93%  DD  36.9%
+    ! full run starts 2017-01-03, after the 10y start
+ml-crash-overlay-winner      OK  10y CAGR  17.87%  DD  25.3%
+opening-range-breakout       ISSUE 10y CAGR  -1.16%  DD  19.7%
+    ! LOOK-AHEAD (cut2, data to 2022-09-13 10:40): 14 earlier bars change, first 2022-09-13 10:18, last 2022-09-13 10:31
+overnight-crash-filter       OK  10y CAGR  13.69%  DD  27.6%
+    - cut2: only the last 2 bar(s) before the cut differ (end-of-data)
+ratio-pairs                  OK  10y CAGR  21.69%  DD  34.6%
+    - dev run ends 2023-12-28 15:59, before the 2023-12-29 session
+risk-parity-hrp              OK  10y CAGR   6.34%  DD  18.5%
+stop-reentry-recovery        OK  10y CAGR   2.25%  DD   1.8%
+    - no position changes after 2023 (constant weights [0.0, 0.0, 1.0])
+time-of-day                  ISSUE 10y CAGR  17.37%  DD  31.8%
+    ! LOOK-AHEAD (cut1, data to 2019-12-30 15:59): 23808 earlier bars change, first 2016-01-04 15:58, last 2019-12-27 09:59
+    - dev run ends 2023-12-28 15:59, before the 2023-12-29 session
+    - cut2: only the last 2 bar(s) before the cut differ (end-of-data)
+vol-kelly-overlay            OK  10y CAGR   1.13%  DD  19.2%
+vol-scaled-crash-stop        OK  10y CAGR  56.78%  DD  39.3%
+    - engines agree on equity (maxrel 7.8e-16); fill count 2897 vs 2896 from a zero-size trade at a float tie
+volume-orderflow             OK  10y CAGR   2.74%  DD  16.8%
+winner-ensemble-blend        ISSUE 10y CAGR   2.67%  DD  32.7%
+    ! cut1: truncated run not captured (IndexError: arrays used as indices must be of integer (or boolean) type, best overlap -1.0)
+    ! cut2: truncated run not captured (IndexError: arrays used as indices must be of integer (or boolean) type, best overlap -1.0)
+
+20 clean, 6 with issues: drawdown-regime, intraday-mean-reversion, ml-classifier, opening-range-breakout, time-of-day, winner-ensemble-blend
+rc=1

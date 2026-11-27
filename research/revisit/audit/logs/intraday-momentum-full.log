@@ -1,0 +1,7 @@
+wrote C:\Users\27175\Desktop\quant-trader-research\research\revisit\intraday-momentum\result.json
+1bp: CAGR  14.66%  DD 63.98%  Sharpe 0.62  fills 547
+5bp: CAGR  12.36%  DD 64.80%  Sharpe 0.55  fills 547
+10bp: CAGR   9.55%  DD 65.81%  Sharpe 0.46  fills 547
+corr vs 165d baseline: 0.6437823876694289
+states: {'TQQQ': 87, 'QQQ': 361, 'BIL': 82}, first rebalance 2016-04-13 15:59:00-04:00
+{"slug": "intraday-momentum", "mode": "full", "calls": 4, "error": null, "seconds": 0.9, "restored": ["restored result.json"], "match_score": 1.0, "found": true, "kw": {"band": 0.02, "slippage_bps": 1.0, "start_equity": 100000.0}, "bars": 1056144, "k": 3}

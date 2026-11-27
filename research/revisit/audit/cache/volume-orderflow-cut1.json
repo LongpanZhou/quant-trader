@@ -1,0 +1,1 @@
+{"slug": "volume-orderflow", "mode": "cut1", "calls": 8, "error": null, "seconds": 17.9, "restored": ["restored result.json"], "match_score": 1.0, "found": true, "kw": {"band": 0.02, "slippage_bps": 1.0, "start_equity": 100000.0}, "bars": 409459, "k": 3}

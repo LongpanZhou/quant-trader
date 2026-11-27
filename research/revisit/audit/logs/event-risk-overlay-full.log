@@ -1,0 +1,41 @@
+{
+  "dev": {
+    "1bp": {
+      "cagr": 0.22206330708472355,
+      "max_drawdown": 0.3903570452509316,
+      "sharpe": 0.9337490231846827,
+      "sortino": 1.3416651600131653,
+      "fills": 1173,
+      "exposure": 0.9999990528105479,
+      "turnover": 4129.62461734544
+    },
+    "5bp": {
+      "cagr": 0.1807687718874469,
+      "max_drawdown": 0.40684815236599636,
+      "sharpe": 0.7949008490483148,
+      "sortino": 1.1411736728337945,
+      "fills": 1171,
+      "exposure": 0.9999990528105479,
+      "turnover": 3240.373529988376
+    },
+    "10bp": {
+      "cagr": 0.13121307018142736,
+      "max_drawdown": 0.4268934173730038,
+      "sharpe": 0.6216243190238958,
+      "sortino": 0.891122603168205,
+      "fills": 1169,
+      "exposure": 0.9999990528105479,
+      "turnover": 2426.4494818847393
+    }
+  },
+  "corr": 0.37311938248858584,
+  "falsifiers": {
+    "F1_beats_placebo": true,
+    "F2_sharpe_dd": false,
+    "F3_corr_below_0.60": true,
+    "F4_subperiods": true,
+    "F5_cost_robust": true
+  }
+}
+wrote C:\Users\27175\Desktop\quant-trader-research\research\revisit\event-risk-overlay\result.json
+{"slug": "event-risk-overlay", "mode": "full", "calls": 19, "error": null, "seconds": 48.0, "restored": ["restored result.json"], "match_score": 1.0, "found": true, "kw": {"band": 0.02, "slippage_bps": 1.0, "start_equity": 100000.0}, "bars": 1056144, "k": 3}

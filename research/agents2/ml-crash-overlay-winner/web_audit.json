@@ -1,0 +1,219 @@
+{
+  "slug": "ml-crash-overlay-winner",
+  "name": "ML crash overlay",
+  "tagline": "A walk-forward 20-day crash classifier overlaid on the round-1 winner.",
+  "summary": "The base is the round-1 winner: 100% TQQQ while QQQ is above its 165-day SMA, BIL otherwise, with an armed 4% minute stop. A 34-feature L2 logistic model, retrained annually on a 750-session rolling window with a 21-session purge, estimates the probability that TQQQ falls more than 15% over the next 20 sessions. If that probability ranks in the top decile of its trailing 252 sessions and the base would hold TQQQ at the next open, the session is moved to BIL. Headline metrics beat the winner at 1 bp and 5 bp, but the model's out-of-sample AUC is near 0.5 and the edge is concentrated in 2020 and 2026.",
+  "decision_process": "At the close of session d, build 34 causal features from 1-minute bars through that close, impute and standardise them with training-window statistics only, and predict P(20-session TQQQ close-to-close return < -15%) with an L2 logistic model trained on the prior 750 sessions and retrained each calendar year (purge 21 sessions). Convert the probability to a trailing 252-session percentile rank. If rank >= 0.90 and the base regime would hold TQQQ at the next open, set the next session's target to 100% BIL; otherwise keep the base target. All targets fill at the next bar's open; the base's armed 4% minute stop continues to operate on non-overridden sessions.",
+  "rules": [
+    "Base: QQQ prior close above its 165-day SMA -> 100% TQQQ, else 100% BIL. On risk-on sessions, arm a 4% stop from the session open only when QQQ's first-minute price is below its 20-day SMA times 1.01; if armed and TQQQ closes 4% below the open, sell at the next minute's open and stay in BIL through the night.",
+    "Features (34, all causal through the decision close): 1m realized vol and its 252-day percentile, 5/20/60-day vol ratios, 1m skew and 20-day mean skew, downside vol, VWAP distance, drawdown from the day high, first-30 and last-30 minute returns, close location in the range, overnight gap and 20-day mean gap, intraday return, up-day fraction, 20/252-day drawdown, distance from SMA20/SMA165, RSI(14), 5/20-day TQQQ leverage decay, BIL 5-day return, day-of-week, day range and 20-day mean range, volume ratio and z-score, and two interactions.",
+    "Model: L2 logistic regression (lambda 10), label = TQQQ 20-session close-to-close return below -15%; 750-session rolling training window, annual retrain, purge of horizon+1 = 21 sessions at the train/test boundary; median impute, standardise and winsorise at +/-6 sd using the training window only.",
+    "Overlay: if the predicted probability ranks in the top decile (>= 0.90) of its trailing 252 sessions and the base would hold TQQQ at the next open, the next session is 100% BIL. The overlay never adds TQQQ or QQQ exposure on base-BIL days; it is a one-session de-risking of an otherwise-long position.",
+    "Execution: long-only TQQQ/BIL, weights set at a bar and filled at the next bar's open, 2% no-trade band, 1 bp primary cost with 5 bp and 10 bp reported."
+  ],
+  "status": "Fragile",
+  "metrics": {
+    "cagr10": 0.7224,
+    "dd10": 0.415,
+    "cagr5": 0.531,
+    "dd5": 0.3167,
+    "cagr10_5bp": 0.661,
+    "dd10_5bp": 0.4243,
+    "cagr5_5bp": 0.4783,
+    "dd5_5bp": 0.3329,
+    "cagr10_10bp": 0.5874,
+    "dd10_10bp": 0.4357,
+    "cagr5_10bp": 0.415,
+    "dd5_10bp": 0.3526,
+    "sharpe10": 1.52,
+    "sharpe5": 1.3,
+    "sharpe10_5bp": 1.43,
+    "sharpe5_5bp": 1.21,
+    "fills10": 889,
+    "fills5": 437
+  },
+  "verdict": "Headline 72.24%/41.50% (10y) and 53.10%/31.67% (5y) beats the winner at 1 bp and 5 bp, but the model's out-of-sample AUC is about 0.50 and the P&L is not clearly beyond a random-flag placebo (p95 65.7%, max 73.3%). The 10y edge is heavily 2020-dependent (ex-2020 50.0% vs the winner's 48.2%) and the 5y edge is entirely the 2026 selloff; fragile, do not treat as confirmed.",
+  "sources": [
+    {
+      "idea": "Base regime: hold TQQQ while QQQ is above its 165-day SMA, else BIL.",
+      "source": "Own test / no external source (round-1 daily-regime-minute-entry)",
+      "url": null,
+      "source_type": "report",
+      "role": "inspired rule",
+      "evidence": "The base is the round-1 winner. Its 58.80%/44.56% (10y) and 49.88%/33.49% (5y) at 1 bp were reproduced exactly in this agent's harness before the overlay was added.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Armed 4% intraday stop from the session open, only when QQQ is below its 20-day MA times 1.01.",
+      "source": "Kaminski & Lo (2014) / When do stop-loss rules stop losses?",
+      "url": "https://doi.org/10.1016/j.finmar.2013.07.001",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Stop-loss rules add value when returns exhibit momentum or regime shifts and cost little when they do not; this justifies a conditional, armed stop rather than an always-on stop.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Trend filter on a broad equity index as the regime backbone.",
+      "source": "Faber (2007) / A Quantitative Approach to Tactical Asset Allocation",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=962461",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "A simple 10-month moving-average rule reduces drawdowns in broad equity indices; the 165-day QQQ SMA is the same family.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Hold TQQQ overnight because most of the drift is earned overnight.",
+      "source": "Lou, Polk & Skouras (2019) / A Tug of War: Overnight versus Intraday Expected Returns",
+      "url": "https://personal.lse.ac.uk/polk/research/TugOfWar.pdf",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Overnight returns carry most of the equity premium; the base stays long TQQQ overnight and the overlay removes exposure only when crash risk is high.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "ML crash label: next 20-session TQQQ return below -15%.",
+      "source": "Own test / no external source (threshold calibrated to the TQQQ 20-day return distribution)",
+      "url": null,
+      "source_type": "report",
+      "role": "inspired rule",
+      "evidence": "The -15% threshold is roughly 0.8 standard deviations of the 20-session TQQQ return and has an 11% base rate over 2017-2026. It was chosen from the return distribution, not tuned on P&L.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Walk-forward validation with a purge at each train/test boundary.",
+      "source": "Arnott, Harvey & Markowitz (2019) / A Backtesting Protocol in the Era of Machine Learning",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3275654",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Protocol for out-of-sample testing in ML backtests; the overlay retrains annually on data strictly before the test year and purges horizon+1 = 21 sessions.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Backtest-overfitting and multiple-testing warning; report the whole grid and a placebo.",
+      "source": "Bailey, Borwein, Lopez de Prado & Zhu / The Probability of Backtest Overfitting",
+      "url": "https://www.davidhbailey.com/dhbpapers/backtest-prob.pdf",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "The 64-point horizon/threshold/quantile grid and the 300-draw placebo are reported precisely because a single best backtest is not evidence of skill.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Label design, non-IID overlapping labels, purging and embargo.",
+      "source": "Lopez de Prado (2016) / The 10 Reasons Most Machine Learning Funds Fail",
+      "url": "https://www.garp.org/hubfs/Whitepapers/a1Z1W0000054x6lUAA.pdf",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Twenty-session labels overlap and are not independent; the implementation purges 21 sessions and uses a 750-session rolling window rather than treating every row as an independent sample.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Rare-event crash classification on QQQ is genuinely hard; PR-AUC is the honest metric.",
+      "source": "Detection of extreme market events using Machine Learning (GitHub)",
+      "url": "https://github.com/addicteduser04/Detection-of-extreme-market-events-using-Machine-Learning",
+      "source_type": "report",
+      "role": "supports assumption",
+      "evidence": "Reports PR-AUC 0.063 for Random Forest over 5,294 out-of-sample predictions with only 24 positives; used to calibrate how weak genuine rare-event crash predictability is.",
+      "confidence": "high"
+    },
+    {
+      "idea": "A simple logistic crash model barely beats the naive base rate out of sample.",
+      "source": "Forward Logistic Analysis, 1994-2025 (Journal of Accounting and Finance Research)",
+      "url": "https://rjwave.org/jaafr/papers/JAAFR2609192.pdf",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Out-of-sample AUC 0.631 versus 0.648 for the naive expanding base rate. This directly supports the honest interpretation of this strategy's AUC near 0.50.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Walk-forward ML crash prediction with expanding windows and a quantile crash label.",
+      "source": "Predicting S&P 500 Market Crashes: A Comparative Study of Machine Learning and Traditional Statistical Models (ACM, 2026)",
+      "url": "https://dl.acm.org/doi/full/10.1145/3829441.3829559",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Uses a 5-day cumulative-return crash label and expanding-window walk-forward folds. The protocol, not the reported high AUC, informed this design.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Walk-forward crisis forecasting with a compact feature set and sequential retraining.",
+      "source": "Stock Market Crisis Forecasting Using Neural Networks with Input Factor Selection (MDPI, 2021)",
+      "url": "https://www.mdpi.com/2076-3417/12/4/1952",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Sequential walk-forward estimation for crisis months supports annual retraining and the use of a compact, economically motivated feature set.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Volatility clustering makes crash risk partly forecastable; vol-managed overlays can cut drawdowns.",
+      "source": "Harvey et al. / The Impact of Volatility Targeting",
+      "url": "https://people.duke.edu/~charvey/Research/Published_Papers/P135_The_impact_of.pdf",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Volatility scaling raises Sharpe ratios for risk assets because volatility rises after negative returns (the leverage effect); this is the economic channel the crash model tries to capture.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Conditional volatility targeting: reduce risk only in extreme volatility states, with lower turnover.",
+      "source": "Conditional Volatility Targeting (Financial Analysts Journal, 2020)",
+      "url": "https://www.tandfonline.com/doi/full/10.1080/0015198X.2020.1790853",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Conditioning on extreme volatility states improves Sharpe and cuts drawdowns with lower turnover than continuous vol targeting; this motivates a top-decile rather than continuous overlay.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Leveraged-ETF trend timing with a long moving average.",
+      "source": "FinLab / TQQQ 200-day moving average strategy",
+      "url": "https://finlab.finance/en/blog/leveraged-etf-timing-backtest",
+      "source_type": "blog",
+      "role": "supports assumption",
+      "evidence": "Reports roughly 45% CAGR and -60.9% max drawdown for a 200-day rule on TQQQ over 2017-2026; the base's 165-day rule is the same family.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "The overlay must never add TQQQ or QQQ on base-BIL (bear) days.",
+      "source": "Own test / no external source",
+      "url": null,
+      "source_type": "report",
+      "role": "inspired rule",
+      "evidence": "An early implementation applied the BIL/QQQ replacement to every session and accidentally added QQQ exposure on base-BIL days, producing inflated results. The final code gates the override on the base's open TQQQ state.",
+      "confidence": "high"
+    }
+  ],
+  "rejected_sources": [
+    {
+      "source": "Own test / no external source: next-day crash classifier at the close",
+      "url": null,
+      "why_rejected": "Predicting next-day TQQQ < -2%/-3%/-4.5% and moving to BIL or QQQ on the top decile did not pass: the 5y CAGR fell below the 47.88% floor and the drawdown improvement was inconsistent. At q0.80 BIL the fast screen gave 66.7%/39.1% (10y) and 38.6%/39.1% (5y); the 5y failed both return and drawdown."
+    },
+    {
+      "source": "Own test / no external source: multi-horizon TQQQ-vs-BIL underperformance model (5/10/20 sessions)",
+      "url": null,
+      "why_rejected": "Exiting on the bottom quintile of the average rank cut CAGR too much: 43.4%/38.8% (10y) and 39.1%/33.1% (5y) at q0.10, with worse results at wider thresholds. No pass."
+    },
+    {
+      "source": "Own test / no external source: overnight-only 15:50 gap hedge",
+      "url": null,
+      "why_rejected": "Predicting the 15:50-to-09:31 gap had more stable AUC (0.55-0.62) but the 10y drawdown was 47.60% at q0.90 BIL versus the winner's 44.56%; at 5 bp it was 52.17%. Only the 5y improved (55.32%/30.26%)."
+    },
+    {
+      "source": "Own test / no external source: QQQ-on-high-risk variant",
+      "url": null,
+      "why_rejected": "An early bug applied the QQQ replacement on base-BIL days and added equity exposure in bear markets, producing inflated results such as 71.65% (10y). It was not tradable under the mandate and was removed; the reported strategy is BIL-only on base-TQQQ sessions."
+    },
+    {
+      "source": "CRISIS ALERT: Forecasting Stock Market Crisis Using Machine Learning (arXiv 2401.06172)",
+      "url": "https://arxiv.org/pdf/2401.06172v1.pdf",
+      "why_rejected": "Monthly crisis classification with very high AUC claims; the horizon and crisis definition are incompatible with a daily 20-session TQQQ drawdown overlay, so it was not used and no replication was attempted."
+    }
+  ],
+  "corrections": [
+    "Paper attribution: the page links Lopez de Prado to 'Building Diversified Portfolios that Outperform Out-of-Sample' (SSRN 2708678), which is the hierarchical risk-parity paper, not a walk-forward/purging reference. Replace it with 'The 10 Reasons Most Machine Learning Funds Fail' (SSRN 3104816 / the GARP PDF) or 'Advances in Financial Machine Learning'.",
+    "Paper title: SSRN 3275654 is Arnott, Harvey & Markowitz, 'A Backtesting Protocol in the Era of Machine Learning', not 'A Backtest Is Not a Strategy'.",
+    "Add the 5 bp metrics to the page: 10y 66.10% CAGR / 42.43% DD and 5y 47.83% / 33.29%. The current page shows only the 1 bp headline.",
+    "Clarify that the overlay is conditional: it replaces TQQQ with BIL only on sessions where the base would hold TQQQ at the next open. It never adds TQQQ or QQQ exposure on base-BIL (bear) days.",
+    "State the 2020 dependence explicitly in the verdict: ex-2020 the 10y CAGR is 50.0% (DD 38.3%) versus the winner's 48.2% (DD 41.6%), and the 5y edge is entirely the 2026 selloff (5y to 2025-12-31: 54.08%/29.92% versus the winner's 54.60%/29.23%).",
+    "Add the 10 bp results and the one blemish: 10y 58.74%/43.57%, 5y 41.50%/35.26%. The 5y drawdown is 0.33 pp worse than the winner's 34.93%, so the 10 bp pass is not clean on that metric.",
+    "The strongest caveat is the placebo: 300 random selections of 220 held days give a 10y CAGR p95 of 65.7% and a maximum of 73.3%, versus 72.2% for the model. The page says 'fragile' but should quote this number.",
+    "reportUrl null is correct: no report.md was produced. result.json and strategy.py are the deliverables."
+  ]
+}

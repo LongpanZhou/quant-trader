@@ -13,7 +13,13 @@ function Row({ label, value, tone = "" }: { label: string; value: string; tone?:
   );
 }
 
-export function TradePanel({ metrics }: { metrics: Metrics }) {
+export function TradePanel({
+  metrics,
+  compact = false,
+}: {
+  metrics: Metrics;
+  compact?: boolean;
+}) {
   const data = [
     { name: "Wins", value: metrics.wins, color: "#9ae6a5" },
     { name: "Losses", value: metrics.losses, color: "#fb7185" },
@@ -27,16 +33,20 @@ export function TradePanel({ metrics }: { metrics: Metrics }) {
         <div className="eyebrow">Execution</div>
         <h3 className="mt-1 text-lg font-semibold text-zinc-100">Trade quality</h3>
       </div>
-      <div className="grid gap-6 sm:grid-cols-[180px_1fr] sm:items-center">
-        <div className="relative mx-auto h-[170px] w-[170px]">
+      <div className="flex flex-wrap items-center gap-4">
+        <div
+          className={`relative mx-auto shrink-0 ${
+            compact ? "h-[130px] w-[130px]" : "h-[170px] w-[170px]"
+          }`}
+        >
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
               <Pie
                 data={data}
                 dataKey="value"
                 nameKey="name"
-                innerRadius={58}
-                outerRadius={78}
+                innerRadius={compact ? 44 : 58}
+                outerRadius={compact ? 60 : 78}
                 paddingAngle={2}
                 stroke="none"
                 startAngle={90}
@@ -50,13 +60,19 @@ export function TradePanel({ metrics }: { metrics: Metrics }) {
             </PieChart>
           </ResponsiveContainer>
           <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
-            <div className="stat-value text-[1.65rem] font-semibold text-zinc-100">
+            <div
+              className={`stat-value font-semibold text-zinc-100 ${
+                compact ? "text-[1.4rem]" : "text-[1.65rem]"
+              }`}
+            >
               {pct(metrics.winRate)}
             </div>
-            <div className="text-[10px] uppercase tracking-[0.14em] text-zinc-500">win rate</div>
+            <div className="text-[9px] uppercase tracking-[0.12em] text-zinc-500 sm:text-[10px]">
+              win rate
+            </div>
           </div>
         </div>
-        <div>
+        <div className={`flex-1 ${compact ? "min-w-[160px]" : "min-w-[180px]"}`}>
           <div className="mb-3 flex flex-wrap items-center gap-3 text-[11px] text-zinc-400">
             <span className="inline-flex items-center gap-1.5">
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-300" /> {metrics.wins} wins

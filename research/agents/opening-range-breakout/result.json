@@ -1,0 +1,482 @@
+{
+  "agent": "opening-range-breakout",
+  "strategy": "ORB-30min swing, TQQQ, QQQ 165d SMA regime",
+  "rules": {
+    "opening_range_minutes": 30,
+    "entry": "first 1m close above OR high after 10:00, fill next open",
+    "stop": "OR low of the entry day, checked on each 1m low, exit next open",
+    "exit": "stop or QQQ 165d SMA regime off (exit next bar)",
+    "overnight": "held while regime on",
+    "flat_asset": "BIL",
+    "slippage_bps_primary": 1.0
+  },
+  "benchmark_official": {
+    "10y": {
+      "cagr": 0.3928,
+      "max_drawdown": 0.8168,
+      "sharpe": 0.83
+    },
+    "5y": {
+      "cagr": 0.1347,
+      "max_drawdown": 0.8168,
+      "sharpe": 0.53
+    }
+  },
+  "daily_baseline": {
+    "10y": {
+      "cagr": 0.4531,
+      "max_drawdown": 0.5871,
+      "sharpe": 1.0
+    },
+    "5y": {
+      "cagr": 0.3461,
+      "max_drawdown": 0.3686,
+      "sharpe": 0.88
+    }
+  },
+  "entry_signals": 40,
+  "windows": {
+    "10y": {
+      "1bp": {
+        "cagr": 0.48984226872670167,
+        "max_drawdown": 0.4855121322964231,
+        "max_drawdown_daily": 0.48136856662549365,
+        "sharpe": 1.0609698789056865,
+        "sharpe_daily": 1.0611358103065054,
+        "volatility": 0.49231033746941,
+        "sortino": 1.4887727392331727,
+        "fills": 129,
+        "turnover": 1248.3922467663917,
+        "exposure": 0.9999989571873257,
+        "ending_equity": 4979020.090406105,
+        "years": 9.80213134078637,
+        "benchmark_cagr": 0.3937769088546701,
+        "benchmark_max_drawdown": 0.8229021592363336,
+        "benchmark_sharpe": 0.8363742587502527,
+        "yearly": {
+          "2017": {
+            "strategy": 1.145185956332286,
+            "benchmark": 1.1454004749279192
+          },
+          "2018": {
+            "strategy": 0.10105956303638397,
+            "benchmark": -0.20761930070677803
+          },
+          "2019": {
+            "strategy": 0.43853564430312897,
+            "benchmark": 1.4822913617582225
+          },
+          "2020": {
+            "strategy": 1.0608509594681679,
+            "benchmark": 1.041403713646452
+          },
+          "2021": {
+            "strategy": 0.8105368933493498,
+            "benchmark": 0.8105368933493498
+          },
+          "2022": {
+            "strategy": -0.2285796382690738,
+            "benchmark": -0.7938942799960799
+          },
+          "2023": {
+            "strategy": 1.1307438691694864,
+            "benchmark": 1.9204706377461225
+          },
+          "2024": {
+            "strategy": 0.3839786306116342,
+            "benchmark": 0.6242856987415559
+          },
+          "2025": {
+            "strategy": 0.3081940008662103,
+            "benchmark": 0.32102763513768995
+          },
+          "2026": {
+            "strategy": 0.20686685993825948,
+            "benchmark": 0.22620776845743662
+          }
+        },
+        "benchmark_daily_cagr": 0.39276118134983373,
+        "benchmark_daily_max_drawdown": 0.8167775208998822,
+        "pass_vs_tqqq": true,
+        "pass_cagr": true,
+        "pass_drawdown": true,
+        "pass_sharpe": true
+      },
+      "5bp": {
+        "cagr": 0.4820201227479157,
+        "max_drawdown": 0.4855121322964231,
+        "max_drawdown_daily": 0.48136856662549365,
+        "sharpe": 1.0502215151286447,
+        "sharpe_daily": 1.0503330191358338,
+        "volatility": 0.4923159916453043,
+        "sortino": 1.4736628068015085,
+        "fills": 129,
+        "turnover": 1201.0124323339014,
+        "exposure": 0.9999989571873257,
+        "ending_equity": 4728619.111823361,
+        "years": 9.80213134078637,
+        "benchmark_cagr": 0.3937769088546701,
+        "benchmark_max_drawdown": 0.8229021592363336,
+        "benchmark_sharpe": 0.8363742587502527,
+        "yearly": {
+          "2017": {
+            "strategy": 1.1443283107725333,
+            "benchmark": 1.1454004749279192
+          },
+          "2018": {
+            "strategy": 0.09491086128152859,
+            "benchmark": -0.20761930070677803
+          },
+          "2019": {
+            "strategy": 0.4145701170975342,
+            "benchmark": 1.4822913617582225
+          },
+          "2020": {
+            "strategy": 1.0509825769084213,
+            "benchmark": 1.041403713646452
+          },
+          "2021": {
+            "strategy": 0.8105368933493498,
+            "benchmark": 0.8105368933493498
+          },
+          "2022": {
+            "strategy": -0.23288751941478159,
+            "benchmark": -0.7938942799960799
+          },
+          "2023": {
+            "strategy": 1.1154576083075884,
+            "benchmark": 1.9204706377461225
+          },
+          "2024": {
+            "strategy": 0.37735145045644547,
+            "benchmark": 0.6242856987415559
+          },
+          "2025": {
+            "strategy": 0.3019297153274614,
+            "benchmark": 0.32102763513768995
+          },
+          "2026": {
+            "strategy": 0.20493741672916488,
+            "benchmark": 0.22620776845743662
+          }
+        },
+        "pass_vs_tqqq": true,
+        "pass_cagr": true,
+        "pass_drawdown": true,
+        "pass_sharpe": true
+      }
+    },
+    "5y": {
+      "1bp": {
+        "cagr": 0.34084085313737833,
+        "max_drawdown": 0.4217115570089143,
+        "max_drawdown_daily": 0.37179935467534375,
+        "sharpe": 0.8706904975526935,
+        "sharpe_daily": 0.8613904187021272,
+        "volatility": 0.4621022821270746,
+        "sortino": 1.2257347940750232,
+        "fills": 61,
+        "turnover": 95.52644097006191,
+        "exposure": 0.999997949382559,
+        "ending_equity": 432708.7845395749,
+        "years": 4.994579435698532,
+        "benchmark_cagr": 0.14290446062165096,
+        "benchmark_max_drawdown": 0.8229021592363336,
+        "benchmark_sharpe": 0.5356891786075214,
+        "yearly": {
+          "2021": {
+            "strategy": 0.16049083792897179,
+            "benchmark": 0.1602012789583116
+          },
+          "2022": {
+            "strategy": -0.22857963826907368,
+            "benchmark": -0.7938942799960799
+          },
+          "2023": {
+            "strategy": 1.1307438691694873,
+            "benchmark": 1.9204706377461225
+          },
+          "2024": {
+            "strategy": 0.38397863061163484,
+            "benchmark": 0.6242856987415559
+          },
+          "2025": {
+            "strategy": 0.30819400086620985,
+            "benchmark": 0.32102763513768995
+          },
+          "2026": {
+            "strategy": 0.2068668599382597,
+            "benchmark": 0.22620776845743662
+          }
+        },
+        "benchmark_daily_cagr": 0.13882830069818142,
+        "benchmark_daily_max_drawdown": 0.8167775208998822,
+        "pass_vs_tqqq": true,
+        "pass_cagr": true,
+        "pass_drawdown": true,
+        "pass_sharpe": true
+      },
+      "5bp": {
+        "cagr": 0.3343064540906564,
+        "max_drawdown": 0.4217115570089143,
+        "max_drawdown_daily": 0.37330522860819104,
+        "sharpe": 0.8600455370159695,
+        "sharpe_daily": 0.8508985287747194,
+        "volatility": 0.4621063407365858,
+        "sortino": 1.2107233792266021,
+        "fills": 61,
+        "turnover": 94.09862118410399,
+        "exposure": 0.999997949382559,
+        "ending_equity": 422278.5072715755,
+        "years": 4.994579435698532,
+        "benchmark_cagr": 0.14290446062165096,
+        "benchmark_max_drawdown": 0.8229021592363336,
+        "benchmark_sharpe": 0.5356891786075214,
+        "yearly": {
+          "2021": {
+            "strategy": 0.1600268735759769,
+            "benchmark": 0.1602012789583116
+          },
+          "2022": {
+            "strategy": -0.23288751941478159,
+            "benchmark": -0.7938942799960799
+          },
+          "2023": {
+            "strategy": 1.1154576083075889,
+            "benchmark": 1.9204706377461225
+          },
+          "2024": {
+            "strategy": 0.3773514504564459,
+            "benchmark": 0.6242856987415559
+          },
+          "2025": {
+            "strategy": 0.30192971532746116,
+            "benchmark": 0.32102763513768995
+          },
+          "2026": {
+            "strategy": 0.20493741672916488,
+            "benchmark": 0.22620776845743662
+          }
+        },
+        "pass_vs_tqqq": true,
+        "pass_cagr": true,
+        "pass_drawdown": true,
+        "pass_sharpe": true
+      }
+    }
+  },
+  "yearly_10y": {
+    "2017": {
+      "strategy": 1.145185956332286,
+      "benchmark": 1.1454004749279192
+    },
+    "2018": {
+      "strategy": 0.10105956303638397,
+      "benchmark": -0.20761930070677803
+    },
+    "2019": {
+      "strategy": 0.43853564430312897,
+      "benchmark": 1.4822913617582225
+    },
+    "2020": {
+      "strategy": 1.0608509594681679,
+      "benchmark": 1.041403713646452
+    },
+    "2021": {
+      "strategy": 0.8105368933493498,
+      "benchmark": 0.8105368933493498
+    },
+    "2022": {
+      "strategy": -0.2285796382690738,
+      "benchmark": -0.7938942799960799
+    },
+    "2023": {
+      "strategy": 1.1307438691694864,
+      "benchmark": 1.9204706377461225
+    },
+    "2024": {
+      "strategy": 0.3839786306116342,
+      "benchmark": 0.6242856987415559
+    },
+    "2025": {
+      "strategy": 0.3081940008662103,
+      "benchmark": 0.32102763513768995
+    },
+    "2026": {
+      "strategy": 0.20686685993825948,
+      "benchmark": 0.22620776845743662
+    }
+  },
+  "yearly_5y": {
+    "2021": {
+      "strategy": 0.16049083792897179,
+      "benchmark": 0.1602012789583116
+    },
+    "2022": {
+      "strategy": -0.22857963826907368,
+      "benchmark": -0.7938942799960799
+    },
+    "2023": {
+      "strategy": 1.1307438691694873,
+      "benchmark": 1.9204706377461225
+    },
+    "2024": {
+      "strategy": 0.38397863061163484,
+      "benchmark": 0.6242856987415559
+    },
+    "2025": {
+      "strategy": 0.30819400086620985,
+      "benchmark": 0.32102763513768995
+    },
+    "2026": {
+      "strategy": 0.2068668599382597,
+      "benchmark": 0.22620776845743662
+    }
+  },
+  "variants": {
+    "swing_orb30_primary": {
+      "10y": {
+        "cagr": 0.4898,
+        "dd": 0.4855,
+        "sharpe": 1.06
+      },
+      "5y": {
+        "cagr": 0.3408,
+        "dd": 0.4217,
+        "sharpe": 0.87
+      }
+    },
+    "swing_orb15": {
+      "10y": {
+        "cagr": 0.4841,
+        "dd": 0.4855,
+        "sharpe": 1.05
+      },
+      "5y": {
+        "cagr": 0.3209,
+        "dd": 0.4217,
+        "sharpe": 0.84
+      }
+    },
+    "swing_orb5": {
+      "10y": {
+        "cagr": 0.4833,
+        "dd": 0.4855,
+        "sharpe": 1.05
+      },
+      "5y": {
+        "cagr": 0.3144,
+        "dd": 0.4217,
+        "sharpe": 0.83
+      }
+    },
+    "swing_orb30_fixed2pct": {
+      "10y": {
+        "cagr": 0.4974,
+        "dd": 0.4855,
+        "sharpe": 1.07
+      },
+      "5y": {
+        "cagr": 0.3365,
+        "dd": 0.4217,
+        "sharpe": 0.86
+      }
+    },
+    "swing_orb30_fixed5pct": {
+      "10y": {
+        "cagr": 0.4753,
+        "dd": 0.4941,
+        "sharpe": 1.04
+      },
+      "5y": {
+        "cagr": 0.3504,
+        "dd": 0.4217,
+        "sharpe": 0.88
+      }
+    },
+    "swing_orb30_atr3_trail": {
+      "10y": {
+        "cagr": 0.3852,
+        "dd": 0.474,
+        "sharpe": 0.98
+      },
+      "5y": {
+        "cagr": 0.2638,
+        "dd": 0.3786,
+        "sharpe": 0.78
+      }
+    },
+    "swing_orb30_target5R": {
+      "10y": {
+        "cagr": 0.3537,
+        "dd": 0.4092,
+        "sharpe": 0.96
+      },
+      "5y": {
+        "cagr": 0.1826,
+        "dd": 0.382,
+        "sharpe": 0.64
+      }
+    },
+    "intraday_orb15": {
+      "10y": {
+        "cagr": 0.0561,
+        "dd": 0.3519,
+        "sharpe": 0.36
+      },
+      "5y": {
+        "cagr": 0.1273,
+        "dd": 0.2225,
+        "sharpe": 0.67
+      }
+    },
+    "intraday_orb30": {
+      "10y": {
+        "cagr": 0.021,
+        "dd": 0.4413,
+        "sharpe": 0.2
+      },
+      "5y": {
+        "cagr": 0.0636,
+        "dd": 0.2402,
+        "sharpe": 0.41
+      }
+    },
+    "intraday_orb5": {
+      "10y": {
+        "cagr": 0.0206,
+        "dd": 0.4006,
+        "sharpe": 0.2
+      },
+      "5y": {
+        "cagr": 0.0718,
+        "dd": 0.2457,
+        "sharpe": 0.42
+      }
+    },
+    "intraday_orb15_first_candle": {
+      "10y": {
+        "cagr": 0.1027,
+        "dd": 0.2657,
+        "sharpe": 0.66
+      },
+      "5y": {
+        "cagr": 0.1315,
+        "dd": 0.1685,
+        "sharpe": 0.86
+      }
+    },
+    "regime_hold_orb_stop": {
+      "10y": {
+        "cagr": 0.3026,
+        "dd": 0.3969,
+        "sharpe": 0.95
+      },
+      "5y": {
+        "cagr": 0.2181,
+        "dd": 0.3969,
+        "sharpe": 0.79
+      }
+    }
+  }
+}

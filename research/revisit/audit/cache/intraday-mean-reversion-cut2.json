@@ -1,0 +1,1 @@
+{"slug": "intraday-mean-reversion", "mode": "cut2", "calls": 0, "error": "IndexError: index -1 is out of bounds for axis 0 with size 0", "seconds": 14.5, "restored": [], "match_score": -1.0, "found": false}

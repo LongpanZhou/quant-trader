@@ -1,0 +1,146 @@
+{
+  "slug": "letf-rebalance-flow",
+  "name": "Late-rally overlay",
+  "tagline": "An additive last-hour overlay on the 165-day TQQQ winner, not a standalone trade.",
+  "summary": "The base is the round-1 winner: hold 100% TQQQ while QQQ's prior close is above its 165-day SMA, otherwise BIL, with a 4% minute stop armed when QQQ's first-minute close is below its prior 20-day SMA x 1.01. On risk-off sessions only, if QQQ is up more than 1.5% from the prior close by 14:59, the strategy buys TQQQ at the 15:00 open and sells at the 15:59 open, then stays in BIL overnight. The overlay adds 96 one-hour trades over the 2017-2026 test window. The headline 67.92%/41.50% is the winner plus this overlay, not the overlay alone.",
+  "decision_process": "Daily regime uses QQQ's prior close vs its 165-day SMA. On a risk-off session the 14:59 QQQ close (bar 329) is compared with the prior session's close; if the return is above +1.5%, the target is set at the 14:59 bar and filled at the 15:00 open. TQQQ is held through the 15:58 bar; at the 15:58 close the target is set back to BIL and filled at the 15:59 open, so the 15:59-16:00 final minute and the overnight are not held. On risk-on sessions the winner's rules run unchanged, including the armed 4% stop, which fills at the next minute's open.",
+  "rules": [
+    "Base regime: hold 100% TQQQ while QQQ's prior daily close is above its 165-day SMA; otherwise hold 100% BIL.",
+    "Base stop: on risk-on days, arm a 4% stop from the session open only when QQQ's first-minute close is below its prior 20-day SMA x 1.01; if armed and TQQQ closes 4% below the session open, sell at the next minute's open and stay in BIL for the rest of the session and the night.",
+    "Overlay signal: on a risk-off session, compute run60 = QQQ 14:59 close / QQQ prior close - 1; if run60 > +1.5%, buy TQQQ at the 15:00 open.",
+    "Overlay exit: sell at the 15:59 open (target set at the 15:58 close) and stay in BIL overnight; the 15:59-16:00 final minute is not held.",
+    "Long-only, weights sum to <= 1, next-bar-open fills; no leverage beyond 100% TQQQ."
+  ],
+  "status": "Fragile",
+  "metrics": {
+    "cagr10": 0.6792,
+    "dd10": 0.4150,
+    "cagr5": 0.5944,
+    "dd5": 0.3349,
+    "cagr10_5bp": 0.6093,
+    "dd10_5bp": 0.4243,
+    "cagr5_5bp": 0.5165,
+    "dd5_5bp": 0.3413,
+    "cagr10_10bp": 0.5261,
+    "dd10_10bp": 0.4659,
+    "cagr5_10bp": 0.4246,
+    "dd5_10bp": 0.3493
+  },
+  "verdict": "Beats the round-1 winner on CAGR in both windows at 1/5/10 bp, cuts 10y max DD by about 3 pp and ties the 5y DD; at 10 bp it is 52.61%/46.59% (10y) and 42.46%/34.93% (5y). But the edge is fragile: 96 events, 52 of them in 2022, none in 2017 or 2021, and the overlay is slightly behind the winner in 2023-26 (66.79% vs 67.76%). Treat it as a small, uncorrelated add-on, not a new standalone engine.",
+  "sources": [
+    {
+      "idea": "Leveraged ETF daily rebalancing creates predictable end-of-day demand in the underlying, proportional to L(L-1) times the day's return, which can amplify late-day moves.",
+      "source": "Barbon et al. (2022) / Liquidity Provision to Leveraged ETFs and Equity Options Rebalancing Flows: Evidence from End-of-Day Stock Prices",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3925725",
+      "source_type": "paper",
+      "role": "inspired rule",
+      "evidence": "The paper shows LETF rebalancing and option delta-hedging exert economically large price pressure on end-of-day returns and links LETF flows to last-half-hour stock returns. This motivated testing the 15:00-16:00 window, not the exact 1.5% threshold.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "LETF rebalancing concentrates near the close and is associated with higher end-of-day volatility, so the last 30-60 minutes are the right place to look for a flow effect.",
+      "source": "Shum, Hejazi, Haryanto & Rodier (2016) / Intraday Share Price Volatility and Leveraged ETF Rebalancing",
+      "url": "https://doi.org/10.1093/rof/rfv061",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Review of Finance 20(6):2379-2409. Documents end-of-day rebalancing activity and end-of-day volatility. It supports the timing of the test but is about volatility, not directional continuation.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Intraday momentum: the day's move can predict the last part of the session, so a late-day continuation rule is plausible.",
+      "source": "Gao, Han, Li & Zhou (2018) / Market intraday momentum",
+      "url": "https://doi.org/10.1016/j.jfineco.2018.05.009",
+      "source_type": "paper",
+      "role": "inspired rule",
+      "evidence": "Journal of Financial Economics 129(2):394-414. Shows the first half-hour return predicts the last half-hour return. Our rule is a regime-gated variant conditioned on the move from the prior close at 14:59.",
+      "confidence": "high"
+    },
+    {
+      "idea": "The opposite hypothesis: intraday losers outperform into the close (end-of-day reversal), which would argue against buying late-day rallies.",
+      "source": "Vidovich & Zerjal (2026) / The End-of-Day Reversal After 2019: A Pre-Registered Test on S&P 500 Stocks Excluding Heavily Traded Names (related to Baltussen, Da & Soebhag, 2025)",
+      "url": "https://arxiv.org/abs/2611.09286",
+      "source_type": "paper",
+      "role": "tested only",
+      "evidence": "Documents an end-of-day reversal through 2019, weaker after 2019. We tested it on QQQ risk-off days: on strong rally days the last hour continued up (mean +64 bp TQQQ), not reversed. The overnight after those rallies did reverse (mean -90 bp), which is consistent with temporary end-of-day pressure.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Caution: the LETF late-day effect may be statistically detectable but economically small, so it should not be treated as a proven source of alpha.",
+      "source": "Lenkey (2024) / The market impact of leveraged ETFs: A survey of the literature",
+      "url": "https://doi.org/10.3934/QFE.2024031",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Quantitative Finance and Economics 8(4):815-840. The survey concludes that reported associations are statistically significant but the economic associations appear insignificant and many papers have methodological issues. It is a caution, not support for a tradeable late-day flow.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Caution: LETF rebalancing may not actually amplify late-day returns or volatility.",
+      "source": "Ivanov & Lenkey (2018) / Do leveraged ETFs really amplify late-day returns and volatility?",
+      "url": "https://doi.org/10.1016/j.finmar.2018.09.001",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Journal of Financial Markets 41:36-56, cited in the Lenkey survey. Finds little evidence of amplification, which is why the local event study is the primary evidence and the flow mechanism is only an interpretation.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Background mechanics: constant-leverage ETFs must rebalance daily, which is the accounting basis for the flow story.",
+      "source": "Cheng & Madhavan (2009) / The Dynamics of Leveraged and Inverse Exchange-Traded Funds",
+      "url": null,
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Explains daily constant-leverage rebalancing mechanics. It does not establish a directional last-hour continuation and was not used to calibrate the rule. The web page's SSRN 1393995 link was not verified.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Base rules: 165-day QQQ SMA regime plus the armed 4% minute stop.",
+      "source": "Own test / no external source",
+      "url": null,
+      "source_type": "data",
+      "role": "inspired rule",
+      "evidence": "Inherited from the round-1 winner and replicated exactly on the local adjusted 1m QQQ/TQQQ/BIL panel: 58.80%/44.56% (10y) and 49.88%/33.49% (5y) at 1 bp.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Overlay rules: 1.5% run-up threshold, 15:00-15:59 execution, BIL overnight.",
+      "source": "Own test / no external source",
+      "url": null,
+      "source_type": "data",
+      "role": "inspired rule",
+      "evidence": "Measured on the local 1m panel. The threshold was chosen from a sweep on the same sample; thresholds from 0.5% to 3.0% all improved the winner, and the 2017-2026 test window contains 96 events (52 of them in 2022).",
+      "confidence": "high"
+    },
+    {
+      "idea": "The overnight after a risk-off late rally is negative, so the trade must exit before the close.",
+      "source": "Own test / no external source",
+      "url": null,
+      "source_type": "data",
+      "role": "inspired rule",
+      "evidence": "On the 96 events, TQQQ 15:00-15:59 returned +64.0 bp mean (median +47.9 bp, hit 66.7%, t=2.49), while the following overnight returned -90.1 bp mean (median -18.9 bp, hit 45.8%, t=-1.85).",
+      "confidence": "high"
+    }
+  ],
+  "rejected_sources": [
+    {
+      "source": "ETF.com / One Bad Day in a Leveraged QQQ ETF",
+      "url": "https://www.etf.com/sections/equity/one-bad-day-levered-qqq-etf-case-study",
+      "why_rejected": "Not used. It is an anecdotal single-day case study, not evidence for a repeatable 1.5% late-rally rule. The web page lists it as if it supported the strategy; it does not."
+    },
+    {
+      "source": "Lenkey (2024) / 'Leveraged ETF Rebalancing and Late-Day Flow' (SSRN 4710812), as labelled on the current web page",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4710812",
+      "why_rejected": "The label and URL do not match the Lenkey (2024) paper found in this research, which is a survey titled 'The market impact of leveraged ETFs: A survey of the literature' (QFE 8(4):815-840, doi 10.3934/QFE.2024031). The survey is skeptical of the economic significance of late-day LETF effects, so it cannot be cited as support for the rule."
+    }
+  ],
+  "corrections": [
+    "Most important: the page describes only the overlay leg and omits the base winner. The 67.92%/41.50% headline is the round-1 winner (165-day QQQ SMA, TQQQ/BIL, armed 4% minute stop) plus the late-rally overlay. As written, the page's three rules are a standalone one-hour trade that measured only 7.10%/17.28% (10y) and 8.13%/5.32% (5y), so the headline is not reproducible from the stated rules. Add the base rules to summary, decision and rules.",
+    "Replace the tagline 'Buy the last hour of a risk-off rally; exit before the close' with 'An additive last-hour overlay on the 165-day TQQQ winner, not a standalone trade', and state the 96-event count.",
+    "Fix the Lenkey citation: the paper is 'The market impact of leveraged ETFs: A survey of the literature' (Quantitative Finance and Economics 8(4):815-840, doi 10.3934/QFE.2024031), and it is a skeptical survey, not support for a tradeable late-day flow. The SSRN 4710812 label is unverified.",
+    "Add the actual inspirations to the paper list: Barbon et al. (2022) on LETF/option rebalancing price pressure, Shum et al. (2016) on end-of-day rebalancing volatility, and Gao et al. (2018) on intraday momentum. Reclassify ETF.com as background, not evidence.",
+    "Add 5 bp and 10 bp metrics. At 5 bp: 60.93%/42.43% (10y) and 51.65%/34.13% (5y). At 10 bp: 52.61%/46.59% (10y) and 42.46%/34.93% (5y). The 1 bp-only presentation overstates the margin; the 5y drawdown is a tie with the winner, and the 10 bp margin is narrow.",
+    "Clarify execution: the position is 15:00 open to 15:59 open. The target is set at the 14:59 close (fill 15:00 open) and set back to BIL at the 15:58 close (fill 15:59 open). The 15:59-16:00 final minute is not captured. The result.json string '15:00-15:58' is ambiguous and should say '15:00 open to 15:59 open'.",
+    "The published code copy at /research/code/letf-rebalance-flow.py is not runnable: HERE resolves to web/public/research/code, ROOT becomes web/public, and scratch/lib.py is not there. Point the code link at research/agents2/letf-rebalance-flow/strategy.py or fix the copy's path resolution.",
+    "Make the concentration explicit in the verdict: 52 of 96 events are in 2022, there are zero in 2017 and 2021, and the overlay is slightly behind the winner in 2023-26 (66.79% vs 67.76%). The 'Fragile' status is correct; the page should say why.",
+    "The overnight claim is correct but should be quantified: -90 bp mean, -19 bp median, t=-1.85 on 96 events. This is why the strategy exits at 15:59 rather than holding to the close or overnight.",
+    "reportUrl is null and no report.md exists in the agent directory. Either add the report or leave the link deliberately absent; do not imply a report exists."
+  ]
+}

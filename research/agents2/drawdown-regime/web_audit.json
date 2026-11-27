@@ -1,0 +1,156 @@
+{
+  "slug": "drawdown-regime",
+  "name": "Drawdown regime",
+  "tagline": "De-risking on QQQ's drawdown fails; the one survivor halves the minute stop once QQQ is 8% below its 52-week high.",
+  "summary": "The mandated overlay - exit to BIL when QQQ is 5/10/15% below its 52-week high - fails on every setting. The 165-day SMA already holds BIL for 80-84% of deep-drawdown sessions, and where the rule does bind, forward TQQQ returns are above average (+11.5% over 20 days in the -8..-12% bucket). The one rule that clears the round-2 bar keeps TQQQ but cuts the intraday stop from 4% to 2% while QQQ is at least 8% below its high: 61.57%/40.34% (10y) and 51.75%/31.63% (5y) at 1 bp, dominating the round-1 winner at 1/5/10 bp.",
+  "decision_process": "Before each session, QQQ's drawdown from its trailing 252-session high is computed from closes through the prior session, so it is known before the open: dd = QQQ_close(t-1) / max(QQQ_close, t-252..t-1) - 1. The 165-day SMA regime (prior close vs prior SMA) selects TQQQ or BIL. If risk-on and dd <= -8%, the intraday stop is 2% instead of 4%. During the session an armed stop (QQQ first-minute price < prior 20-day SMA x 1.01) exits TQQQ at the next minute's open when the TQQQ close is below session open x (1 - stop); the book stays in BIL for the rest of the session and the night, and re-enters at the next session's open if the regime is still risk-on. Every target set at bar i is filled at bar i+1's open.",
+  "rules": [
+    "Regime: if QQQ's prior daily close is above its 165-day SMA, hold 100% TQQQ including overnight; otherwise hold 100% BIL.",
+    "Stop arming: on risk-on sessions only, arm the stop when QQQ's first-minute price is below its prior 20-day SMA times 1.01.",
+    "Stop: while armed, if TQQQ's minute close falls more than 4% below the session open (2% when QQQ is at least 8% below its 52-week high), sell at the next minute's open and hold BIL for the rest of the session and the following night.",
+    "Re-entry: at the next session's open if the 165-day regime is still risk-on; after a stop the position does not re-enter intraday.",
+    "Drawdown definition: QQQ close(t-1) / max(QQQ close, t-252..t-1) - 1, using only completed sessions through t-1.",
+    "Long-only, one position at a time, no leverage beyond 100% TQQQ; weights sum to <= 1."
+  ],
+  "status": "Fragile",
+  "metrics": {
+    "cagr10": 0.615675,
+    "dd10": 0.403432,
+    "cagr5": 0.517515,
+    "dd5": 0.316273,
+    "cagr10_5bp": 0.567807,
+    "dd10_5bp": 0.4323,
+    "cagr5_5bp": 0.472854,
+    "dd5_5bp": 0.323888
+  },
+  "verdict": "Strictly dominates the round-1 winner at 1/5/10 bp and has lower drawdown in 82/82 rolling 3-year windows, but the return edge is not statistically significant (20-day block bootstrap p = 0.26), a 2% stop near the high also helps (placebo), and walk-forward parameter selection is neutral-to-worse. The mandated 5/10/15% de-risking gates are a clean negative; two of them even lose to TQQQ buy-and-hold on 10y CAGR.",
+  "sources": [
+    {
+      "idea": "Conditional stop: halve the minute stop from 4% to 2% while QQQ is at least 8% below its 52-week high.",
+      "source": "Own test / no external source",
+      "url": null,
+      "source_type": "data",
+      "role": "inspired rule",
+      "evidence": "Rule came from the round-2 mandate plus this agent's forward-return table: mean 20-day TQQQ return after -8..-12% drawdowns was +11.47% (87% hit rate), so position-level de-risking was rejected and only the stop was tightened. No paper proposes this exact rule.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Fixed drawdown-threshold de-risking cuts volatility and max drawdown but lowers CAGR and does not improve Sharpe/Sortino; losses come from underexposure during recoveries and whipsaws in shallow drawdowns.",
+      "source": "Strahle, O. (2025) / How Does Reducing Exposure During Drawdowns Impact Portfolio Performance?",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=7542498",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Tests fixed thresholds, linear scaling and moving averages on SPY 2000-2025. All three cut vol and max DD; CAGR fell from 8.03% to 5.27-7.41%; none improved Sharpe or Sortino; Calmar improved only marginally for fixed thresholds (0.18 vs 0.15). The two stated failure modes are exactly the ones measured here.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Drawdown-based rules can reduce risk but change both expected return and risk; there is no free drawdown control.",
+      "source": "van Hemert, Ganz, Harvey, Rattray, Sanchez Martin & Yawitch (2020) / Drawdowns",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3583864",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Journal of Portfolio Management paper; abstract and Man Group summary state that drawdown-based rules can be used as a risk-reduction technique but this affects both expected returns and risk. Used to frame the expected trade-off, not to derive a parameter.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Drawdown/dip signals are a momentum-horizon phenomenon: buying weakness at weeks-to-months horizons does not earn reliable alpha, and trend-following protects in prolonged drawdowns.",
+      "source": "AQR Capital Management (2025) / Hold the Dip (summary by L. Swedroe, Alpha Architect)",
+      "url": "https://alphaarchitect.com/is-trend-following-better-than-buy-the-dip/",
+      "source_type": "blog",
+      "role": "supports assumption",
+      "evidence": "196 dip-buying rules on the S&P 500, 1965-2025: 60%+ have lower risk-adjusted returns than buy-and-hold, average alpha +0.5%/yr, only 8% significant; during the four worst drawdowns since 2000 dip-buying lost 18.4% vs trend-following +28.6%. Mirrors this agent's finding that selling a drawdown in an intact uptrend fights momentum.",
+      "confidence": "high"
+    },
+    {
+      "idea": "No reliable dip-buying outperformance over passive investing.",
+      "source": "Bonini, Shohfi & Simaan (2024) / Buy the dip? European Financial Management 30(4)",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3835376",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Secondary citation for the same mechanism, read only through the Evidence Investor summary of AQR's paper. No parameter or rule taken from it.",
+      "confidence": "low"
+    },
+    {
+      "idea": "Stop-loss rules only add value when returns have positive serial correlation (momentum); otherwise the stopping premium is negative.",
+      "source": "Kaminski, K. M. & Lo, A. W. (2014) / When do stop-loss rules stop losses? Journal of Financial Markets 18",
+      "url": "https://doi.org/10.1016/j.finmar.2013.07.001",
+      "source_type": "paper",
+      "role": "inspired rule",
+      "evidence": "The theoretical licence for a stop that is tighter when the market is already in a drawdown (crashes are momentum) and for not using a position-level drawdown exit in ordinary pullbacks (which mean-revert). The 2%/4% split is this agent's implementation, not the paper's.",
+      "confidence": "high"
+    },
+    {
+      "idea": "A drawdown constraint is costly insurance: optimal drawdown control trades expected return for a smaller maximum loss.",
+      "source": "Grossman, S. J. & Zhou, Z. (1993) / Optimal investment strategies for controlling drawdowns. Mathematical Finance 3(3)",
+      "url": "https://doi.org/10.1111/j.1467-9965.1993.tb00044.x",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Standard theory reference for why a drawdown floor lowers expected growth. Not used to calibrate anything; reported as framing only.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Drawdown can be constrained/optimised as a risk measure (CDaR), which formalises the return-versus-drawdown trade-off.",
+      "source": "Chekhlov, A., Uryasev, S. & Zabarankin, M. (2005) / Portfolio optimization with drawdown constraints",
+      "url": "https://math.columbia.edu/~chekhlov/ChekhlovUryasevZabarankin--03-2004.pdf",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Background on drawdown-constrained optimisation. No rule or parameter taken from it.",
+      "confidence": "low"
+    },
+    {
+      "idea": "Hold a risky asset only while it is above its long moving average; otherwise hold cash. This is the base 165-day SMA regime inherited from the round-1 winner.",
+      "source": "Faber, M. T. (2007) / A Quantitative Approach to Tactical Asset Allocation",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=962461",
+      "source_type": "paper",
+      "role": "inspired rule",
+      "evidence": "The 10-month/200-day time-series trend rule family. The 165-day SMA and the TQQQ/BIL implementation are the round-1 winner's, not Faber's; Faber supplies the prior, not the parameter.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Base rules and benchmark: 165-day QQQ SMA regime, 4% armed minute stop, 58.80%/44.56% (10y) and 49.88%/33.49% (5y) at 1 bp.",
+      "source": "quant-trader-research round-1 agent daily-regime-minute-entry / report.md",
+      "url": null,
+      "source_type": "report",
+      "role": "benchmark",
+      "evidence": "Internal round-1 winner record. This agent reproduced it exactly (657/337 fills, 58.7979%/44.5647% and 49.8752%/33.4905%) before adding any drawdown rule.",
+      "confidence": "high"
+    }
+  ],
+  "rejected_sources": [
+    {
+      "source": "Mandate rule: full exit to BIL when QQQ is 5% / 10% / 15% below its 52-week high, re-enter at -2% / -5% / -10%",
+      "url": null,
+      "why_rejected": "Tested. 1 bp results: -5% gate 25.43%/48.18% (10y) and 10.02%/48.18% (5y); -10% gate 35.52%/55.92% and 31.17%/43.20%; -15% gate 56.27%/44.56% and 45.25%/33.49%. The -10% gate is worse on drawdown than the winner, and the -5% and -10% gates fall below TQQQ buy-and-hold's 39.28% 10y CAGR. The 165-day SMA already holds BIL for 80-84% of deep-drawdown sessions."
+    },
+    {
+      "source": "Underwater-duration exit: 100% BIL after 120 sessions with no new 52-week high",
+      "url": null,
+      "why_rejected": "Tested. 52.56%/49.04% (10y) and 40.90%/33.49% (5y) at 1 bp: lower CAGR and a worse 10y drawdown than the winner."
+    },
+    {
+      "source": "De-lever to QQQ (beta 1) while QQQ is at least 8% below its 52-week high",
+      "url": null,
+      "why_rejected": "Tested. 45.58%/42.48% (10y) and 37.85%/32.82% (5y) at 1 bp: the drawdown falls less than the return, failing both round-2 targets."
+    },
+    {
+      "source": "Unconditional 2% minute stop (no drawdown condition)",
+      "url": null,
+      "why_rejected": "Tested as a control. 53.15%/43.77% (10y) and 37.95%/43.77% (5y) at 1 bp. Much worse than conditioning the tight stop, so the drawdown state is doing real work, but the 5y drawdown is far worse than the winner's 33.49%."
+    },
+    {
+      "source": "Moreira & Muir (2017) / Volatility-Managed Portfolios; Cederburg, O'Doherty, Wang & Yan (2020) / On the Performance of Volatility-Managed Portfolios",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2659431",
+      "why_rejected": "These papers appear on the current web card but were never used by this agent and no volatility-targeting rule was tested here. They belong to the round-1 drawdown-stop-overlay agent's V4 volatility-target variant. Mis-attribution."
+    }
+  ],
+  "corrections": [
+    "FACTUAL: the report and web page say 'Against TQQQ buy-and-hold ... every variant in the table passes, including the failing drawdown overlays.' That is false. dd05_bil (10y CAGR 25.43%) and dd10_bil (35.52%) both fall below TQQQ's 39.28% 10y CAGR; only their drawdowns are lower. Corrected in report.md section 7; the web page must be regenerated.",
+    "STATUS: the card says 'Alternative'. It should be 'Fragile': the rule formally dominates, but the return edge is inside noise (block-bootstrap p = 0.26), a placebo (2% stop when QQQ is within 5% of its high) also improves the result, and walk-forward parameter selection is neutral-to-worse.",
+    "ATTRIBUTION: remove Moreira & Muir (2017) and Cederburg et al. (2020) from the card's papers list; they were never used by this agent (they belong to drawdown-stop-overlay's volatility-target variant). Add Kaminski & Lo (2014), which is the actual theoretical support for the surviving conditional-stop rule.",
+    "RULES: replace 'Base: round-1 winner.' and 'Other drawdown thresholds were rejected.' with the real rules (165-day SMA vs prior close, BIL otherwise, MA20 x 1.01 arming, 4% stop and 2% when QQQ dd <= -8%, next-minute-open fill, out overnight). 'Other thresholds were rejected' is a research finding, not a trading rule.",
+    "METRICS: the card reports only 1 bp. Add 5 bp: 56.78% / 43.23% (10y) and 47.29% / 32.39% (5y). Do not present the 1 bp numbers without the cost label; the 10 bp row is 51.00% / 46.64% and 41.89% / 33.35%.",
+    "BENCHMARK: the page uses TQQQ 39.28% / 81.68% (README bar). The harness's own 1-minute benchmark from the window start is 39.38% / 82.29% (10y) and 14.29% / 82.29% (5y). Either label the README numbers as the bar or add the harness values.",
+    "WINDOWS: this agent reports 82 monthly-stepped 3-year windows, not 27 quarterly windows. Any comparison of 'X/27' vs '82/82' should state the different stepping.",
+    "The 5 bp and 10 bp rows in the web page's cost table are correct and should be kept; only the TQQQ pass paragraph and the paper list need changing."
+  ]
+}

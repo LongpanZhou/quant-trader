@@ -1,0 +1,188 @@
+{
+  "slug": "dual-speed-regime",
+  "name": "Dual-speed regime",
+  "tagline": "165-day slow gate plus an armed 60-minute EMA(40) filter and a 4% minute stop.",
+  "summary": "Keep the 165-day QQQ slow gate as the default regime and hold TQQQ overnight by default. On sessions where QQQ's first minute is below its prior 20-day SMA times 1.01, a 60-minute QQQ EMA(40) down-cross exits TQQQ to BIL and an up-cross re-enters; a 4% drop of TQQQ from the session open also exits. The fast filter can leave the position in BIL through the close and overnight if the 14:30-15:29 bar is below its EMA; the next session resets to TQQQ at the open when the slow gate is on.",
+  "decision_process": "Each session: (1) the prior QQQ close vs its 165-day SMA sets the default (TQQQ if above, BIL if below); (2) if the default is TQQQ, the session starts long and the arm is evaluated from QQQ's 09:30 first-minute close vs the prior 20-day SMA times 1.01; (3) when armed, each completed 60-minute QQQ bar is compared with EMA(40) - a fresh down-cross sets BIL and a fresh up-cross sets TQQQ; (4) the 4% stop from the TQQQ session open also sets BIL; (5) a weight set at bar i fills at bar i+1's open, and the 14:30-15:29 bar's state carries through the close, so a weak close can leave the position in BIL overnight.",
+  "rules": [
+    "Slow gate: if QQQ's prior session close is above its 165-day SMA, the session's default is 100% TQQQ; otherwise 100% BIL.",
+    "Arming: when the slow gate is on, the fast filter and the 4% stop are active only if QQQ's 09:30 first-minute close is below the prior 20-day SMA times 1.01.",
+    "Fast filter: on armed sessions, a completed 60-minute QQQ bar closing below EMA(40) exits TQQQ to BIL at the next minute's open; a bar closing back above EMA(40) re-enters.",
+    "Stop: on armed sessions, if TQQQ's minute close is 4% below the session open, exit to BIL at the next minute's open.",
+    "Session reset: the session starts long when the slow gate is on, so the fast filter only acts on a fresh 60-minute cross; after a stop, re-entry requires a 60-minute up-cross or the next session's open.",
+    "Execution: weights are set from bars at or before i and filled at bar i+1's open; long-only, 100% TQQQ or 100% BIL; 1 bp headline, 5 bp and 10 bp reported."
+  ],
+  "status": "Alternative",
+  "metrics": {
+    "cagr10": 0.7011,
+    "dd10": 0.4291,
+    "cagr5": 0.6178,
+    "dd5": 0.2588,
+    "cagr10_5bp": 0.6144,
+    "dd10_5bp": 0.4425,
+    "cagr5_5bp": 0.5393,
+    "dd5_5bp": 0.2681
+  },
+  "metrics_10bp": {
+    "cagr10": 0.5123,
+    "dd10": 0.4925,
+    "cagr5": 0.4465,
+    "dd5": 0.2857
+  },
+  "verdict": "Strictly dominates the round-1 winner at 1, 5 and 10 bp (10y 70.11/42.91, 61.44/44.25, 51.23/49.25; 5y 61.78/25.88, 53.93/26.81, 44.65/28.57), but the ratio leader still has a lower 10y drawdown (39.11% vs 42.91%) and a slightly higher 5y CAGR (63.74% vs 61.78%). The extra CAGR is concentrated in 2019/2023/2026, the EMA-40 plateau is spans 35-45, and the 10 bp 10y margin is thin.",
+  "sources": [
+    {
+      "idea": "Slow trend/MA gate on a broad equity index cuts drawdown, at the cost of return in long bull markets. The 165-day QQQ length and the TQQQ implementation are ours.",
+      "source": "Faber (2007/2013) - A Quantitative Approach to Tactical Asset Allocation",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=962461",
+      "source_type": "paper",
+      "role": "inspired rule",
+      "evidence": "Buy when monthly price is above its 10-month SMA, sell below; the rule roughly halves drawdown but gives up return in bull markets and pays whipsaws in choppy markets. The report uses it as the slow-gate family, not as a literal 165-day parameter source.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Apply MA-based risk management to leveraged equity rather than to the unlevered index.",
+      "source": "Gayed & Bilello (2016) - Leverage for the Long Run",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2741701",
+      "source_type": "paper",
+      "role": "inspired rule",
+      "evidence": "Moving-average risk management applied to leveraged equity; cited by the round-1 winner and by the web page. It supports the slow gate on TQQQ, not the 60-minute filter.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Faster trend models truncate the left tail but have worse after-cost Sharpe and much higher turnover; this motivated keeping the fast filter armed and intraday-only.",
+      "source": "Man Group / Man AHL (2023) - The Need for Speed in Trend-Following Strategies",
+      "url": "https://www.man.com/documents/download/2739e-f3a21-bb8ce-f81f3/Man_Perspective_The_Need_for_Speed_in_Trend-Following_Strategies_English_04-01-2023.pdf?type=view",
+      "source_type": "report",
+      "role": "inspired rule",
+      "evidence": "Table 2/3: Sharpe falls from 1.09 for the slow model to 0.69 for the very fast model before costs (0.40 after costs); skewness is positive for fast models. Speed buys crash protection and costs turnover, so the fast leg should be rare and gated.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Reactive signals capture short-term trends but are prone to whipsawing; less reactive signals are steadier but late.",
+      "source": "Graham Capital (2018) - The Speed of Trend-Following",
+      "url": "https://www.grahamcapital.com/wp-content/uploads/2023/08/The-Speed-of-Trend_Graham-Research_March-2018-1-1.pdf",
+      "source_type": "report",
+      "role": "supports assumption",
+      "evidence": "Explicit statement of the speed trade-off: reactive signals capture short-term trends but can whipsaw; less reactive models are steadier but late to reversals. This is why the 60-minute filter is only allowed to act when the daily trend is already weak.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Absolute-momentum/trend filters do the risk work, but a 12-month filter cannot react to a crash inside a month; a second, faster 1-3 month check is the suggested fix; choppy markets cause whipsaw.",
+      "source": "AlgoStrategyLab (2026-10-22) - I Backtested Dual Momentum for 29 Years",
+      "url": "https://algostrategylab.github.io/dual-momentum/",
+      "source_type": "blog",
+      "role": "inspired rule",
+      "evidence": "29-year GEM replication: 10.25% vs 9.85% CAGR, 34% vs 55% max DD; the trend filter does the risk work; the worst drawdown was 2020 because the filter was still positive at the bottom; the article recommends a second faster overlay, accepting more whipsaw. Used as the design brief for a fast leg on top of the slow gate.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "How often a slow average is checked matters: daily checks whipsaw far more than monthly checks, and 78% of daily 200-day switches reverse within a month; bands help.",
+      "source": "BestFolio (2026-11-10) - The best trend filter depends on the year you start",
+      "url": "https://bestfolio.app/blog/trend-filter-start-dates",
+      "source_type": "blog",
+      "role": "supports assumption",
+      "evidence": "49-year SPY/QQQ study: daily 200-day rule 9.60% CAGR vs 10.96% at month-end on SPY; 78% of daily switches reversed within a month; a 3% band restored most of the return. Used to reject a fast daily gate and to keep the fast leg intraday.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Simple price-vs-MA rules have high false-signal rates (57-76%), so a faster filter must be gated rather than always on.",
+      "source": "QuantifiedStrategies (2025-06-02) - How Likely Is a False Signal in Moving Average Trading?",
+      "url": "https://www.quantifiedstrategies.com/how-likely-is-a-false-signal-in-moving-average-trading/",
+      "source_type": "blog",
+      "role": "supports assumption",
+      "evidence": "S&P 500 1960-2025 test of 5-200 day lookbacks: win rates 24-43%, i.e. 57-76% false signals. Supports the arming condition and the crossover (rather than level) implementation.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Smoothing the trigger and using a longer fast MA raises the win rate; the 50/200 cross was the best risk-adjusted pair in a standard test.",
+      "source": "StockCharts SystemTrader (2016-11) - How to become a Smooth Operator with Moving Averages",
+      "url": "https://articles.stockcharts.com/article/articles-arthurhill-2016-11-systemtrader---how-to-become-a-smooth-operator-with-moving-averages---backtesting-different-moving-average-pairs/",
+      "source_type": "blog",
+      "role": "supports assumption",
+      "evidence": "The 50/200-day SMA cross had the highest risk-adjusted return of the tested pairs, and win rates rose as the fast MA lengthened; daily close-based triggers whipsawed most. Used to justify a smoother fast leg (60-minute bars, EMA-40) rather than a 1-minute signal.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "A 10-month/200-day trend filter cuts drawdown roughly in half but pays about 2.6 pp/yr in a bull market; whipsaws are the main cost.",
+      "source": "MarketHeist (2026-10-31) - The 10-month trend filter: how it works, what it costs, whipsaws",
+      "url": "https://marketheist.io/portfolio/learn/trend-filter",
+      "source_type": "blog",
+      "role": "supports assumption",
+      "evidence": "SPY 1986-2026: 11.0% to 8.5% CAGR, -50.8% to -26.4% DD, 1.5 switches/yr, 22 whipsaw exits. Used as the base-rate cost of trend filters and the reason not to replace the slow gate with a fast one.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "The 10-month rule on QQQ cuts the worst drawdown from -74.6% to -25.4% but gives up 4.3 pp/yr in 2013-2026.",
+      "source": "Quantum Bias - Moving Average Strategy Tested: The 10-Month Rule on the Nasdaq",
+      "url": "https://quantum-bias.com/blog/10-month-moving-average-nasdaq-100",
+      "source_type": "blog",
+      "role": "supports assumption",
+      "evidence": "QQQ replication: 9.2% buy-and-hold vs 10.9% for the 10-month rule, -74.6% vs -25.4% DD; 2013-2026 gave up 4.3 pp/yr. Same slow-gate trade-off as Faber, on the same instrument family.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Stop-loss rules add value when returns have momentum/regime shifts; this is the license for keeping the 4% minute stop.",
+      "source": "Kaminski & Lo (2014) - When do stop-loss rules stop losses?",
+      "url": "https://doi.org/10.1016/j.finmar.2013.07.001",
+      "source_type": "paper",
+      "role": "inspired rule",
+      "evidence": "Theoretical and empirical condition for stop-losses to add value under momentum/regime shifts. The report keeps the round-1 4% stop because the fast filter alone leaves the 2020 gap crash unprotected (10y DD 55.44% without it).",
+      "confidence": "high"
+    },
+    {
+      "idea": "Overnight and intraday expected returns differ; TQQQ's drift is concentrated overnight, so a fast gate that holds BIL for whole sessions is expensive.",
+      "source": "Lou, Polk & Skouras (2019) - A Tug of War: Overnight versus Intraday Expected Returns",
+      "url": "https://personal.lse.ac.uk/polk/research/TugOfWar.pdf",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "The paper documents the overnight/intraday return difference. Our own 2017-2026 decomposition (round-1 report) is +1,355% overnight vs +81% intraday for TQQQ; the fast filter is therefore intraday-only and the slow gate owns the default overnight.",
+      "confidence": "high"
+    },
+    {
+      "idea": "General trend-following/industry-trend premise.",
+      "source": "Zarattini & Antonacci (2024) - A Century of Profitable Industry Trends",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4857230",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Listed on the current web page. It supports trend following in general but does not contain a 60-minute EMA rule and did not drive this design; the fast/slow speed evidence came from Man AHL, Graham, AlgoStrategyLab and BestFolio.",
+      "confidence": "low"
+    },
+    {
+      "idea": "The specific 60-minute EMA(40) span, the 165-day length, the 4% stop, the +1% arm, the daily session reset, the crossover-vs-level choice, and the 09:30-aligned 60-minute bar convention.",
+      "source": "Own test / no external source",
+      "url": null,
+      "source_type": "data",
+      "role": "tested only",
+      "evidence": "Measured on 1-minute QQQ/TQQQ/BIL 2016-2026 with bt.py. Spans 35-45 dominate the winner; 30 and 50 fail on 10y DD. Stop 4.0% is inherited from the winner; 4.5-5.0% pushes the 5y DD to 37-39%. The level version has 36.66% 10y DD but only 47.77% CAGR. These are in-sample choices.",
+      "confidence": "high"
+    }
+  ],
+  "rejected_sources": [
+    {
+      "source": "Faster daily MA gate (20/50/100-day), the first option in the round-2 mandate and the standard MA-crossover family (Faber/StockCharts)",
+      "url": "https://articles.stockcharts.com/article/articles-arthurhill-2016-11-systemtrader---how-to-become-a-smooth-operator-with-moving-averages---backtesting-different-moving-average-pairs/",
+      "why_rejected": "Tested as a whole-session TQQQ/BIL gate: 10y CAGR 26.30% (MA20), 30.51% (MA50) and 24.31% (MA100) vs 46.63% for the 165-day control; adding the 4% stop only reached 28.62%/35.80%/38.97%. Being out of whole sessions sacrifices the overnight drift and the 20/50-day gates whipsaw."
+    },
+    {
+      "source": "Continuous/unarmed 60-minute EMA filter (EMA20/50/100, overnight included)",
+      "url": null,
+      "why_rejected": "Tested: 10y CAGR 32.54% (EMA20), 35.28% (EMA50) and 41.93% (EMA100) with 1,205-3,077 fills. Low drawdowns but 25-38 pp of CAGR given up; the fast filter must be armed to be worth its turnover."
+    },
+    {
+      "source": "Level-based 60-minute rule (exit whenever the bar close is below the EMA, re-enter whenever above)",
+      "url": null,
+      "why_rejected": "Tested: 10y 47.77%/36.66% and 5y 39.93%/31.00%. The drawdown is attractive but CAGR is 11 pp below the round-1 winner, outside the 2 pp target. Exiting on every down bar sells gap-down opens that mean-revert; the crossover version keeps the upside."
+    }
+  ],
+  "corrections": [
+    "The current web page's rules omit the 4% minute stop. It is a core component, not an optional extra: without it the 10y drawdown is 55.44%, not 42.91% (the fast filter alone does not protect the 2020 gap crash). Add: 'when armed and long, a 4% drop of TQQQ from the session open exits at the next minute's open.'",
+    "The summary says 'Keep the 165-day QQQ gate for the overnight position.' That is misleading: the slow gate sets the default overnight, but the fast filter can leave the position in BIL overnight when the 14:30-15:29 60-minute bar is below its EMA. The next session resets to TQQQ at the open if the slow gate is on. Reword to 'the slow gate sets the default position; a weak 60-minute close can keep the position in BIL overnight.'",
+    "The rules should specify that the 60-minute EMA(40) is computed on QQQ bars, not TQQQ bars. The page currently says only '60-minute EMA(40) crossover'. (TQQQ's own EMA is weaker: 67.92%/43.43% at 10y.)",
+    "The decision text should state that the 4% stop shares the same arm condition as the fast filter, and that the session resets long at the open so the fast filter only acts on a fresh cross.",
+    "The verdict 'Higher 10y CAGR than the ratio leader, but a worse 10y drawdown' is correct only against the ratio leader (39.11%). Against the round-1 winner the strategy has both higher CAGR and lower DD (70.11/42.91 vs 58.80/44.56 at 1 bp). The page should name the comparator explicitly to avoid reading as a regression versus the winner.",
+    "Paper attribution: Zarattini & Antonacci (2024) 'A Century of Profitable Industry Trends' is a general industry-trend paper, not the source of the 60-minute fast filter. The fast/slow speed trade-off came from Man AHL (2023), Graham Capital (2018), AlgoStrategyLab (2026) and BestFolio (2026). Add Kaminski & Lo (2014) for the stop and Lou/Polk/Skouras (2019) for the overnight rationale; both are missing from the page.",
+    "Report correction: Section 7 says 'the fast filter never changes the overnight position on a normal day' and 'the slow gate still owns the overnight position'. That overstates the implementation; the 14:30-15:29 bar's state carries through the close, so a weak close can leave the position in BIL overnight. Section 3's pseudocode already says this correctly; align Section 7.",
+    "The web report copy at web/public/research/dual-speed-regime.md is a stale copy of the report and will need regeneration after the Section 7 wording fix and the stop/QQQ clarifications above; I did not modify it (core file)."
+  ]
+}

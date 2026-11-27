@@ -1,3 +1,9 @@
 /target
 /data
 config.local.toml
+
+__pycache__/
+*.pyc
+*.npz
+
+/research/simcore/target/

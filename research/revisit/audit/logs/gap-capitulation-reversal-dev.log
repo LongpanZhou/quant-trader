@@ -1,0 +1,43 @@
+{
+  "status": "passed",
+  "corr_vs_165d_baseline": 0.027215771612946384,
+  "windows": {
+    "dev": {
+      "1bp": {
+        "cagr": 0.04180555479680348,
+        "max_drawdown": 0.12485776891684985,
+        "sharpe": 0.576114714256204,
+        "sortino": 0.8851978941387871,
+        "volatility": 0.07637238685929247,
+        "fills": 89,
+        "turnover": 103.05230525701256,
+        "ending_equity": 138680.15592067878
+      },
+      "5bp": {
+        "cagr": 0.03717076672660302,
+        "max_drawdown": 0.12765374839217036,
+        "sharpe": 0.5172310015228807,
+        "sortino": 0.7938024992728683,
+        "volatility": 0.07642296280388433,
+        "fills": 89,
+        "turnover": 101.16412398259428,
+        "ending_equity": 133830.00316496223
+      },
+      "10bp": {
+        "cagr": 0.03140629302172182,
+        "max_drawdown": 0.13113616595166833,
+        "sharpe": 0.44342410524213677,
+        "sortino": 0.6789191207532156,
+        "volatility": 0.076551290645284,
+        "fills": 89,
+        "turnover": 98.86694884287641,
+        "ending_equity": 128005.17726689881
+      }
+    },
+    "holdout": null,
+    "10y": null,
+    "5y": null
+  }
+}
+wrote C:\Users\27175\Desktop\quant-trader-research\research\revisit\gap-capitulation-reversal\result.json
+{"slug": "gap-capitulation-reversal", "mode": "dev", "calls": 4, "error": null, "seconds": 13.9, "restored": ["restored result.json"], "match_score": null, "found": true, "kw": {"band": 0.02, "slippage_bps": 1.0, "start_equity": 100000.0}, "bars": 781880, "k": 3}

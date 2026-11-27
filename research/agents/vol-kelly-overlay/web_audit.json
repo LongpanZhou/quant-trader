@@ -1,0 +1,166 @@
+{
+  "slug": "vol-kelly-overlay",
+  "name": "Volatility ladder",
+  "tagline": "QQQ 165-day regime plus a 1-minute realized-vol ladder from TQQQ to QQQ.",
+  "summary": "A daily QQQ 165-day SMA gate decides whether to be invested at all. When risk-on, the strategy sizes a TQQQ/QQQ sleeve from TQQQ's 20-day annualized 1-minute realized volatility: 100% TQQQ below 65%, a linear shift into QQQ between 65% and 95%, and 100% QQQ above 95%. A mild crash throttle moves 5% of the risky sleeve to BIL when QQQ is at least 6% below its 20-day high and TQQQ 5-day realized vol is at least 55%. Fills are next-day open; 1 bp primary, 5 bp sensitivity.",
+  "decision_process": "At each daily close i, compute (a) QQQ close versus its 165-day SMA, (b) 20-day annualized TQQQ realized volatility from within-day 1-minute returns, (c) 5-day TQQQ realized volatility, and (d) QQQ drawdown from its 20-day high. If QQQ close is at or below the SMA, target 100% BIL. Otherwise set x = clip((v20 - 0.65) / (0.95 - 0.65), 0, 1), target QQQ weight = x and TQQQ weight = 1 - x; if QQQ drawdown is at most -6% and v5 is at least 55%, multiply both risky weights by 0.95 and put the rest in BIL. The target set at close i is filled at the open of day i+1; the 2% trade band suppresses small rebalances. No same-bar fills.",
+  "rules": [
+    "Regime: QQQ close above its 165-day SMA -> risk-on; otherwise 100% BIL.",
+    "Ladder: with v20 = 20-day annualized TQQQ 1-minute realized volatility, QQQ weight = clip((v20 - 0.65) / (0.95 - 0.65), 0, 1), TQQQ weight = 1 - QQQ weight. This means 100% TQQQ below 65% vol, 100% QQQ above 95% vol.",
+    "Crash throttle: if QQQ is at least 6% below its 20-day high and TQQQ 5-day realized vol is at least 55%, scale the QQQ+TQQQ sleeve by 0.95 (5% to BIL).",
+    "Execution: signals use the daily close i and are filled at the open of i+1; long-only, weights sum to at most 1; 2% trade band; 1 bp primary, 5 bp sensitivity."
+  ],
+  "status": "Verified",
+  "metrics": {
+    "cagr10": 0.4753,
+    "dd10": 0.4532,
+    "cagr5": 0.3459,
+    "dd5": 0.3629,
+    "cagr10_5bp": 0.4696,
+    "dd10_5bp": 0.4585,
+    "cagr5_5bp": 0.3409,
+    "dd5_5bp": 0.3639
+  },
+  "verdict": "Passes vs TQQQ on both windows with much lower drawdown: 10y 47.53% / 45.32% vs TQQQ 39.28% / 81.68%, and 5y 34.59% / 36.29% vs TQQQ 13.47% / 81.68%. The 10y also beats the daily 165-day baseline (+2.22 pp CAGR, -13.39 pp DD), but the 5y CAGR is a 0.02 pp tie (34.59% vs 34.61%) and the 10y edge is concentrated in 2020. The 5y baseline pass/fail flips with small changes in the cut and ladder range, so treat the baseline comparison as fragile; this is crisis risk reduction, not broad alpha.",
+  "sources": [
+    {
+      "idea": "Risk-on when QQQ closes above its 165-day SMA; otherwise hold BIL.",
+      "source": "Own test / repo baseline (research/README.md)",
+      "url": null,
+      "source_type": "report",
+      "role": "benchmark",
+      "evidence": "The repo README defines the daily 165-day SMA baseline (45.31% / 58.71% 10y, 34.61% / 36.86% 5y). The strategy uses the same regime as its direction gate; this is the reference it is compared against, not an external paper.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Scale exposure down when realized volatility is high; volatility is persistent and the risk-return tradeoff weakens in high-vol regimes.",
+      "source": "Moreira & Muir (2017), Volatility-Managed Portfolios, Journal of Finance 72(4), 1611-1644",
+      "url": "https://doi.org/10.1111/jofi.12513",
+      "source_type": "paper",
+      "role": "inspired rule",
+      "evidence": "The paper shows that scaling factor exposure by inverse realized variance raises Sharpe ratios because volatility changes are not offset by proportional changes in expected returns. The 20-day TQQQ RV ladder is a capped, discrete version of inverse-vol sizing.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Volatility targeting reduces the severity of left-tail events and maximum drawdowns for risk assets.",
+      "source": "Harvey, Hoyle, Korgaonkar, Rattray, Sargaison & Van Hemert (2018), The Impact of Volatility Targeting, Journal of Portfolio Management 45(1), 14-33",
+      "url": "https://doi.org/10.3905/jpm.2018.45.1.014",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "The paper finds higher Sharpe ratios for volatility-scaled equity and credit and a lower likelihood of extreme returns; it explicitly links volatility scaling to smaller left tails and maximum drawdowns. This motivates shifting to QQQ rather than only BIL in high volatility.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Practitioner summary of the same volatility-targeting evidence.",
+      "source": "Man Group, The Impact of Volatility Targeting",
+      "url": "https://www.man.com/insights/the-impact-of-volatility-targeting",
+      "source_type": "blog",
+      "role": "supports assumption",
+      "evidence": "Plain-language summary of Harvey et al. (2018): volatility targeting improves Sharpe for risk assets and reduces the likelihood of extreme returns. Used as a secondary reference, not as the primary evidence.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Daily-reset leveraged ETF returns are path-dependent; high index volatility and long holding periods can destroy value for buy-and-hold investors.",
+      "source": "Cheng & Madhavan (2009), The Dynamics of Leveraged and Inverse Exchange-Traded Funds, Journal of Investment Management 7(4)",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=1393995",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Derives the path-dependent compounding of daily-rebalanced leveraged funds and warns that buy-and-hold investors can suffer value destruction. This is the qualitative basis for reducing TQQQ exposure as its 20-day realized volatility rises. The compact log approximation in the report (k times the index log return minus k(k-1)/2 times the sum of squared daily returns) is a standard simplification, not a formula originated by this paper.",
+      "confidence": "high"
+    },
+    {
+      "idea": "TQQQ seeks 3x the daily return, not 3x over longer periods; higher index volatility and longer holding periods can make returns worse than the daily target.",
+      "source": "ProShares, TQQQ UltraPro QQQ Summary Prospectus",
+      "url": "https://www.proshares.com/globalassets/proshares/prospectuses/tqqq_summary_prospectus.pdf",
+      "source_type": "report",
+      "role": "supports assumption",
+      "evidence": "The prospectus states that the fund does not seek 3x for any period other than a day and that smaller index gains or losses and higher volatility contribute to returns worse than the daily target. This supports the high-volatility deleveraging rule.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Growth-optimal leverage is f* = mu / sigma^2; full Kelly is too aggressive under parameter uncertainty, so use a fraction.",
+      "source": "Thorp (2006/2007), The Kelly Criterion in Blackjack, Sports Betting, and the Stock Market",
+      "url": "https://www.bjrnet.com/thorp/Thorp_KellyCriterion.pdf",
+      "source_type": "paper",
+      "role": "inspired rule",
+      "evidence": "Derives f* = (m - r) / s^2 and recommends fractional Kelly because the estimated edge is uncertain. The inverse-vol ladder is a capped fractional-Kelly rule under a roughly constant Sharpe ratio (f* proportional to 1/sigma).",
+      "confidence": "high"
+    },
+    {
+      "idea": "Volatility-managed portfolios do not systematically beat unmanaged portfolios out of sample; estimation instability can erode the gains.",
+      "source": "Cederburg, O'Doherty, Wang & Yan (2020), On the performance of volatility-managed portfolios, Journal of Financial Economics 138(1), 95-117",
+      "url": "https://doi.org/10.1016/j.jfineco.2020.04.015",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "The paper finds that many volatility-managed portfolios fail out of sample and recommends a tempered interpretation. This supports the report's caveat that the 5y baseline comparison is a tie and that the 10y edge is concentrated in 2020.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Shift linearly from TQQQ to QQQ when TQQQ 20-day realized volatility is between 65% and 95%, instead of going to BIL.",
+      "source": "Own test / no external source",
+      "url": null,
+      "source_type": "report",
+      "role": "inspired rule",
+      "evidence": "Designed from the leveraged-ETF drag formula and tested on the local 1-minute data. No external paper specifies the exact 65-95% ladder; the report's parameter table shows the neighboring ranges (60-90, 65-90, 70-90, 70-95) and the 5y result is on the same frontier.",
+      "confidence": "high"
+    },
+    {
+      "idea": "If QQQ is at least 6% below its 20-day high and TQQQ 5-day realized volatility is at least 55%, cut the risky sleeve by 5%.",
+      "source": "Own test / no external source",
+      "url": null,
+      "source_type": "report",
+      "role": "inspired rule",
+      "evidence": "A mild drawdown throttle designed to shave the 2024 drawdown. It is not from a specific paper; the report shows a 2-10% cut neighborhood and states that the 5y pass/fail flips with the cut size.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Use a 20-day window for realized volatility.",
+      "source": "Own test / no external source (window choice informed by Harvey et al.'s 20-day half-life)",
+      "url": null,
+      "source_type": "report",
+      "role": "inspired rule",
+      "evidence": "The report's sensitivity shows 20 days is the only window that preserves the 5y CAGR: 10 days gives 33.61% / 39.11%, 20 days 34.59% / 36.29%, 60 days 32.67% / 36.33%. Harvey et al. use a 20-day half-life, but the exact choice is an own test.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "One-minute realized variance is the sum of squared within-day 1-minute log returns, annualized with sqrt(252 times the trailing mean).",
+      "source": "Own test / local 1-minute data",
+      "url": null,
+      "source_type": "data",
+      "role": "supports assumption",
+      "evidence": "Local QQQ/TQQQ/BIL 1-minute parquet; overnight gaps excluded; the 20-day average is used for sizing. No external price data was downloaded.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Benchmark TQQQ and daily baseline metrics.",
+      "source": "Own test / research/bt.py and research/README.md",
+      "url": null,
+      "source_type": "data",
+      "role": "benchmark",
+      "evidence": "Harness: TQQQ 39.28% / 81.68% 10y and 13.88% / 81.68% 5y (README quotes 13.47%); daily baseline 45.31% / 58.71% and 34.61% / 36.86%. Candidate 47.53% / 45.32% and 34.59% / 36.29% at 1 bp; 46.96% / 45.85% and 34.09% / 36.39% at 5 bp.",
+      "confidence": "high"
+    }
+  ],
+  "rejected_sources": [
+    {
+      "source": "Zarattini & Antonacci (2024) / A Century of Profitable Industry Trends",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4857230",
+      "why_rejected": "Not a source for any rule, assumption, or metric in this strategy. It is an unrelated paper that appears on the current web card, likely from an automatic citation extraction. Remove it from the page."
+    },
+    {
+      "source": "Downside risk and the performance of volatility-managed portfolios (2021), Journal of Banking & Finance",
+      "url": "https://www.sciencedirect.com/science/article/abs/pii/S0378426621001576",
+      "why_rejected": "Tested as an input variant (5/10/20-day downside semivariance instead of total realized variance) in the exploratory grids. It did not improve the 5y result robustly; for example, a 20-day downside-vol target of 50% gave 46.38% / 53.23% 10y and 34.61% / 36.86% 5y. Not used in the final rule."
+    }
+  ],
+  "corrections": [
+    "Remove the Zarattini & Antonacci (2024) 'A Century of Profitable Industry Trends' paper from the web card. It is not a source for this strategy and appears to be an unrelated automatic citation. Keep Moreira & Muir, Harvey et al., Cederburg et al., Thorp, Cheng & Madhavan, and the ProShares prospectus.",
+    "The current tagline 'A 1-minute realized-vol ladder from TQQQ to QQQ' omits the primary direction filter. Use 'QQQ 165-day regime plus a 1-minute realized-vol ladder from TQQQ to QQQ.'",
+    "The current rules say 'TQQQ below 65%, QQQ above 95%, linear in between' without stating that 65% and 95% are 20-day annualized volatility thresholds, not prices. Rewrite as 'TQQQ 20-day vol below 65% -> 100% TQQQ; above 95% -> 100% QQQ; linear in between.'",
+    "The current decision and rules omit the crash throttle and the regime-off BIL rule. Add: 'If QQQ is at least 6% below its 20-day high and TQQQ 5-day vol is at least 55%, scale the QQQ+TQQQ sleeve by 0.95 (5% to BIL)' and 'if QQQ is at or below its 165-day SMA, hold 100% BIL.'",
+    "The current decision says 'data through the current bar' and 'next bar's open'. For this daily strategy, say 'daily close i' and 'open of day i+1' to remove any same-bar or intrabar ambiguity.",
+    "Fill the 5 bp metrics in the web card: 10y 46.96% / 45.85% and 5y 34.09% / 36.39%. The current card only shows 1 bp numbers.",
+    "Soften the verdict: the 5y CAGR is 34.59% vs the daily baseline's 34.61% (a 0.02 pp tie, not a win), the 10y edge is concentrated in 2020, and the 5y pass/fail flips with small changes in the cut or ladder range. 'Verified vs TQQQ' is fair, but the card should not imply the strategy beats the daily baseline on both windows.",
+    "De-duplicate the paper list: the three 'doi.org' entries duplicate Moreira & Muir (2017), Harvey et al. (2018), and Cederburg et al. (2020). Keep one entry per source with a descriptive label, and add the ProShares prospectus and Cheng & Madhavan with proper labels."
+  ]
+}

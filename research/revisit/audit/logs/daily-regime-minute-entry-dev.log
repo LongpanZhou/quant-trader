@@ -1,0 +1,16 @@
+{
+  "status": "rejected",
+  "dev_1bp": {
+    "cagr": -0.0004497077142382455,
+    "max_drawdown": 0.6417838277379081,
+    "sharpe": 0.11274252173100846,
+    "sortino": 0.15424061238679515,
+    "volatility": 0.22913608901058585,
+    "fills": 1309.0,
+    "turnover": 1151.6247030453358,
+    "ending_equity": 99641.50268896272
+  },
+  "corr": -0.19792201991428002,
+  "events": 327
+}
+{"slug": "daily-regime-minute-entry", "mode": "dev", "calls": 117, "error": null, "seconds": 29.0, "restored": [], "match_score": null, "found": true, "kw": {"band": 0.02, "slippage_bps": 1.0, "start_equity": 100000.0}, "bars": 781880, "k": 2}

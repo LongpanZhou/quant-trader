@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import type { PerformanceData, StrategyMeta, WindowId } from "@/lib/types";
 import { WINDOWS } from "@/lib/types";
+import { BENCHMARKS } from "@/lib/presets";
 import { PAPERS, REPLICATION, COUNTER_EVIDENCE } from "@/lib/research";
 import {
   isoRange,
@@ -19,7 +20,8 @@ import { MonthlyHeatmap } from "./monthly-heatmap";
 import { TradePanel } from "./trade-panel";
 import { DrawdownEpisodes } from "./drawdown-episodes";
 import { SiteFooter, SiteHeader } from "./site-chrome";
-import { LegendDot, Pill, SectionHeading, StatCard } from "./ui";
+import { RangeSelector, filterSeries, type SeriesRange } from "./range-selector";
+import { Pill, SectionHeading, StatCard } from "./ui";
 
 const REPO = "https://github.com/LongpanZhou/quant-trader";
 
@@ -31,6 +33,9 @@ export function StrategyDashboard({ strategy }: { strategy: StrategyMeta }) {
   const [data, setData] = useState<PerformanceData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [range, setRange] = useState<SeriesRange>("all");
+  const [benchmarkBusy, setBenchmarkBusy] = useState(false);
+  const [benchmarkError, setBenchmarkError] = useState<string | null>(null);
 
   useEffect(() => {
     const requested = new URLSearchParams(window.location.search).get("window");
@@ -68,6 +73,22 @@ export function StrategyDashboard({ strategy }: { strategy: StrategyMeta }) {
   }, [strategy.slug, windowId]);
 
   const selected = windows.find((window) => window.id === windowId) ?? windows[0];
+  const viewSeries = useMemo(
+    () => (data ? filterSeries(data.series, range) : []),
+    [data, range],
+  );
+  const viewMaxDrawdown = useMemo(
+    () => Math.max(0, ...viewSeries.map((point) => -point.drawdown)),
+    [viewSeries],
+  );
+  const viewBenchmarkDrawdown = useMemo(
+    () =>
+      Math.max(
+        0,
+        ...viewSeries.map((point) => (point.qqqDrawdown == null ? 0 : -point.qqqDrawdown)),
+      ),
+    [viewSeries],
+  );
   const nameWords = strategy.name.split(" ");
   const lastWord = nameWords.pop() ?? strategy.name;
   const leadWords = nameWords.join(" ");
@@ -86,6 +107,35 @@ export function StrategyDashboard({ strategy }: { strategy: StrategyMeta }) {
     timeZone: "UTC",
   });
 
+  const changeBenchmark = async (next: string) => {
+    if (!data || next === data.benchmark || benchmarkBusy) return;
+    setBenchmarkBusy(true);
+    setBenchmarkError(null);
+    try {
+      const response = await fetch("/api/backtest", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          preset: strategy.slug,
+          window: windowId,
+          benchmark: next,
+        }),
+      });
+      const payload = (await response.json()) as {
+        data?: PerformanceData;
+        error?: string;
+      };
+      if (!response.ok || !payload.data) {
+        throw new Error(payload.error ?? "Benchmark backtest failed");
+      }
+      setData(payload.data);
+    } catch (reason) {
+      setBenchmarkError(reason instanceof Error ? reason.message : "Benchmark backtest failed");
+    } finally {
+      setBenchmarkBusy(false);
+    }
+  };
+
   return (
     <div className="min-h-screen">
       <div className="pointer-events-none fixed inset-0 grid-lines opacity-40" />
@@ -95,12 +145,6 @@ export function StrategyDashboard({ strategy }: { strategy: StrategyMeta }) {
         <section className="fade-up pt-12 sm:pt-16">
           <div className="flex flex-col justify-between gap-8 lg:flex-row lg:items-end">
             <div className="max-w-3xl">
-              <a
-                href="/"
-                className="mb-5 inline-flex items-center gap-1.5 text-[11px] text-zinc-500 transition hover:text-zinc-300 md:hidden"
-              >
-                ← All strategies
-              </a>
               <div className="mb-4 flex flex-wrap items-center gap-2">
                 <Pill tone={statusTone}>{statusLabel}</Pill>
                 <Pill>Long-only · daily</Pill>
@@ -186,15 +230,47 @@ export function StrategyDashboard({ strategy }: { strategy: StrategyMeta }) {
             <LoadingPanels />
           ) : (
             <div className={`transition-opacity duration-300 ${loading ? "opacity-60" : "opacity-100"}`}>
-              <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
-                <div className="text-[11px] text-zinc-500">
-                  {selected.label} · {isoRange(data.start, data.end)}
+              <div className="mb-3 space-y-2">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <div className="text-[11px] text-zinc-500">
+                    {selected.label} · {isoRange(data.start, data.end)}
+                  </div>
+                  {benchmarkBusy ? (
+                    <span className="text-[10px] text-zinc-500">updating benchmark...</span>
+                  ) : null}
                 </div>
-                <div className="flex items-center gap-3">
-                  <LegendDot color={strategy.accent} label="Strategy" />
-                  <LegendDot color="#71717a" label={`${data.benchmark} benchmark`} />
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <label className="flex items-center gap-2 text-[10px] uppercase tracking-[0.12em] text-zinc-600">
+                    Compare
+                    <select
+                      value={data.benchmark}
+                      onChange={(event) => void changeBenchmark(event.target.value)}
+                      disabled={benchmarkBusy}
+                      className="rounded-md border border-white/10 bg-[#0b0d10] px-2 py-1 text-[10px] text-zinc-300 outline-none transition disabled:opacity-50"
+                    >
+                      {Array.from(
+                        new Set([data.benchmark, ...BENCHMARKS.map((item) => item.value)]),
+                      ).map((symbol) => (
+                        <option key={symbol} value={symbol}>
+                          {symbol}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  <RangeSelector
+                    value={range}
+                    onChange={setRange}
+                    series={viewSeries}
+                    name={strategy.name}
+                    benchmark={data.benchmark}
+                  />
                 </div>
               </div>
+              {benchmarkError ? (
+                <div className="mb-3 rounded-lg border border-rose-300/20 bg-rose-300/[0.05] px-3 py-2 text-[11px] text-rose-200">
+                  {benchmarkError}
+                </div>
+              ) : null}
 
               <div className="grid grid-cols-2 gap-3 lg:grid-cols-3 xl:grid-cols-6">
                 <StatCard
@@ -236,8 +312,8 @@ export function StrategyDashboard({ strategy }: { strategy: StrategyMeta }) {
               <div className="mt-4 grid gap-4 xl:grid-cols-[1.55fr_1fr]">
                 <div className="panel min-w-0 p-5">
                   <EquityChart
-                    series={data.series}
-                    start={data.start}
+                    series={viewSeries}
+                    start={viewSeries[0]?.date ?? data.start}
                     end={data.end}
                     benchmark={data.benchmark}
                     accent={strategy.accent}
@@ -251,9 +327,9 @@ export function StrategyDashboard({ strategy }: { strategy: StrategyMeta }) {
               <div className="mt-4 grid gap-4 lg:grid-cols-2">
                 <div className="panel min-w-0 p-5">
                   <DrawdownChart
-                    series={data.series}
-                    strategyMax={data.metrics.maxDrawdown}
-                    qqqMax={data.metrics.benchmarkMaxDrawdown}
+                    series={viewSeries}
+                    strategyMax={viewMaxDrawdown}
+                    qqqMax={viewBenchmarkDrawdown}
                     benchmark={data.benchmark}
                   />
                 </div>
@@ -328,29 +404,6 @@ function BookRow({ label, value }: { label: string; value: string }) {
   );
 }
 
-const CODE_MAP = [
-  {
-    file: "src/strategy.rs",
-    title: "The signal",
-    body: "LeveragedIndex computes the trend and optional volatility target; blend_exposure splits the risk between the index and the leveraged fund.",
-  },
-  {
-    file: "src/backtest.rs",
-    title: "The test",
-    body: "Loads adjusted daily bars, builds the synthetic 3x series, runs the event loop with next-open fills and writes the JSON behind this page.",
-  },
-  {
-    file: "src/engine.rs",
-    title: "The live loop",
-    body: "Once per completed bar: fetch data, compute targets, apply the 2% band, send paper orders. Retries, stale data and splits are handled here.",
-  },
-  {
-    file: "src/config.rs",
-    title: "The config",
-    body: "Parses config.toml, validates parameters, and checks that the strategy's symbols are present before a run starts.",
-  },
-];
-
 function StrategySection({
   strategy,
   data,
@@ -395,16 +448,16 @@ else:
   return (
     <section id="strategy" className="scroll-mt-24 pt-16">
       <SectionHeading
-        eyebrow="Under the hood"
-        title="A simple rule, implemented literally"
+        eyebrow="The rule"
+        title="How it works"
         description={
           hasTarget
-            ? "The strategy is a trend filter plus a risk budget. The code does not forecast returns; it decides how much exposure to hold and when to step aside."
-            : "The strategy is a trend filter with fixed leverage. One decision per day, no forecast and no volatility target."
+            ? "A trend filter plus a risk budget. The strategy does not forecast returns; it decides how much exposure to hold and when to step aside."
+            : "A trend filter with fixed leverage. One decision per day, no forecast and no volatility target."
         }
       />
 
-      <div className="grid gap-4 lg:grid-cols-[1.05fr_1fr]">
+      <div>
         <div className="panel min-w-0 p-5 sm:p-6">
           <div className="grid gap-3 sm:grid-cols-2">
             <RuleCard number="01" title="Trend" color="text-emerald-200">
@@ -439,37 +492,6 @@ else:
             <pre className="overflow-x-auto text-[10px] leading-6 text-zinc-400 sm:text-[11px]">
               <code>{formula}</code>
             </pre>
-          </div>
-        </div>
-
-        <div className="panel min-w-0 p-5 sm:p-6">
-          <div className="mb-4 flex items-center justify-between">
-            <div>
-              <div className="eyebrow">Code map</div>
-              <h3 className="mt-1 text-lg font-semibold text-zinc-100">Where it lives</h3>
-            </div>
-            <Pill tone="green">Rust</Pill>
-          </div>
-          <div className="space-y-3">
-            {CODE_MAP.map((item) => (
-              <div
-                key={item.file}
-                className="rounded-xl border border-white/[0.06] bg-white/[0.015] p-3.5"
-              >
-                <div className="flex items-baseline justify-between gap-3">
-                  <span className="font-mono text-[11px] text-emerald-200/80">{item.file}</span>
-                  <span className="text-[10px] uppercase tracking-[0.12em] text-zinc-600">
-                    {item.title}
-                  </span>
-                </div>
-                <p className="mt-1.5 text-[11px] leading-relaxed text-zinc-500">{item.body}</p>
-              </div>
-            ))}
-          </div>
-          <div className="mt-4 flex items-center gap-2 text-[10px] text-zinc-600">
-            <span className="h-1.5 w-1.5 rounded-full bg-emerald-300/70" />
-            JSON is generated by <span className="font-mono text-zinc-500">--json</span> and served
-            statically.
           </div>
         </div>
       </div>

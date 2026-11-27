@@ -1,0 +1,1 @@
+{"slug": "drawdown-regime", "mode": "cut2", "calls": 0, "error": "ValueError: QQQ daily history missing 1 sessions, e.g. [datetime.date(2022, 9, 13)]", "seconds": 8.9, "restored": [], "match_score": -1.0, "found": false}

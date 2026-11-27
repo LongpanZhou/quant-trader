@@ -1,0 +1,165 @@
+{
+  "slug": "ratio-pairs",
+  "name": "Ratio froth",
+  "tagline": "Hold QQQ instead of TQQQ when the TQQQ/QQQ ratio sits more than 19.7% above its own 200-day mean (log extension > 0.18).",
+  "summary": "The strategy is the round-1 winner (QQQ above its 165-day SMA -> TQQQ, else BIL, with an armed 4% intraday stop) plus one daily overlay on the TQQQ/QQQ ratio. The ratio's log, 2*log(QQQ) minus 3x realised variance, measures how far leveraged exposure has compounded relative to the drag it paid. When the prior close's log extension above the ratio's 200-day MA exceeds 0.18 - a low-volatility, strongly trending melt-up - the strategy holds QQQ instead of TQQQ for the next session, including overnight. Otherwise it runs the winner unchanged.",
+  "decision_process": "All signals are daily and use only the prior session's close. Before the open of session t: (1) risk-on if QQQ close(t-1) > 165-day SMA of QQQ; (2) ext = log(ratio(t-1) / 200-day MA of ratio(t-1)), ratio = TQQQ/QQQ; (3) if risk-on and ext > 0.18, target 100% QQQ for session t, else if risk-on target 100% TQQQ, else 100% BIL. The target is applied from the 09:31 bar, so the harness fills at the 09:31 open. Separately, on risk-on sessions the 4% stop is armed only when QQQ's first-minute close < prior 20-day SMA * 1.01; if armed and TQQQ closes 4% below the session open, the target becomes BIL at the next minute's open and stays BIL for the rest of the session and the night. There is no intraday signal in the headline version.",
+  "rules": [
+    "Base regime: if QQQ's prior close > its 165-day SMA, risk-on; otherwise hold 100% BIL.",
+    "Base stop: on risk-on sessions, arm a 4% stop from the session open only when QQQ's first-minute close is below its prior 20-day SMA * 1.01. If armed and TQQQ closes 4% below the open, sell at the next minute's open and hold BIL for the rest of the session and the night.",
+    "Ratio: ratio = TQQQ close / QQQ close; ext = log(ratio / 200-day moving average of the ratio), evaluated at the prior session's close.",
+    "Overlay: if risk-on and prior ext > 0.18 (ratio >= 19.7% above its 200-day mean), hold 100% QQQ instead of TQQQ for the next session, including overnight. The 4% stop stays active and takes the book to BIL if it triggers.",
+    "Otherwise run the winner unchanged. Long-only, one position at a time, no leverage beyond 100%."
+  ],
+  "status": "Leader",
+  "metrics": {
+    "cagr10": 0.695,
+    "dd10": 0.3911,
+    "cagr5": 0.6374,
+    "dd5": 0.2685,
+    "cagr10_5bp": 0.6346,
+    "dd10_5bp": 0.4175,
+    "cagr5_5bp": 0.58,
+    "dd5_5bp": 0.2772
+  },
+  "verdict": "Current round-2 leader by 5-year return and rolling consistency: 69.50% / 39.11% (10y) and 63.74% / 26.85% (5y) at 1 bp; strict dominance of the round-1 winner at 1 bp and 5 bp on both windows. It is a fat-tail crash hedge, not stable daily alpha: the overlay fires on 21.5% of sessions, the hit-rate edge is only 2.6 pp, and the 10-year CAGR lead comes from avoiding a handful of melt-up crashes. At 10 bp the 10-year drawdown is 0.47 pp worse than the winner (45.03% vs 44.56%) while CAGR is 6.7 pp higher.",
+  "sources": [
+    {
+      "idea": "The TQQQ/QQQ ratio is a decay meter: log(L/L0) = b*log(S/S0) + (b-b^2)/2 * V, so for b=3 the log ratio is 2*log(S/S0) - 3V. This is the reason a high ratio extension means low realised variance, not just a strong QQQ trend.",
+      "source": "Avellaneda & Zhang (2010) / Path-Dependence of Leveraged ETF Returns",
+      "url": "https://epubs.siam.org/doi/10.1137/090760805",
+      "source_type": "paper",
+      "role": "inspired rule",
+      "evidence": "The paper gives the exact formula linking a leveraged fund's price to the underlying and its realised variance, and tests it on 56 double- and triple-leveraged funds. The b=3 special case is the identity used to justify the ratio-extension signal.",
+      "confidence": "high"
+    },
+    {
+      "idea": "The drag term in the ratio is large and state-dependent: TQQQ's realised financing + fee gap is ~7.2%/yr on top of the path effect, and the volatility break-even for 3x funds is near 14% realised vol.",
+      "source": "Adjusted Close / Leveraged ETF \"Decay\" Is Not What You Think It Is",
+      "url": "https://adjustedclose.com/leveraged-etf-decay",
+      "source_type": "blog",
+      "role": "supports assumption",
+      "evidence": "Regresses daily leveraged returns on daily underlying returns (TQQQ/QQQ realised beta 2.957), reports drag ~= 0.5*L*(L-1)*sigma^2 (3*sigma^2 for 3x) and a volatility-quintile table showing leverage beats the naive multiple below ~14% realised vol and loses 19-52 points above it. The 7.23%/yr TQQQ cost gap is the source of the 7.2%/yr figure.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Low-volatility, strongly trending markets are when leverage and crowding build up, so an extended ratio should raise crash risk rather than lower it.",
+      "source": "Brunnermeier & Sannikov (2014) / A Macroeconomic Model with a Financial Sector",
+      "url": "https://www.aeaweb.org/articles?id=10.1257%2Faer.104.2.379",
+      "source_type": "paper",
+      "role": "inspired rule",
+      "evidence": "The 'volatility paradox': low exogenous risk leads intermediaries to choose higher leverage, which makes the system more prone to volatility spikes. This is the mechanism behind treating a high ratio extension as froth rather than momentum.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Low measured volatility can itself be a catalyst for high future volatility, so a calm melt-up is a risk signal.",
+      "source": "NY Fed Liberty Street Economics (2017) / The Low Volatility Puzzle: Are Investors Complacent?",
+      "url": "https://libertystreeteconomics.newyorkfed.org/2017/11/the-low-volatility-puzzle-are-investors-complacent/",
+      "source_type": "report",
+      "role": "supports assumption",
+      "evidence": "States that in Brunnermeier-Sannikov and Adrian-Shin, lower volatility relaxes VaR/margin constraints, leverage rises, and small shocks can force sales and a volatility spike: 'low volatility in itself can be a catalyst for high future volatility.'",
+      "confidence": "high"
+    },
+    {
+      "idea": "The base 165-day QQQ regime and the general idea of holding a leveraged ETF only above a long moving average.",
+      "source": "FinLab (2026) / TQQQ 200-Day Moving Average Strategy: 7 Leveraged ETF Rules",
+      "url": "https://finlab.finance/en/blog/leveraged-etf-timing-backtest",
+      "source_type": "blog",
+      "role": "benchmark",
+      "evidence": "2017-2026 backtest: the QQQ 200-day rule on TQQQ made 45.1% CAGR with a -60.9% max drawdown versus 39.6% / -81.7% buy-and-hold. Also documents the whipsaw cost: 6 of 8 exits saw TQQQ rise while out, which motivated keeping the fast overlay rare.",
+      "confidence": "high"
+    },
+    {
+      "idea": "The 200-day rule's drawdown reduction and its failure modes on fast crashes.",
+      "source": "Exent (2026) / TQQQ and the 200-Day Moving Average: An Exit Rule, Tested",
+      "url": "https://www.exent.ai/resources/leveraged-etf-200-day-rule",
+      "source_type": "blog",
+      "role": "benchmark",
+      "evidence": "Jan 2017 - Sep 2026: 46.4% CAGR / -54.8% max DD with the 200-day rule versus 42.5% / -81.6% held; 34 switches. The worst rule drawdown was the COVID crash, which is why the round-1 base adds a minute stop.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "LETF expected returns are state-dependent, not a constant decay fee, so a variance-adjusted ratio level is the right object to condition on.",
+      "source": "Trainor (2025) / Beyond Volatility Decay: Correcting Relative Expected Return Estimates for Leveraged ETFs",
+      "url": "https://www.mdpi.com/1911-8074/19/1/20",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Shows the standard provider formula misstates long-run LETF expected returns by large amounts depending on the return/volatility state, and that daily LETFs do relatively better in high-return/low-volatility environments.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Daily re-leveraging and path dependence make a long-horizon LETF/underlying ratio sensitive to realised variance.",
+      "source": "Cheng & Madhavan (2009) / The Dynamics of Leveraged and Inverse Exchange-Traded Funds",
+      "url": "https://www.researchgate.net/publication/228231757",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Documents that daily re-leveraging creates a path-dependent embedded option and that value can be destroyed for buy-and-hold investors. I used the ResearchGate copy; the web page's SSRN 1393995 link is a different copy that I did not verify.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Long/short leveraged ETF pair spreads mean-revert, so the ratio might carry relative-value information.",
+      "source": "Hessel, Nam, Wang, Cunyu & Zhang (2017) / Shorting Leveraged ETF Pairs (CXO Advisory summary)",
+      "url": "https://www.cxoadvisory.com/volatility-effects/monthly-rebalanced-shorting-of-leveraged-etf-pairs/",
+      "source_type": "paper",
+      "role": "tested only",
+      "evidence": "Finds pair-shorting profits are a bet on index mean reversion and die in trends; four of six 3x/-3x pairs averaged >1%/month gross 2007-2016. I tested the mean-reversion implication at daily and intraday frequency and did not use it (see rejected_sources).",
+      "confidence": "medium"
+    },
+    {
+      "idea": "The exact threshold (200-day MA, ext > 0.18) and the claim that this is not just QQQ extension.",
+      "source": "Own test / no external source",
+      "url": null,
+      "source_type": "data",
+      "role": "inspired rule",
+      "evidence": "Regression ext200 = -0.106 + 2.067*qqq_ext200 + 1.342*(-(200d realised variance - 400d mean)), R^2=0.978; within QQQ ext200 > 0.09, the ratio split moves next-day TQQQ from +0.251%/day (n=677) to -0.155%/day (n=584); matched-frequency QQQ ext200 > 0.12 (n=649) returns 55.48%/39.11% versus the ratio rule's 69.50%/39.11%. The 0.18/200-day point came from a 35-point grid (5 MAs x 7 thresholds) and is not pre-registered.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "The base 165-day SMA regime plus the armed 4% minute stop, which the overlay modifies.",
+      "source": "Round-1 winner / research/agents/daily-regime-minute-entry (internal)",
+      "url": null,
+      "source_type": "data",
+      "role": "inspired rule",
+      "evidence": "Reproduced exactly by the ablation in strategy.py: 58.80% / 44.56% (10y) and 49.88% / 33.49% (5y) at 1 bp, matching the README and result.json.",
+      "confidence": "high"
+    }
+  ],
+  "rejected_sources": [
+    {
+      "source": "Generic trend rule applied to the ratio: hold TQQQ while TQQQ/QQQ is above its 20- or 60-day MA (Faber-style, as in web/lib/research.ts)",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=962461",
+      "why_rejected": "Wrong sign. ratio > MA20 -> TQQQ else QQQ made 36.08% CAGR / 64.50% DD; else BIL 27.10% / 56.64%; MA60 versions 36.04% / 67.40% and 27.12% / 65.80%, all below 39.28% TQQQ buy-and-hold. Spearman IC of log(ratio/MA60) versus 60-day TQQQ is -0.189, so the ratio trend is contrarian at 5-60 days."
+    },
+    {
+      "source": "Intraday relative-value fade of TQQQ vs 3x QQQ deviations (own test, motivated by Hessel et al. pair mean reversion)",
+      "url": "https://www.cxoadvisory.com/volatility-effects/monthly-rebalanced-shorting-of-leveraged-etf-pairs/",
+      "why_rejected": "Strong in event-study form (corr(d_t,d_t+5) = -0.41; 670 events with |5m change| > 20 bp, +9.6 bp mean, 72.7% hit) but it dies under the harness's next-bar fills: the overlay gives 69.43%-69.84% versus 69.50% for the base, with 8-32 extra fills. The event-study edge is a one-bar microstructure artifact."
+    },
+    {
+      "source": "Ratio momentum as a filter on the 165-day regime (own test)",
+      "url": null,
+      "why_rejected": "No stop, 10 years: regime only 46.63% / 58.76%; regime + ratio > MA20 26.11% / 45.11%; regime + ratio > MA60 32.80% / 46.74%. It gives up 14-20 pp of CAGR for a 12-14 pp drawdown improvement over a base that already cuts drawdown from 82%."
+    },
+    {
+      "source": "Froth plus short-term breakdown trigger (ext20 < 0, 5-day ratio return < 0, ext60 < 0)",
+      "url": null,
+      "why_rejected": "Fires only 1-6% of sessions and gives back most of the edge: 57.4%-62.4% CAGR with 41.4%-44.6% DD, versus 69.50% / 39.11% for the pure level rule. The level, not the turn, carries the information."
+    },
+    {
+      "source": "Fade a 1-, 3- or 5-day ratio move (daily mean reversion)",
+      "url": null,
+      "why_rejected": "No signal: next-day TQQQ-minus-3xQQQ excess is -2 to -6 bp in every decile of past ratio change, with no monotonic pattern."
+    }
+  ],
+  "corrections": [
+    "ROLLING-WINDOW CLAIM IS WRONG AS WRITTEN. The page says '27/27 rolling 3-year windows beat TQQQ on both return and drawdown'. My report's quarterly-start windows number 28, and the counts are 28/28 lower drawdown than TQQQ but 26/28 higher CAGR (the two misses are 2017-04 and 2017-07, by 0.3 and 0.5 pp). The 27/27 figure is the independent verifier's separate 27-window run (LEADER.md notes the extra quarter explains the difference). State the window convention and both numbers, and add the comparison that matters: 26/28 higher CAGR and 28/28 lower drawdown than the round-1 winner.",
+    "RULES ARE NOT SELF-CONTAINED. 'Base: round-1 winner' is undefined on the page. Spell out: risk-on when QQQ's prior close > 165-day SMA (otherwise BIL); 4% stop from the session open, armed only when QQQ's first-minute close < prior 20-day SMA * 1.01, exit at the next minute's open to BIL for the rest of the day and night.",
+    "'200-day MA' IS AMBIGUOUS. It is the 200-day MA of the TQQQ/QQQ ratio, not of QQQ. Also say the extension is evaluated at the prior close and applied from the 09:31 open, not 'the next bar' generically.",
+    "PAPER LIST HAS A BAD LINK. 'FinLab - Leveraged ETF Decay' -> https://finlab.finance/en/blog/leveraged-etf-decay is not a page I used or verified. The FinLab source in my report is the 200-day timing backtest: https://finlab.finance/en/blog/leveraged-etf-timing-backtest.",
+    "PAPER LIST HAS DUPLICATES AND BARE LABELS. 'AER' repeats the Brunnermeier & Sannikov URL; 'researchgate.net' and 'Adjusted Close' are bare labels. Use: Cheng & Madhavan (2009) / The Dynamics of Leveraged and Inverse Exchange-Traded Funds (https://www.researchgate.net/publication/228231757, not the unverified SSRN 1393995), Brunnermeier & Sannikov (2014) once, and Adjusted Close / Leveraged ETF 'Decay' Is Not What You Think It Is.",
+    "MISSING SOURCES. Add Trainor (2025) JRFM 19(1):20 (https://www.mdpi.com/1911-8074/19/1/20) and Exent's 200-day TQQQ note (https://www.exent.ai/resources/leveraged-etf-200-day-rule); both informed the state-dependence assumption and the base-rule benchmark.",
+    "DISCLOSE THE CALIBRATION. The 200-day / 0.18 point came from a 35-point grid, not a pre-registered parameter. The page's Rules imply a fixed rule; add that the surface (MA 150-250 x theta 0.14-0.24) supports the region but the point estimate is uncertain.",
+    "SHOW THE 10 bp CAVEAT. The page shows only 1 bp metrics. At 10 bp the 10-year drawdown is 45.03% versus the winner's 44.56% (0.47 pp worse) while CAGR is 56.22% vs 49.50%; strict dominance is a 1 bp / 5 bp statement, not a 10 bp one.",
+    "MEMORY OF THE COST SIDE. The overlay misses real melt-up upside: 2020-11-12 to 2021-02-25 is 71 sessions and +25.8% of TQQQ. The verdict's 'fat-tail crash hedge' phrasing is right; keep it and do not let the tagline imply a continuous edge."
+  ]
+}

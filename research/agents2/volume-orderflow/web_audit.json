@@ -1,0 +1,188 @@
+{
+  "slug": "volume-orderflow",
+  "name": "Volume-armed TQQQ crash stop",
+  "tagline": "The round-1 165-day QQQ regime and 4% minute stop, with the stop honoured only when the session's relative volume is at least normal and always armed on high-volume days.",
+  "summary": "A 165-day QQQ SMA regime holds 100% TQQQ (else 100% BIL). On risk-on sessions a 4% stop from the session open liquidates to BIL at the next minute's open and stays out for the rest of the day and the night. The only new element is how the stop is armed: it is honoured at minute i only when cumulative QQQ volume divided by its prior-20-day same-time-of-day mean (rvol) is above 1.0, and it is additionally armed when rvol exceeds 1.5 even if QQQ is above its 20-day MA. Quiet-day breaks are treated as liquidity air pockets; high-volume breaks are treated as information. Long-only, one asset at a time, 100% TQQQ or 100% BIL; 195 stop events over ten years, about 82 fills a year.",
+  "decision_process": "The regime uses QQQ's close on day d-1 versus its 165-day SMA, so the state for day d is fixed before the open. On a risk-on day the stop compares the current one-minute TQQQ close with the TQQQ 09:30 open and subtracts 4%; the arming condition compares the QQQ 09:30 price with MA20 of prior closes times 1.01 and reads rvol at the same bar i (cumulative volume 09:30..i over the prior-20-day mean of the same cumulative quantity at the same minute). If the stop fires at bar i, weight goes to 0 and fills at the open of bar i+1; the position then stays in BIL through the close and the overnight and is re-established at the next session's open if the regime is still on. Every weight is set at bar i from data through bar i and executed at bar i+1's open; the regime, MA20 and the 20-day volume baseline all use prior sessions only.",
+  "rules": [
+    "Regime (daily): QQQ prior close above its 165-day SMA -> hold 100% TQQQ for the next session, including overnight; otherwise hold 100% BIL.",
+    "Stop: while risk-on and long TQQQ, if the TQQQ 1-minute close falls 4% below the session's 09:30 open, sell at the next minute's open and stay in BIL for the rest of the session and the following night.",
+    "Relative volume: rvol(i) = cumulative QQQ volume from 09:30 through bar i, divided by the mean of the same cumulative quantity over the prior 20 sessions at the same minute of day (rolling 20-day mean shifted one day, so today is excluded).",
+    "Arming: the stop is honoured at bar i only if rvol(i) > 1.0, and it is additionally armed when rvol(i) > 1.5 even if QQQ is above its 20-day MA. Formally: armed = (QQQ@09:30 < MA20(prev) x 1.01 OR rvol > 1.5) AND rvol > 1.0.",
+    "Re-entry: after a stop the position is re-established at the next session's open if the regime is still risk-on; no intraday re-entry, no shorting, no leverage beyond 100% TQQQ.",
+    "Execution and costs: next-bar-open fills, long-only, weights sum to at most 1; 1 bp primary, 5 bp and 10 bp reported. 801 fills over 10 years (about 82 per year) versus 657 for the round-1 winner."
+  ],
+  "status": "Fragile",
+  "metrics": {
+    "cagr10": 0.6590,
+    "dd10": 0.4249,
+    "cagr5": 0.5317,
+    "dd5": 0.2864,
+    "cagr10_5bp": 0.6056,
+    "dd10_5bp": 0.4545,
+    "cagr5_5bp": 0.4880,
+    "dd5_5bp": 0.2935
+  },
+  "verdict": "Strictly dominates the round-1 winner on headline metrics at 1, 5 and 10 bp in both windows (65.90/42.49 and 53.17/28.64 at 1 bp; 60.56/45.45 and 48.80/29.35 at 5 bp; 54.14/48.93 and 43.52/30.26 at 10 bp, versus 58.80/44.56 and 49.88/33.49 at 1 bp), and 21 of 28 rolling 3-year windows beat the winner's CAGR. But the label is Fragile, not Leader: the 5-year drawdown gain is a single event. Restoring the one 2026-06-24 stop that the volume floor suppressed (a -4% break on 0.87x normal volume) moves the 5-year result to 50.72/34.16 - a drawdown 0.67 pp worse than the winner. The 10-year leg is genuinely robust: it survives every value of both new volume parameters (floor 0.90-1.10, re-arm 1.2-2.0) and of the arming MA (10-50), and the gain is the intended one (the re-arm fires on 2020-02-20 and 2020-02-21, the day after QQQ's February 2020 high, before the slow regime flips; 2020 is +267.9% versus the winner's +183.9%). It is also dominated by the round-2 ratio-froth leader on both windows, so it is an alternative sleeve rather than the leader.",
+  "sources": [
+    {
+      "idea": "A stop-loss rule adds value when returns have momentum and costs little when they do not - the licence for carrying an intraday stop at all.",
+      "source": "Kaminski, K. M., & Lo, A. W. (2014) / When do stop-loss rules stop losses? (Journal of Financial Markets 18, 234-254)",
+      "url": "https://doi.org/10.1016/j.finmar.2013.07.001",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Shows analytically and empirically that stop-loss policies improve expected returns under momentum/regime-switching return processes and are roughly neutral otherwise. Used to justify keeping the round-1 stop and treating its whipsaw cost as the price of a tail hedge, not as evidence the stop is broken. No parameter taken from the paper.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Intraday momentum is stronger on high-volume days - i.e. volume conditions whether a price move is informative, which is the direct basis for arming the stop on rvol > 1.5.",
+      "source": "Gao, L., Han, Y., Li, S. Z., & Zhou, G. (2018) / Market intraday momentum (Journal of Financial Economics 129(2), 394-414)",
+      "url": "https://doi.org/10.1016/j.jfineco.2018.05.009",
+      "source_type": "paper",
+      "role": "inspired rule",
+      "evidence": "Reports that the first half-hour return predicts the last half-hour return and that the predictability is stronger on more volatile and higher-volume days. The conditional claim (volume strengthens the signal) inspired the rvol > 1.5 re-arming clause. Their direct rule was tested separately and did NOT reproduce on QQQ 2017-2026 (corr +0.022, top-minus-bottom quintile +4 bp, and the volume-confirmed 5m version earns -1.06 bp per trade before cost) - see rejected_sources.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Low-volume price moves are the persistent ones and high-volume moves are late-stage and reverse faster - the basis for refusing to honour a stop on a below-normal-volume break.",
+      "source": "Lee, C. M. C., & Swaminathan, B. (2000) / Price momentum and trading volume (Journal of Finance 55(5), 2017-2069)",
+      "url": "https://doi.org/10.1111/0022-1082.00280",
+      "source_type": "paper",
+      "role": "inspired rule",
+      "evidence": "Documents that high-volume winners reverse faster while low-volume winners show greater persistence (the momentum life cycle). Used qualitatively, as the reason a quiet -4% dip should be treated as noise and a heavy-volume -4% dip as a breakdown. This is cross-sectional monthly stock evidence, not index intraday evidence, and I did not attempt to replicate their portfolio sort; the mapping to a 1-minute stop is an analogy, which is why confidence is medium.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Order-flow imbalance explains short-horizon price changes (average event-level R^2 of 65%), so an intraday flow proxy should be able to time turns.",
+      "source": "Cont, R., Kukanov, A., & Stoikov, S. (2014) / The price impact of order book events (Journal of Financial Econometrics 12(1), 47-88)",
+      "url": "https://doi.org/10.1093/jjfinec/nbt003",
+      "source_type": "paper",
+      "role": "tested only",
+      "evidence": "Used to justify testing flow-based intraday signals. Implemented as close-location-value signed volume (a 1-minute proxy for signed flow, since the data has no bid/ask) and as a 5-minute variant. Result: no forward predictive power at this resolution (corr -0.010 at 1m, +0.001 at 5m against the next 30-minute TQQQ return). Their R^2 is contemporaneous, not predictive, which is the likely reason the proxy failed.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Order imbalance predicts individual stock returns and persists at short lags.",
+      "source": "Chordia, T., & Subrahmanyam, A. (2004) / Order imbalance and individual stock returns (Journal of Financial Economics 72(3), 485-518)",
+      "url": "https://www.sciencedirect.com/science/article/abs/pii/S0304405X03001752",
+      "source_type": "paper",
+      "role": "tested only",
+      "evidence": "Provided the prior that lagged imbalance carries information. My proxy (CLV-weighted volume, and a tick-rule signed-volume variant) showed no usable forward power on QQQ/TQQQ at 1 or 5 minutes; the effect in the paper is daily and cross-sectional, which does not transfer to a single index ETF intraday.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Abnormally high trading volume predicts a short-horizon return premium (high-volume return premium).",
+      "source": "Gervais, S., Kaniel, R., & Mingelgrin, D. H. (2001) / The high-volume return premium (Journal of Finance 56(3), 877-919)",
+      "url": "https://www.sciencedirect.com/science/article/abs/pii/S0304405X11001954",
+      "source_type": "paper",
+      "role": "tested only",
+      "evidence": "Motivated a check of whether high-rvol days predict higher forward returns. On QQQ the effect is absent at the relevant horizons and reverses intraday: high-rvol days are followed by worse overnights in the pooled sample (rvol>1.5 and down: -74.9 bp), but that is a 2020 artifact and the sign flips by era. The cross-country replication is cited only as the modern confirmation of the premium I could not find here.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "VWAP is an execution benchmark, not a forecast - it is the price an average participant achieved, which is why deviation from it need not predict returns.",
+      "source": "Konishi, H. (2002) / Optimal slice of a VWAP trade (Journal of Financial Markets 5(2), 197-221)",
+      "url": "https://www.sciencedirect.com/science/article/abs/pii/S1386418101000234",
+      "source_type": "paper",
+      "role": "tested only",
+      "evidence": "Used to frame the VWAP-deviation test. VWAP is defined and studied as a liquidation benchmark to be tracked; nothing in the literature treats deviation from it as a return signal. Consistent with my finding that close/VWAP-1 has essentially zero forward correlation (-0.009 at 1m, +0.007 at 5m).",
+      "confidence": "high"
+    },
+    {
+      "idea": "VWAP tracking is an execution problem with closed-form optimal schedules; no return predictability is claimed.",
+      "source": "Frei, C., & Westray, N. (2015) / Optimal execution of a VWAP order: a stochastic control approach (Mathematical Finance 25(3), 612-639)",
+      "url": "https://www.math.ualberta.ca/~cfrei/CFNW2015.pdf",
+      "source_type": "paper",
+      "role": "tested only",
+      "evidence": "Second confirmation that the VWAP literature is about minimising slippage to a benchmark, not about forecasting. Cited in the report to explain why the VWAP-deviation signal should not be expected to work, and it did not.",
+      "confidence": "high"
+    },
+    {
+      "idea": "A VWAP-deviation mean-reversion strategy has been proposed but not backtested.",
+      "source": "Bhatti, A. (2026) / Momentum exhaustion and fair value reversion: an ADX-conditioned VWAP strategy (SSRN 6454659)",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6454659",
+      "source_type": "paper",
+      "role": "tested only",
+      "evidence": "The abstract proposes trading reversion toward VWAP after momentum exhaustion and states that formal backtesting and performance attribution are left to future work. I ran the testable core (VWAP deviation, with and without a trend filter): no edge. Cited as the clearest statement that the practitioner idea is untested rather than contradicted.",
+      "confidence": "low"
+    },
+    {
+      "idea": "Essentially all of TQQQ's drift is earned overnight, so any minute-level rule can only be a small overlay on an overnight position.",
+      "source": "Lou, D., Polk, C., & Skouras, S. (2019) / A Tug of War: Overnight versus Intraday Expected Returns (Journal of Financial Economics 134(1), 192-213)",
+      "url": "https://personal.lse.ac.uk/polk/research/TugOfWar.pdf",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Inherited from the round-1 winner, not re-derived here, but it is the reason the new rule conditions an existing stop instead of adding intraday trading. My own decomposition on this data matches it: TQQQ overnight +1,354.8% versus intraday +81.2% over 2017-2026.",
+      "confidence": "high"
+    },
+    {
+      "idea": "The exact thresholds rvol > 1.0 (floor) and rvol > 1.5 (re-arm), and the decision to gate the stop rather than trade on volume.",
+      "source": "Own test / no external source",
+      "url": null,
+      "source_type": "data",
+      "role": "inspired rule",
+      "evidence": "Chosen from a two-dimensional surface on the local 1-minute QQQ/TQQQ/BIL data, not from a paper. The floor is interpretable as 'participation at least normal' and the surface is flat from 0.90 to 1.10 (10y CAGR 65.0-69.0%, 5y DD 27.8-30.4%), so the exact 1.0 is not a tuned optimum. The re-arm level is flat from 1.2 to 2.0. Both are disclosed as data-chosen in the report.",
+      "confidence": "medium"
+    }
+  ],
+  "rejected_sources": [
+    {
+      "source": "Own test (mandate family): overnight exit after a high-relative-volume session (the most promising volume idea found)",
+      "url": null,
+      "why_rejected": "Pooled, it looks strong: rvol>1.5 days are followed by -74.9 bp (down days) and -124.4 bp (up days) of overnight TQQQ return versus +25 to +35 bp otherwise, corr -0.19, and it is not explained by 20-day volatility (corr -0.001). It is not robust. Era spreads: 2017-2019 -0.05%, 2020-2021 -0.23%, 2022-2026 +0.06%; in the 5y window high-volume nights were better (+0.236% vs +0.155%). Applied to the winner the gate gives 57.35/44.52 (10y) but 41.08/36.14 (5y) at rvol>1.5, i.e. it destroys 8.8 pp of 5y CAGR. The pooled average is a 2020 artifact."
+    },
+    {
+      "source": "Own test: 1-minute and 5-minute order-flow proxies (CLV-signed volume, tick-rule signed volume, up/down-volume pressure, VWAP deviation, cumulative RVOL)",
+      "url": null,
+      "why_rejected": "No forward power after costs. Correlations with the next 30-minute TQQQ return: CLV flow -0.010, VWAP deviation -0.009, cumulative RVOL -0.047, 1-bar RVOL +0.007, 5m flow +0.001, 5m VWAP dev +0.007, 5m cumulative RVOL +0.006 (n = 129k-155k each). The -0.047 is non-monotone and contrarian (bottom quintile +35 bp, top quintile -52 bp), does not reproduce by era (2017-19 ~0.00, 2020-21 +0.03, 2022-26 +0.04), and 30 bp of spread does not survive ~2 bp of round-trip cost."
+    },
+    {
+      "source": "Gao, Han, Li & Zhou (2018) applied directly: volume-confirmed intraday momentum (first half-hour predicts last half-hour, stronger on high volume)",
+      "url": "https://doi.org/10.1016/j.jfineco.2018.05.009",
+      "why_rejected": "Tested on QQQ 2017-2026 and absent at this resolution: corr(first-30m, last-30m TQQQ) = +0.022, top-minus-bottom quintile +4 bp; the high-RVOL split does have the right sign (corr +0.043, +23 bp top-minus-bottom) but it is a noisy top-quintile sort and vanishes when conditioned on the sign of the first half hour. A direct volume-confirmed 5m momentum trade (long TQQQ 30 minutes when the last 5m return is positive and 5m RVOL > 1.2) earns -1.06 bp per trade before cost and -3.06 bp after. I kept only the qualitative insight (volume conditions informativeness), not the trading rule."
+    },
+    {
+      "source": "Own test: distribution-day counting (IBD-style) - count days down >0.2% on rising volume over 20-30 sessions, de-risk at 4-6 days",
+      "url": null,
+      "why_rejected": "Destroys the return. The count keeps the book out of TQQQ 43-95% of the time: dd20<4 gives 16.83/34.03, dd25<5 gives 9.14/38.23, dd30<4 gives 3.87/16.99 (10y). Even with the winner's stop layered on top, dd25<5 returns 10.21/35.41. The rule is a growth-stock market-top heuristic and does not survive a long-only leveraged-ETF application."
+    },
+    {
+      "source": "Own test: volume-based regime (165-day VWAP instead of SMA, plus OBV>MA and A-D>MA confirmation filters)",
+      "url": null,
+      "why_rejected": "No improvement. 165-day volume-weighted price regime: 47.08/58.03 (10y) and 30.49/44.94 (5y) versus SMA 46.63/58.76 and 36.14/42.17. Adding OBV>MA165: 28.24/61.09. Adding A-D>MA20: 26.46/43.07. The price SMA dominates the volume-weighted variants, so volume was not used at the daily gate."
+    },
+    {
+      "source": "Own test: continuous volume-scaled stop, stop_i = 4% x (1 + c x (1 - rvol_i))",
+      "url": null,
+      "why_rejected": "Smooth but worse than the discrete rule. Best point (S=3.5%, c=0.3) gives 61.77/47.68 (10y) and 53.54/32.84 (5y): better 5y, worse 10y than the winner. At S=4% the whole c grid is worse than the winner on at least one metric. Rejected in favour of the binary arming rule, which has a cleaner interpretation."
+    },
+    {
+      "source": "Own test: volume at the stop bar as a crash-versus-wick classifier (decide whether a stop was 'right' using rvol at the trigger)",
+      "url": null,
+      "why_rejected": "Post-stop drift is not monotone in rvol. Quartile means of stop-to-next-open return: -1.61%, -0.76%, +0.49%, -0.08% (n = 29 per bucket, 4% ungated stop). The lowest-volume stops were the worst ones, which is the opposite of the 'quiet dips are noise' story at the event level. Only the day-level floor rule survived; a per-event classifier did not."
+    },
+    {
+      "source": "Own test: volume-spike reversal - buy after a 1-minute QQQ drop >0.5% on 1-minute RVOL > 10",
+      "url": null,
+      "why_rejected": "Only 6 events in 10 years, +228 bp over the next 30 minutes. Too rare to build on, the threshold was chosen after seeing the data, and the strategy is long-only and already fully invested so there is nothing to buy."
+    },
+    {
+      "source": "Trading Studio (2026) / Volume-confirmed momentum on US stocks, 2001-2025: 7.92% CAGR vs 8.59% for SPY",
+      "url": "https://blog.tradingstudio.finance/volume-confirmed-momentum-us-stocks-backtest/",
+      "why_rejected": "Not rejected as a source - used as external counter-evidence for the negative result. The practitioner version of volume-confirmed momentum (top-30 12-month momentum filtered on rising 3-month volume) underperforms SPY over 24.5 years with a -61% max drawdown, which is the same sign as my own intraday test. Cited in the report as a sanity check that the volume-confirmation idea is weaker in practice than in the papers."
+    }
+  ],
+  "corrections": [
+    "Status must not be 'Leader'. The round-2 ratio-froth leader (69.50/39.11 on 10y, 63.74/26.85 on 5y at 1 bp) dominates this strategy on both windows. This is an alternative sleeve: Fragile, not Leader.",
+    "Do not describe this as a VWAP or order-flow strategy. The report's actual finding is that every directional VWAP/order-flow signal was rejected (corr -0.010 for CLV flow, -0.009 for VWAP deviation, 0.001-0.007 at 5 minutes). The surviving rule only uses volume to decide whether to honour an existing stop. If any copy says 'trades VWAP deviation' or 'uses order-flow imbalance', it is wrong.",
+    "Do not present the 5-year drawdown improvement as robust. It is one event: the volume floor suppressed the 2026-06-24 stop (a -4% break on 0.87x normal volume), and restoring that single stop moves the 5-year result from 53.17/28.64 to 50.72/34.16 - a drawdown 0.67 pp worse than the round-1 winner. Quote 28.64% only with that caveat attached.",
+    "The 10-year improvement IS robust and can be presented plainly: it survives every value of the floor (0.90-1.10), the re-arm threshold (1.2-2.0) and the arming MA (10-50). The one sensitivity is the inherited stop distance: shortening to 3.0-3.5% raises 10y drawdown to 48.4%/45.4%.",
+    "LEADER.md lines 76 and 78 list 'Ratio + volume 50/50' (68.14/40.80 and 58.69/27.74) and 'First-hour + volume 50/50' (67.83/35.63 and 53.10/32.02). Those are 50/50 blends of two sleeves, not this standalone strategy. Do not copy 58.69/27.74 or 53.10/32.02 onto this page; the standalone numbers are 65.90/42.49 and 53.17/28.64 at 1 bp.",
+    "LEADER.md line 95 describes this folder as the 'volume-armed stop sleeve' - that description is accurate and needs no correction.",
+    "Include the 10 bp row (54.14/48.93 on 10y, 43.52/30.26 on 5y). This strategy survives 10 bp in both windows, which is unusual for a stop overlay and is a genuine strength; omitting it undersells the result.",
+    "State the drawdown convention. Headline drawdowns are 1-minute equity marks; on daily closes they are 39.43% (10y) and 28.20% (5y). The round-1 winner is 44.56% minute / 41.62% daily. Do not mix the two conventions inside one comparison.",
+    "Quote fills as 801 over 10 years (361 over 5 years, about 82 per year), not 657 - 657 is the round-1 winner's count. The extra fills are the 46 stops that volume alone armed.",
+    "Rolling-window counts differ by agent because of the window grid. My grid is 28 quarterly-start 3-year windows from 2017-01: 26/28 beat TQQQ CAGR, 28/28 have lower drawdown than TQQQ, 21/28 beat the round-1 winner's CAGR, 14/28 have a lower drawdown than the winner. Do not quote LEADER.md's 27/27 or agent 21's 26/28 for this strategy.",
+    "Half-day sessions are handled by the last valid bar, so a 13:00 close works unchanged, but the 20-day same-time-of-day volume baseline treats a prior half-day's truncated cumulative volume as its late-minute value, biasing rvol up by roughly 5% on the session after a half-day. Immaterial for a 1.0/1.5 threshold; disclosed rather than corrected."
+  ]
+}

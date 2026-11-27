@@ -1,0 +1,177 @@
+{
+  "slug": "dynamic-leverage-throttle",
+  "name": "Dynamic leverage",
+  "tagline": "30% TQQQ core + 70% 65%-vol-target sleeve, with the winner's armed 4% minute stop.",
+  "summary": "On risk-on sessions (QQQ prior close above its 165-day SMA), hold a 30% permanent TQQQ core and put the other 70% into an inverse-vol TQQQ sleeve that targets 65% annualised 20-day volatility, with BIL as the residual; on risk-off sessions hold 100% BIL. The round-1 winner's armed 4% minute stop is applied on top. At 1 bp it returns 57.05% / 41.32% over 10 years and 50.12% / 30.16% over 5 years, versus the winner's 58.80% / 44.56% and 49.88% / 33.49%.",
+  "decision_process": "At each session's close, compute QQQ's 165-day SMA and TQQQ's 20-day realised volatility from daily closes; both are known before the next open. If QQQ's prior close is below its 165-day SMA, target 100% BIL. Otherwise target w_TQQQ = 0.30 + 0.70 × min(1, 0.65 / vol20), with BIL for the remainder; the 2% trade band suppresses small daily resizes. These daily targets are set from the prior close and fill at the next bar's open (09:31 for the first bar of the session). Intraday, on a risk-on day, the 4% stop is armed only when QQQ's first-minute close is below its prior 20-day SMA × 1.01; if armed and TQQQ's 1-minute close falls 4% below the session open, the whole book is sold at the next minute's open and held in BIL for the rest of the session and overnight. No same-bar fills.",
+  "rules": [
+    "Regime: if QQQ's prior daily close is above its 165-day SMA, the next session is risk-on; otherwise hold 100% BIL.",
+    "Risk-on sizing: w_TQQQ = 0.30 + 0.70 × min(1, 0.65 / vol20), where vol20 is the annualised 20-day standard deviation of TQQQ daily close-to-close log returns through the prior close; the remainder is BIL.",
+    "Long-only, weights sum to at most 1, and TQQQ weight never exceeds 100% (no leverage beyond TQQQ's embedded 3×).",
+    "Arm the stop only on a risk-on day when QQQ's first-minute close is below its prior 20-day SMA × 1.01.",
+    "If armed and TQQQ's 1-minute close is 4% below the session open, sell the whole book at the next minute's open and stay in BIL for the rest of the session and the following night; re-enter next session if the regime is still on.",
+    "Daily targets are set from data through the prior close and fill at the next bar's open; the 2% rebalance band applies."
+  ],
+  "status": "Alternative",
+  "metrics": {
+    "cagr10": 0.570509,
+    "dd10": 0.413206,
+    "cagr5": 0.501213,
+    "dd5": 0.301581,
+    "cagr10_5bp": 0.530480,
+    "dd10_5bp": 0.438257,
+    "cagr5_5bp": 0.461851,
+    "dd5_5bp": 0.308668
+  },
+  "verdict": "Meets the round-2 'lower drawdown with CAGR within 2 pp' test on both windows and at 1, 5 and 10 bp: 10y 57.05% / 41.32% vs the winner's 58.80% / 44.56% (CAGR −1.75 pp, DD −3.24 pp), 5y 50.12% / 30.16% is strict dominance. Calmar improves from 1.32 to 1.38 (10y) and 1.49 to 1.66 (5y). Main caveat: the 10y pass has only a 0.25 pp cushion (57.05% vs the 56.80% floor; the 20% core neighbour is 56.71% and misses), and rolling return wins are 22/27 vs the winner's 23/27, so the consistency gain is in drawdown, not return. The CAGR give-up is concentrated in the 2020 V-recovery.",
+  "sources": [
+    {
+      "idea": "Scale exposure inversely to recent realised variance; volatility-managed equity portfolios raise Sharpe because volatility changes are not matched one-for-one by expected-return changes.",
+      "source": "Moreira & Muir (2017) / Volatility-Managed Portfolios",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2659431",
+      "source_type": "paper",
+      "role": "inspired rule",
+      "evidence": "The inverse-vol TQQQ sleeve (65% target, 20-day window) is a capped implementation of their volatility-managed portfolio. Their mechanism is the reason the strategy cuts exposure when TQQQ vol is high rather than after a loss.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Volatility targeting improves Sharpe and reduces the severity of left-tail events and maximum drawdowns; a slow, broad realised-vol estimator is preferred to a fast timing signal.",
+      "source": "Harvey, Hoyle, Korgaonkar, Rattray, Sargaison & Van Hemert (2018) / The Impact of Volatility Targeting",
+      "url": "https://people.duke.edu/~charvey/Research/Published_Papers/P135_The_impact_of.pdf",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Supports the 20-day daily-close estimator and the claim that the main benefit is drawdown/tail reduction, not higher average return. The paper also documents the cost of targeting too aggressively, which motivated the 30% permanent core.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Volatility-managed portfolios often fail out of sample because of estimation instability, so the adjustment should be tempered rather than an all-or-nothing vol switch.",
+      "source": "Cederburg, O'Doherty, Wang & Yan (2020) / On the Performance of Volatility-Managed Portfolios",
+      "url": "https://doi.org/10.1016/j.jfineco.2020.04.015",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "This is the main reason the implementation keeps a 30% permanent TQQQ core and applies the vol target only to the other 70%. A pure 65% target has the best Calmar but gives up 2.66 pp of 10y CAGR, outside the 2 pp band.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Conditional volatility targeting can enhance Sharpe and reduce drawdowns and tail risk with low turnover.",
+      "source": "Bongaerts, Kang & van Dijk (2020) / Conditional Volatility Targeting",
+      "url": "https://doi.org/10.1080/0015198X.2020.1790853",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Supports a conditional/tempered vol-target rule instead of a constant leverage; the paper's low-turnover finding is consistent with the 2% band and ~93.9% average TQQQ target weight here.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "For excess mean μ and variance σ², the growth-optimal fraction is f* = μ/σ²; full Kelly is too aggressive under parameter uncertainty, so fractional Kelly is the practical choice.",
+      "source": "Thorp (2006) / The Kelly Criterion in Blackjack, Sports Betting, and the Stock Market",
+      "url": "https://gwern.net/doc/statistics/decision/2006-thorp.pdf",
+      "source_type": "paper",
+      "role": "inspired rule",
+      "evidence": "The 30/70 blend is a shrunk inverse-vol rule in the same spirit as fractional Kelly: keep a fixed core, apply a fraction of the vol-target adjustment. The literal daily Kelly formula was tested separately and rejected (see rejected_sources).",
+      "confidence": "medium"
+    },
+    {
+      "idea": "A daily-reset 3× ETF's multi-day log return is approximately 3× the index log return minus 3 × the sum of squared daily returns; volatility drag and path dependence grow with realised variance.",
+      "source": "Cheng & Madhavan (2009) / The Dynamics of Leveraged and Inverse Exchange-Traded Funds",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=1393995",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Explains why TQQQ exposure should be reduced when its own realised volatility is high: the drag term is proportional to Σr², which is exactly the state variable used in the throttle.",
+      "confidence": "high"
+    },
+    {
+      "idea": "TQQQ seeks 3× the daily index return, not 3× over longer periods; volatile markets can produce multi-day returns far from 3× and large drawdowns.",
+      "source": "ProShares / TQQQ UltraPro QQQ Summary Prospectus",
+      "url": "https://www.proshares.com/globalassets/proshares/prospectuses/tqqq_summary_prospectus.pdf",
+      "source_type": "report",
+      "role": "supports assumption",
+      "evidence": "Primary-document confirmation of the daily-reset and holding-period risk that the vol throttle is designed to manage.",
+      "confidence": "high"
+    },
+    {
+      "idea": "A long moving-average trend filter (10-month/200-day style) keeps most of the equity return with much smaller drawdowns.",
+      "source": "Faber (2007) / A Quantitative Approach to Tactical Asset Allocation",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=962461",
+      "source_type": "paper",
+      "role": "inspired rule",
+      "evidence": "The 165-day QQQ SMA regime is inherited from the round-1 winner, which follows this trend-filter literature; this strategy does not re-optimise the SMA.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Leveraged equity can be held while the index is above its long average and moved to T-bills below it.",
+      "source": "Gayed & Bilello (2016) / Leverage for the Long Run",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2741701",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Supports the regime-plus-leverage structure inherited from the winner; the round-2 contribution is only the sizing overlay.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Volatility targeting reduces drawdowns; average exposure falls when volatility is high.",
+      "source": "Man Group / The Impact of Volatility Targeting",
+      "url": "https://www.man.com/insights/the-impact-of-volatility-targeting",
+      "source_type": "blog",
+      "role": "supports assumption",
+      "evidence": "Practitioner summary of the same mechanism; used as a cross-check, not as the primary evidence.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "The exact 30% core, 65% target, 20-day window and 2% band were chosen from the local 1-minute QQQ/TQQQ/BIL parameter surface.",
+      "source": "Own test / no external source",
+      "url": null,
+      "source_type": "data",
+      "role": "inspired rule",
+      "evidence": "The surface is monotone in the target (45/55/65/80% gives 10y CAGR 49.50/53.40/56.14/58.13% and DD 32.21/36.51/39.92/43.31%). The 30% core is the round middle of a flat 20–40% plateau (10y CAGR 56.71/57.05/57.31%, DD 40.77/41.32/41.82%); it was not fitted to a single cell.",
+      "confidence": "high"
+    },
+    {
+      "idea": "The 165-day QQQ SMA regime, the armed 4% minute stop and the benchmark metrics are inherited from the round-1 winner.",
+      "source": "Round-1 winner report (internal)",
+      "url": null,
+      "source_type": "report",
+      "role": "benchmark",
+      "evidence": "Winner: 58.80% / 44.56% (10y) and 49.88% / 33.49% (5y) at 1 bp. This strategy is an overlay on that exact rule set; the stop and regime were not changed.",
+      "confidence": "high"
+    }
+  ],
+  "rejected_sources": [
+    {
+      "source": "Grossman & Zhou (1993) / Optimal Investment Strategies for Controlling Drawdowns",
+      "url": "https://doi.org/10.1111/j.1467-9965.1993.tb00044.x",
+      "why_rejected": "The implied drawdown-from-high exposure rule was tested as a 60-day drawdown throttle (w = 1 − 0.5×|DD60|, floor 25%): 10y 57.40% / 43.56%, 5y 48.70% / 32.99%, Calmar 1.32 / 1.48 versus the primary's 1.38 / 1.66. It cuts after the loss has happened and misses the rebound, so it is not used."
+    },
+    {
+      "source": "Quantmemo / Drawdown Control",
+      "url": "https://quantmemo.com/concepts/drawdown-control",
+      "why_rejected": "The practical 'exposure decreasing in drawdown' rule is the same mechanism as the Grossman–Zhou test above. Tested and rejected: no Calmar gain, and the 10y drawdown falls only from 44.56% to 43.56% while CAGR falls 1.4 pp."
+    },
+    {
+      "source": "Moskowitz, Ooi & Pedersen (2012) / Time Series Momentum",
+      "url": "https://doi.org/10.1016/j.jfineco.2011.11.003",
+      "why_rejected": "Trend-strength scaling was tested as w = 0.5 + 0.5×trend/4% (floor 50%, where trend = QQQ/SMA165 − 1): 10y 53.35% / 42.39%, 5y 43.46% / 33.46%. It is procyclical — smallest exactly at recovery starts (2019, 2020, 2023) — and lost 2–12 pp of CAGR with little drawdown benefit."
+    },
+    {
+      "source": "Thorp (2006) / Kelly criterion, direct daily implementation",
+      "url": "https://en.wikipedia.org/wiki/Kelly_criterion",
+      "why_rejected": "The literal fractional Kelly rule 0.5×μ60/σ²60, capped at 100%, was tested: 10y 25.35% / 45.38%, 5y 18.03% / 39.46%. Daily μ and σ² estimates are too noisy and imply only 20–30% exposure; full Kelly is worse. Kelly survives only as the conceptual basis for the shrunk 30/70 blend, not as a direct sizing formula."
+    },
+    {
+      "source": "Asness, Frazzini & Pedersen (2012) / Leverage Aversion and Risk Parity",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2149341",
+      "why_rejected": "Listed on the current web page but not a source for this strategy. It is a leverage-aversion/risk-parity paper, was not used to design the vol-target throttle, and was not tested here. Remove it from the paper list rather than presenting it as provenance."
+    }
+  ],
+  "corrections": [
+    "The page omits the 165-day QQQ SMA regime. It must state: if QQQ's prior close is below its 165-day SMA, the next session is 100% BIL; the volatility sizing applies only on risk-on sessions. As written, 'residual BIL' implies an always-invested book, which is wrong.",
+    "The decision text 'Signals use only data through the current bar' is inaccurate. Daily signals use the prior session's close (regime and 20-day vol); only the stop uses the current 1-minute close; every target fills at the next bar's open (09:31 for the first bar). Truncation at 2022-01-03 leaves all prior weights bit-identical.",
+    "The rules omit the stop's arm condition and holding period: it is armed only when QQQ's first-minute close is below its prior 20-day SMA × 1.01, and after a 4% stop the book stays in BIL for the rest of the session and the following night, re-entering next session if the regime is on.",
+    "The '70% sleeve at a 65% volatility target' phrasing should be written as w_TQQQ = 0.30 + 0.70 × min(1, 0.65/vol20) with BIL residual. The 70% is the weight on the vol-target signal, not a sleeve that is always 70% invested; when vol > 65% part of the sleeve is in BIL.",
+    "Paper list: remove Asness, Frazzini & Pedersen (2012) — it is not a source and was not tested. Replace the four generic 'doi.org' labels with their citations (Moreira–Muir DOI, Harvey JPM DOI, Cederburg DOI, Bongaerts DOI) and add Cheng & Madhavan (2009) for the 3× volatility-drag premise. Grossman–Zhou, Thorp and Moskowitz et al. belong in tested/rejected, not inspiration.",
+    "The verdict should include the thin 10y margin: 57.05% vs the 56.80% floor is a 0.25 pp cushion, and the 20% core neighbour is 56.71% and misses. Rolling return wins are 22/27 vs the winner's 23/27, so the consistency gain is drawdown, not return.",
+    "Rolling counts on the page are stale: the current full-float64 reproduction gives candidate drawdown < winner in 27/27 windows (not 25/27 with 2 ties) and both return+DD better in 5/27 (not 3/27). Update report §5, the Verdict line, and the web summary accordingly.",
+    "Fills on the page are stale: 10y at 1 bp is 985 fills, not 983 (the float32 panel cache path gave 983; full-float64 bt.panel gives 985). CAGR and drawdown are unchanged at two decimals.",
+    "The code link is stale: /research/code/dynamic-leverage-throttle.py still loads the float32 panel.npz cache, while the current strategy.py calls bt.panel at full float64. Refresh the code copy; the float32 cache is not byte-identical to the canonical panel.",
+    "The report's Reproduce section says strategy.py caches the 1-minute panel as panel.npz; it now calls bt.panel directly. panel.npz is no longer used and can be deleted.",
+    "Keep status Alternative; do not upgrade to Verified. The 10y criterion-2 pass is marginal, and the round-2 leader (ratio froth, 69.50% / 39.11% at 1 bp) is far ahead on return and consistency."
+  ]
+}

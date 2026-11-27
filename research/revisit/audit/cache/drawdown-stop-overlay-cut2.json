@@ -1,0 +1,1 @@
+{"slug": "drawdown-stop-overlay", "mode": "cut2", "calls": 32, "error": null, "seconds": 27.1, "restored": ["restored result.json"], "match_score": 1.0, "found": true, "kw": {"band": 0.02, "slippage_bps": 1.0, "start_equity": 100000.0}, "bars": 654958, "k": 3}

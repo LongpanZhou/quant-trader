@@ -1,0 +1,162 @@
+{
+  "agent": "drawdown-regime",
+  "original": "research/agents2/drawdown-regime",
+  "status": "rejected",
+  "idea": "After a >=20% QQQ drawdown, own TQQQ only inside a confirmed 60-session recovery window, then stand aside until the drawdown heals.",
+  "hypothesis": "The post-capitulation recovery is a distinct, time-limited return state; a confirmed turn after a deep drawdown captures it with low exposure and low correlation to slow trend-following.",
+  "universe": [
+    "QQQ (signal)",
+    "TQQQ (risk)",
+    "BIL (cash)"
+  ],
+  "frozen_commit": null,
+  "variants_tried": 23,
+  "corr_vs_165d_baseline": 0.2979271874106297,
+  "max_corr_vs_other_rebuilds": null,
+  "windows": {
+    "dev": {
+      "1bp": {
+        "cagr": 0.17198446387486577,
+        "max_drawdown": 0.49024606451698594,
+        "sharpe": 0.7759165670600479,
+        "sortino": 1.1456560798414075,
+        "volatility": 0.24321925216986207,
+        "fills": 33,
+        "turnover": 75.20650670182124,
+        "ending_equity": 355053.3583652137
+      },
+      "5bp": {
+        "cagr": 0.17004850818932704,
+        "max_drawdown": 0.4926870206781153,
+        "sharpe": 0.7690949501521575,
+        "sortino": 1.1351580938157935,
+        "volatility": 0.24322028942102908,
+        "fills": 33,
+        "turnover": 74.6781621894188,
+        "ending_equity": 350397.4921991933
+      },
+      "10bp": {
+        "cagr": 0.16763309179840014,
+        "max_drawdown": 0.495721786921299,
+        "sharpe": 0.7605520925097092,
+        "sortino": 1.1220113684729611,
+        "volatility": 0.24322912716714776,
+        "fills": 33,
+        "turnover": 74.02428080153727,
+        "ending_equity": 344663.49610837386
+      }
+    },
+    "holdout": null,
+    "10y": null,
+    "5y": null
+  },
+  "marks": "1m",
+  "benchmarks": {
+    "original": {
+      "cagr": 0.45455330484765577,
+      "max_drawdown": 0.5876387357729532,
+      "sharpe": 1.0272095942674446,
+      "fills": 81
+    }
+  },
+  "episodes": [
+    {
+      "entry_i": 764,
+      "entry_date": "2019-01-16",
+      "dd": -0.12639149044800446,
+      "trough": -0.2279663232135254,
+      "exit_i": 824,
+      "exit_date": "2019-04-12",
+      "exit_reason": "time",
+      "days": 60,
+      "ret": 0.45517984608467366
+    },
+    {
+      "entry_i": 1074,
+      "entry_date": "2020-04-09",
+      "dd": -0.15183804609520746,
+      "trough": -0.2855936507842982,
+      "exit_i": 1134,
+      "exit_date": "2020-07-07",
+      "exit_reason": "time",
+      "days": 60,
+      "ret": 0.9771098115066075
+    },
+    {
+      "entry_i": 1564,
+      "entry_date": "2022-03-21",
+      "dd": -0.12885406718860304,
+      "trough": -0.21143566741462494,
+      "exit_i": 1583,
+      "exit_date": "2022-04-18",
+      "exit_reason": "low",
+      "days": 19,
+      "ret": -0.12088528301792978
+    },
+    {
+      "entry_i": 1647,
+      "entry_date": "2022-07-20",
+      "dd": -0.2583451831408178,
+      "trough": -0.32654543671502323,
+      "exit_i": 1675,
+      "exit_date": "2022-08-29",
+      "exit_reason": "low",
+      "days": 28,
+      "ret": 0.024075354641810653
+    },
+    {
+      "entry_i": 1716,
+      "entry_date": "2022-10-26",
+      "dd": -0.2921068996622902,
+      "trough": -0.35056466570311584,
+      "exit_i": 1723,
+      "exit_date": "2022-11-04",
+      "exit_reason": "low",
+      "days": 7,
+      "ret": -0.1440036970091405
+    },
+    {
+      "entry_i": 1729,
+      "entry_date": "2022-11-14",
+      "dd": -0.28276676076464535,
+      "trough": -0.3511871989390044,
+      "exit_i": 1752,
+      "exit_date": "2022-12-16",
+      "exit_reason": "low",
+      "days": 23,
+      "ret": -0.12133507265762145
+    },
+    {
+      "entry_i": 1772,
+      "entry_date": "2023-01-18",
+      "dd": -0.25366461351953384,
+      "trough": -0.3511871989390044,
+      "exit_i": 1802,
+      "exit_date": "2023-03-02",
+      "exit_reason": "low",
+      "days": 30,
+      "ret": 0.02114221594670762
+    },
+    {
+      "entry_i": 1816,
+      "entry_date": "2023-03-22",
+      "dd": -0.1575083614385714,
+      "trough": -0.3511871989390044,
+      "exit_i": 1876,
+      "exit_date": "2023-06-16",
+      "exit_reason": "time",
+      "days": 60,
+      "ret": 0.6495524664505947
+    }
+  ],
+  "params": {
+    "window": 252,
+    "deep_dd": 0.2,
+    "entry_break": 20,
+    "hold": 60,
+    "exit_low": 20,
+    "rearm": 0.05
+  },
+  "note": "tuned 2026-11-27: spec-vs-code arm fix, session-open fill, daily-close breakout source. Fails pre-registered F1 (dev DD > 35%) and F6 (2022-23 DD > 25%); see DIAGNOSIS.md.",
+  "exposure": 0.1429260244538804
+}

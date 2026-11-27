@@ -1,0 +1,214 @@
+{
+  "slug": "gap-capitulation-reversal",
+  "name": "Gap capitulation",
+  "tagline": "The cross-overnight capitulation bounce is real, but it is not incremental to the winner.",
+  "summary": "In a QQQ 165-day bull regime, a QQQ close of -2% or worse is followed by a positive next-session TQQQ open-to-close (+0.92%, t=2.33, n=97), and a -3% intraday low by +1.21% (t=1.96, n=52); a 20-day drawdown of -10% or worse by +2.45% (t=2.19, n=24). The effect is concentrated in sessions where the regime is still on at the next open (+0.99%, t=2.44, n=88; +2.78%, t=2.26, n=19) and vanishes when the regime is off. But the round-1 winner is already long on those days and its 4% stop re-enters at the next open, so the event adds nothing; a standalone gap-down event strategy makes only 7.74%/21.22% (10y) and 7.95%/8.20% (5y) at 1 bp and fails versus TQQQ.",
+  "decision_process": "The event is measured on the event day: a gap is known at the 09:30 open, a close/drawdown event at the 15:59 close. If the event day is in a bull regime (QQQ close > 165-day SMA using prior closes), buy TQQQ at the next session's 09:30 open (weights set on the last bar of the event day, filled at the next open). The standalone test holds one session and exits at the following open; the 4% stop is measured from the session open, uses the current minute close and fills at the next minute open, and the trade also exits on regime off. The same event is used as an overlay test on the winner, never as a look-ahead: no signal uses the event day's close to trade the event day itself.",
+  "rules": [
+    "Bull regime: QQQ prior close > 165-day SMA of QQQ daily closes; otherwise BIL.",
+    "Standalone event tested: QQQ gap <= -1.5% at the event day's open, in a bull regime; buy TQQQ at the next session's open only if the regime is still on at the event day's close.",
+    "Hold 1 session and exit at the next open; 4% stop below the session open, next-minute fill; exit on regime off.",
+    "Event-study signals (next-open entry, 1/3/5-session holds): QQQ gap <= -1.5/-2/-3%; TQQQ gap <= -5/-6/-8%; QQQ intraday low <= -2/-3/-4%; QQQ close <= -2/-2.5%; QQQ 20-day drawdown <= -8/-10%.",
+    "Winner-overlay tests: arm the 4% stop on a gap-down (gap-arm), suppress the stop once QQQ <= -3% from the prior close, and arm the stop after a prior QQQ -2% day."
+  ],
+  "status": "Negative",
+  "metrics": {
+    "cagr10": 0.0774,
+    "dd10": 0.2122,
+    "cagr5": 0.0795,
+    "dd5": 0.0820,
+    "cagr10_5bp": 0.0697,
+    "dd10_5bp": 0.2122,
+    "cagr5_5bp": 0.0731,
+    "dd5_5bp": 0.0834,
+    "cagr10_10bp": 0.0602,
+    "dd10_10bp": 0.2122,
+    "cagr5_10bp": 0.0651,
+    "dd5_10bp": 0.0853
+  },
+  "verdict": "Clean negative. The cross-overnight bounce is statistically real (t about 2.0-2.4 for the close and intraday-low events) but redundant: the winner's 4% stop already exits the crash and re-enters at the next open. The standalone event strategy is not investable (7.74%/21.22% 10y, 7.95%/8.20% 5y at 1 bp; 6.02%/21.22% and 6.51%/8.53% at 10 bp) and loses to TQQQ by about 31 pp and 5.5 pp of CAGR. The best winner overlay (gap-arm) is 58.90%/44.56% 10y and 49.88%/33.49% 5y, statistically unchanged from the winner's 58.80%/44.56% and 49.88%/33.49%. Main caveat: the event samples are small (gap <= -3%: n=8; TQQQ gap <= -8%: n=8; 20-day DD <= -10%: n=24) and the whole family is a 2020/2022-heavy tail study.",
+  "sources": [
+    {
+      "idea": "Large one-day declines can reverse over the next session, but the effect is a liquidity/bid-ask phenomenon, not overreaction; long-horizon performance after large declines is poor.",
+      "source": "Cox & Peterson (1994) - Stock Returns following Large One-Day Declines",
+      "url": "https://onlinelibrary.wiley.com/doi/10.1111/j.1540-6261.1994.tb04428.x",
+      "source_type": "paper",
+      "role": "tested only",
+      "evidence": "Finds short-term reversals after large one-day declines and attributes them to bid-ask bounce and market liquidity; finds no evidence for the overreaction hypothesis and reports extended-horizon underperformance. Used as the skeptical prior and as the reason the standalone event edge was not assumed to be tradable.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Overnight and intraday returns reverse across periods, and short-term reversal-strategy profits are earned overnight.",
+      "source": "Lou, Polk & Skouras (2019) - A Tug of War: Overnight versus Intraday Expected Returns",
+      "url": "https://doi.org/10.1016/j.jfineco.2019.03.011",
+      "source_type": "paper",
+      "role": "inspired rule",
+      "evidence": "Documents strong own-component continuation and an offsetting cross-period reversal; the short-term reversal strategy earns its profit overnight. This is the direct motivation for entering at the next session's open rather than intraday.",
+      "confidence": "high"
+    },
+    {
+      "idea": "The U.S. equity premium is earned mostly overnight.",
+      "source": "Cliff, Cooper & Gulen (2008) - Return Differences between Trading and Non-Trading Hours: Like Night and Day",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=1004081",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Decomposes the equity premium into open-to-close and close-to-open; the overnight leg carries essentially all of it for indices, futures and stocks. Supports the next-open entry as the natural place to capture a post-capitulation bounce.",
+      "confidence": "high"
+    },
+    {
+      "idea": "The overnight drift is large, persistent and visible across markets.",
+      "source": "Haghani, Ragulin & Dewey (2022/2024) - Night Moves: Is the Overnight Drift the Grandmother of All Market Anomalies?",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4139328",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Documents the overnight drift and its persistence; used as background for why the cross-overnight version of the event is the one worth testing.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Gap downs are slightly more likely to be reversed intraday than gap ups, but the edge is small.",
+      "source": "QuantifiedStrategies - How Often Do Overnight Gaps Get Reversed?",
+      "url": "https://www.quantifiedstrategies.com/how-overnight-gaps-get-reversed/",
+      "source_type": "blog",
+      "role": "tested only",
+      "evidence": "SPY sample of 5,006 gaps: 52% of gap downs reversed intraday versus 35% of gap ups; GLD and TLT show no bias. Used to define the gap-down event, not as proof of a tradable next-session edge.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "A gap down does not reliably predict the day's direction; the open-to-close edge is near a coin flip.",
+      "source": "QuantifiedStrategies - What's the Chance the Market Closes Lower After a Gap Down?",
+      "url": "https://www.quantifiedstrategies.com/whats-the-chance-the-market-closes-lower-after-a-gap-down/",
+      "source_type": "blog",
+      "role": "tested only",
+      "evidence": "Reports a 53% chance the market closes above the open after a gap down and a 47% chance it closes lower. Consistent with the weak same-day gap-fade result and the decision to use the next session's open.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Big gap downs have a small positive open-to-close drift and fill only about 40% of the time.",
+      "source": "TradeIntel - SPX 0DTE: What an Opening Gap Tells You About the Day",
+      "url": "https://tradeintel.ca/research/sp500-opening-gaps.html",
+      "source_type": "report",
+      "role": "benchmark",
+      "evidence": "33 years of S&P 500 gaps: big gap down (>1%) open-to-close +0.11%, 52% green, 40% fill. Used as the external benchmark for the same-day gap behavior; my data shows the stronger bounce is in the first hour, not in the next session.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "A gap-down reversal may build over three sessions.",
+      "source": "Mosaic Research - What Happens After the S&P 500 Gaps Down?",
+      "url": "https://mosaic.trade/research/us500-gap-down-next-three-days",
+      "source_type": "blog",
+      "role": "tested only",
+      "evidence": "10 matched US500 sessions, 8 of 10 higher after 3 days, median +103 points; the author explicitly warns that 10 observations cannot establish a stable probability. Used only as an anecdote; rejected as statistical evidence.",
+      "confidence": "low"
+    },
+    {
+      "idea": "After a 2% or 3% down day, the next session is up about 55-58% of the time with a small positive median.",
+      "source": "jorgai - Buy the Dip: Every S&P 500 Dip Since 1950, Measured",
+      "url": "https://jorgai.com/blog/buy-the-dip-what-every-sp-500-dip-since-1950-shows",
+      "source_type": "blog",
+      "role": "benchmark",
+      "evidence": "S&P 500 since 1950: after a 2% down day, next day median +0.2%, 55% up; after 3%, +0.3%, 58% up; month-ahead +2.4% after 2% days. Used to sanity-check the magnitude of the cross-overnight bounce; my regime-on numbers are larger because of the bull-regime filter.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Buying QQQ after a 2% fall and holding five days is not a reliable standalone edge after costs.",
+      "source": "Finabase - Buying after large one-day falls: the rules and a backtest",
+      "url": "https://finabase.io/learn/strategies/buying-after-large-one-day-falls",
+      "source_type": "blog",
+      "role": "tested only",
+      "evidence": "QQQ daily sample: 16 of 28 next days up after a 2% fall, five-day outcomes ranging from +9.07% to -9.87%, about 82% cash, 10 bp round-trip costs. Its failure matches my standalone result and is why the event is reported as an overlay candidate, not a strategy.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Stop-loss rules add value when returns have momentum/regime shifts; do not suppress a stop into a falling market.",
+      "source": "Kaminski & Lo (2014) - When Do Stop-Loss Rules Stop Losses?",
+      "url": "https://doi.org/10.1016/j.finmar.2013.07.001",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Shows stop-losses add value when returns have momentum and cost little when they do not. Used to motivate the stop-suppression test and to interpret the result: suppressing the stop once QQQ is -3% from the prior close is much worse (52.37%/56.89% 10y).",
+      "confidence": "high"
+    },
+    {
+      "idea": "Intraday and overnight returns can be decomposed, and end-of-day price pressure reverses overnight.",
+      "source": "Bondarenko & Muravyev (2021) - Market Return Around the Clock: A Puzzle (NY Fed Staff Report 917)",
+      "url": "https://www.newyorkfed.org/medialibrary/media/research/staff_reports/sr917.pdf",
+      "source_type": "report",
+      "role": "supports assumption",
+      "evidence": "Documents the intraday/overnight pattern and end-of-day price pressure. Consistent with the cross-overnight entry, though not specific to gap-down or capitulation events.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Selling a QQQ gap down is harmful; after a QQQ gap below -2% in a regime-on market the next 60 minutes of TQQQ average +223 bp (t=3.61, n=20).",
+      "source": "Local round-2 agent 17 report - overnight-crash-filter",
+      "url": null,
+      "source_type": "report",
+      "role": "supports assumption",
+      "evidence": "Section 7.2 of the local report: gap-down exits cost 3-8 pp of CAGR and do not reduce drawdown; the first hour after a gap down bounces. I reproduced the same direction in my own data and therefore did not build a gap-fade strategy.",
+      "confidence": "high"
+    },
+    {
+      "idea": "The round-1 winner's stop-and-next-open re-entry already captures the post-capitulation bounce; after a -3% QQQ drawdown the next session open-to-close averages +1.17% (62% win, n=48).",
+      "source": "Local round-1 report - intraday-mean-reversion",
+      "url": null,
+      "source_type": "report",
+      "role": "inspired rule",
+      "evidence": "Event study of the 3% stop: overnight gap -0.69%, next session open-to-close +1.17%. This is the direct antecedent of my next-open entry and the reason the event overlay is redundant.",
+      "confidence": "high"
+    },
+    {
+      "idea": "The 165-day QQQ SMA regime and the armed 4% intraday stop are the round-1 winner.",
+      "source": "Local round-1 report - daily-regime-minute-entry / this repo",
+      "url": null,
+      "source_type": "report",
+      "role": "benchmark",
+      "evidence": "The winner's exact rules and 58.80%/44.56% (10y) and 49.88%/33.49% (5y) at 1 bp. I reproduced these exactly, including 5 bp (54.60%/47.08%, 45.89%/34.13%) and 10 bp (49.50%/50.06%, 41.05%/34.93%).",
+      "confidence": "high"
+    },
+    {
+      "idea": "All event definitions, threshold choices, overlay tests and the standalone metrics in result.json.",
+      "source": "Own test / no external source",
+      "url": null,
+      "source_type": "data",
+      "role": "tested only",
+      "evidence": "research/agents2/gap-capitulation-reversal/result.json and strategy.py: 160 winner stop events, the event-study grid, gap-arm at 1.5%, stop suppression at 3%, prior-day-down arm at 2%, and the standalone QQQ gap <= -1.5%/1-day/4%-stop run at 1/5/10 bp.",
+      "confidence": "high"
+    }
+  ],
+  "rejected_sources": [
+    {
+      "source": "QuantifiedStrategies - Gap Reversal (the page currently cited by the web export)",
+      "url": "https://www.quantifiedstrategies.com/gap-reversal-trading-strategy/",
+      "why_rejected": "The page could not be retrieved (bot verification), so it cannot be cited as the exact source of the rule. More importantly, the gap-fade premise was tested and rejected as a standalone: the gap-down bounce is concentrated in the first hour and the next-session edge is weak (QQQ gap <= -2%: +1.10%, t=0.86, n=20), and the standalone strategy is far below TQQQ."
+    },
+    {
+      "source": "Mosaic Research - What Happens After the S&P 500 Gaps Down?",
+      "url": "https://mosaic.trade/research/us500-gap-down-next-three-days",
+      "why_rejected": "Only 10 observations and one April 2025 tariff-shock outlier; the author warns it is not a stable probability. Used only as an anecdote, not as evidence for a rule."
+    },
+    {
+      "source": "Finabase - Buying after large one-day falls (QQQ, 2% fall, 5-day hold)",
+      "url": "https://finabase.io/learn/strategies/buying-after-large-one-day-falls",
+      "why_rejected": "The rule is not a standalone edge after costs in the source's own test (16/28 next days up, wide +9%/-10% spread, 82% cash), and my standalone QQQ gap event fails the same way. Kept only as a caution about buying the first bounce."
+    },
+    {
+      "source": "Own idea - buy the gap open and fade the gap down",
+      "url": null,
+      "why_rejected": "Tested and rejected: the event-day open-to-close return after a QQQ close <= -2% is -5.96% (the down day continues), and the gap-down bounce is in the first hour (+2.09% for gap <= -2% and low <= -3%, t=2.47), not in the next session. A next-open entry is the only causal version of the trade."
+    },
+    {
+      "source": "Own idea - suppress the 4% stop once QQQ is -3% from the prior close (do not stop into capitulation)",
+      "url": null,
+      "why_rejected": "Tested and much worse: 52.37%/56.89% (10y) and 45.43%/39.29% (5y) versus the winner's 58.80%/44.56% and 49.88%/33.49%. The stop is the crash hedge; removing it at the moment of maximum stress destroys the result."
+    }
+  ],
+  "corrections": [
+    "The web page conflates the event study with the standalone strategy. The metrics 7.74%/21.22% (10y) and 7.95%/8.20% (5y) belong to the QQQ gap <= -1.5%, 1-day, 4%-stop standalone, not to the 'QQQ close <= -2% or -3% intraday low' signal. Either state the gap <= -1.5% entry and the 4% stop explicitly, or relabel the metrics as the gap-down variant.",
+    "Add the exact 5 bp standalone metrics: 6.97%/21.22% (10y) and 7.31%/8.34% (5y). The 10 bp values are 6.02%/21.22% and 6.51%/8.53%. The page currently shows only 1 bp, which makes the result look better than the honest cost range; the pass/fail is unchanged because the CAGR is 31 pp below TQQQ.",
+    "Do not imply that the gap-arm overlay improves the winner. Winner + gap-arm 1.5% is 58.90%/44.56% (10y) and 49.88%/33.49% (5y), versus the winner's 58.80%/44.56% and 49.88%/33.49%; the +0.10 pp is one extra fill, not an edge. The MA20 gate already arms the stop on the large gap-down days.",
+    "Do not promote the prior-day-down arm. Its +2.26 pp 10y CAGR (61.06%/44.56%) comes from exactly two sessions, 2020-06-12 and 2020-09-04; the 5y result is identical to the winner. It is a two-event artifact and should not be presented as an overlay.",
+    "The stop-event claim in the report must be causal. Split by the QQQ drawdown at the time of the stop, the <= -3% bucket is n=5 and -0.93% per event (t=-0.40), while the > -3% bucket is n=155 and +0.46% (t=1.81); overall stop-vs-hold is +0.41% per event (t=1.63). The earlier +2.69% (t=3.38) figure conditioned on the day's eventual low, which is ex-post and should not be quoted as a causal stop-quality result.",
+    "Attach the 't about 2.0-2.4' claim to the close/intraday-low events, not the gap events. QQQ close <= -2%: +0.92%, t=2.33, n=97; QQQ low <= -3%: +1.21%, t=1.96, n=52; regime-on subsets: +0.99%, t=2.44, n=88 and +1.33%, t=2.10, n=46. The gap signals are weaker: QQQ gap <= -2% +1.10%, t=0.86, n=20; TQQQ gap <= -5% +0.99%, t=1.06, n=34; QQQ gap <= -3% n=8.",
+    "Do not cite the standalone's low drawdown as a risk-management success without the exposure caveat. It beats TQQQ CAGR in 8/28 ten-year rolling windows and 13/20 five-year windows, with lower drawdown in 28/28 and 20/20 only because it is in TQQQ about 5% of the time. The winner beats TQQQ CAGR in 23/28 and 19/20.",
+    "The source attribution in the web export (GAP_STRATEGY, LOU, CLIFF) is directionally right but too loose. GAP_STRATEGY (QuantifiedStrategies Gap Reversal) could not be retrieved and was not the exact source used; the gap evidence I actually used is the QuantifiedStrategies gap-down frequency pages and the TradeIntel 33-year gap table. Lou-Polk-Skouras and Cliff-Cooper-Gulen support the overnight entry, not the gap-down event itself. The 165-day SMA regime and the 4% stop are repo/round-1 constructs, not from a paper.",
+    "The page should say explicitly that this family is an event study, not a strategy: the strongest signal (QQQ 20-day drawdown <= -10%) has n=24 and is concentrated in 2020 and 2022, and the gap <= -3% signal has n=8. The small-sample caveat is material."
+  ]
+}

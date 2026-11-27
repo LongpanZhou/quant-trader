@@ -1,0 +1,141 @@
+{
+  "slug": "intraday-seasonality",
+  "name": "Late-day de-risk",
+  "tagline": "Sell TQQQ for the last 30 minutes when a risk-on day is more than 1% below its 09:30 open at 15:00.",
+  "summary": "Runs the round-1 winner (QQQ 165-day SMA regime, 100% TQQQ risk-on / 100% BIL risk-off, plus the 4% intraday stop) and adds one conditional 30-minute de-risk: on a risk-on session where QQQ is more than 1% below its session open at 15:00, the TQQQ position is moved to BIL from the 15:01 open to the 15:30 open, then the overnight hold resumes. The premise is the daily-reset 3x fund's forced closing rebalance, which sells into a down close. It is a return overlay, not a drawdown fix: +2.55 pp of 10y CAGR and +3.58 pp of 5y CAGR at 1 bp, with 10y DD 44.18% vs 44.56% and 5y DD 33.50% vs 33.49%.",
+  "decision_process": "Once per session, on the 15:00 bar close (15:00:59 ET), read q_day = QQQ(15:00) / QQQ(09:30 open) - 1. If the regime is risk-on (QQQ prior close > 165-day SMA) and the winner's 4% stop has not already fired and q_day < -1.0%, set the 15:00 bar's target to 100% BIL; that order fills at the 15:01 open. Restore the 100% TQQQ target on the 15:29 bar so the buy fills at the 15:30 open and the position is long into the close and overnight. If the stop already fired or the regime is off, the book is already in BIL and the overlay does nothing. All signals use bars through the 15:00 close; every fill is at the next bar's open.",
+  "rules": [
+    "Regime gate: hold 100% TQQQ only while QQQ's prior daily close is above its 165-day SMA; otherwise hold 100% BIL for the whole session.",
+    "Winner's stop: on a risk-on day armed when QQQ's first-minute price is below its 20-day SMA x 1.01, if TQQQ trades 4% below the session open, sell at the next minute's open and stay in BIL for the rest of the day and the night.",
+    "Late-day carve: at 15:00, if still long TQQQ and QQQ is more than 1% below the 09:30 open, sell TQQQ at the 15:01 open and hold BIL.",
+    "Buy TQQQ back at the 15:30 open and hold it overnight; risk-on days that do not trigger the carve are unchanged."
+  ],
+  "status": "Fragile",
+  "metrics": {
+    "cagr10": 0.6135,
+    "dd10": 0.4418,
+    "cagr5": 0.5346,
+    "dd5": 0.335,
+    "cagr10_5bp": 0.548,
+    "dd10_5bp": 0.4747,
+    "cagr5_5bp": 0.4739,
+    "dd5_5bp": 0.3429
+  },
+  "verdict": "At 1 bp it beats the winner on both windows' return (+2.55 pp 10y, +3.58 pp 5y) with 10y DD 0.38 pp lower and 5y DD flat, and 26/27 rolling 3-year windows beat the winner. But 218 of 317 signal days are pre-empted by the winner's stop or the risk-off regime, leaving only ~10 executed trades a year (t = 1.97); 2026 was negative; at 5 bp the return gain is +0.20/+1.50 pp with worse DD; at 10 bp it loses. Treat it as a sub-2 bp execution tweak, not a robust alpha or a drawdown fix.",
+  "sources": [
+    {
+      "idea": "Sell TQQQ for the 15:01-15:30 window on risk-on days when QQQ is more than 1% below its session open at 15:00, then buy back for the overnight hold.",
+      "source": "Own test / no external source",
+      "url": null,
+      "source_type": "data",
+      "role": "inspired rule",
+      "evidence": "Own 1-minute QQQ/TQQQ panel, 2017-2026. Gain per event = -(TQQQ 15:01 open to 15:30 open): 195 risk-on signal days, mean +19.99 bp, t = 3.02, win 57.6%; IS 2017-2021 +16.20 bp (t = 1.63, n = 106), OOS 2022-2026 +24.49 bp (t = 2.93, n = 89). Every threshold from 0% to -2% improves 10y CAGR at 1 bp. The rule is an empirical discovery from this data, not a published rule.",
+      "confidence": "high"
+    },
+    {
+      "idea": "A daily-reset leveraged ETF's closing rebalance is price-insensitive, executed at the close, and pushes the close in the direction of the day's move, creating end-of-day momentum.",
+      "source": "Mathis & Moerke (2022) - Liquidity Provision to Leveraged ETFs and Equity Options Rebalancing Flows",
+      "url": "https://wp.lancs.ac.uk/fofi2022/files/2022/08/FoFI-2022-027-Mathis-Moerke.pdf",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "The working paper documents 'large price pressure on end-of-day returns' when leveraged-ETF swap counterparties rebalance, states that 'leveraged ETFs contribute to a basket-wide momentum effect', that swap counterparties 'are required to establish the target exposure of the fund at the close', and that the leveraged-ETF effect is 'significantly decreasing' over time. The last point matches the 2024-2026 attenuation observed here.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Late-day leveraged-ETF rebalancing price pressure exists in the academic literature, but its economic magnitude is disputed.",
+      "source": "Lenkey (2024) - The market impact of leveraged ETFs: A survey of the literature, Quantitative Finance and Economics 8(4), 815-840",
+      "url": "https://doi.org/10.3934/QFE.2024031",
+      "source_type": "paper",
+      "role": "benchmark",
+      "evidence": "Survey of the late-day LETF literature. It reports statistically significant associations between rebalancing demand and late-day returns/volatility, but concludes that 'the economic associations appear to be insignificant' and that liquidity is generally sufficient. Used as a caution, not as support: it is a reason to keep the position small and the cost assumption conservative.",
+      "confidence": "high"
+    },
+    {
+      "idea": "The size of the forced rebalance is dE = L(L-1) * r * NAV, i.e. 6% of NAV per 1% of index return for a 3x fund.",
+      "source": "Cheng & Madhavan (2009) - The Dynamics of Leveraged and Inverse Exchange-Traded Funds",
+      "url": null,
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Standard derivation of the daily-reset trade used for the arithmetic in the report ('6% of NAV per 1% index move'). Referenced from the report text; the URL is left null because it was not fetched during this work.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "In a real selloff the leveraged QQQ complex has to sell billions into the close, and that flow lands in the closing auction.",
+      "source": "ETF.com - One Bad Day: A levered-QQQ ETF Case Study",
+      "url": "https://www.etf.com/sections/equity/one-bad-day-levered-qqq-etf-case-study",
+      "source_type": "blog",
+      "role": "supports assumption",
+      "evidence": "Walks through a specific down day for TQQQ/SQQQ and estimates roughly $12.8bn of TQQQ selling needed 'sometime between roughly 3:30 and the close'. Anecdotal but a concrete illustration of the mechanism.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "The reset flow is executed in or around the closing auction, so the pressure is concentrated in the last part of the session.",
+      "source": "Strasmore - Leveraged ETF Rebalancing Into the Close",
+      "url": "https://www.strasmore.com/blog/leveraged-etf-rebalancing-and-the-close",
+      "source_type": "blog",
+      "role": "supports assumption",
+      "evidence": "Gives the reset arithmetic (a 3x fund trades roughly six times the day's index move against NAV) and shows TQQQ printing about 0.36% of session volume in the closing cross and about 9.5% in the closing stretch. Consistent with a late-day, not all-day, effect.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Market intraday momentum: the first half-hour return predicts the last half-hour return, stronger on volatile days.",
+      "source": "Gao, Han, Li & Zhou (2018) - Market Intraday Momentum, Journal of Financial Economics 129(2), 394-414",
+      "url": "https://doi.org/10.1016/j.jfineco.2018.05.009",
+      "source_type": "paper",
+      "role": "tested only",
+      "evidence": "Tested the literal first-30-minutes predictor on this data: regressing the last-hour TQQQ return on the first-30-minute QQQ return gives beta +0.14 (t = 2.16) in 2017-2021 and -0.10 (t = -1.63) in 2022-2026, i.e. no stable rule. The day-so-far signal used here is a different, much stronger construction. The paper is related literature and the origin of the family, not the source of this rule.",
+      "confidence": "high"
+    }
+  ],
+  "rejected_sources": [
+    {
+      "source": "Vojtko & Dujava (2024) - Lunch Effect in the U.S. Stock Market Indices",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4934614",
+      "why_rejected": "The 12:00-14:00 TQQQ mean is -2.92 bp in 2017-2021 and +3.78 bp in 2022-2026 (sign flip). Carving lunch on OpEx weeks gave 54.31/45.52 (10y) and 46.51/32.18 (5y) vs the winner's 58.80/44.56 and 49.88/33.49, i.e. worse on both windows. The only stable lunch pattern is continuation after a >3% morning (+24 bp in both halves), which the winner already captures by staying long."
+    },
+    {
+      "source": "Stivers & Sun (2013) - Returns and option activity over the option-expiration week for S&P 100 stocks",
+      "url": "https://doi.org/10.1016/j.jbankfin.2013.07.007",
+      "why_rejected": "The paper documents a positive OpEx-week drift, not the negative last-30-minutes block. The OpEx-week 15:00-15:30 block is negative in both halves (-3.28 / -6.63 bp), so the carve does cut 10y DD to 40.87%, but with ~100 fills a year it collapses at 5 bp (44.95/47.81 and 37.77/33.07). Not usable as a weekly-drift rule."
+    },
+    {
+      "source": "ChartingLens - Options Expiration Week: What 37 Years of OPEX Data Show",
+      "url": "https://chartinglens.com/blog/options-expiration-week-stock-returns",
+      "why_rejected": "Used as evidence against the OpEx-week drift: S&P 500 OpEx weeks average +0.22% vs +0.23% for ordinary weeks since 1990, and the week-after effect flipped in the 2020s. This corroborates dropping the calendar version of the trade."
+    },
+    {
+      "source": "Does overnight return predict the first half-hour return for U.S. market indices? (2026)",
+      "url": "https://www.sciencedirect.com/science/article/abs/pii/S1062940826001294",
+      "why_rejected": "Motivated the opening 5-minute reversal test. In this data a gap below -2% gives a 09:31-09:35 TQQQ return of +2.8 bp in 2017-2021 but -5.7 bp in 2022-2026; a gap above +2% gives +1.4 bp then -3.5 bp. No stable opening reversal, and the overlay versions were within about 1 pp of the winner at best (57.61/45.66 and 58.90/44.25)."
+    },
+    {
+      "source": "Ariel (1990) pre-holiday effect, as re-tested by Ko et al. (2024), Critical Finance Review",
+      "url": "https://cfr.ivo-welch.org/forthcoming/papers/ko2021pre.pdf",
+      "why_rejected": "Pre-holiday overnight is +9.0 bp in 2017-2021 and -26.5 bp in 2022-2026; post-holiday overnight is +46.0 bp then -81.8 bp. The replication itself finds the premium has become a small-firm effect and is insignificant for large caps after 1990, which matches the sign flip here."
+    },
+    {
+      "source": "Kim & Park (1994) - Holiday Effects and Stock Returns: Further Evidence, JFQA 29(1)",
+      "url": "https://doi.org/10.2307/2331196",
+      "why_rejected": "Same pre-holiday family; used only to establish that the anomaly is old and has decayed. Disarming the winner's stop on pre-holiday days rests on 4 stop events in 10 years, and on post-holiday days on 5 - too few to trust."
+    },
+    {
+      "source": "Own test / no external source - day-of-week and stop-gating variants",
+      "url": null,
+      "why_rejected": "Tuesday overnight is +42.5 bp IS / +1.5 bp OOS; Monday overnight +41.8 / -20.9; Wednesday 15:30-15:59 is -17.9 / -7.3 (stable) but the carve is not a clean win across windows. Disarming the stop on Fridays gives 61.76/41.27 (10y) but blows the 5y DD out to 39.29%. None survived as a rule."
+    }
+  ],
+  "corrections": [
+    "WRONG PAPER LINK: the page's 'Lenkey (2024) - Leveraged ETF Rebalancing and Late-Day Flow' (https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4710812) does not match the paper used. Replace it with Lenkey (2024), 'The market impact of leveraged ETFs: A survey of the literature', Quantitative Finance and Economics 8(4):815-840, https://doi.org/10.3934/QFE.2024031. That survey is sceptical of the economic significance ('the economic associations appear to be insignificant'), so it should be presented as a caveat, not as support.",
+    "ATTRIBUTION: Gao, Han, Li & Zhou (2018) is listed first as if it inspired the rule. It did not. The rule came from the day-so-far signal found in this data; the paper's literal first-half-hour predictor was tested and failed here (last-hour regression beta +0.14, t = 2.16 IS; -0.10, t = -1.63 OOS). Label it 'related literature / tested only'.",
+    "MISSING METRICS: add the measured 5 bp numbers to the metrics block - cagr10_5bp 0.5480, dd10_5bp 0.4747, cagr5_5bp 0.4739, dd5_5bp 0.3429.",
+    "VERDICT IMPRECISION: 'edge is ~zero at 5 bp' should be 'a wash at 5 bp, a loss at 10 bp'. At 1 bp the 5y CAGR is +3.58 pp above the winner with DD flat; at 5 bp it is +1.50 pp CAGR but +0.16 pp DD; at 10 bp it is -0.93 pp CAGR. The page also omits that the 5y return beats the winner at 1 bp.",
+    "REPORT SECTION 5 ERROR (mirrored on the page): 'Wednesday 15:30-15:59 ... carving it loses 1.6 pp of 10y CAGR' is wrong. Carving the Wednesday 15:30-15:59 block actually gains +1.47 pp of 10y CAGR and cuts 10y DD from 44.56% to 41.89% (it loses 1.71 pp of 5y CAGR). The -1.6 pp figure belongs to the Wednesday 15:00-15:30 carve (57.18/45.21).",
+    "SAME PARAGRAPH: 'the four-fill-per-week cost' is wrong - the Wednesday carve is one round trip (two fills) per week, about 104 fills a year at ~20% of sessions.",
+    "STATUS: 'Verified' overstates it. Only ~10 trades a year execute, the executed-event t-stat is 1.97, 2026 was negative, 5 bp is a wash and 10 bp loses. 'Fragile' is the honest label unless 'Verified' only means independently reproduced and beats TQQQ.",
+    "TIMING: state the 15:00/15:01/15:30 mapping explicitly. The page says 'next bar's open' but not that the signal is the 15:00 bar close (15:00:59), the sell fills at 15:01 and the buy at 15:30.",
+    "PROVENANCE MIX: the papers list mixes supporting and rejected sources. Move the lunch-effect paper (SSRN 4934614), Stivers & Sun (2013) OPEX, the 37-year OPEX page and the overnight-reversal paper to 'tested and rejected' - they are not support for this rule.",
+    "MATERIAL CAVEAT MISSING: 218 of 317 signal days are pre-empted by the winner's 4% stop (115) or the risk-off regime (103), so the overlay trades ~99 times in 10 years, not on all 317 signal days. This should be in the summary/verdict.",
+    "PAPERS LIST: add Cheng & Madhavan (2009) for the '6% of NAV per 1% index move' rebalancing arithmetic used in the report.",
+    "TAGLINE PRECISION: 'when a risk-on day is down 1% at 15:00' should say 'more than 1% below its 09:30 open', because the signal is measured from the session open, not the prior close."
+  ]
+}

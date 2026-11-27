@@ -1,0 +1,191 @@
+{
+ "ratio_froth": {
+  "bar_frac_tqqq_gt0": 0.5371606523352876,
+  "bar_frac_qqq_gt0": 0.2105205350785499,
+  "bar_frac_all_cash": 0.2523188125861625,
+  "bar_frac_tqqq_full": 0.5371606523352876,
+  "mean_tqqq": 0.5371606523352876
+ },
+ "vol_scaled": {
+  "bar_frac_tqqq_gt0": 0.8584672165916769,
+  "bar_frac_qqq_gt0": 0.0,
+  "bar_frac_all_cash": 0.14153278340832312,
+  "bar_frac_tqqq_full": 0.40200105288672755,
+  "mean_tqqq": 0.7195477471935474
+ },
+ "ratio_froth_episodes": {
+  "n": 67,
+  "days": 584,
+  "mean_len": 8.716417910447761,
+  "median_len": 3.0,
+  "max_len": 71,
+  "first": "2017-02-14",
+  "last": "2026-07-01"
+ },
+ "events": {
+  "const_mean_atr_stop": 607,
+  "const_mean_fixed4_stop": 447,
+  "tqqq_fixed4_stop": 447,
+  "tqqq_atr_stop": 607
+ },
+ "const_mean_no_stop": {
+  "daily": {
+   "start": "2016-01-04",
+   "end": "2026-10-23",
+   "years": 10.80082135523614,
+   "cagr": 0.3211506462176663,
+   "max_drawdown": 0.6747770775678046,
+   "sharpe": 0.8253698954327997,
+   "volatility": 0.47730385315118934,
+   "calmar": 0.4759359155696804,
+   "ending_multiple": 20.248116613162896
+  },
+  "exposure": {
+   "mean_qqq": 0.0,
+   "mean_tqqq": 0.7195477471782509,
+   "mean_bil": 0.28045225280677977,
+   "sessions": 2718,
+   "tqqq_sessions_any": 1.0,
+   "tqqq_sessions_full": 0.0,
+   "qqq_sessions_any": 0.0,
+   "cash_sessions_full": 0.0,
+   "mean_tqqq_when_held": 0.7195477471935475,
+   "min_tqqq_when_held": 0.7195477471935474,
+   "max_tqqq": 0.7195477471935474
+  },
+  "beta_tqqq": {
+   "beta": 0.720283087193386,
+   "corr": 0.9998805141807203,
+   "alpha_ann": 0.0038476323071979703,
+   "n": 2717
+  }
+ },
+ "const_mean_atr_stop": {
+  "daily": {
+   "start": "2016-01-04",
+   "end": "2026-10-23",
+   "years": 10.80082135523614,
+   "cagr": 0.45600951886454855,
+   "max_drawdown": 0.41342774913901814,
+   "sharpe": 1.148524971230657,
+   "volatility": 0.3956332975032395,
+   "calmar": 1.1029968835285218,
+   "ending_multiple": 57.8505549807121
+  },
+  "exposure": {
+   "mean_qqq": 0.0,
+   "mean_tqqq": 0.6177081517262779,
+   "mean_bil": 0.382291848268155,
+   "sessions": 2718,
+   "tqqq_sessions_any": 0.7766740250183959,
+   "tqqq_sessions_full": 0.0,
+   "qqq_sessions_any": 0.0,
+   "cash_sessions_full": 0.22332597498160411,
+   "mean_tqqq_when_held": 0.7195477471935475,
+   "min_tqqq_when_held": 0.7195477471935474,
+   "max_tqqq": 0.7195477471935474
+  },
+  "beta_tqqq": {
+   "beta": 0.506158895121383,
+   "corr": 0.8476837649577419,
+   "alpha_ann": 0.18025957067389667,
+   "n": 2717
+  }
+ },
+ "const_mean_fixed4_stop": {
+  "daily": {
+   "start": "2016-01-04",
+   "end": "2026-10-23",
+   "years": 10.80082135523614,
+   "cagr": 0.40746394481547177,
+   "max_drawdown": 0.4221181726303903,
+   "sharpe": 1.050324292298785,
+   "volatility": 0.4031736708341979,
+   "calmar": 0.9652840631721632,
+   "ending_multiple": 40.10924852549241
+  },
+  "exposure": {
+   "mean_qqq": 0.0,
+   "mean_tqqq": 0.6494000446452795,
+   "mean_bil": 0.3505999553470488,
+   "sessions": 2718,
+   "tqqq_sessions_any": 0.8355408388520972,
+   "tqqq_sessions_full": 0.0,
+   "qqq_sessions_any": 0.0,
+   "cash_sessions_full": 0.16445916114790288,
+   "mean_tqqq_when_held": 0.7195477471935473,
+   "min_tqqq_when_held": 0.7195477471935474,
+   "max_tqqq": 0.7195477471935474
+  },
+  "beta_tqqq": {
+   "beta": 0.5224305231612709,
+   "corr": 0.858570985376948,
+   "alpha_ann": 0.14051525207418467,
+   "n": 2717
+  }
+ },
+ "tqqq_fixed4_stop": {
+  "daily": {
+   "start": "2016-01-04",
+   "end": "2026-10-23",
+   "years": 10.80082135523614,
+   "cagr": 0.5277585759331522,
+   "max_drawdown": 0.5677113889978965,
+   "sharpe": 1.037590193976816,
+   "volatility": 0.5590581034251154,
+   "calmar": 0.9296247814663934,
+   "ending_multiple": 97.26179071880364
+  },
+  "exposure": {
+   "mean_qqq": 0.0,
+   "mean_tqqq": 0.9025113999606115,
+   "mean_bil": 0.09748860003938857,
+   "sessions": 2718,
+   "tqqq_sessions_any": 0.8355408388520972,
+   "tqqq_sessions_full": 0.8355408388520972,
+   "qqq_sessions_any": 0.0,
+   "cash_sessions_full": 0.16445916114790288,
+   "mean_tqqq_when_held": 1.0,
+   "min_tqqq_when_held": 1.0,
+   "max_tqqq": 1.0
+  },
+  "beta_tqqq": {
+   "beta": 0.724331757340312,
+   "corr": 0.8584606793694939,
+   "alpha_ann": 0.18777585122023865,
+   "n": 2717
+  }
+ },
+ "tqqq_atr_stop": {
+  "daily": {
+   "start": "2016-01-04",
+   "end": "2026-10-23",
+   "years": 10.80082135523614,
+   "cagr": 0.6013465795705559,
+   "max_drawdown": 0.558593205275459,
+   "sharpe": 1.1324931332907575,
+   "volatility": 0.5486081472082426,
+   "calmar": 1.0765375838648341,
+   "ending_multiple": 161.66261112556313
+  },
+  "exposure": {
+   "mean_qqq": 0.0,
+   "mean_tqqq": 0.8584672165916769,
+   "mean_bil": 0.14153278340832312,
+   "sessions": 2718,
+   "tqqq_sessions_any": 0.7766740250183959,
+   "tqqq_sessions_full": 0.7766740250183959,
+   "qqq_sessions_any": 0.0,
+   "cash_sessions_full": 0.22332597498160411,
+   "mean_tqqq_when_held": 1.0,
+   "min_tqqq_when_held": 1.0,
+   "max_tqqq": 1.0
+  },
+  "beta_tqqq": {
+   "beta": 0.7018034387663182,
+   "corr": 0.8476041352658161,
+   "alpha_ann": 0.24119891961375678,
+   "n": 2717
+  }
+ }
+}

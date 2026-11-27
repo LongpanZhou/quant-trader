@@ -1,0 +1,137 @@
+{
+  "slug": "donchian-breakout",
+  "name": "5m Donchian breakout",
+  "tagline": "A 55-bar QQQ 5-minute breakout, gated by the daily 165-day SMA regime, held in TQQQ until the regime turns off.",
+  "summary": "A minute-timeframe adaptation of the Turtle/Donchian breakout. The 55-bar channel supplies the entry trigger; the daily QQQ > 165-day SMA regime supplies the exit and the bear-market filter. The book is 100% TQQQ while long and 100% BIL otherwise, with next-bar-open fills and 1 bp costs.",
+  "decision_process": "Every 5-minute bar, compute the highest high of the prior 55 bars (current bar excluded). If flat, the regime is on, and QQQ closes above that channel, target 100% TQQQ; the order fills at the next 5-minute open. If long and the daily regime is off, target 100% BIL, also filled at the next open. The 15:55 bar is the last bar of the session; its close is the 16:00 print and its target fills at the next session's 09:30 open. No Donchian exit, ATR stop, time exit, or session exit is used in the primary.",
+  "rules": [
+    "Universe and bars: adjusted QQQ/TQQQ/BIL 1-minute data, regular session only, resampled to 5 minutes (78 bars/day), 500 calendar days of warmup.",
+    "Entry channel: upper[i] = max(QQQ high over the 55 bars before i); the current bar is excluded.",
+    "Regime: QQQ daily close > its 165-day SMA. At the 15:55 bar use the regime through today; at all other bars use the regime through the prior day.",
+    "Entry: if flat and regime on and QQQ 5m close > upper, target 100% TQQQ; fill at the next bar's open.",
+    "Exit: if long and regime off, target 100% BIL; fill at the next bar's open. No other exit in the primary.",
+    "Costs and constraints: 1 bp per fill (5 bp sensitivity), 2% band, long-only, weights sum to 1; BIL earns the T-bill return when out."
+  ],
+  "status": "Verified",
+  "metrics": {
+    "cagr10": 0.463551,
+    "dd10": 0.597863,
+    "cagr5": 0.374573,
+    "dd5": 0.408210,
+    "cagr10_5bp": 0.459674,
+    "dd10_5bp": 0.599148,
+    "cagr5_5bp": 0.370945,
+    "dd5_5bp": 0.408210
+  },
+  "verdict": "Passes vs TQQQ on both windows (10y 46.36%/59.79%, 5y 37.46%/40.82%) and survives 5 bp, but it is not a strict improvement over the daily baseline: it gains about 1-3 pp of CAGR and gives up about 1-4 pp of max drawdown. Classic Donchian exits on minute bars fail; the daily regime exit is the only robust exit tested.",
+  "sources": [
+    {
+      "idea": "Buy a break of the prior N-bar high; System 2 uses 55 bars; exit on the opposite 20-bar low; initial stop at 2N.",
+      "source": "Original Turtles / The Original Turtle Trading Rules (2003)",
+      "url": "https://therobusttrader.com/wp-content/uploads/OriginalTurtle-Trading-Rules.pdf",
+      "source_type": "report",
+      "role": "inspired rule",
+      "evidence": "System 1: 20-day breakout, 10-day exit; System 2: 55-day breakout, 20-day exit; a breakout is the high or low of the preceding N days; stops at 2N. The 55-bar lookback is the Turtle System 2 parameter mapped to 5-minute bars. The 20/10 and 55/20 exits were tested on 5-minute bars and rejected.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Same Turtle rules, canonical mirror of the PDF.",
+      "source": "Trading Blox / The Original Turtle Rules",
+      "url": "https://www.tradingblox.com/originalturtles/originalturtlerules.htm",
+      "source_type": "report",
+      "role": "supports assumption",
+      "evidence": "Confirms the System 1 and System 2 entry/exit lengths and the 2N stop; used as a second copy of the rules.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Turtle rule table: 20/10 and 55/20 entry/exit pairs, 2N stop, prior-N-bar breakout.",
+      "source": "The Right Trader / Turtle Trading Strategy: The Original Breakout Rules (2026)",
+      "url": "https://therighttrader.com/learn/trading-strategies/turtle-trading",
+      "source_type": "blog",
+      "role": "supports assumption",
+      "evidence": "Rule-by-rule table used to cross-check the PDF: entry 20/55-day high, exit 10/20-day low, stop 2N, and the note that the channel uses the prior N bars.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Donchian channel is the prior N bars' high/low; the current bar must be excluded for a breakout to exist.",
+      "source": "proea.app / Donchian Channel Strategy: Breakout, Settings & Turtle Rules (2026)",
+      "url": "https://proea.app/en/blog/donchian-channel-strategy",
+      "source_type": "blog",
+      "role": "inspired rule",
+      "evidence": "Quotes StockCharts: 'Price Channels are based on prices prior to the current period.' Used to implement upper[i] = max(high[i-N:i]), current bar excluded.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Donchian construction and the current-bar-excluded convention; 20/55 lengths.",
+      "source": "Titan FX / Donchian Channel: Calculation, Turtle Strategy & Setup (2026)",
+      "url": "https://research.titanfx.com/technical-analysis/other-indicators/what-is-donchian-channel",
+      "source_type": "blog",
+      "role": "supports assumption",
+      "evidence": "States that the classic Turtle rules use the prior N periods excluding the current bar; used as a second confirmation of the channel construction.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Range = max(HH-LC, HC-LL) over the prior N days; buy above open + k*range; the opposite band is the exit/reversal.",
+      "source": "QuantConnect / Dual Thrust Trading Algorithm (2018)",
+      "url": "https://www.quantconnect.com/research/15258/dual-thrust-trading-algorithm/",
+      "source_type": "blog",
+      "role": "tested only",
+      "evidence": "Used to implement the long-only Dual Thrust variant (prior-day range, k=0.3/0.5). The swing version passed vs TQQQ (48.40%/49.88% 10y; 34.18%/40.82% 5y); the day-trade version failed (6.74%/6.21%).",
+      "confidence": "medium"
+    },
+    {
+      "idea": "The 165-day SMA daily regime, TQQQ/BIL book, next-bar-open fills, 1 bp default, and the pass/fail benchmark.",
+      "source": "quant-trader-research README / bt.py (internal)",
+      "url": null,
+      "source_type": "report",
+      "role": "benchmark",
+      "evidence": "research/README.md defines the daily baseline (QQQ > 165-day SMA -> 100% TQQQ, else BIL) and the TQQQ benchmark (39.28%/81.68% 10y; 13.47%/81.68% 5y). bt.py defines next-bar-open fills and the 1 bp default. The 165-day SMA is an internal baseline choice; it is not Faber's 10-month SMA and not Gayed & Bilello's 200-day rule.",
+      "confidence": "high"
+    },
+    {
+      "idea": "The 5-minute 55-bar adaptation and the choice of the daily regime as the exit.",
+      "source": "Own test / no external source",
+      "url": null,
+      "source_type": "report",
+      "role": "supports assumption",
+      "evidence": "No external source prescribes a 55-bar 5-minute channel; the 55 length is the Turtle System 2 parameter mapped to 5-minute bars. The entry-N plateau (20-200) and the 1-2 bar execution-lag tests are own backtests.",
+      "confidence": "high"
+    }
+  ],
+  "rejected_sources": [
+    {
+      "source": "Original Turtle Trading Rules / 20-10 and 55-20 exits",
+      "url": "https://therobusttrader.com/wp-content/uploads/OriginalTurtle-Trading-Rules.pdf",
+      "why_rejected": "Tested as minute exits: Turtle 20/10 = 4.28%/40.38% 10y with 10,183 fills; 55/20 = 17.11%/40.85% with 4,999 fills. Both fail CAGR vs TQQQ; the exit sells the first pullback and re-enters higher."
+    },
+    {
+      "source": "Own test / intraday 165-day SMA breach exit",
+      "url": null,
+      "why_rejected": "Exit when QQQ trades below the last known 165-day SMA intraday: 44.67%/56.39% 10y, 29.56%/43.78% 5y. Worse than the close-based regime and more whipsaw."
+    },
+    {
+      "source": "QuantConnect / Dual Thrust day-trade variant",
+      "url": "https://www.quantconnect.com/research/15258/dual-thrust-trading-algorithm/",
+      "why_rejected": "Flat at 15:55: 6.74%/34.19% 10y, 6.21%/24.16% 5y; fails CAGR. Overnight exposure is essential for TQQQ."
+    },
+    {
+      "source": "Own test / flat-overnight primary",
+      "url": null,
+      "why_rejected": "-3.56%/62.39% 10y, -0.20%/50.71% 5y. TQQQ's return is overwhelmingly overnight, so a pure intraday version destroys the edge."
+    },
+    {
+      "source": "Own test / 3x 5m ATR initial stop and 5-day time exit",
+      "url": null,
+      "why_rejected": "3x ATR stop: 49.00%/48.51% 10y but 32.70%/40.82% 5y. 5-day time exit: 32.30%/58.75% 10y, 21.18%/42.96% 5y. Neither is robust across both windows."
+    }
+  ],
+  "corrections": [
+    "The web catalog attributes Faber (2007) 'A Quantitative Approach to Tactical Asset Allocation' and Gayed & Bilello (2016) 'Leverage for the Long Run' to this strategy. My report does not use either. The 165-day SMA regime is the internal daily baseline from research/README.md; it is not Faber's 10-month SMA (~200 days) or Gayed & Bilello's 200-day rule. Remove those two papers or mark them 'project-level context, not used here.'",
+    "The markdown Verdict says 'One variant passes the stated goal against TQQQ on both windows'; that is wrong. Three variants pass: the primary (46.36%/59.79% 10y; 37.46%/40.82% 5y), Dual Thrust swing k=0.3 (48.40%/49.88%; 34.18%/40.82%) and k=0.5 (45.34%/50.81%; 30.18%/42.44%). The primary is the recommended balance; the page should say 'Three variants pass' or list all three.",
+    "The web catalog's decision text says 'Each session the strategy evaluates these checks'; the strategy evaluates every 5-minute bar. The daily regime is updated at the 15:55 bar (close) and filled at the next session's 09:30 open. Correct the cadence.",
+    "The web catalog's verdict mentions only the 10y drawdown being higher than the baseline; the 5y drawdown is also higher (40.82% vs 36.86%). Say 'both windows' drawdowns are slightly higher than the daily baseline.'",
+    "The catalog's originalturtles.org/rules.htm URL is not in my report and may be dead. The report cites the PDF at therobusttrader.com and the Trading Blox mirror; use those verified URLs and drop the originalturtles.org entry.",
+    "Minor: the markdown says '2022 is the only meaningfully negative calendar year'; 2018 is also negative (-3.32%). It is the only double-digit negative year. Consider that precision fix.",
+    "Minor: the markdown says the 5y drawdown is worse 'because the strategy's pre-crash equity peak was higher'; that is an inference, not a measured decomposition. Soften to 'largely because the pre-crash equity peak differed.'"
+  ]
+}

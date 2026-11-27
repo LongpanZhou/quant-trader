@@ -1,0 +1,3 @@
+dev bars 654,958  signals 190
+wrote C:\Users\27175\Desktop\quant-trader-research\research\revisit\letf-rebalance-flow\result.json
+{"slug": "letf-rebalance-flow", "mode": "cut2", "calls": 5, "error": null, "seconds": 17.3, "restored": ["restored result.json"], "match_score": 1.0, "found": true, "kw": {"band": 0.02, "slippage_bps": 1.0, "start_equity": 100000.0}, "bars": 654958, "k": 3}

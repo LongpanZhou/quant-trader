@@ -1,0 +1,1 @@
+{"slug": "ratio-pairs", "mode": "cut1", "calls": 6, "error": "IndexError: index -1 is out of bounds for axis 0 with size 0", "seconds": 8.6, "restored": [], "match_score": 1.0, "found": true, "kw": {"band": 0.02, "slippage_bps": 1.0, "start_equity": 100000.0}, "bars": 409459, "k": 3}

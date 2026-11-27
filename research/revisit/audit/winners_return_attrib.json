@@ -1,0 +1,46 @@
+{
+ "ratio_froth": {
+  "years": 10.801446878089589,
+  "strategy_bar_mean_ann": 0.5626660741375508,
+  "contrib_ann": {
+   "qqq": -0.01347557496810587,
+   "tqqq": 0.5800852946497383,
+   "bil": 0.004726630695620881
+  },
+  "sum_contrib_ann": 0.5713363503772534,
+  "residual_ann": 0.008670276239702623,
+  "share": {
+   "qqq": -0.02358606267430376,
+   "tqqq": 1.0153131238135085,
+   "bil": 0.008272938860795198
+  },
+  "turnover_x_start": 41018.906716836376,
+  "mean_equity": 3678529.482041942,
+  "turnover_x_mean_equity": 1115.0897910995373,
+  "turnover_per_year_mean_equity": 103.23522428846671,
+  "fills": 919,
+  "fills_per_session": 0.3381162619573216
+ },
+ "vol_scaled": {
+  "years": 10.801446878089589,
+  "strategy_bar_mean_ann": 0.4894720871651853,
+  "contrib_ann": {
+   "qqq": 0.0,
+   "tqqq": 0.5001717529621822,
+   "bil": 0.007622642656873888
+  },
+  "sum_contrib_ann": 0.507794395619056,
+  "residual_ann": 0.018322308453870728,
+  "share": {
+   "qqq": 0.0,
+   "tqqq": 0.9849887223596058,
+   "bil": 0.01501127764039433
+  },
+  "turnover_x_start": 51802.23649312578,
+  "mean_equity": 2577792.7489724816,
+  "turnover_x_mean_equity": 2009.5578480377974,
+  "turnover_per_year_mean_equity": 186.04524659692817,
+  "fills": 3950,
+  "fills_per_session": 1.4532744665194997
+ }
+}

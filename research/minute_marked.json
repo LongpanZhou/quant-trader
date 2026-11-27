@@ -1,0 +1,140 @@
+{
+  "note": "Most agents trade and mark equity on 1-minute bars. A few decide on daily or 5-minute bars and so only mark equity at those closes, which hides intraday troughs (the daily 165d baseline's 5y drawdown is 36.9% on daily marks but 42.2% on minute marks). This script takes each such strategy's own coarse weights, holds them on the 1-minute panel exactly as the coarse simulation would, and re-runs research/bt.py with the usual 2% band and 1 bp.",
+  "agents": {
+    "ml-classifier": {
+      "rule": "1D",
+      "coarse": {
+        "10y": {
+          "cagr": 0.749458640565628,
+          "max_drawdown": 0.40475218379183064
+        },
+        "5y": {
+          "cagr": 0.512882759055765,
+          "max_drawdown": 0.3319579293756548
+        }
+      },
+      "minute": {
+        "10y": {
+          "cagr": 0.7514264433715561,
+          "max_drawdown": 0.4144710118889342,
+          "sharpe": 1.5435247732485626,
+          "fills": 353
+        },
+        "5y": {
+          "cagr": 0.5238515293424282,
+          "max_drawdown": 0.3440974956832824,
+          "sharpe": 1.3077318558530304,
+          "fills": 193
+        }
+      }
+    },
+    "vol-kelly-overlay": {
+      "rule": "1D",
+      "coarse": {
+        "10y": {
+          "cagr": 0.47526479866939364,
+          "max_drawdown": 0.4532301762409854
+        },
+        "5y": {
+          "cagr": 0.34585092208020085,
+          "max_drawdown": 0.3628845627635938
+        }
+      },
+      "minute": {
+        "10y": {
+          "cagr": 0.4768290379740592,
+          "max_drawdown": 0.467242787354495,
+          "sharpe": 1.0607033357349458,
+          "fills": 330
+        },
+        "5y": {
+          "cagr": 0.35511335937505417,
+          "max_drawdown": 0.4112736958995237,
+          "sharpe": 0.8920440176600206,
+          "fills": 85
+        }
+      }
+    },
+    "benchmark-daily": {
+      "rule": "1D",
+      "coarse": {
+        "10y": {
+          "cagr": 0.45305705695451426,
+          "max_drawdown": 0.5870748176143445
+        },
+        "5y": {
+          "cagr": 0.3460856440181854,
+          "max_drawdown": 0.3686132274497639
+        }
+      },
+      "minute": {
+        "10y": {
+          "cagr": 0.45471184105183116,
+          "max_drawdown": 0.5963502290424081,
+          "sharpe": 1.002234142118621,
+          "fills": 81
+        },
+        "5y": {
+          "cagr": 0.35586854826251657,
+          "max_drawdown": 0.4217115570089143,
+          "sharpe": 0.8915868452161363,
+          "fills": 45
+        }
+      }
+    },
+    "donchian-breakout": {
+      "rule": "5min",
+      "coarse": {
+        "10y": {
+          "cagr": 0.46355104734565744,
+          "max_drawdown": 0.5978628779164603
+        },
+        "5y": {
+          "cagr": 0.37457316301459254,
+          "max_drawdown": 0.4082095492810879
+        }
+      },
+      "minute": {
+        "10y": {
+          "cagr": 0.4642310074117024,
+          "max_drawdown": 0.5987743659393157,
+          "sharpe": 1.0175089267730544,
+          "fills": 65
+        },
+        "5y": {
+          "cagr": 0.37559086617294657,
+          "max_drawdown": 0.42171155700891416,
+          "sharpe": 0.9253036509673015,
+          "fills": 33
+        }
+      }
+    },
+    "intraday-mean-reversion": {
+      "rule": "5min",
+      "coarse": {
+        "10y": {
+          "cagr": 0.5106007722793855,
+          "max_drawdown": 0.4482964924065008
+        },
+        "5y": {
+          "cagr": 0.3638849136334341,
+          "max_drawdown": 0.36286628616364824
+        }
+      },
+      "minute": {
+        "10y": {
+          "cagr": 0.5113003791498889,
+          "max_drawdown": 0.4482820294139074,
+          "sharpe": 1.1173525147723145,
+          "fills": 249
+        },
+        "5y": {
+          "cagr": 0.364894719674864,
+          "max_drawdown": 0.36724826473627126,
+          "sharpe": 0.9170275827586564,
+          "fills": 93
+        }
+      }
+    }
+  }
+}

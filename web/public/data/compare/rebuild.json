@@ -1,0 +1,847 @@
+{
+ "generated": "2026-11-26",
+ "title": "Rebuild 2026 audit",
+ "note": "26 strategies rebuilt without the shared 165-day base. Development 2016-2023; holdout 2024-2026 only for the four strategies that passed their pre-registered gates.",
+ "strategies": [
+  {
+   "slug": "intraday-seasonality",
+   "name": "Late-day de-risk",
+   "status": "passed",
+   "statusLabel": "Passed",
+   "idea": "QQQ down more than 1% by the close forces leveraged-ETF selling into the close; buy the closing print and own the one-session reversal.",
+   "reason": "Passed dev gates; holdout 40.48%/31.75%.",
+   "dev": {
+    "cagr": 0.21844872134537896,
+    "max_drawdown": 0.43754684765522556,
+    "sharpe": 0.7539471973074654,
+    "fills": 1101.0
+   },
+   "dev5": {
+    "cagr": 0.15306124445970037,
+    "max_drawdown": 0.4791261728991706,
+    "sharpe": 0.5907704222990122,
+    "fills": 1101.0
+   },
+   "dev10": {
+    "cagr": 0.07623911397239591,
+    "max_drawdown": 0.5268048976658484,
+    "sharpe": 0.38694579832652254,
+    "fills": 1101.0
+   },
+   "holdout": {
+    "cagr": 0.404801168712573,
+    "max_drawdown": 0.31746988896088046,
+    "sharpe": 1.3097570914131766,
+    "fills": 345.0
+   },
+   "tenY": {
+    "cagr": 0.28496993032296847,
+    "max_drawdown": 0.4375468476552261,
+    "sharpe": 0.9139339074294864,
+    "fills": 1367.0
+   },
+   "fiveY": {
+    "cagr": 0.2606808437692676,
+    "max_drawdown": 0.437546847655226,
+    "sharpe": 0.8530463582214063,
+    "fills": 817.0
+   },
+   "corr": 0.260976643483445
+  },
+  {
+   "slug": "ratio-pairs",
+   "name": "Ratio froth",
+   "status": "passed",
+   "statusLabel": "Passed",
+   "idea": "The TQQQ/QQQ ratio is a leverage-cycle meter: froth precedes amplified shocks, a deep discount with a turn precedes convex rebounds, and the average state does not pay for 3x drag.",
+   "reason": "Passed dev gates; holdout 24.82%/22.94%.",
+   "dev": {
+    "cagr": 0.18959482191227828,
+    "max_drawdown": 0.3459267783465714,
+    "sharpe": 1.106292958365986,
+    "fills": 288.0
+   },
+   "dev5": {
+    "cagr": 0.17661527199451443,
+    "max_drawdown": 0.3493043422571276,
+    "sharpe": 1.0416304871020627,
+    "fills": 288.0
+   },
+   "dev10": {
+    "cagr": 0.1605954486929384,
+    "max_drawdown": 0.35359054491296615,
+    "sharpe": 0.9605789025088018,
+    "fills": 288.0
+   },
+   "holdout": {
+    "cagr": 0.24823328270139755,
+    "max_drawdown": 0.2294083155216292,
+    "sharpe": 1.4136418996351998,
+    "fills": 84.0
+   },
+   "tenY": {
+    "cagr": 0.2169416408837641,
+    "max_drawdown": 0.3459267783465715,
+    "sharpe": 1.2328566844784943,
+    "fills": 371.0
+   },
+   "fiveY": {
+    "cagr": 0.17110584138124008,
+    "max_drawdown": 0.34592677834657115,
+    "sharpe": 0.8972588821624307,
+    "fills": 191.0
+   },
+   "corr": 0.5279115792444845
+  },
+  {
+   "slug": "intraday-mean-reversion",
+   "name": "3% Intraday Crash Stop (SMA-165 regime)",
+   "status": "passed",
+   "statusLabel": "Passed",
+   "idea": "After a >=3% intraday QQQ capitulation, buy TQQQ at the next open and sell before that session's close; flat (BIL) and never overnight otherwise.",
+   "reason": "Passed dev gates; holdout 15.62%/27.66%.",
+   "dev": {
+    "cagr": 0.113114,
+    "max_drawdown": 0.314733,
+    "sharpe": 0.5764,
+    "fills": 353.0
+   },
+   "dev5": {
+    "cagr": 0.093601,
+    "max_drawdown": 0.315829,
+    "sharpe": 0.5006,
+    "fills": 353.0
+   },
+   "dev10": {
+    "cagr": 0.069689,
+    "max_drawdown": 0.317196,
+    "sharpe": 0.4058,
+    "fills": 353.0
+   },
+   "holdout": {
+    "cagr": 0.15623835651054407,
+    "max_drawdown": 0.2765989126956099,
+    "sharpe": 0.809206837409561,
+    "fills": 85.0
+   },
+   "tenY": {
+    "cagr": 0.1419231706952595,
+    "max_drawdown": 0.3147332967871219,
+    "sharpe": 0.6862240425332097,
+    "fills": 409.0
+   },
+   "fiveY": {
+    "cagr": 0.06190046660555737,
+    "max_drawdown": 0.27659891269561,
+    "sharpe": 0.389765589882477,
+    "fills": 197.0
+   },
+   "corr": 0.1335
+  },
+  {
+   "slug": "gap-capitulation-reversal",
+   "name": "Gap capitulation",
+   "status": "passed",
+   "statusLabel": "Passed",
+   "idea": "Buy a quiet, short-term-oversold capitulation in QQQ, not a generic gap-down in a 165-day bull regime.",
+   "reason": "Passed dev gates; holdout 5.99%/2.29%.",
+   "dev": {
+    "cagr": 0.04180555479680348,
+    "max_drawdown": 0.12485776891684985,
+    "sharpe": 0.576114714256204,
+    "fills": 89.0
+   },
+   "dev5": {
+    "cagr": 0.03717076672660302,
+    "max_drawdown": 0.12765374839217036,
+    "sharpe": 0.5172310015228807,
+    "fills": 89.0
+   },
+   "dev10": {
+    "cagr": 0.03140629302172182,
+    "max_drawdown": 0.13113616595166833,
+    "sharpe": 0.44342410524213677,
+    "fills": 89.0
+   },
+   "holdout": {
+    "cagr": 0.05986616223234731,
+    "max_drawdown": 0.022925388537467395,
+    "sharpe": 1.889036641780848,
+    "fills": 9.0
+   },
+   "tenY": {
+    "cagr": 0.05405397538516188,
+    "max_drawdown": 0.12485776891684941,
+    "sharpe": 0.7850249690456022,
+    "fills": 93.0
+   },
+   "fiveY": {
+    "cagr": 0.05999707720547187,
+    "max_drawdown": 0.09112600710871332,
+    "sharpe": 0.972824249076169,
+    "fills": 49.0
+   },
+   "corr": 0.027215771612946384
+  },
+  {
+   "slug": "vol-scaled-crash-stop",
+   "name": "ATR-scaled crash stop",
+   "status": "rejected",
+   "statusLabel": "Rejected",
+   "idea": "A stop distance should scale with volatility (0.7 daily ATR) but never widen past the 4% level that protects against gap nights.",
+   "reason": "Highest rebuild return (57.84%/39.29%) but corr 0.71.",
+   "dev": {
+    "cagr": 0.578427926004591,
+    "max_drawdown": 0.3928705403530781,
+    "sharpe": 1.415062808791076,
+    "fills": 2897.0
+   },
+   "dev5": {
+    "cagr": 0.4736713749017025,
+    "max_drawdown": 0.4313633882704476,
+    "sharpe": 1.230152272283035,
+    "fills": 2900.0
+   },
+   "dev10": {
+    "cagr": 0.3523571621597186,
+    "max_drawdown": 0.4861712945112432,
+    "sharpe": 0.9986292095283962,
+    "fills": 2898.0
+   },
+   "holdout": null,
+   "tenY": null,
+   "fiveY": null,
+   "corr": 0.7127714084423956
+  },
+  {
+   "slug": "event-risk-overlay",
+   "name": "OpEx de-risk",
+   "status": "rejected",
+   "statusLabel": "Rejected",
+   "idea": "The monthly option-expiry session is the one systematically weak session of the expiry cycle; own the cycle and step out for the expiry session.",
+   "reason": "26.94%/39.04% and corr 0.34, but fails its own DD>30% gate.",
+   "dev": {
+    "cagr": 0.2694326434193173,
+    "max_drawdown": 0.3903570452509316,
+    "sharpe": 1.083652508213596,
+    "fills": 885.0
+   },
+   "dev5": {
+    "cagr": 0.22729596831083754,
+    "max_drawdown": 0.40684815236599636,
+    "sharpe": 0.9477936114153189,
+    "fills": 883.0
+   },
+   "dev10": {
+    "cagr": 0.17673367144907748,
+    "max_drawdown": 0.4268934173730038,
+    "sharpe": 0.7783466842990514,
+    "fills": 881.0
+   },
+   "holdout": null,
+   "tenY": null,
+   "fiveY": null,
+   "corr": 0.34187042912158666
+  },
+  {
+   "slug": "ml-classifier",
+   "name": "ML risk-off overlay",
+   "status": "rejected",
+   "statusLabel": "Rejected",
+   "idea": "Unsupervised regime clustering allocates TQQQ/QQQ/BIL by each cluster's past forward returns.",
+   "reason": "20.69%/36.04%, corr 0.58; QQQ has higher Sharpe and lower DD.",
+   "dev": {
+    "cagr": 0.20685139067169933,
+    "max_drawdown": 0.36035742782130575,
+    "sharpe": 0.8094105920067697,
+    "fills": 253.0
+   },
+   "dev5": {
+    "cagr": 0.1894923649577922,
+    "max_drawdown": 0.3618147073284501,
+    "sharpe": 0.7578621119868697,
+    "fills": 253.0
+   },
+   "dev10": {
+    "cagr": 0.16814431140155306,
+    "max_drawdown": 0.37961558465321144,
+    "sharpe": 0.6933639269812734,
+    "fills": 253.0
+   },
+   "holdout": null,
+   "tenY": null,
+   "fiveY": null,
+   "corr": 0.5799276393856011
+  },
+  {
+   "slug": "ml-crash-overlay-winner",
+   "name": "ML crash overlay",
+   "status": "rejected",
+   "statusLabel": "Rejected",
+   "idea": "TQQQ's 3x daily reset makes leverage favorable only when the path is smooth; a walk-forward ML classifier of 5-session TQQQ-vs-3xQQQ decay rotates between TQQQ, QQQ and BIL.",
+   "reason": "15.80%/22.42%, corr 0.50; 10 bp loses to QQQ on Sharpe.",
+   "dev": {
+    "cagr": 0.157980424660489,
+    "max_drawdown": 0.224166078476986,
+    "sharpe": 0.8129107276657093,
+    "fills": 461.0
+   },
+   "dev5": {
+    "cagr": 0.13154301217655662,
+    "max_drawdown": 0.23686601262801765,
+    "sharpe": 0.7011105195746724,
+    "fills": 461.0
+   },
+   "dev10": {
+    "cagr": 0.09934342844846156,
+    "max_drawdown": 0.2534716383981179,
+    "sharpe": 0.5612612357645455,
+    "fills": 461.0
+   },
+   "holdout": null,
+   "tenY": null,
+   "fiveY": null,
+   "corr": 0.5035253593230691
+  },
+  {
+   "slug": "letf-rebalance-flow",
+   "name": "Late-rally overlay",
+   "status": "rejected",
+   "statusLabel": "Rejected",
+   "idea": "Nasdaq underperformance vs SPY at the close is temporary LETF/flow pressure; buy TQQQ for a three-session reversal.",
+   "reason": "13.2%/41.8%; dominated by QQQ on return and drawdown.",
+   "dev": {
+    "cagr": 0.13198637649002998,
+    "max_drawdown": 0.4180024497391086,
+    "sharpe": 0.5241202521473756,
+    "fills": 601.0
+   },
+   "dev5": {
+    "cagr": 0.09841135672933587,
+    "max_drawdown": 0.426323162410008,
+    "sharpe": 0.44143247872013813,
+    "fills": 601.0
+   },
+   "dev10": {
+    "cagr": 0.057839517671155916,
+    "max_drawdown": 0.4749834589177837,
+    "sharpe": 0.33797367628910385,
+    "fills": 601.0
+   },
+   "holdout": null,
+   "tenY": null,
+   "fiveY": null,
+   "corr": 0.40332226494244533
+  },
+  {
+   "slug": "intraday-momentum",
+   "name": "First-hour afternoon filter",
+   "status": "rejected",
+   "statusLabel": "Rejected",
+   "idea": "A weekly three-state leverage ladder on the Nasdaq-100: 3x TQQQ when the overnight-minus-intraday spread and the first-hour return are both above their 26-week medians, 1x QQQ when only one is, and BIL otherwise.",
+   "reason": "Corr 0.62 with the old base; fails the <0.60 rule.",
+   "dev": {
+    "cagr": 0.1196887991182225,
+    "max_drawdown": 0.6446296177907891,
+    "sharpe": 0.5260142546268064,
+    "fills": 1725.0
+   },
+   "dev5": {
+    "cagr": 0.026989114579390794,
+    "max_drawdown": 0.652501421816954,
+    "sharpe": 0.24036387605445408,
+    "fills": 1725.0
+   },
+   "dev10": {
+    "cagr": -0.07816867184033116,
+    "max_drawdown": 0.7535469194719895,
+    "sharpe": -0.11580187159849036,
+    "fills": 1725.0
+   },
+   "holdout": null,
+   "tenY": null,
+   "fiveY": null,
+   "corr": 0.6161404965530686
+  },
+  {
+   "slug": "overnight-crash-filter",
+   "name": "Overnight + first-hour TQQQ with vol filter",
+   "status": "rejected",
+   "statusLabel": "Rejected",
+   "idea": "Night continues an up day; the day reverses a down night; size by a 3-sigma gap budget.",
+   "reason": "10.37%/27.62%, but fails its conditioning gates.",
+   "dev": {
+    "cagr": 0.10369536570570403,
+    "max_drawdown": 0.2761743332408755,
+    "sharpe": 0.7620720504356803,
+    "fills": 3248.0
+   },
+   "dev5": {
+    "cagr": -0.009203501624892918,
+    "max_drawdown": 0.3618391246168874,
+    "sharpe": 0.007470766090201213,
+    "fills": 3248.0
+   },
+   "dev10": {
+    "cagr": -0.13420766778884874,
+    "max_drawdown": 0.7011611092609568,
+    "sharpe": -0.9359116316587729,
+    "fills": 3248.0
+   },
+   "holdout": null,
+   "tenY": null,
+   "fiveY": null,
+   "corr": 0.2552112688154446
+  },
+  {
+   "slug": "risk-parity-hrp",
+   "name": "Risk-parity vol target",
+   "status": "rejected",
+   "statusLabel": "Rejected",
+   "idea": "Equal-risk QQQ/TQQQ composition with a risk budget that rises after transient volatility spikes and is damped in persistent high-vol regimes.",
+   "reason": "Corr 0.78 with the old base; still TQQQ beta.",
+   "dev": {
+    "cagr": 0.05704195677039192,
+    "max_drawdown": 0.184571620425527,
+    "sharpe": 0.6531120813526612,
+    "fills": 767.0
+   },
+   "dev5": {
+    "cagr": 0.05581336213998611,
+    "max_drawdown": 0.18481888273079794,
+    "sharpe": 0.640450382709811,
+    "fills": 767.0
+   },
+   "dev10": {
+    "cagr": 0.054272252153356515,
+    "max_drawdown": 0.18510451872043177,
+    "sharpe": 0.6245620026010457,
+    "fills": 767.0
+   },
+   "holdout": null,
+   "tenY": null,
+   "fiveY": null,
+   "corr": 0.7780953055866948
+  },
+  {
+   "slug": "dual-speed-regime",
+   "name": "Dual-speed regime",
+   "status": "rejected",
+   "statusLabel": "Rejected",
+   "idea": "QQQ's 60-minute EMA cross measures intraday trend persistence; hold TQQQ only while that trend is up and flat overnight.",
+   "reason": "5.4% CAGR and Sharpe 0.36; below QQQ on risk-adjusted terms.",
+   "dev": {
+    "cagr": 0.053803040232117905,
+    "max_drawdown": 0.3801996830691343,
+    "sharpe": 0.35561432376132934,
+    "fills": 5943.0
+   },
+   "dev5": {
+    "cagr": -0.1668508317875842,
+    "max_drawdown": 0.8372606429349096,
+    "sharpe": -0.7655416288689946,
+    "fills": 5943.0
+   },
+   "dev10": {
+    "cagr": -0.37884999495457516,
+    "max_drawdown": 0.9796390734940283,
+    "sharpe": -2.1460530015175294,
+    "fills": 5943.0
+   },
+   "holdout": null,
+   "tenY": null,
+   "fiveY": null,
+   "corr": 0.35135502343951724
+  },
+  {
+   "slug": "dynamic-leverage-throttle",
+   "name": "Dynamic leverage",
+   "status": "rejected",
+   "statusLabel": "Rejected",
+   "idea": "Volatility-shock recovery: buy TQQQ when a realised-vol shock is decaying inside a market drawdown, sized inversely to vol.",
+   "reason": "2.65% CAGR with only 5 entries.",
+   "dev": {
+    "cagr": 0.02647140313769225,
+    "max_drawdown": 0.09161833826796217,
+    "sharpe": 0.6919541534119577,
+    "fills": 39.0
+   },
+   "dev5": {
+    "cagr": 0.026108995157622106,
+    "max_drawdown": 0.09166469735737381,
+    "sharpe": 0.6830035009418118,
+    "fills": 39.0
+   },
+   "dev10": {
+    "cagr": 0.025669174797524397,
+    "max_drawdown": 0.0917111562402001,
+    "sharpe": 0.6722027463185039,
+    "fills": 39.0
+   },
+   "holdout": null,
+   "tenY": null,
+   "fiveY": null,
+   "corr": 0.10953418055046357
+  },
+  {
+   "slug": "vol-kelly-overlay",
+   "name": "Volatility ladder",
+   "status": "rejected",
+   "statusLabel": "Rejected",
+   "idea": "Buy a volatility-scaled TQQQ position after a 1-minute-RV spike, an oversold QQQ drawdown and the first up-close; exit on vol normalization, a short time stop or a price stop.",
+   "reason": "1.8% CAGR and Sharpe 0.25.",
+   "dev": {
+    "cagr": 0.018078046493302802,
+    "max_drawdown": 0.1921645312337108,
+    "sharpe": 0.25412867562306496,
+    "fills": 79.0
+   },
+   "dev5": {
+    "cagr": 0.01695550023815562,
+    "max_drawdown": 0.19303290265185535,
+    "sharpe": 0.24085342694425213,
+    "fills": 81.0
+   },
+   "dev10": {
+    "cagr": 0.015211498705945958,
+    "max_drawdown": 0.19619732236904097,
+    "sharpe": 0.22066429479678015,
+    "fills": 81.0
+   },
+   "holdout": null,
+   "tenY": null,
+   "fiveY": null,
+   "corr": 0.2726642449126862
+  },
+  {
+   "slug": "gap-fill-fade",
+   "name": "Gap-up fade overlay",
+   "status": "rejected",
+   "statusLabel": "Rejected",
+   "idea": "Short QQQ on confirmed failed small gap-ups in a weak, stressed tape.",
+   "reason": "1.42% CAGR, below BIL; the short is too small to matter.",
+   "dev": {
+    "cagr": 0.014235185281323393,
+    "max_drawdown": 0.004813429869084174,
+    "sharpe": 0.931514251836287,
+    "fills": 97.0
+   },
+   "dev5": {
+    "cagr": 0.011467241581024856,
+    "max_drawdown": 0.007652949526099073,
+    "sharpe": 0.7489953764518253,
+    "fills": 97.0
+   },
+   "dev10": {
+    "cagr": 0.008020032868836235,
+    "max_drawdown": 0.017391270156123406,
+    "sharpe": 0.5195098430529085,
+    "fills": 97.0
+   },
+   "holdout": null,
+   "tenY": null,
+   "fiveY": null,
+   "corr": null
+  },
+  {
+   "slug": "volume-orderflow",
+   "name": "Volume-armed TQQQ crash stop",
+   "status": "rejected",
+   "statusLabel": "Rejected",
+   "idea": "A heavy-volume intraday decline that closes in the upper half of its range marks absorbed supply, so TQQQ rises over the next five sessions.",
+   "reason": "Only 3 events in 2,012 sessions.",
+   "dev": {
+    "cagr": 0.008746321428849901,
+    "max_drawdown": 0.16663716265949313,
+    "sharpe": 0.15438377074945722,
+    "fills": 13.0
+   },
+   "dev5": {
+    "cagr": 0.008089577008412174,
+    "max_drawdown": 0.16796947720104982,
+    "sharpe": 0.14562364101178515,
+    "fills": 13.0
+   },
+   "dev10": {
+    "cagr": 0.007269275717056489,
+    "max_drawdown": 0.17103442458251328,
+    "sharpe": 0.13466728345584597,
+    "fills": 13.0
+   },
+   "holdout": null,
+   "tenY": null,
+   "fiveY": null,
+   "corr": 0.1411973025032134
+  },
+  {
+   "slug": "winner-ensemble-blend",
+   "name": "Winner/ensemble 75/25",
+   "status": "rejected",
+   "statusLabel": "Rejected",
+   "idea": "Inverse-volatility allocation across two independent return streams: calm QQQ carry (1x) and panic-reversal TQQQ (3x).",
+   "reason": "0.3% CAGR; the streams do not combine.",
+   "dev": {
+    "cagr": 0.003027541442040649,
+    "max_drawdown": 0.3267227399945196,
+    "sharpe": 0.08437935518553795,
+    "fills": 773.0
+   },
+   "dev5": {
+    "cagr": -0.006124036688598289,
+    "max_drawdown": 0.3491352107792497,
+    "sharpe": 0.005781242580285684,
+    "fills": 773.0
+   },
+   "dev10": {
+    "cagr": -0.017865399330111442,
+    "max_drawdown": 0.37833787109569894,
+    "sharpe": -0.09605267620022752,
+    "fills": 771.0
+   },
+   "holdout": null,
+   "tenY": null,
+   "fiveY": null,
+   "corr": 0.23808313318022203
+  },
+  {
+   "slug": "daily-regime-minute-entry",
+   "name": "Armed 4% minute stop",
+   "status": "rejected",
+   "statusLabel": "Rejected",
+   "idea": "A 4% break below the TQQQ session open predicts continuation into the close; trade it as an intraday short instead of a long-book exit.",
+   "reason": "Negative dev CAGR; the break short does not survive costs.",
+   "dev": {
+    "cagr": -0.0004497077142382455,
+    "max_drawdown": 0.6417838277379081,
+    "sharpe": 0.11274252173100846,
+    "fills": 1309.0
+   },
+   "dev5": {
+    "cagr": -0.06389571786798787,
+    "max_drawdown": 0.7113725907485984,
+    "sharpe": -0.17428850242462723,
+    "fills": 1309.0
+   },
+   "dev10": {
+    "cagr": -0.13757030072422627,
+    "max_drawdown": 0.7796677889762575,
+    "sharpe": -0.5316147867831769,
+    "fills": 1309.0
+   },
+   "holdout": null,
+   "tenY": null,
+   "fiveY": null,
+   "corr": -0.19792201991428002
+  },
+  {
+   "slug": "drawdown-regime",
+   "name": "Drawdown regime",
+   "status": "rejected",
+   "statusLabel": "Rejected",
+   "idea": "After a >=20% QQQ drawdown, own TQQQ only inside a confirmed 60-session recovery window, then stand aside until the drawdown heals.",
+   "reason": "Negative dev CAGR; the deep-drawdown re-risk is too rare and mistimed.",
+   "dev": {
+    "cagr": -0.011867523621367448,
+    "max_drawdown": 0.39883589233104644,
+    "sharpe": 0.047399813450694044,
+    "fills": 13.0
+   },
+   "dev5": {
+    "cagr": -0.012510847395372338,
+    "max_drawdown": 0.3997969859227233,
+    "sharpe": 0.04428954075976744,
+    "fills": 13.0
+   },
+   "dev10": {
+    "cagr": -0.013314385737158374,
+    "max_drawdown": 0.4009961930435584,
+    "sharpe": 0.04040445061907665,
+    "fills": 13.0
+   },
+   "holdout": null,
+   "tenY": null,
+   "fiveY": null,
+   "corr": 0.06144724378847769
+  },
+  {
+   "slug": "drawdown-stop-overlay",
+   "name": "165-day SMA threshold stop",
+   "status": "rejected",
+   "statusLabel": "Rejected",
+   "idea": "A failed breakdown / stop-run reclaim: buy TQQQ after QQQ undercuts its prior 20-day low intraday but closes back above it.",
+   "reason": "Negative dev CAGR; the stop only helped the old base.",
+   "dev": {
+    "cagr": -0.01743959577038867,
+    "max_drawdown": 0.4544994857092868,
+    "sharpe": 0.07400620328749205,
+    "fills": 141.0
+   },
+   "dev5": {
+    "cagr": -0.0243557865942039,
+    "max_drawdown": 0.45884608071093647,
+    "sharpe": 0.04826102182626503,
+    "fills": 141.0
+   },
+   "dev10": {
+    "cagr": -0.0329325821309171,
+    "max_drawdown": 0.4672938316079548,
+    "sharpe": 0.016114246456812198,
+    "fills": 141.0
+   },
+   "holdout": null,
+   "tenY": null,
+   "fiveY": null,
+   "corr": 0.3032036938984323
+  },
+  {
+   "slug": "opening-range-breakout",
+   "name": "Opening-range breakout",
+   "status": "rejected",
+   "statusLabel": "Rejected",
+   "idea": "A failed breakdown of the 30-minute opening range that reclaims the range low is a liquidity-sweep reversal; buy the reclaim and target the opposite side of the range before the close.",
+   "reason": "Negative dev CAGR; the reclaim has no net edge.",
+   "dev": {
+    "cagr": -0.020953739232443702,
+    "max_drawdown": 0.17216937563375956,
+    "sharpe": -0.5316939160499683,
+    "fills": 2865.0
+   },
+   "dev5": {
+    "cagr": -0.15114466217258538,
+    "max_drawdown": 0.7297962781931115,
+    "sharpe": -4.016395620552932,
+    "fills": 2865.0
+   },
+   "dev10": {
+    "cagr": -0.2898135815710543,
+    "max_drawdown": 0.9349546985340974,
+    "sharpe": -7.3096828272378875,
+    "fills": 2865.0
+   },
+   "holdout": null,
+   "tenY": null,
+   "fiveY": null,
+   "corr": null
+  },
+  {
+   "slug": "donchian-breakout",
+   "name": "5m Donchian breakout",
+   "status": "rejected",
+   "statusLabel": "Rejected",
+   "idea": "A Donchian breakout is only worth leveraging when short, medium and long breakout horizons agree; the alignment count is the trend/sizing signal.",
+   "reason": "Negative dev CAGR; 5/10 bp destroy it.",
+   "dev": {
+    "cagr": -0.03382475587815714,
+    "max_drawdown": 0.3705309399347324,
+    "sharpe": -0.16246885053179658,
+    "fills": 11083.0
+   },
+   "dev5": {
+    "cagr": -0.4047834299697046,
+    "max_drawdown": 0.9843747652345933,
+    "sharpe": -3.444124312330678,
+    "fills": 11083.0
+   },
+   "dev10": {
+    "cagr": -0.6751298630011535,
+    "max_drawdown": 0.9998747361897345,
+    "sharpe": -7.259422678198572,
+    "fills": 11085.0
+   },
+   "holdout": null,
+   "tenY": null,
+   "fiveY": null,
+   "corr": 0.4083293733954642
+  },
+  {
+   "slug": "ensemble-signals",
+   "name": "Ensemble crash vote",
+   "status": "rejected",
+   "statusLabel": "Rejected",
+   "idea": "Volatility spikes mean-revert; the high-vol contraction phase is a distinct TQQQ recovery window, while rising vol from a low is a de-risking signal and QQQ is the default risk asset.",
+   "reason": "Negative dev CAGR; the vol state machine loses without the base.",
+   "dev": {
+    "cagr": -0.05212268079668536,
+    "max_drawdown": 0.7604247755412554,
+    "sharpe": -0.023477642257403203,
+    "fills": 754.0
+   },
+   "dev5": {
+    "cagr": -0.06726207938902418,
+    "max_drawdown": 0.7675237658984644,
+    "sharpe": -0.07633394804076171,
+    "fills": 754.0
+   },
+   "dev10": {
+    "cagr": -0.0858450847208504,
+    "max_drawdown": 0.7761009872460487,
+    "sharpe": -0.14227313112429493,
+    "fills": 754.0
+   },
+   "holdout": null,
+   "tenY": null,
+   "fiveY": null,
+   "corr": 0.4701120842225621
+  },
+  {
+   "slug": "time-of-day",
+   "name": "Overnight + first 30m",
+   "status": "retired_overlay_only",
+   "statusLabel": "Retired",
+   "idea": "The overnight+first-30m block pays because it settles the previous session's closing pressure, so it should be held selectively after a sold close rather than every night.",
+   "reason": "Conditioning does not beat the unconditional overnight hold.",
+   "dev": {
+    "cagr": 0.19680801658953007,
+    "max_drawdown": 0.3180511562755932,
+    "sharpe": 0.9714407382964751,
+    "fills": 1221.0
+   },
+   "dev5": {
+    "cagr": 0.13093031480995387,
+    "max_drawdown": 0.34808623740783373,
+    "sharpe": 0.6978098191635261,
+    "fills": 1221.0
+   },
+   "dev10": {
+    "cagr": 0.053664627070177495,
+    "max_drawdown": 0.38378190972963,
+    "sharpe": 0.3559588642976385,
+    "fills": 1220.0
+   },
+   "holdout": null,
+   "tenY": null,
+   "fiveY": null,
+   "corr": 0.33896176235155245
+  },
+  {
+   "slug": "stop-reentry-recovery",
+   "name": "Gradual stop re-entry",
+   "status": "retired_overlay_only",
+   "statusLabel": "Retired",
+   "idea": "Buy TQQQ after a leveraged-ETF downside overshoot (TQQQ falls >=3% intraday and underperforms 3x QQQ by >=1pp), scaling in 50% then 100% after a recovery close, with a 2% stop and a 3-session hold.",
+   "reason": "Only 1 event in 2,012 sessions.",
+   "dev": {
+    "cagr": 0.012549984524346636,
+    "max_drawdown": 0.01814957555398533,
+    "sharpe": 0.803921997939103,
+    "fills": 5.0
+   },
+   "dev5": {
+    "cagr": 0.012398986195756967,
+    "max_drawdown": 0.018531039943796568,
+    "sharpe": 0.7952280226379669,
+    "fills": 5.0
+   },
+   "dev10": {
+    "cagr": 0.012210412465650577,
+    "max_drawdown": 0.019007000200330304,
+    "sharpe": 0.7840798058896525,
+    "fills": 5.0
+   },
+   "holdout": null,
+   "tenY": null,
+   "fiveY": null,
+   "corr": -0.0010749501235614797
+  }
+ ]
+}

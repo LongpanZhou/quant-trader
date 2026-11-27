@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import {
   Area,
+  Brush,
   CartesianGrid,
   ComposedChart,
   Line,
@@ -13,7 +14,7 @@ import {
   YAxis,
 } from "recharts";
 import type { SeriesPoint } from "@/lib/types";
-import { downsample, yearTicks } from "@/lib/format";
+import { downsample, formatSeriesDate, xTickLabel, xTicks } from "@/lib/format";
 import { ChartTooltip } from "./chart-tooltip";
 import { LegendDot } from "./ui";
 
@@ -23,16 +24,18 @@ export function EquityChart({
   end,
   benchmark,
   accent,
+  timeframe = "1d",
 }: {
   series: SeriesPoint[];
   start: string;
   end: string;
   benchmark: string;
   accent: string;
+  timeframe?: string;
 }) {
   const [scale, setScale] = useState<"linear" | "log">("log");
   const data = useMemo(() => downsample(series, 1500), [series]);
-  const ticks = useMemo(() => yearTicks(data, 12), [data]);
+  const ticks = useMemo(() => xTicks(data, timeframe, 12), [data, timeframe]);
   const maxValue = useMemo(
     () => Math.max(...data.map((point) => Math.max(point.strategy, point.qqq ?? 0))),
     [data],
@@ -46,7 +49,7 @@ export function EquityChart({
     return filtered.filter((_, index) => index % step === 0);
   }, [scale, maxValue]);
 
-  const tickFormatter = (value: string) => value.slice(0, 4);
+  const tickFormatter = (value: string) => xTickLabel(value, timeframe, data);
 
   return (
     <div className="min-w-0">
@@ -59,7 +62,7 @@ export function EquityChart({
           </div>
         </div>
         <div className="flex items-center gap-3">
-          <div className="hidden items-center gap-3 sm:flex">
+          <div className="flex flex-wrap items-center gap-3">
             <LegendDot color={accent} label="Strategy" />
             <LegendDot color="#71717a" label={benchmark} />
           </div>
@@ -112,14 +115,7 @@ export function EquityChart({
             <Tooltip
               content={
                 <ChartTooltip
-                  labelFormatter={(value) =>
-                    new Date(`${value}T00:00:00Z`).toLocaleDateString("en-US", {
-                      month: "short",
-                      day: "numeric",
-                      year: "numeric",
-                      timeZone: "UTC",
-                    })
-                  }
+                  labelFormatter={(value) => formatSeriesDate(value)}
                   valueFormatter={(value) => `$${value.toFixed(1)}`}
                 />
               }
@@ -147,12 +143,20 @@ export function EquityChart({
               isAnimationActive={false}
               activeDot={{ r: 2.5, fill: "#a1a1aa", stroke: "#08090b", strokeWidth: 2 }}
             />
+            <Brush
+              dataKey="date"
+              height={26}
+              stroke="#3f3f46"
+              fill="#0b0d10"
+              travellerWidth={8}
+              tickFormatter={(value: string) => value.slice(0, 4)}
+            />
           </ComposedChart>
         </ResponsiveContainer>
       </div>
       <div className="mt-2 flex items-center justify-between text-[10px] text-zinc-600">
-        <span>{start}</span>
-        <span>{end}</span>
+        <span>{timeframe === "1d" ? start : formatSeriesDate(start)}</span>
+        <span>{timeframe === "1d" ? end : formatSeriesDate(end)}</span>
       </div>
     </div>
   );

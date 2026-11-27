@@ -1,0 +1,41 @@
+{
+  "1bp": {
+    "cagr": -0.009172156866650405,
+    "max_drawdown": 0.3705309399347324,
+    "sharpe": 0.007401531589763042,
+    "sortino": 0.009895990500970044,
+    "volatility": 0.1430860595412353,
+    "fills": 14837,
+    "turnover": 11197.287506582234,
+    "exposure": 0.9999990531594176,
+    "ending_equity": 90526.30475544493,
+    "years": 10.801446878089589
+  },
+  "5bp": {
+    "cagr": -0.3854173618669946,
+    "max_drawdown": 0.9951306933242481,
+    "sharpe": -3.3011849179396857,
+    "sortino": -4.3536026418032305,
+    "volatility": 0.14501198337361232,
+    "fills": 14837,
+    "turnover": 2265.6873337929214,
+    "exposure": 0.9999990531594176,
+    "ending_equity": 520.4286594982242,
+    "years": 10.801446878089589
+  },
+  "10bp": {
+    "cagr": -0.6616887874688455,
+    "max_drawdown": 0.9999919202841001,
+    "sharpe": -7.142225309110592,
+    "sortino": -9.144011808477462,
+    "volatility": 0.15091565292892697,
+    "fills": 14839,
+    "turnover": 1035.4172667317378,
+    "exposure": 0.9999990531594176,
+    "ending_equity": 0.8240166906781473,
+    "years": 10.801446878089589
+  }
+}
+corr vs 165d baseline: 0.4072
+wrote C:\Users\27175\Desktop\quant-trader-research\research\revisit\donchian-breakout\result.json
+{"slug": "donchian-breakout", "mode": "full", "calls": 4, "error": null, "seconds": 8.5, "restored": ["restored result.json"], "match_score": 1.0, "found": true, "kw": {"band": 0.02, "slippage_bps": 1, "start_equity": 100000.0}, "bars": 1056144, "k": 3}

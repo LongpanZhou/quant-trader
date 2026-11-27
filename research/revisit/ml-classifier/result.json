@@ -1,0 +1,65 @@
+{
+  "agent": "ml-classifier",
+  "original": "research/agents/ml-classifier",
+  "status": "pending_test",
+  "idea": "Unsupervised regime clustering allocates TQQQ/QQQ/BIL by each cluster's past forward returns.",
+  "hypothesis": "A causal k-means fit on short-horizon market-state features identifies persistent regimes; the historically strongest regime deserves TQQQ, the second QQQ, the rest BIL.",
+  "universe": [
+    "QQQ",
+    "TQQQ",
+    "BIL"
+  ],
+  "frozen_commit": null,
+  "variants_tried": 0,
+  "corr_vs_165d_baseline": 0.5799276393856011,
+  "max_corr_vs_other_rebuilds": null,
+  "windows": {
+    "dev": {
+      "1bp": {
+        "cagr": 0.20685139067169933,
+        "max_drawdown": 0.36035742782130575,
+        "sharpe": 0.8094105920067697,
+        "fills": 253,
+        "turnover": 474.11346813169786,
+        "exposure": 0.9999985376653535
+      },
+      "5bp": {
+        "cagr": 0.1894923649577922,
+        "max_drawdown": 0.3618147073284501,
+        "sharpe": 0.7578621119868697,
+        "fills": 253,
+        "turnover": 447.2322666180753,
+        "exposure": 0.9999985376653535
+      },
+      "10bp": {
+        "cagr": 0.16814431140155306,
+        "max_drawdown": 0.37961558465321144,
+        "sharpe": 0.6933639269812734,
+        "fills": 253,
+        "turnover": 416.2530817188584,
+        "exposure": 0.9999985376653535
+      }
+    },
+    "holdout": null,
+    "10y": null,
+    "5y": null
+  },
+  "marks": "1m",
+  "benchmarks": {
+    "tqqq": {
+      "cagr": 0.38166308844699315,
+      "max_drawdown": 0.8167775208998822,
+      "sharpe": 0.8186914468520524
+    },
+    "qqq": {
+      "cagr": 0.20144082284882603,
+      "max_drawdown": 0.3511213723088823,
+      "sharpe": 0.8979275341436813
+    },
+    "bil": {
+      "cagr": 0.015741353402441538,
+      "max_drawdown": 0.001921327481275159,
+      "sharpe": 7.891454264079513
+    }
+  }
+}

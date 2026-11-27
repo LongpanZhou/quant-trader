@@ -50,18 +50,79 @@ export const monthName = (month: number) =>
     timeZone: "UTC",
   });
 
+export function parseSeriesDate(value: string) {
+  if (value.includes("T")) {
+    const normalized = value.length === 16 ? `${value}:00Z` : value.endsWith("Z") ? value : `${value}Z`;
+    return new Date(normalized);
+  }
+  return new Date(`${value}T00:00:00Z`);
+}
+
+export function formatSeriesDate(value: string) {
+  const date = parseSeriesDate(value);
+  const intraday = value.includes("T");
+  return date.toLocaleString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    ...(intraday ? { hour: "numeric", minute: "2-digit", timeZoneName: "short" } : {}),
+    timeZone: intraday ? "America/New_York" : "UTC",
+  });
+}
+
 export const isoRange = (start: string, end: string) =>
-  `${new Date(`${start}T00:00:00Z`).toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-    timeZone: "UTC",
-  })} – ${new Date(`${end}T00:00:00Z`).toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-    timeZone: "UTC",
-  })}`;
+  `${formatSeriesDate(start)} — ${formatSeriesDate(end)}`;
+
+/** X-axis ticks for daily or intraday series. */
+export function xTicks(series: SeriesPoint[], timeframe: string, maxTicks = 10) {
+  if (timeframe === "1d") return yearTicks(series, maxTicks);
+  if (series.length === 0) return [];
+  const limit = timeframe === "1m" ? 5 : 6;
+  const first = parseSeriesDate(series[0].date).getTime();
+  const last = parseSeriesDate(series[series.length - 1].date).getTime();
+  const spanDays = (last - first) / 86_400_000;
+  if (spanDays > 3) {
+    // Multi-day intraday runs read better at session starts than at arbitrary
+    // times produced by even downsampling.
+    const seen = new Set<string>();
+    const sessions = series.filter((point) => {
+      const day = point.date.slice(0, 10);
+      if (seen.has(day)) return false;
+      seen.add(day);
+      return true;
+    });
+    const step = Math.max(1, Math.ceil(sessions.length / limit));
+    return sessions.filter((_, index) => index % step === 0).map((point) => point.date);
+  }
+  const step = Math.max(1, Math.ceil(series.length / limit));
+  return series.filter((_, index) => index % step === 0).map((point) => point.date);
+}
+
+export function xTickLabel(value: string, timeframe: string, series?: SeriesPoint[]) {
+  if (timeframe === "1d") return value.slice(0, 4);
+  // Intraday timestamps are stored in UTC but the market is in New York, so
+  // format the ticks in ET instead of showing 14:30 for the opening bell.
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone: "America/New_York",
+    year: "2-digit",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    hourCycle: "h23",
+  }).formatToParts(parseSeriesDate(value));
+  const part = (type: string) => parts.find((item) => item.type === type)?.value ?? "";
+  if (timeframe === "1h") return `${part("year")}-${part("month")}-${part("day")}`;
+  let multiDay = true;
+  if (series && series.length > 1) {
+    const first = parseSeriesDate(series[0].date).getTime();
+    const last = parseSeriesDate(series[series.length - 1].date).getTime();
+    multiDay = (last - first) / 86_400_000 > 3;
+  }
+  return multiDay
+    ? `${part("month")}-${part("day")}`
+    : `${part("hour")}:${part("minute")}`;
+}
 
 export function yearTicks(series: SeriesPoint[], maxTicks = 12) {
   const seen = new Set<string>();

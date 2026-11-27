@@ -96,20 +96,63 @@ a {
 }
 
 .eyebrow {
-  font-size: 0.68rem;
-  letter-spacing: 0.18em;
+  font-size: 0.74rem;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: #a4abb5;
 }
 
 .display {
   letter-spacing: -0.04em;
-  line-height: 0.95;
+  line-height: 1.02;
 }
 
 .stat-value {
   letter-spacing: -0.03em;
   font-variant-numeric: tabular-nums;
+}
+
+/* Readability pass: lift the small UI type and dim greys. */
+html {
+  font-size: 16px;
+}
+
+body {
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.text-zinc-500 {
+  color: #a4abb5 !important;
+}
+
+.text-zinc-600 {
+  color: #8b929c !important;
+}
+
+[class*="text-[10px]"] {
+  font-size: 0.75rem !important;
+  line-height: 1.45;
+}
+
+[class*="text-[11px]"] {
+  font-size: 0.8125rem !important;
+  line-height: 1.5;
+}
+
+[class*="text-[12px]"] {
+  font-size: 0.875rem !important;
+  line-height: 1.55;
+}
+
+[class*="text-[13px]"] {
+  font-size: 0.9375rem !important;
+  line-height: 1.6;
+}
+
+[class*="text-[14px]"] {
+  font-size: 1rem !important;
+  line-height: 1.65;
 }
 
 .fade-up {
@@ -138,7 +181,7 @@ a {
   background: rgba(9, 11, 13, 0.96);
   padding: 0.65rem 0.75rem;
   box-shadow: 0 14px 40px rgba(0, 0, 0, 0.45);
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
 }
 
 .heat-cell {

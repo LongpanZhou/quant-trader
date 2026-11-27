@@ -1,0 +1,200 @@
+{
+  "slug": "overnight-crash-filter",
+  "name": "Overnight + first-hour TQQQ with vol filter",
+  "tagline": "TQQQ from the close through the first hour, plus a conditional afternoon, behind a 165-day regime, a 20-day volatility filter and a 4% stop.",
+  "summary": "A 165-day QQQ regime (2% hysteresis band) switches between TQQQ and BIL. On risk-on days the strategy buys TQQQ at the 15:59 open and holds it through the next session's first hour; the afternoon is held only when QQQ's first-hour return is at least -0.5%. A 20-day realised-volatility filter skips the overnight entry when QQQ vol exceeds 35% annualised, and a 4% stop from the session open exits intraday crashes. 905 fills over 10 years (about 91 per year), long-only, 100% TQQQ or 100% BIL.",
+  "decision_process": "The regime and the 20-day volatility are computed from QQQ daily closes through day d-1, so the state for day d is known before the open. The overnight entry is decided on the 15:58 bar and filled at the 15:59 open. The first-hour return (QQQ 10:29 close divided by the 09:30 open) is evaluated at the 10:29 close and the afternoon position is filled at the 10:30 open. The stop compares the current one-minute TQQQ close with the session open and fills at the next minute's open. All weights are set at bar i and executed at the open of bar i+1; nothing uses data after the decision bar.",
+  "rules": [
+    "Regime (daily, 2% band): QQQ close above 165-day SMA x 1.02 -> ON; below x 0.98 -> OFF; otherwise hold the previous state. The signal uses the close of day d-1 for day d.",
+    "Crash filter: skip the overnight entry when QQQ's 20-day realised volatility of daily log returns (annualised, through the prior close) is above 35%.",
+    "Overnight plus first hour: when the regime is ON and the vol filter has not fired, buy TQQQ at the 15:59 open (decision bar 15:58) and hold to the next session's 10:30 open.",
+    "Afternoon: at the 10:29 close, if the regime is ON and QQQ's first-hour return is at least -0.5%, hold TQQQ from the 10:30 open to the 15:59 open; otherwise hold cash.",
+    "Stop: while long TQQQ, if the price trades 4% below the session open, sell at the next minute's open. A morning stop-out can re-enter at 10:30 only if the first-hour signal is on; an afternoon stop-out stays out for the rest of the session.",
+    "Risk-off: 100% BIL whenever the regime is OFF, including overnight.",
+    "Execution and costs: next-bar-open fills, long-only, no leverage beyond TQQQ, weights sum to at most 1; 1 bp primary, 5 bp and 10 bp reported."
+  ],
+  "status": "Verified",
+  "metrics": {
+    "cagr10": 0.6747,
+    "dd10": 0.3652,
+    "cagr5": 0.5155,
+    "dd5": 0.3592,
+    "cagr10_5bp": 0.6140,
+    "dd10_5bp": 0.3867,
+    "cagr5_5bp": 0.4669,
+    "dd5_5bp": 0.3632
+  },
+  "verdict": "Beats the round-1 winner on the 10-year window at 1, 5 and 10 bp (67.47/36.52 vs 58.80/44.56 at 1 bp; 54.12/41.25 vs 49.50/50.06 at 10 bp) and is materially more consistent across 27 rolling 3-year windows (26/27 beat TQQQ vs 24/27; min 3y CAGR 41.7% vs 31.2%). It is not a strict-dominance winner: its 5-year max drawdown is 2.2-2.4 pp higher than the winner's (35.92% vs 33.49% on minute marks) because of the August 2024 overnight gap. Main caveats: the vol filter only fires in 2020 (23 nights, all March-October) and is inert from 2021 on, and the -0.5% afternoon threshold is fitted.",
+  "sources": [
+    {
+      "idea": "The US equity premium is earned overnight (close-to-open), not intraday; this is why the strategy holds TQQQ overnight.",
+      "source": "Cliff, M., Cooper, M., & Gulen, H. (2008) / Return Differences between Trading and Non-Trading Hours: Like Night and Day",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=1004081",
+      "source_type": "paper",
+      "role": "inspired rule",
+      "evidence": "Decomposes the US equity premium into open-to-close and close-to-open for stocks, indices and index futures; finds night returns strongly positive and day returns close to zero. Direct license for an overnight TQQQ leg.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Overnight and intraday blocks are separate clienteles, and momentum-type premia accrue overnight.",
+      "source": "Lou, D., Polk, C., & Skouras, S. (2019) / A Tug of War: Overnight versus Intraday Expected Returns (JFE 134(1), 192-213)",
+      "url": "http://www.econ.yale.edu/~shiller/behfin/2015-04-11/lou_polk_skouras.pdf",
+      "source_type": "paper",
+      "role": "inspired rule",
+      "evidence": "Models overnight and intraday returns as driven by different investor clienteles and documents that momentum earn its premium overnight; used to justify keeping the overnight leg and only conditionally trading the session.",
+      "confidence": "high"
+    },
+    {
+      "idea": "The overnight drift is a large, persistent, cross-asset anomaly rather than a small-sample curiosity.",
+      "source": "Haghani, V., Ragulin, V., & Dewey, R. (2022) / Night Moves: Is the Overnight Drift the Grandmother of All Market Anomalies? (JOIM 22(2), 2024)",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4139328",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Surveys the overnight-drift literature and documents the effect across indices, ETFs, individual stocks and crypto; supports treating the overnight block as a persistent source of return. No parameter was taken from this paper.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Close-to-open vs open-to-close decomposition of index returns.",
+      "source": "Bondarenko, O., & Muravyev, D. (2021) / Market Return Around the Clock: A Puzzle (NY Fed Staff Report 917)",
+      "url": "https://www.newyorkfed.org/medialibrary/media/research/staff_reports/sr917.pdf",
+      "source_type": "report",
+      "role": "supports assumption",
+      "evidence": "Documents the overnight drift and its timing around the European open. Important nuance: for S&P 500 futures 1983-2020 it reports open-to-close 5.12%/yr vs close-to-open 3.53%/yr, so the overnight dominance is not universal across instruments; the rule relies on the equity/ETF evidence and on the local TQQQ measurement, not on a futures claim.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Nasdaq-100 constituents earn the majority of their return overnight.",
+      "source": "Liquidnet (2021) / Price Discovery and Tactics to Time Trading",
+      "url": "https://liquidnet-dev.squarespace.com/s/PriceDiscovery-TacticsToTimeTrading-20210714-final.pdf",
+      "source_type": "report",
+      "role": "supports assumption",
+      "evidence": "Tick-data study reporting that about 65% of the total return of Nasdaq-100 listings is earned overnight (and 80% for S&P 500 names, over 100% for Russell 2000). Used only as corroboration for the Nasdaq-100 overnight share.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "A 3x daily-reset ETF inherits an overnight gap at roughly 3x and cannot be hedged intraday.",
+      "source": "Cheng, M., & Madhavan, A. (2009) / The Dynamics of Leveraged and Inverse Exchange-Traded Funds (JOIM 7(4))",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=1393995",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Explains daily re-leveraging, path dependence and end-of-day rebalancing flows in leveraged ETFs; motivates both the size of the overnight gap exposure and the need for an ex-ante filter rather than only an intraday stop.",
+      "confidence": "high"
+    },
+    {
+      "idea": "TQQQ end-of-day rebalancing flows are large and mechanical.",
+      "source": "ETF.com / One Bad Day: A Levered-QQQ ETF Case Study",
+      "url": "https://www.etf.com/sections/equity/one-bad-day-levered-qqq-etf-case-study",
+      "source_type": "blog",
+      "role": "supports assumption",
+      "evidence": "Case study of the 2018 selloff quantifying the dollar rebalancing TQQQ and SQQQ had to do into the close; used as context for why the close/open boundary is special for a 3x fund.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "High QQQ 20-day volatility is where TQQQ's leverage decay concentrates, so extreme vol is the right crash-filter variable.",
+      "source": "FinLab / Leveraged ETF Decay: Volatility Drag and Costs in 14 Funds",
+      "url": "https://finlab.finance/en/blog/leveraged-etf-decay",
+      "source_type": "blog",
+      "role": "inspired rule",
+      "evidence": "Reports that days opening with QQQ 20-day volatility above 25% were 22.5% of sessions but carried 52.7% of TQQQ's volatility decay. This is the direct motivation for a 20-day-vol filter; the 35% threshold used here is my own choice, not the paper's 25%.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "The first half-hour / first hour of the session carries information that predicts the rest of the day, so a first-hour signal can condition afternoon exposure.",
+      "source": "Gao, L., Han, Y., Li, S. Z., & Zhou, G. (2018) / Market Intraday Momentum (JFE 129(2), 394-414)",
+      "url": "https://doi.org/10.1016/j.jfineco.2018.05.009",
+      "source_type": "paper",
+      "role": "inspired rule",
+      "evidence": "Documents that the first half-hour return predicts the last half-hour, especially on volatile and macro-news days. This agent's rule is the round-1 adaptation (first hour -> whole afternoon), not the paper's exact last-half-hour trade.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Stop-loss rules add value when returns exhibit momentum, and cost little when they do not.",
+      "source": "Kaminski, K. M., & Lo, A. W. (2014) / When Do Stop-Loss Rules Stop Losses? (Journal of Financial Markets 18, 234-254)",
+      "url": "https://doi.org/10.1016/j.finmar.2013.07.001",
+      "source_type": "paper",
+      "role": "inspired rule",
+      "evidence": "Provides the theoretical condition under which a stop adds value (momentum/regime shifts) and shows the cost is small otherwise. The 4% level itself is inherited from the round-1 winner, not from this paper.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Overnight gap-downs tend to revert in the first 30 minutes, so exiting after a gap is the wrong response.",
+      "source": "Concretum Group / Beat the Market: An Effective Intraday Momentum Strategy for the SPY",
+      "url": "https://concretumgroup.com/backtesting-7-years-of-free-data-beat-the-market-an-effective-intraday-momentum-strategy-for-the-sp500-etf-spy",
+      "source_type": "blog",
+      "role": "supports assumption",
+      "evidence": "Reports that overnight gaps typically revert within the first 30 minutes of the session. This is consistent with my own measurement (TQQQ first 60 minutes average +223 bp after a QQQ gap below -2%, t = 3.61) and is the reason the mandate's gap-down exit was rejected.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "165-day SMA regime with a 2% hysteresis band; the overnight + first-30-minutes block is the return engine and the last 30 minutes are negative.",
+      "source": "quant-trader-research round-1 report: time-of-day (internal)",
+      "url": null,
+      "source_type": "report",
+      "role": "inspired rule",
+      "evidence": "Supplied the 2% band on the 165-day SMA and the evidence that TQQQ's close-to-open and 09:30-10:00 blocks carry the drift while 15:30-16:00 is negative. Its V1 (overnight only) and V2 (overnight + first 30m) are the direct ancestors of this agent's P1/P2.",
+      "confidence": "high"
+    },
+    {
+      "idea": "A first-hour signal can condition the afternoon; 60-minute formation window; zero threshold as the ex-ante choice.",
+      "source": "quant-trader-research round-1 report: intraday-momentum (internal)",
+      "url": null,
+      "source_type": "report",
+      "role": "inspired rule",
+      "evidence": "Its E2 strategy (regime + overnight + first-60m signal -> afternoon) is the base of the recommended strategy here. This agent adds the 20-day vol filter and the 4% stop and changes the threshold to -0.5%.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Benchmark to beat and the source of the 4% stop level and the 20-day MA arming idea.",
+      "source": "quant-trader-research round-1 report: daily-regime-minute-entry (internal)",
+      "url": null,
+      "source_type": "report",
+      "role": "benchmark",
+      "evidence": "The round-1 winner (165-day regime + armed 4% minute stop) is the comparison target throughout; its 58.80/44.56 and 49.88/33.49 at 1 bp were reproduced exactly. The 4% stop level and the session-open reference are inherited from it.",
+      "confidence": "high"
+    }
+  ],
+  "rejected_sources": [
+    {
+      "source": "Round-2 mandate suggestion: exit if the overnight gap is below a threshold",
+      "url": null,
+      "why_rejected": "Tested at -1%, -2% and -3% on top of the recommended strategy: 63.22/36.92, 62.85/36.92 and 64.21/36.85 (10y) vs 67.47/36.52 with no gap rule, i.e. it costs 3-8 pp of CAGR and does not reduce drawdown. Gap-downs bounce: after a QQQ gap below -2% in a regime-on market, TQQQ's next 60 minutes average +223 bp (t = 3.61, n = 20)."
+    },
+    {
+      "source": "Own test (mandate family): pure overnight-only 15:59->09:30, 165-day regime + crash filter",
+      "url": null,
+      "why_rejected": "Fails on CAGR: 40.84/31.19 (10y) and 26.41/30.64 (5y) at 1 bp, 19.26% and 8.68% at 5 bp, negative at 10 bp. Lower drawdown than the winner, but 7.5-18.5 pp less CAGR; two fills a day cost 25-30 pp at 5 bp and no crash filter fixes that."
+    },
+    {
+      "source": "Own test (mandate family): overnight + first 30 minutes, 165-day regime + crash filter",
+      "url": null,
+      "why_rejected": "51.30/33.18 (10y) and 31.42/33.18 (5y) at 1 bp, but 28.11% and 12.97% at 5 bp. Meets the drawdown goal but misses the CAGR target by 7.5 pp (10y) and 18.5 pp (5y), and collapses under realistic costs."
+    },
+    {
+      "source": "Own test: fast momentum crash gate (skip the overnight after a -2% QQQ day, decided on the 15:59 print)",
+      "url": null,
+      "why_rejected": "Causally applied to the overnight leg only it makes things worse: 56.54/43.11 (10y) and 52.37/34.52 (5y) on the thr=0 base, vs 62.98/35.65 and 51.90/35.23 without it. An earlier version showed 77.6% CAGR but used the same-day close to decide the afternoon (a 6-hour look-ahead); it is documented in the report as a look-ahead bug, not a result."
+    },
+    {
+      "source": "Own test: QQQ close > 20-day MA as a short-term exposure gate",
+      "url": null,
+      "why_rejected": "Cuts the 10y drawdown to 28.03% but destroys the CAGR (22.20% vs 40.84% for the overnight base) because it re-enters too slowly; 5y 9.73%."
+    },
+    {
+      "source": "Own test: 10-day drawdown gate (skip the overnight if QQQ is 4% below its 10-day high)",
+      "url": null,
+      "why_rejected": "Worse on both windows: 54.15/43.15 (10y) and 42.09/36.25 (5y) vs 62.98/35.65 and 51.90/35.23 for the same base."
+    }
+  ],
+  "corrections": [
+    "Current page (web/public/data/research/strategies.json, slug overnight-crash-filter): the status Verified is correct as a reproducibility label (the simulator matches bt.simulate exactly, the round-1 winner reproduces at 58.80/44.56 and 49.88/33.49, and a truncation test leaves the weight path bit-identical). Verified does not mean leader: keep the 5-year drawdown caveat in the verdict.",
+    "Tagline 'Overnight + first hour, with a 35% vol crash filter' oversells the filter and hides half the strategy. The filter skips only 23 nights, all between March and October 2020, and never fires from 2021 to 2026; without it the 10-year max drawdown is 47.85% instead of 36.52%. Better: 'TQQQ from the close through the first hour, plus a conditional afternoon, with a 20-day vol filter and a 4% stop.'",
+    "Summary 'Hold TQQQ from 15:59 to 10:30 while QQQ is above its 165-day SMA' is imprecise in two ways: the regime is a 2% hysteresis band around the 165-day SMA (ON above SMA x 1.02, OFF below x 0.98, otherwise unchanged), and the 15:59-10:30 block is only the first of two blocks - the session from 10:30 to 15:59 is held only when QQQ's first-hour return is at least -0.5%.",
+    "Metrics on the page show only 1 bp. The 5 bp and 10 bp results were measured and should be shown: 61.40/38.67 and 54.12/41.25 (10y), 46.69/36.32 and 40.83/36.83 (5y). The strategy is unusually cost-robust (905 fills over 10 years, about 91 a year), and the 10-year advantage over the round-1 winner is largest at 10 bp, so omitting those rows understates the result.",
+    "Verdict 'Strong 10y; the 5y drawdown is 2.4 pp worse than the round-1 winner' is numerically correct but one-sided. Add that the 5-year CAGR is higher at 1 and 5 bp (51.55 vs 49.88 and 46.69 vs 45.89), that the 10-year result dominates the winner at 1, 5 and 10 bp, and that rolling 3-year consistency is better (26/27 vs 24/27 windows beat TQQQ; min 3y CAGR 41.7% vs 31.2%; max 3y DD 35.4% vs 41.6%).",
+    "State the drawdown convention wherever the 5-year number appears: 35.92% is on 1-minute marks while the daily-close drawdown is 31.28% (the round-1 winner is 33.49% minute / 33.08% daily). Mixing conventions would make the comparison wrong in either direction.",
+    "Page papers list has three junk entries: a second 'pdf' duplicating Lou-Polk-Skouras, an 'SSRN 4139328' duplicating the Haghani-Ragulin-Dewey entry, and a second 'pdf' for Liquidnet. Deduplicate and label them. The list is also missing Kaminski & Lo (2014, 'When Do Stop-Loss Rules Stop Losses?', https://doi.org/10.1016/j.finmar.2013.07.001), which is the source for the stop-loss logic (the 4% level itself comes from the round-1 winner).",
+    "Parameter provenance is missing from the page: SMA 165, the 2% band, the 60-minute morning block and the 4% stop are inherited from round 1. The -0.5% afternoon threshold and the 35% vol threshold were chosen on the full sample and are the main overfitting risk; they should not be presented as literature values.",
+    "Disclose the overlap with round 1: this is the round-1 intraday-momentum E2 rule (regime + overnight + first-hour signal -> afternoon) plus a 20-day vol filter, a 4% stop and a -0.5% threshold. E2 alone is 66.59/49.15 (10y) and 34.69/37.69 (5y); the additions are worth -12.6 pp of 10-year drawdown and +16.9 pp of 5-year CAGR. It is a blend, not a new standalone signal.",
+    "The page name 'First-hour + crash filter' is acceptable but 'First-hour + vol filter' would be more accurate, since the only crash filter is a 20-day realised-volatility threshold and it is a 2020-specific tail hedge rather than a general crash detector."
+  ]
+}

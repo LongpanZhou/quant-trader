@@ -1,0 +1,40 @@
+C:\Users\27175\Desktop\quant-trader-research\research\revisit\intraday-mean-reversion\strategy.py:88: RuntimeWarning: All-NaN slice encountered
+  dmin = np.array([np.nanmin(dd[first[k]:last[k] + 1]) for k in range(nd)])
+C:\Users\27175\Desktop\quant-trader-research\research\revisit\intraday-mean-reversion\strategy.py:88: RuntimeWarning: All-NaN slice encountered
+  dmin = np.array([np.nanmin(dd[first[k]:last[k] + 1]) for k in range(nd)])
+wrote C:\Users\27175\Desktop\quant-trader-research\research\revisit\intraday-mean-reversion\result.json
+{
+  "dev": {
+    "cagr": 0.124061,
+    "max_drawdown": 0.314733,
+    "max_drawdown_daily": 0.214815,
+    "sharpe": 0.6305,
+    "fills": 437,
+    "turnover": 899.3,
+    "years": 10.801,
+    "ending_equity": 353645.16
+  },
+  "10y": {
+    "cagr": 0.141923,
+    "max_drawdown": 0.314733,
+    "max_drawdown_daily": 0.214815,
+    "sharpe": 0.6862,
+    "fills": 409,
+    "turnover": 905.3,
+    "years": 9.801,
+    "ending_equity": 367216.08
+  },
+  "5y": {
+    "cagr": 0.0619,
+    "max_drawdown": 0.276599,
+    "max_drawdown_daily": 0.214815,
+    "sharpe": 0.3898,
+    "fills": 197,
+    "turnover": 202.4,
+    "years": 4.994,
+    "ending_equity": 134976.57
+  }
+}
+corr vs 165d base: 0.0782
+event study: {'n_events': 109, 'n_clusters': 1, 'mean': 0.011318200781243098, 'win_rate': 0.5688073394495413, 'p_mean_le_0': 0.0}
+{"slug": "intraday-mean-reversion", "mode": "full", "calls": 8, "error": null, "seconds": 55.1, "restored": ["restored result.json"], "match_score": 1.0, "found": true, "kw": {"band": 0.02, "slippage_bps": 1.0, "start_equity": 100000.0}, "bars": 1055755, "k": 3}

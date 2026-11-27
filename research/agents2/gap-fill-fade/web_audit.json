@@ -1,0 +1,233 @@
+{
+  "slug": "gap-fill-fade",
+  "name": "Gap-up fade overlay",
+  "tagline": "Overlay on the winner: fade small gap-ups in a weak tape, then re-enter before the close.",
+  "summary": "Standalone gap strategies fail because TQQQ's drift is overnight and intraday-only gap trades make only 2-9% CAGR. On top of the 165-day QQQ regime and the armed 4% minute stop, selling TQQQ at 09:31 on armed +0.15% to +0.50% gap-ups and buying back at 15:59 lifts 10-year CAGR from 58.80% to 65.17% and cuts max drawdown from 44.56% to 39.02%. The 5-year result is 54.92%/30.99%, but it is fragile to the arm-gate buffer and the per-event edge is not statistically significant.",
+  "decision_process": "At 09:30 ET the strategy reads QQQ's opening gap (open vs prior close) and the first-minute close. If QQQ's prior close is above its 165-day SMA (risk-on), the 4% stop is armed when QQQ's first-minute close is below its prior 20-day SMA times 1.01, and the gap is between +0.15% and +0.50%, it targets 100% BIL for the 09:30 bar; the harness fills at the 09:31 open. At 15:58 it targets 100% TQQQ for the 15:59 open unless TQQQ closed 4% below the session open at any bar through 15:58, in which case it stays in BIL overnight. Otherwise the base winner holds TQQQ overnight and uses the 4% armed stop.",
+  "rules": [
+    "Regime: QQQ's prior daily close above its 165-day SMA means risk-on; otherwise hold 100% BIL.",
+    "On risk-on days, hold 100% TQQQ including overnight.",
+    "Arm the 4% stop only when QQQ's first-minute close is below its prior 20-day SMA times 1.01. While armed, if TQQQ closes 4% below the session open, sell at the next minute's open and stay in BIL for the rest of the session and the following night.",
+    "Gap-up fade: on a risk-on, armed day with a QQQ opening gap between +0.15% and +0.50% versus the prior close, sell TQQQ at the 09:31 open and hold 100% BIL through 15:58.",
+    "Re-enter at the 15:59 open unless TQQQ closed 4% below the session open at any bar through 15:58; if it did, stay in BIL overnight.",
+    "Next session: re-enter at the open if the regime is still on. Long-only, no leverage beyond 1x TQQQ, no shorting."
+  ],
+  "status": "Fragile",
+  "metrics": {
+    "cagr10": 0.6517,
+    "dd10": 0.3902,
+    "cagr5": 0.5492,
+    "dd5": 0.3099,
+    "cagr10_5bp": 0.5802,
+    "dd10_5bp": 0.4093,
+    "cagr5_5bp": 0.4878,
+    "dd5_5bp": 0.3165
+  },
+  "verdict": "Strictly dominates the winner at 1 bp and 5 bp on both windows (65.17/39.02 and 54.92/30.99 at 1 bp; 58.02/40.93 and 48.78/31.65 at 5 bp), but the 5-year pass depends on the winner's exact 1% arm gate and collapses at 0.5%/1.5%, and the per-event edge is not significant (t=1.60 over 10y, 0.92 over 5y). Treat the 10-year result as a robust crash-hedge overlay and the 5-year result as sample-specific.",
+  "sources": [
+    {
+      "idea": "Small opening gaps fill; large gaps persist and continue. This size split is the reason to fade only the small-gap band and exclude large gap-ups.",
+      "source": "MPM Markets (2026) / Testing the 'Gaps Always Fill' Myth Across Six Futures Markets",
+      "url": "https://mpmmarkets.com/research/gaps-always-fill-myth-futures-markets",
+      "source_type": "report",
+      "role": "inspired rule",
+      "evidence": "Small gaps fill quickly and almost always during the same session; large gaps often remain unfilled for several sessions and continue; the study finds no reliable edge after costs. Used to justify the 0.15-0.50% fade band and to exclude >1% gaps.",
+      "confidence": "high"
+    },
+    {
+      "idea": "NQ/ES same-session gap-fill probability falls monotonically with gap size; big gaps are continuation, not fade.",
+      "source": "Steady Turtle (2026) / How often does the gap fill? NQ & ES, six years of data",
+      "url": "https://steady-turtle.com/statistics/gap-fill-probability",
+      "source_type": "blog",
+      "role": "inspired rule",
+      "evidence": "NQ same-session fill 60.3%; sub-10-point gaps 96.4%, 80-point-plus gaps 38.1%. The article explicitly concludes that big gaps are continuation and small gaps are where the fade lives. Used for the size split and the 0.15-0.50% band.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Gap-fill probability scales with volatility: gaps under 0.25x ATR fill about 94% of the time; gaps over 2x ATR fill about 9%.",
+      "source": "Open Market Journal (2026) / Does the S&P 500 Fill Its Gaps? It Depends on Size",
+      "url": "https://openmarketjournal.com/research/sp500-gap-fill-probability",
+      "source_type": "blog",
+      "role": "supports assumption",
+      "evidence": "Same-session fill rates by ATR bucket. The 0.15-0.50% QQQ gap is roughly 0.10-0.34x the local median 14-day ATR of 1.49%, inside the high-fill region; >1% gaps are outside it.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Large up-gaps (2%+) fill only about 27% of the time same-day and have positive open-to-close drift; 1%+ up-gaps are continuation, not fade.",
+      "source": "thetrading.tools (2026) / Gap Analysis: Do Gaps Always Fill? SPY & QQQ",
+      "url": "https://www.thetrading.tools/gap-analysis",
+      "source_type": "data",
+      "role": "supports assumption",
+      "evidence": "2%+ up-gap same-day fill 27%, 52% within five sessions; 1%+ up-gaps average a positive open-to-close return with about a 60% up-day rate. Used to exclude large gap-ups from the fade.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Small up-gaps usually close same-session; large +2%+ up-gaps mostly do not; up-gaps fill faster than down-gaps.",
+      "source": "IOSR Journal of Economics and Finance (2019) / Filling Open Price Gap on Intraday Timeframe: A Case Study for DJIA Index Stocks",
+      "url": "https://www.iosrjournals.org/iosr-jef/papers/Vol10-Issue5/Series-2/C1005021418.pdf",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "68.2% of small up-gaps close same-session; only 12.1% of +2%+ up-gaps close; 50% of up-gaps close by 09:52 and 50% of down-gaps by 11:08. Used for the early-session fade window and the size split.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Positive gaps drift in the gap direction, while negative gaps are larger and adjust faster. Supports keeping large gap-ups as continuation and treating the fade as a small-gap, positive-gap phenomenon.",
+      "source": "Aiche, Cohen & Griskin (2024) / Stocks Opening Price Gaps and Adjustments to New Information, Computational Economics 63",
+      "url": "https://link.springer.com/article/10.1007/s10614-023-10363-w",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Ten years of S&P 500, Nasdaq-100 and Russell 2000 stocks: negative gap openings are larger, bad-news adjustment is quicker, and positive gaps drift. Used as background for the asymmetry and the large-gap continuation side.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Gap-day prices tend to move in the gap direction; the momentum effect is temporary; the naive 'gaps always fill' rule is false.",
+      "source": "Journal of Behavioral and Experimental Finance (2020) / Price gap anomaly in the US stock market: The whole story",
+      "url": "https://www.sciencedirect.com/science/article/pii/S1062940820300747",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "1928-2018 DJI, S&P 500 and Nasdaq: prices change in the gap direction on the gap day; no evidence that gaps always fill. Used to motivate testing continuation and the size split rather than a blanket fade.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Intraday reversals after large opening changes exist, are stronger after large positive changes, and shrink after bid-ask costs.",
+      "source": "Grant, Wolf & Yu (2005) / Intraday price reversals in the US stock index futures market: A 15-year study, Journal of Banking & Finance 29(5)",
+      "url": "https://www.sciencedirect.com/science/article/pii/S0378426604000949",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "S&P 500 futures, 1987-2002: significant intraday reversals after large opening gaps, stronger after positive gaps; profits are sharply reduced by a bid-ask proxy. Supports the fade direction and the cost caution.",
+      "confidence": "high"
+    },
+    {
+      "idea": "The opening auction aggregates overnight information; the opening price is a meaningful signal, though it can also reflect stabilization and non-information factors.",
+      "source": "Review of Financial Studies 13(3) (2000) / Price Discovery in Auction Markets: A Look Inside the Black Box",
+      "url": "https://academic.oup.com/rfs/article-abstract/13/3/627/1576835",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Opening mechanisms aggregate overnight information; the specialist's opening trade can reflect non-informational stabilization requirements. Used as background for why the opening gap carries information.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Opening procedures and call auctions incorporate overnight information; opening volume predicts daytime volume and opening trades show price reversals.",
+      "source": "Gross (2003) / Price Discovery in Opening Procedures: The Efficiency of NYSE and Nasdaq Openings after Delays",
+      "url": "https://leeds-faculty.colorado.edu/grossd/Research/Price%20Discovery%20in%20Opening%20Procedures%202003-11.pdf",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "NYSE/Nasdaq openings after delayed openings: overnight information is incorporated in the opening procedure. Background only; no parameter was taken from it.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Opening call auctions affect ongoing trade; opening volume is related to daytime volume and opening trade prices show reversals.",
+      "source": "Journal of Financial Markets (2004) / The interaction between opening call auctions and ongoing trade: Evidence from the NYSE",
+      "url": "https://www.sciencedirect.com/science/article/abs/pii/S1058330004000023",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Opening batch volume predicts volume across the day; opening trade price reversals; the opening process handles information efficiently. Background only.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "High overnight returns negatively predict the first half-hour return; the reversal strengthens during market stress.",
+      "source": "Does overnight return predict the first half-hour return for U.S. market indices? (2026)",
+      "url": "https://www.sciencedirect.com/science/article/pii/S1062940826001294",
+      "source_type": "paper",
+      "role": "inspired rule",
+      "evidence": "SPY: the overnight return negatively predicts the first 30-minute return; the reversal is stronger in high-volatility periods including the early COVID phase. This is the closest external support for fading a gap-up at the open.",
+      "confidence": "high"
+    },
+    {
+      "idea": "The first half-hour return predicts the last half-hour return (intraday momentum), stronger on volatile and macro-news days.",
+      "source": "Gao, Han, Li & Zhou (2018) / Market intraday momentum, Journal of Financial Economics 129(3)",
+      "url": "https://www.sciencedirect.com/science/article/pii/S0304405X18301351",
+      "source_type": "paper",
+      "role": "tested only",
+      "evidence": "Used to check whether the gap signal was just intraday momentum. The overlay is an open-to-close fade, not a last-half-hour timing rule, so this paper did not determine the rule.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Trading costs can erase short-term reversal profits; better portfolio construction can preserve some of them.",
+      "source": "Journal of Banking & Finance (2012) / Another look at trading costs and short-term reversal profits",
+      "url": "https://www.sciencedirect.com/science/article/pii/S0378426611002263",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Reversal profits can survive costs with better portfolio construction; conventional cost estimates can be misleading. Used for the 1/5/10 bp cost sensitivity and the warning that the standalone gap fades are cost-fragile.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Base 165-day QQQ SMA regime and armed 4% minute stop.",
+      "source": "Round-1 winner (daily-regime-minute-entry) / own test",
+      "url": null,
+      "source_type": "report",
+      "role": "inspired rule",
+      "evidence": "The regime and stop are inherited from the round-1 winner; this agent only adds the gap overlay. The winner is reproduced exactly at 58.80%/44.56% (10y) and 49.88%/33.49% (5y) at 1 bp.",
+      "confidence": "high"
+    },
+    {
+      "idea": "The exact +0.15% to +0.50% band, the armed-day gate, and the 15:59 stop-aware re-entry.",
+      "source": "Own test / no external source",
+      "url": null,
+      "source_type": "data",
+      "role": "inspired rule",
+      "evidence": "The event study on local QQQ/TQQQ 1-minute data selected the band and the re-entry filter. The gap-band plateau in the report shows the neighbouring bands; no external source specifies these exact parameters.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Long-only, 1x TQQQ maximum, next-bar-open fills, and 1/5/10 bp costs.",
+      "source": "Own test / no external source (mandate and research/bt.py harness)",
+      "url": null,
+      "source_type": "data",
+      "role": "inspired rule",
+      "evidence": "The round-2 mandate caps weights at 1.0 and requires next-bar fills and cost stress; the shared bt.py harness supplies the fills and slippage. No external source determines these values.",
+      "confidence": "high"
+    }
+  ],
+  "rejected_sources": [
+    {
+      "source": "Loomi (2026) / Gap Fill Strategy: NQ Opening Gap Statistics",
+      "url": "https://www.loomiai.io/learn/opening-gap-fill-strategy-nasdaq",
+      "why_rejected": "Tested as a standalone gap-fade rule and rejected: 3,236 NQ trades, 2010-2026, three of four gap-size buckets lose after 1 point of costs; small gaps are the worst. This agrees with the report's negative standalone result and is the reason the gap signal is used only as an overlay."
+    },
+    {
+      "source": "Rosa (2022) / Understanding intraday momentum strategies, Journal of Futures Markets",
+      "url": "https://onlinelibrary.wiley.com/doi/full/10.1002/fut.22375",
+      "why_rejected": "The overnight-to-last-half-hour predictability disappears out of sample. Used only as a caution against treating the gap signal as a stable intraday predictor; no rule was derived from it."
+    },
+    {
+      "source": "QuantifiedStrategies / Gap Reversal (currently listed on the web page)",
+      "url": "https://www.quantifiedstrategies.com/gap-reversal-trading-strategy/",
+      "why_rejected": "Not used in this report. It is a generic retail gap-reversal page with no specific evidence or parameter that entered the overlay; the page's attribution is inaccurate."
+    },
+    {
+      "source": "Lou, Polk & Skouras (2019) / A Tug of War: Overnight versus Intraday Expected Returns (currently listed on the web page)",
+      "url": "https://doi.org/10.1016/j.jfineco.2019.03.011",
+      "why_rejected": "Not used directly in this report. It supports the general overnight/intraday reversal idea, but the direct overnight-reversal source here is the 2026 paper; no rule or parameter was taken from Lou et al."
+    },
+    {
+      "source": "Cliff, Cooper & Gulen (2008) / Like Night and Day (currently listed on the web page)",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=1004081",
+      "why_rejected": "Not used in this report. It is background on overnight versus intraday returns; no rule, parameter or test was derived from it. The web page's attribution is inaccurate."
+    },
+    {
+      "source": "Naive 'gaps always fill' rule (folk rule tested against MPM Markets, Steady Turtle and Open Market Journal)",
+      "url": "https://mpmmarkets.com/research/gaps-always-fill-myth-futures-markets",
+      "why_rejected": "Rejected by the local event study: large gap-ups (>1%, especially >2%) continue rather than fill, and the small-gap fade is too small to beat TQQQ standalone. The report fades only the 0.15-0.50% band and leaves large gaps alone."
+    },
+    {
+      "source": "Zarattini & Aziz (2023) / Can Day Trading Really Be Profitable? Opening Range Breakout",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4416622",
+      "why_rejected": "The ORB continuation variant was tested on this data and failed to beat TQQQ standalone (best ORB30 +2% gap-up: 4.54%/4.96% 10y, 4.81%/4.96% 5y). Not used. The paper's TQQQ result uses 2-4x intraday notional, which this long-only 1x harness does not allow."
+    }
+  ],
+  "corrections": [
+    "Status: change 'Verified' to 'Fragile'. The 5-year strict dominance holds only at the winner's exact 1% arm gate; at 0.5%/1.5% buffers the 5-year CAGR falls to about 45%, and the per-event edge is not statistically significant (t=1.60 over 10y, 0.92 over 5y).",
+    "Metrics: add the measured 5 bp row. cagr10_5bp=0.5802, dd10_5bp=0.4093, cagr5_5bp=0.4878, dd5_5bp=0.3165. The current page only shows the 1 bp metrics.",
+    "Tagline: 'Fade small gap-ups when the tape is weak; re-enter before the close' reads as a standalone strategy. It is an overlay on the 165-day QQQ regime plus the armed 4% stop; reword to say so.",
+    "Rules: the current three bullets omit the base regime and the armed 4% stop. Add: prior QQQ close above the 165-day SMA; 4% stop armed when QQQ's first-minute close is below prior MA20 x 1.01; stop sells at the next minute and stays out for the day and night.",
+    "Papers: remove 'QuantifiedStrategies - Gap Reversal', 'Lou, Polk & Skouras (2019)' and 'Cliff, Cooper & Gulen (2008)'. None was used in this report. The direct overnight-reversal source is the 2026 paper; the gap-size sources are MPM Markets, Steady Turtle, Open Market Journal, thetrading.tools, IOSR and Springer.",
+    "Report section 3: the gap-down bounce range is written '+0.13% to +0.34%'; the <-2% bucket is +0.11%, so the range is '+0.11% to +0.34%'.",
+    "Report section 2: 'at most ~4-5.5%/yr' mixes the regime-on subset (3.90%/5.46%) with the all-days intraday leg (6.25%/2.41%). Say which is which.",
+    "Report section 5.3: 'QQQ's first-minute price' should be 'QQQ's first-minute close'; the arm gate uses the 09:30 close, not the open.",
+    "Report section 9: 'excluding 2018/2021/2025 the overlay is roughly neutral' understates it. Those three years contribute 49.4% of the 63.8% total de-risk PnL, leaving about +1.9%/yr over the other seven years. Say 'most of the benefit', not 'neutral'.",
+    "Web page decision: specify that the gap and arm are known at the 09:30 close, the sell fills at the 09:31 open, and the 15:59 re-entry is set from the 15:58 close (not the 15:59 close).",
+    "Report section 5.1: 'hold 100% BIL until the close' is loose; it is BIL through 15:58 and TQQQ from the 15:59 open. Clarify.",
+    "Standalone table: the EOD, 10:30 time-exit, gap-up follow, ORB and prior-trend rows are from the research sweep with low-based stops; the shipped strategy.py reproduces the three gap-down VWAP rows. The web page should not imply every row is reproduced by strategy.py."
+  ]
+}

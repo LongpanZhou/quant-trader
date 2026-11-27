@@ -1,0 +1,102 @@
+{
+ "return_corr": {
+  "ratio_full": {
+   "ratio_full": 1.0,
+   "ratio_old_base": 0.9421,
+   "ratio_gate_only": 0.8692,
+   "ratio_gate_overlay": 0.9135,
+   "vol_full": 0.7378,
+   "tqqq": 0.6364
+  },
+  "ratio_old_base": {
+   "ratio_full": 0.9421,
+   "ratio_old_base": 1.0,
+   "ratio_gate_only": 0.9235,
+   "ratio_gate_overlay": 0.8599,
+   "vol_full": 0.7692,
+   "tqqq": 0.6756
+  },
+  "ratio_gate_only": {
+   "ratio_full": 0.8692,
+   "ratio_old_base": 0.9235,
+   "ratio_gate_only": 1.0,
+   "ratio_gate_overlay": 0.945,
+   "vol_full": 0.7163,
+   "tqqq": 0.7383
+  },
+  "ratio_gate_overlay": {
+   "ratio_full": 0.9135,
+   "ratio_old_base": 0.8599,
+   "ratio_gate_only": 0.945,
+   "ratio_gate_overlay": 1.0,
+   "vol_full": 0.6795,
+   "tqqq": 0.6994
+  },
+  "vol_full": {
+   "ratio_full": 0.7378,
+   "ratio_old_base": 0.7692,
+   "ratio_gate_only": 0.7163,
+   "ratio_gate_overlay": 0.6795,
+   "vol_full": 1.0,
+   "tqqq": 0.7996
+  },
+  "tqqq": {
+   "ratio_full": 0.6364,
+   "ratio_old_base": 0.6756,
+   "ratio_gate_only": 0.7383,
+   "ratio_gate_overlay": 0.6994,
+   "vol_full": 0.7996,
+   "tqqq": 1.0
+  }
+ },
+ "weight_corr": {
+  "ratio_full": {
+   "ratio_full": 1.0,
+   "ratio_old_base": 0.6141,
+   "ratio_gate_only": 0.5782,
+   "ratio_gate_overlay": 0.9569,
+   "vol_full": 0.2639,
+   "tqqq": NaN
+  },
+  "ratio_old_base": {
+   "ratio_full": 0.6141,
+   "ratio_old_base": 1.0,
+   "ratio_gate_only": 0.9329,
+   "ratio_gate_overlay": 0.5395,
+   "vol_full": 0.4531,
+   "tqqq": NaN
+  },
+  "ratio_gate_only": {
+   "ratio_full": 0.5782,
+   "ratio_old_base": 0.9329,
+   "ratio_gate_only": 1.0,
+   "ratio_gate_overlay": 0.6043,
+   "vol_full": 0.3162,
+   "tqqq": NaN
+  },
+  "ratio_gate_overlay": {
+   "ratio_full": 0.9569,
+   "ratio_old_base": 0.5395,
+   "ratio_gate_only": 0.6043,
+   "ratio_gate_overlay": 1.0,
+   "vol_full": 0.1522,
+   "tqqq": NaN
+  },
+  "vol_full": {
+   "ratio_full": 0.2639,
+   "ratio_old_base": 0.4531,
+   "ratio_gate_only": 0.3162,
+   "ratio_gate_overlay": 0.1522,
+   "vol_full": 1.0,
+   "tqqq": NaN
+  },
+  "tqqq": {
+   "ratio_full": NaN,
+   "ratio_old_base": NaN,
+   "ratio_gate_only": NaN,
+   "ratio_gate_overlay": NaN,
+   "vol_full": NaN,
+   "tqqq": NaN
+  }
+ }
+}

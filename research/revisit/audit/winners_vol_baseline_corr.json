@@ -1,0 +1,75 @@
+{
+ "dev": {
+  "baseline_daily": {
+   "start": "2016-01-04",
+   "end": "2023-12-29",
+   "years": 7.983572895277208,
+   "cagr": 0.45555963086518214,
+   "max_drawdown": 0.57816314416385,
+   "sharpe": 1.028683015645601,
+   "volatility": 0.47846690916866735,
+   "calmar": 0.7879430494035049,
+   "ending_multiple": 20.024510401768758
+  },
+  "baseline_minute": {
+   "cagr": 0.45737938440665915,
+   "max_drawdown_minute": 0.5876387357729532,
+   "sharpe_minute": 1.031148655335578,
+   "volatility_minute": 0.47836190357283165,
+   "fills": 85,
+   "turnover": 314.521030393743,
+   "exposure": 0.9999987210313603,
+   "ending_equity": 2023088.719505861
+  },
+  "primary_daily": {
+   "start": "2016-01-04",
+   "end": "2023-12-29",
+   "years": 7.983572895277208,
+   "cagr": 0.5764686782351567,
+   "max_drawdown": 0.37878038411882764,
+   "sharpe": 1.386612304789229,
+   "volatility": 0.38099274350274637,
+   "calmar": 1.5219074228889107,
+   "ending_multiple": 37.86477442393307
+  },
+  "primary_minute": {
+   "cagr": 0.578427926004591,
+   "max_drawdown_minute": 0.3928705403530781,
+   "sharpe_minute": 1.415062808791076,
+   "volatility_minute": 0.37291006493800266,
+   "fills": 2897,
+   "turnover": 15128.741427232135,
+   "exposure": 0.9995654049551002,
+   "ending_equity": 3825501.671038441
+  },
+  "corr": 0.7127714084423958,
+  "n": 2011,
+  "primary_dd_vs_baseline_pp": 19.93827600450223
+ },
+ "full": {
+  "baseline_strategy_daily": {
+   "start": "2016-01-04",
+   "end": "2026-10-23",
+   "years": 10.80082135523614,
+   "cagr": 0.4463697970089078,
+   "max_drawdown": 0.5799515067328963,
+   "sharpe": 0.9743348462212117,
+   "volatility": 0.5190332778600192,
+   "calmar": 0.769667449479511,
+   "ending_multiple": 53.84539471675523
+  },
+  "baseline_strategy_minute": {
+   "cagr": 0.4477124991983916,
+   "max_drawdown_minute": 0.6220535108154731,
+   "sharpe_minute": 0.9793974553565427,
+   "volatility_minute": 0.5169471201240715,
+   "fills": 85,
+   "turnover": 314.521030393743,
+   "exposure": 0.9999990531594176,
+   "ending_equity": 5440033.6619059555
+  },
+  "corr_vs_strategy_baseline": 0.7551311576120563,
+  "corr_vs_causal_gate_only": 0.716282021133609,
+  "corr_vs_causal_gate_only_minute": 0.716282021133609
+ }
+}

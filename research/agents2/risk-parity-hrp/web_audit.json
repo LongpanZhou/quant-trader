@@ -1,0 +1,99 @@
+{
+  "slug": "risk-parity-hrp",
+  "name": "Risk-parity vol target",
+  "tagline": "A 70% volatility cap on TQQQ, the rest in QQQ, and a 4% minute stop as the crash brake.",
+  "summary": "Sizes the TQQQ sleeve at min(1, 0.70 / 20-day realised vol of TQQQ), puts the remainder of the risk-on sleeve in QQQ, and holds 100% BIL when QQQ is below its 165-day SMA. A 4% intraday stop, armed only when QQQ's first minute is below its 20-day SMA x 1.01, liquidates the TQQQ sleeve to BIL for the rest of the session and the following night. HRP and plain inverse-vol across QQQ/TQQQ/BIL were implemented and rejected: both collapse to roughly 99% BIL because BIL's variance is about four orders of magnitude smaller, and QQQ/TQQQ are 0.9999 correlated.",
+  "decision_process": "At the close of session k-1, compute the 165-day SMA of QQQ closes and the 20-day realised vol of TQQQ from daily closes. For session k: risk-on if QQQ's prior close is above the SMA165, else 100% BIL. On risk-on sessions, TQQQ weight = min(1, 0.70 / sigma_TQQQ,20d) and the remainder of the sleeve is QQQ. At 09:30 the stop is armed if QQQ's first-minute price is below the 20-day SMA (through the prior close) times 1.01; if TQQQ then trades 4% below the session open, the TQQQ sleeve is sold at the next minute's open and the proceeds sit in BIL for the rest of the session and overnight. Every target is filled at the next bar's open with a 2% rebalance band and 1 bp slippage per side.",
+  "rules": [
+    "Regime: for session k, risk-on if and only if QQQ's prior session close is above its 165-day SMA computed through the prior close; otherwise the portfolio is 100% BIL.",
+    "Risk-on sizing: TQQQ weight = min(1, 0.70 / sigma_TQQQ,20d), where sigma is annualised from the last 20 daily closes and lagged one session; the remainder of the sleeve is QQQ.",
+    "Stop arming: on a risk-on session, arm the stop only when QQQ's first-minute price is below its 20-day SMA (through the prior close) times 1.01.",
+    "Stop execution: if armed and TQQQ trades 4% below the session open, sell the TQQQ sleeve at the next minute's open and hold the proceeds in BIL for the rest of the session and the following night.",
+    "Re-entry: the next session restarts from the daily target if the regime is still risk-on; weights are re-derived every session, not held until a discrete event.",
+    "Constraints: long-only, weights sum to <= 1, 2% trade band, fills at the next bar's open, 1 bp per side (5 bp and 10 bp were not measured)."
+  ],
+  "status": "Alternative",
+  "metrics": {
+    "cagr10": 0.5698800404437081,
+    "dd10": 0.4228293677236752,
+    "cagr5": 0.5006152194316518,
+    "dd5": 0.3050306154771236,
+    "cagr10_5bp": null,
+    "dd10_5bp": null,
+    "cagr5_5bp": null,
+    "dd5_5bp": null
+  },
+  "verdict": "Best 1 bp Calmar in the family (1.35 on 10y, 1.64 on 5y) and strict 5y dominance over the round-1 winner (+0.18 pp CAGR, -2.99 pp DD), but 5/10 bp were never measured and the fully cost-tested variant (RP-half) misses the 5y 2 pp band by 0.2 pp. Not promotable on current evidence.",
+  "sources": [
+    {
+      "idea": "Scale exposure by trailing realised variance instead of holding a fixed leverage all the time: w = target / sigma.",
+      "source": "Moreira & Muir (2017), Volatility-Managed Portfolios",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2659431",
+      "source_type": "paper",
+      "role": "inspired rule",
+      "evidence": "The promoted rule min(1, 0.70 / sigma_TQQQ,20d) is a capped inverse-variance sizing rule in this spirit. We used daily-close 20-day realised vol, lagged one session, and applied the cap at 100% TQQQ. We did not re-test the paper's cross-sectional claim.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Risk parity / equal risk contribution as the allocation principle across assets.",
+      "source": "Asness, Frazzini & Pedersen (2012), Leverage Aversion and Risk Parity",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2149341",
+      "source_type": "paper",
+      "role": "tested only",
+      "evidence": "Motivated the ERC/inverse-vol tests. On this asset set the literal rule gives 1.03% QQQ / 0.34% TQQQ / 98.63% BIL, so only the risk-budgeting idea survived into the vol target; the equal-risk portfolio itself was rejected.",
+      "confidence": "high"
+    },
+    {
+      "idea": "A 3x daily-reset ETF is the same factor at 3x leverage, so QQQ/TQQQ is a leverage choice, not a diversifier; multi-day returns are path-dependent.",
+      "source": "Cheng & Madhavan (2009), The Dynamics of Leveraged and Inverse Exchange-Traded Funds",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=1393995",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Explains why the QQQ/TQQQ covariance matrix is near-singular. Verified empirically on this data: 10-year daily correlation 0.99951, average 60-day correlation 0.99986, annualised vols 22.6% (QQQ) and 67.4% (TQQQ).",
+      "confidence": "high"
+    },
+    {
+      "idea": "A stop-loss rule adds value when returns exhibit momentum or regime shifts, and costs little when they do not.",
+      "source": "Kaminski & Lo (2014), When Do Stop-Loss Rules Stop Losses?",
+      "url": "https://doi.org/10.1016/j.finmar.2013.07.001",
+      "source_type": "paper",
+      "role": "inspired rule",
+      "evidence": "The 4% intraday stop and the MA20 arming gate are inherited unchanged from the round-1 winner; this paper is the theoretical license, not a result re-tested in this agent. The stop is a shared overlay, not the risk-parity contribution.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "165-day SMA regime, 4% stop level, 70% vol target, 50/50 stop split.",
+      "source": "Own test / no external source",
+      "url": null,
+      "source_type": "data",
+      "role": "inspired rule",
+      "evidence": "The 165-day window and 4% stop are round-1 parameters; the 70% target sits in the middle of the stable 0.70-0.85 region of the vol-target surface. No external source prescribes these values.",
+      "confidence": "high"
+    }
+  ],
+  "rejected_sources": [
+    {
+      "source": "Lopez de Prado (2016), Building Diversified Portfolios that Outperform Out-of-Sample (HRP)",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2708678",
+      "why_rejected": "Implemented in full (single-linkage tree, quasi-diagonalisation, recursive bisection) on 60-day rolling covariances of QQQ/TQQQ/BIL. It allocated 99.99% to BIL (QQQ 0.0089%, TQQQ 0.0010%), i.e. a T-bill portfolio, because BIL's variance is about four orders of magnitude smaller than TQQQ's. HRP is not the method behind the promoted strategy."
+    },
+    {
+      "source": "Cederburg, O'Doherty, Wang & Yan (2020), On the Performance of Volatility-Managed Portfolios",
+      "url": "https://doi.org/10.1016/j.jfineco.2020.04.015",
+      "why_rejected": "Counter-evidence, not a rule source: volatility-managed portfolios often fail to beat their unmanaged counterparts out of sample. It did not change the rule, but it is the main reason the page should not upgrade the status beyond Alternative while 5/10 bp are unmeasured."
+    }
+  ],
+  "corrections": [
+    "Rules are incomplete: the page says 'stop proceeds BIL' but never defines the stop. Add that on risk-on sessions the stop is armed when QQQ's first minute is below its 20-day SMA times 1.01, and that it sells the TQQQ sleeve at the next minute's open if TQQQ trades 4% below the session open, staying in BIL for the rest of the session and overnight. Without this the page describes a strategy that does not exist.",
+    "Fix the timing sentence. 'Signals use only data through the current bar' should read: the daily signals (SMA165 and 20-day vol) use closes through the prior session only and are lagged one session; the only current-session input is the 09:30 arming check. All targets fill at the next bar's open. As written the page implies a same-bar signal and fill, i.e. look-ahead, which the code does not do.",
+    "HRP is mis-attributed. Lopez de Prado (2016) is listed as a supporting paper, but HRP was implemented and rejected (99.99% BIL; QQQ/TQQQ average 60-day correlation 0.99986). It explains why the strategy is a vol target rather than a risk-parity portfolio, so it should be labelled 'tested and rejected', not cited as support.",
+    "The mechanism in the summary is slightly wrong: HRP collapses to BIL mainly because BIL's variance is about four orders of magnitude smaller than the equity sleeve's, not because QQQ/TQQQ are highly correlated. The 0.9999 correlation matters for the within-equity split (about 90/10 QQQ/TQQQ) and for why QQQ/TQQQ is not diversification.",
+    "State the risk-off leg explicitly: when QQQ is below its 165-day SMA the portfolio is 100% BIL. The current rules only say 'QQQ 165-day regime'.",
+    "Metric provenance: result.json's 'windows' block (56.97% / 43.19% and 47.65% / 33.36%, 1 bp) is the RP-half variant, not the promoted vol-target (56.99% / 42.28% and 50.06% / 30.50%). The page currently quotes the correct vol-target numbers; keep the two variants labelled and do not mix them.",
+    "The 5-year 'strict dominance' is at 1 bp only: 50.06% vs 49.88% CAGR and 30.50% vs 33.49% DD. On 10 years the variant is -1.81 pp CAGR and -2.28 pp DD, which meets the 'lower DD with CAGR within 2 pp' test but is not dominance.",
+    "Turnover is 15,122x (10y) and 1,266x (5y) with 979 and 448 fills, versus the winner's 17,331x and 657 fills. That suggests a 5 bp drag similar to the winner's, but it is an estimate and must not be shown as a measured 5 bp result; leave the 5 bp fields null.",
+    "Rolling 3-year evidence for this family is weak: the fully cost-tested RP-half variant had a lower drawdown than the winner in only 10 of 28 quarterly 3-year windows and a higher CAGR in 1 of 28. The page should not imply better rolling consistency than the leader.",
+    "There is no report.md in research/agents2/risk-parity-hrp/. Keep reportUrl null rather than linking a report that does not exist.",
+    "The sigma in 'TQQQ weight = min(1, 0.70 / sigma_TQQQ,20d)' renders as a replacement character in the page data; re-encode it as a plain ASCII symbol or the word 'sigma'."
+  ]
+}

@@ -1,0 +1,50 @@
+# Provenance — quiet oversold capitulation reversal
+
+Every rule in `SPEC.md` is mapped to a source or marked as an own test. The
+table distinguishes **inspired the rule**, **supports an assumption**,
+**benchmark**, **tested only**, and **counter-evidence**. The last column is
+the confidence I place in the source for this specific claim, not in the paper
+in general.
+
+| # | Idea / claim it is used for | Source | URL | Type | Role | What exactly it supports / how it was used | Conf. |
+|---|---|---|---|---|---|---|---|
+| 1 | Large one-day declines can reverse over the next few sessions; the effect is partly bid-ask/liquidity and long-horizon performance is poor | Cox & Peterson (1994), *Stock Returns following Large One-Day Declines*, Journal of Finance | https://onlinelibrary.wiley.com/doi/10.1111/j.1540-6261.1994.tb04428.x | paper | inspired rule + caution | The 3-session hold after a large decline; the caveat that the reversal may be a microstructure effect is why the strategy uses TQQQ only for 3 sessions and a 1 bp headline | high |
+| 2 | High-volume declines are more likely to be liquidity-driven and reverse; low-volume declines are more likely to be information-driven and continue | Campbell, Grossman & Wang (1993), *Trading Volume and Serial Correlation in Stock Returns*, QJE 108(4) | https://doi.org/10.2307/2118454 | paper | **counter-evidence** | The paper predicts the **opposite** sign to the rebuild's low-volume condition. It is the explicit counter-hypothesis and the reason the heavy-volume ablation is mandatory | high |
+| 3 | High-transaction securities reverse; low-transaction securities continue | Conrad, Hameed & Niden (1994), *Volume and Autocovariances in Short-Horizon Individual Security Returns*, Journal of Finance 49(4) | https://doi.org/10.1111/j.1540-6261.1994.tb02455.x | paper | **counter-evidence** | Same tension as #2, at the individual-stock level. The rebuild does not assume the low-volume sign is universal; it is tested | high |
+| 4 | Volume-return dynamics depend on whether volume is informed or liquidity-driven; the sign is not universal | Llorente, Michaely, Saar & Wang (2002), *Volume and Information*, Journal of Finance | https://doi.org/10.1111/0022-1082.00280 | paper | supports assumption | Justifies treating the volume condition as an empirical, sign-unknown hypothesis rather than a law; motivates the quiet-vs-heavy split | high |
+| 5 | Overnight and intraday returns reverse across periods; reversal profits are earned overnight / at the next open | Lou, Polk & Skouras (2019), *A Tug of War: Overnight versus Intraday Expected Returns*, JFE 134(1) | https://doi.org/10.1016/j.jfineco.2019.03.011 | paper | inspired rule | The next-session open entry, and the choice to hold overnight rather than intraday | high |
+| 6 | The equity premium is earned mostly overnight | Cliff, Cooper & Gulen (2008), *Return Differences between Trading and Non-Trading Hours: Like Night and Day* | https://papers.ssrn.com/sol3/papers.cfm?abstract_id=1004081 | paper | supports assumption | Why a multi-session hold that includes the overnight block is the natural implementation | high |
+| 7 | Volatility-managed exposure improves risk-adjusted returns; scale down when volatility is high | Moreira & Muir (2017), *Volatility-Managed Portfolios* | https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2659431 | paper | inspired rule | The TQQQ/QQQ switch at 30% annualised 20-day vol (TQQQ only in normal vol, QQQ in high vol) | high |
+| 8 | Stop-loss rules add value when returns have momentum / regime shifts | Kaminski & Lo (2014), *When Do Stop-Loss Rules Stop Losses?*, JFM 18 | https://doi.org/10.1016/j.finmar.2013.07.001 | paper | supports assumption | The event-low stop and the 8% hard stop; the stop is a thesis-break rule, not a return engine | high |
+| 9 | After a 2%/3% down day the S&P 500's next-session median is small but positive; the edge is not large enough to trade alone | jorgai, *Buy the Dip: Every S&P 500 Dip Since 1950* | https://jorgai.com/blog/buy-the-dip-what-every-sp-500-dip-since-1950-shows | blog | benchmark | Sanity check on the size of the unconditional bounce; the rebuild needs the volume/oversold conditions to be more than this | medium |
+| 10 | Buying QQQ after a 2% fall and holding 5 days is not a reliable standalone edge after costs | Finabase, *Buying after large one-day falls* | https://finabase.io/learn/strategies/buying-after-large-one-day-falls | blog | tested only | The negative baseline the rebuild must beat; its 82%-cash, wide-dispersion result is the reason the strategy is a low-exposure event strategy, not a full-time dip-buyer | medium |
+| 11 | Gap downs are slightly more likely to reverse intraday than gap ups, but the edge is small | QuantifiedStrategies, *How Often Do Overnight Gaps Get Reversed?* | https://www.quantifiedstrategies.com/how-overnight-gaps-get-reversed/ | blog | tested only | Background for the gap leg of the event; the rebuild does not use a gap-fade as the core signal | medium |
+| 12 | A gap down does not reliably predict the day's close; the open-to-close edge is near a coin flip | QuantifiedStrategies, *What's the Chance the Market Closes Lower After a Gap Down?* | https://www.quantifiedstrategies.com/whats-the-chance-the-market-closes-lower-after-a-gap-down/ | blog | tested only | Why the rebuild does not buy the gap open; it waits for the close-defined event and enters the next session | medium |
+| 13 | Big gap downs (>1%) have a small positive open-to-close drift and fill only about 40% of the time | TradeIntel, *SPX 0DTE: What an Opening Gap Tells You About the Day* | https://tradeintel.ca/research/sp500-opening-gaps.html | report | benchmark | External 33-year gap table; supports the decision to use a next-open, multi-session event rather than an intraday gap trade | medium |
+| 14 | A gap-down reversal may build over 3 days, but the sample is tiny | Mosaic Research, *What Happens After the S&P 500 Gaps Down?* | https://mosaic.trade/research/us500-gap-down-next-three-days | blog | tested only (low confidence) | Anecdotal support for the 3-session horizon; its n=10 is explicitly not treated as statistical evidence | low |
+| 15 | Leveraged ETFs have path-dependent decay; short holds limit the drag | Cheng & Madhavan (2009), *The Dynamics of Leveraged and Inverse ETFs* | https://papers.ssrn.com/sol3/papers.cfm?abstract_id=1393995 | paper | supports assumption | The 3-session TQQQ hold is deliberately short; the strategy does not use TQQQ as a buy-and-hold | high |
+| 16 | TQQQ's volatility drag and financing costs are large in high-vol regimes | FinLab, *Leveraged ETF Decay* | https://finlab.finance/en/blog/leveraged-etf-decay | blog | supports assumption | The 30% vol cap and the QQQ switch in high-vol events | medium |
+| 17 | The old standalone gap <= -1.5%, 1-day, 4% stop made 7.74%/21.22% (10y) and 7.95%/8.20% (5y) at 1 bp | Local `research/agents2/gap-capitulation-reversal/result.json` and report | — (local) | data / report | benchmark | The original's own numbers; the rebuild must be compared with them, not with the base's 58.80%/44.56% | high |
+| 18 | After a -3% QQQ drawdown, the next session open-to-close averages +1.17% (62% win, n=48); the overnight gap is -0.69% | Local round-1 report, `intraday-mean-reversion` | — (local) | report | inspired rule | The next-open entry and the cross-overnight reversal story; the rebuild extends the hold to 3 sessions and changes the event | high |
+| 19 | The pre-pause dev event study: large QQQ declines on low volume have a stronger 3-5 session TQQQ bounce than high-volume declines | Own test, 2016-01-04 → 2023-12-29, QQQ/TQQQ/BIL 1m | — | data | tested only | The empirical basis for the quiet-volume condition (see `report.md` §5). It is exploratory and must be reproduced by the authorised run | high (for the observation) |
+| 20 | The exact event, thresholds, hold, asset switch, stops and neighbours | Own test / pre-registration (`SPEC.md`) | — | spec | tested only | No external source sets these values; they are the pre-registered design and are tested as a family | high |
+
+## Rejected / not used
+
+| Source or idea | Why not used |
+|---|---|
+| QuantifiedStrategies, *Gap Reversal* (https://www.quantifiedstrategies.com/gap-reversal-trading-strategy/) | The page could not be retrieved (bot verification), and the gap-fade premise was already rejected as a standalone in the original work. Not cited as the source of the rule. |
+| Mosaic's 8-of-10 three-day gap-down result | n=10, one April 2025 tariff-shock outlier; used only as an anecdote, not as evidence. |
+| The high-volume reversal prediction of Campbell-Grossman-Wang / Conrad-Hameed-Niden | The dev data shows the **opposite** sign (low-volume events bounce more). The strategy uses the dev sign, but the high-volume version is an explicit ablation and the first falsifier. If the holdout confirms the literature instead, the volume condition is wrong and the strategy is re-specified or retired. |
+| The old 165-day QQQ SMA gate | Forbidden by the revisit brief; used only in `benchmark_weights()` for the correlation and benchmark table, never in `build_weights()`. |
+| The old 4% armed minute stop | Not reused. The rebuild's stops are an event-low stop and an 8% hard stop; no armed/MA20 condition. |
+| SPY as a tradable asset | The local SPY file is daily only and its `SOURCE.md` says it must not be traded in a rebuild; used only as a daily benchmark. |
+| Sector/bond/gold/vol products | No local 1-minute data; new data was not fetched because the test is paused. The strategy is deliberately QQQ/TQQQ/BIL. |
+
+## Note on data discipline
+
+An initial exploration script accidentally lacked an end-date filter and loaded
+QQQ/TQQQ data through 2026 before the error was caught. Those printed numbers
+were discarded; every number in `HYPOTHESIS.md` and `report.md` is recomputed
+on 2016-01-04 → 2023-12-29 only. The final strategy and `main()` load the dev
+window only. The holdout is for the lead's single frozen run.

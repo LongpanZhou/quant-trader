@@ -1,0 +1,96 @@
+{
+  "agent": "opening-range-breakout",
+  "original": "research/agents/opening-range-breakout",
+  "status": "pending_backtest",
+  "idea": "A failed breakdown of the 30-minute opening range that reclaims the range low is a liquidity-sweep reversal; buy the reclaim and target the opposite side of the range before the close.",
+  "hypothesis": "After a brief break below the opening-range low, the reclaim traps breakout sellers and the reversal continues to the opening-range high; the edge is intraday and independent of the overnight TQQQ drift.",
+  "universe": [
+    "QQQ",
+    "TQQQ sensitivity",
+    "BIL"
+  ],
+  "frozen_commit": "pending",
+  "variants_tried": 0,
+  "corr_vs_165d_baseline": null,
+  "max_corr_vs_other_rebuilds": null,
+  "marks": "1m",
+  "windows": {
+    "dev": {
+      "1bp": {
+        "cagr": -0.020953739232443702,
+        "max_drawdown": 0.17216937563375956,
+        "max_drawdown_daily": 0.1716148893279995,
+        "sharpe": -0.5316939160499683,
+        "sharpe_daily": -0.4979526321224709,
+        "sortino": -0.7519530372191051,
+        "volatility": 0.03857265657378728,
+        "fills": 2865,
+        "turnover": 2668.210437006608,
+        "exposure": 0.9999987210313603,
+        "ending_equity": 84444.22985367886
+      },
+      "5bp": {
+        "cagr": -0.15114466217258538,
+        "max_drawdown": 0.7297962781931115,
+        "max_drawdown_daily": 0.7280218203513409,
+        "sharpe": -4.016395620552932,
+        "sharpe_daily": -3.8266329775996355,
+        "sortino": -5.378511858520821,
+        "volatility": 0.04073983468166745,
+        "fills": 2865,
+        "turnover": 1614.7565771179593,
+        "exposure": 0.9999987210313603,
+        "ending_equity": 27026.256459594464
+      },
+      "10bp": {
+        "cagr": -0.2898135815710543,
+        "max_drawdown": 0.9349546985340974,
+        "max_drawdown_daily": 0.9343636774103199,
+        "sharpe": -7.3096828272378875,
+        "sharpe_daily": -6.838848531202324,
+        "sortino": -8.950888662062555,
+        "volatility": 0.04683702478583277,
+        "fills": 2865,
+        "turnover": 986.8813175224368,
+        "exposure": 0.9999987210313603,
+        "ending_equity": 6505.946650747808
+      }
+    },
+    "holdout": null,
+    "10y": null,
+    "5y": null
+  },
+  "benchmarks": {
+    "tqqq": {
+      "cagr": 0.35981497741031854,
+      "max_drawdown": 0.8167775208998822,
+      "sharpe": 0.7990068659930886
+    },
+    "qqq": {
+      "cagr": 0.18864415062519613,
+      "max_drawdown": 0.3511213723088823,
+      "sharpe": 0.8744780521611336
+    },
+    "spy": {
+      "cagr": 0.133661627756694,
+      "max_drawdown": 0.337172572108114,
+      "sharpe": 0.774973499202937
+    },
+    "original": "not run: old base weights are not reused"
+  },
+  "notes": [
+    "Development only (2016-01-04..2023-12-29); holdout not inspected.",
+    "Backtests were paused by the lead; numbers are generated only when main() is authorised.",
+    "Only QQQ/TQQQ/BIL 1-minute data covers the development period; SPY 1-minute exists only for 2026."
+  ],
+  "events": {
+    "breakdowns": 1242,
+    "reclaims": 785,
+    "entries": 716,
+    "skipped_reward": 69,
+    "skipped_geometry": 0,
+    "stopped": 485,
+    "targeted": 182,
+    "eod": 49
+  }
+}

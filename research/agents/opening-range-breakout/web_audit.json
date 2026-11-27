@@ -1,0 +1,138 @@
+{
+  "slug": "opening-range-breakout",
+  "name": "Opening-range breakout",
+  "tagline": "A 30-minute TQQQ opening range, held overnight while the QQQ 165-day regime is on.",
+  "summary": "A 30-minute TQQQ opening-range breakout gated by a QQQ 165-day SMA regime, held overnight while the regime is on. Buy the first 1-minute close above the range high after 10:00, stop at the range low, and stay in TQQQ through the night until the stop or the regime turns off; BIL when flat. The intraday-only version is a negative result: TQQQ's open-to-close drift is only about 6%/yr over 10y, so the overnight hold is what makes the strategy pass.",
+  "decision_process": "Each session: (1) build the TQQQ 30-minute opening range from 09:30-09:59 ET; (2) read the QQQ 165-day SMA regime from the prior session's close; (3) if the regime is on and the book is flat, the first 1-minute close above the range high at/after 10:00 and before 15:00 sets a 100% TQQQ target, filled at the next bar's open; (4) while long, a 1-minute low at/below the entry day's range low sets a 100% BIL target, filled at the next open; (5) the first bar of a session whose prior-close regime is off also exits to BIL; (6) otherwise the TQQQ position is held overnight - there is no end-of-day flattening. Signals use only data through the signal bar; every fill is at the next bar's open.",
+  "rules": [
+    "Opening range: TQQQ 09:30-09:59 ET (30 minutes); or_hi = high and or_lo = low of that window.",
+    "Regime: QQQ prior-session close > 165-day SMA of QQQ daily closes. When off: no entries, and any long exits on the first bar of the session.",
+    "Entry: first 1-minute close above or_hi at/after 10:00 and before 15:00 ET; target 100% TQQQ; fill next bar open.",
+    "Stop: entry day's or_lo; a 1-minute low breach triggers a 100% BIL target, filled next bar open. No target, no trail, no max hold.",
+    "Overnight: hold the TQQQ position overnight while the regime is on; no end-of-day flattening. BIL when flat.",
+    "Costs: 1 bp per fill (5 bp sensitivity); long-only; weights sum to <= 1."
+  ],
+  "status": "Verified",
+  "metrics": {
+    "cagr10": 0.4898,
+    "dd10": 0.4855,
+    "cagr5": 0.3408,
+    "dd5": 0.4217,
+    "cagr10_5bp": 0.4820,
+    "dd10_5bp": 0.4855,
+    "cagr5_5bp": 0.3343,
+    "dd5_5bp": 0.4217,
+    "sharpe10": 1.06,
+    "sharpe5": 0.87,
+    "dd10_daily": 0.4814,
+    "dd5_daily": 0.3718,
+    "fills10": 129,
+    "fills5": 61,
+    "turnover10": 1248.4,
+    "turnover5": 95.5,
+    "round_trips10": 33,
+    "round_trips5": 16
+  },
+  "verdict": "Passes vs TQQQ on both windows at 1 bp and 5 bp: 10y 48.98%/48.55% (Sharpe 1.06), 5y 34.08%/42.17% (Sharpe 0.87); 5 bp 48.20%/48.55% (10y) and 33.43%/42.17% (5y). It matches but does not beat the daily baseline on 5y (34.61%/36.86%) and the 10y result rests on about 33 round trips and a few fat winners; the 165-day regime exits late (2020 DD 48%). The pure intraday ORB fails (best 10.27% 10y CAGR), which is the main honest caveat.",
+  "sources": [
+    {
+      "idea": "Opening-range breakout day-trading structure: 5-minute range, enter at 09:35 if the first candle closes up, stop at the first candle's low, 10R target or end-of-day exit; TQQQ variant.",
+      "source": "Zarattini & Aziz (2023) / Can Day Trading Really Be Profitable? Evidence of Sustainable Long-term Profits from Opening Range Breakout (ORB) Day Trading Strategy",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4416622",
+      "source_type": "paper",
+      "role": "inspired rule",
+      "evidence": "Defines the entry/stop/target family this agent started from; reports 1,795 trades, 24% win rate, 0.13R/trade, 675% total vs 169% for QQQ (2016-Feb 2023) and a TQQQ variant at 1,484%. Rules and numbers were read via the Concretum summary and the OrderBlock OOS review because the SSRN PDF returned 403.",
+      "confidence": "high"
+    },
+    {
+      "idea": "5/15/30/60-minute opening ranges are all studied; ORB is not specific to a 5-minute window.",
+      "source": "Zarattini, Barbon & Aziz (2024) / A Profitable Day Trading Strategy For The U.S. Equity Market",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4729284",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Concretum's summary says the paper compares 5/15/30/60-minute ranges across 7,000+ US stocks and reports a top-20 'stocks in play' portfolio at +1,600% net, Sharpe 2.81 and 36% annualised alpha. Used to justify testing 5/15/30-minute ranges; the stock-selection part is not applicable to a single ETF.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Close-confirmed ORB entry, stop at the other side of the range, 2R target, 15:00 exit; out-of-sample decay after costs.",
+      "source": "mericck / QQQ-Opening-Range-Breakout (GitHub, 2026)",
+      "url": "https://github.com/mericck/QQQ-Opening-Range-Breakout",
+      "source_type": "report",
+      "role": "tested only",
+      "evidence": "Independent 2023-Sep 2026 test of a 15-minute range with close-confirmed entry, next-open fill, stop at the range and a 2R target: +0.074R/trade before costs, +0.054R at 4c/share, +0.022R at 10c; 2026 negative. Supports the intraday-negative conclusion, not the swing variant. Read via the OrderBlock review, not the repo code.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "The headline TQQQ ORB is fragile: the 9,350% variant uses a 5%-of-ATR stop (about $0.08), and the out-of-sample edge is small and decaying.",
+      "source": "OrderBlock.net / Does the QQQ Opening Range Breakout Work Out of Sample?",
+      "url": "https://orderblock.net/blog/qqq-opening-range-breakout-out-of-sample",
+      "source_type": "blog",
+      "role": "supports assumption",
+      "evidence": "Documents the paper's 675% total, 24% win rate, 0.13R, Sharpe 1.12; the 2023-2026 OOS +0.074R before costs; 2026 -7.7R; and the unrealistic TQQQ 5%-ATR stop. Used as the main caution against the intraday headline and to justify not chasing the paper's TQQQ number.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Exact paper rules and summary numbers for the 5-minute ORB.",
+      "source": "Concretum Group / Can Day Trading Really Be Profitable?",
+      "url": "https://concretumgroup.com/can-day-trading-really-be-profitable/",
+      "source_type": "blog",
+      "role": "supports assumption",
+      "evidence": "Author summary with the 1,795 trades / 24% win / 0.13R / 675% and TQQQ 1,484% figures; used because the SSRN PDF was not directly accessible.",
+      "confidence": "high"
+    },
+    {
+      "idea": "5/15/30/60-minute ranges and the 'stocks in play' result.",
+      "source": "Concretum Group / A Profitable Day Trading Strategy For The U.S. Equity Market",
+      "url": "https://concretumgroup.com/a-profitable-day-trading-strategy-for-the-u-s-equity-market/",
+      "source_type": "blog",
+      "role": "supports assumption",
+      "evidence": "States the paper compares 5/15/30/60-minute ranges and reports the top-20 portfolio at +1,600% net, Sharpe 2.81, 36% alpha.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Passing daily baseline: QQQ above its 165-day SMA -> 100% TQQQ, below -> BIL; 45.31%/58.71% 10y and 34.61%/36.86% 5y.",
+      "source": "quant-trader-research research/README.md (task specification)",
+      "url": null,
+      "source_type": "report",
+      "role": "benchmark",
+      "evidence": "Defines the 165-day SMA regime, the 2% band, next-open fills and the baseline metrics. The strategy's regime rule comes from this spec, not from Faber or Gayed-Bilello.",
+      "confidence": "high"
+    },
+    {
+      "idea": "30-minute ORB + OR-low stop + overnight hold + BIL flat asset; all 10y/5y metrics, 5 bp sensitivity, yearly returns, and the overnight/intraday return decomposition.",
+      "source": "Own test / no external source",
+      "url": null,
+      "source_type": "data",
+      "role": "inspired rule",
+      "evidence": "Shared harness research/bt.py on local 1-minute QQQ/TQQQ/BIL; next-open fills, 1 bp primary and 5 bp sensitivity. Own decomposition: TQQQ open-to-close 6.25%/yr (10y) and 2.41%/yr (5y) vs close-to-open 31.14%/yr and 11.61%/yr. The 30-minute window and the overnight hold were chosen by this agent, not taken from a paper.",
+      "confidence": "high"
+    }
+  ],
+  "rejected_sources": [
+    {
+      "source": "Zarattini & Aziz (2023) / exact 5-minute first-candle intraday rule",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4416622",
+      "why_rejected": "Tested long-only with the paper's 5-minute first-candle entry, OR-low stop, 10R target and end-of-day exit: 4.20% CAGR / 22.92% DD over 10y and 1.79% / 16.86% over 5y, far below the 39.28%/13.47% TQQQ bars. The intraday-only structure gives up TQQQ's overnight drift; the paper's headline also uses a 2-4x notional position, which the harness's 1.0 weight cap does not allow."
+    },
+    {
+      "source": "Faber (2007) / A Quantitative Approach to Tactical Asset Allocation",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=962461",
+      "why_rejected": "Not used. The current web page lists it, but the 165-day QQQ SMA regime came from the task's daily baseline. Faber's 10-month SMA rule was not tested here and is not the source of the exact 165-day parameter."
+    },
+    {
+      "source": "Gayed & Bilello (2016) / Leverage for the Long Run",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2741701",
+      "why_rejected": "Not used. The current web page lists it, but its 200-day SMA + 2x leverage rule is different from this strategy's 165-day QQQ SMA + 1x TQQQ rule and was not tested. It is not the source of the regime."
+    }
+  ],
+  "corrections": [
+    "Fix the paper label for SSRN 4729284: the URL is Zarattini, Barbon & Aziz (2024), 'A Profitable Day Trading Strategy For The U.S. Equity Market' (the 7,000-stock ORB paper), not 'Beat the Market: Intraday Momentum'. If the page intended the SPY intraday-momentum paper, link that paper's own SSRN page instead.",
+    "Remove or demote Faber (2007) and Gayed & Bilello (2016) from the paper list: the 165-day QQQ SMA regime was specified by the task's daily baseline, not derived from those papers; neither paper's rule was tested here.",
+    "Add 5 bp metrics to the card: 10y 48.20% CAGR / 48.55% DD; 5y 33.43% / 42.17%. The current 1 bp figures (48.98%/48.55% and 34.08%/42.17%) are correct.",
+    "Add the 5y baseline caveat: 34.08% is slightly below the daily baseline's 34.61%, and the 42.17% minute-close DD is above the baseline's 36.86% daily-close DD. The strategy passes vs TQQQ but does not beat the daily baseline on 5y; on 10y it does (48.98% vs 45.31%, 48.14% daily-close DD vs 58.71%).",
+    "Add the missing execution rules to the card: no entries after 15:00; the position is held overnight (no end-of-day flattening); the stop is checked on 1-minute lows and fills at the next bar's open, not at the stop price; overnight gaps through the stop are unhedged.",
+    "Add activity and Sharpe context: 10y Sharpe 1.06, 129 fills, 1,248x turnover, 33 round trips; 5y Sharpe 0.87, 61 fills, 96x, 16 round trips. The card currently shows only CAGR and DD.",
+    "Soften the implied robustness: the 10y result depends on a few fat winners (Apr 2020-Jan 2022 +338%; Oct 2023-Aug 2024 +70%) and the 165-day regime exits late (2020 DD 48.1%). The ORB is a timing filter; most of the return is TQQQ's overnight drift.",
+    "The tagline, summary and 30-minute/10:00/OR-low/165-day rules on the card otherwise match the report; no correction is needed there. Consider whether 'Verified' should be reserved for strategies that beat the daily baseline on both windows, since the 5y result only matches it."
+  ]
+}

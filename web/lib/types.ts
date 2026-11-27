@@ -81,6 +81,9 @@ export type Params = {
   targetVol?: number;
   volDays?: number;
   rebalanceBand?: number;
+  /** Custom-lab additions. The Rust presets leave these undefined. */
+  symbols?: string[];
+  slippageBps?: number;
 };
 
 export type PerformanceData = {

@@ -1,0 +1,172 @@
+{
+  "slug": "event-risk-overlay",
+  "name": "OpEx de-risk",
+  "tagline": "Overlay on the 165-day winner: keep the overnight TQQQ leg, step aside for the OpEx session only.",
+  "summary": "An overlay on the round-1 winner, not a standalone system. The base holds 100% TQQQ while QQQ's prior close is above its 165-day SMA (else BIL) and runs the winner's armed 4% intraday stop. On monthly option-expiry sessions (third Friday, holiday-shifted) the overlay keeps the overnight TQQQ position but holds BIL from the 09:31 open to the 15:59 close, then buys TQQQ back. An optional variant also de-risks scheduled FOMC decision days.",
+  "decision_process": "At the 09:30 bar of session d the strategy already knows the daily regime (QQQ close[d-1] vs its 165-day SMA) and whether d is an OpEx or scheduled-FOMC calendar date; both are ex-ante. If the regime is risk-off the target is BIL. If the regime is risk-on and d is an OpEx session, the 09:30 bar targets BIL so the sell fills at the 09:31 open, and the 15:58 bar targets TQQQ=1 so the buy-back fills at the 15:59 open; the overnight leg is never touched. The winner's 4% stop runs unchanged on top: when armed (QQQ 09:30 < 20-day SMA * 1.01) and TQQQ closes 4% below the session open, the target moves to BIL at the next minute's open and stays there for the rest of the day and the night. Every target set at bar i fills at open(i+1); no price after bar i is used.",
+  "rules": [
+    "Base regime: risk_on = QQQ close[d-1] > 165-day SMA of QQQ closes through d-1. Risk-on -> 100% TQQQ (held overnight); risk-off -> 100% BIL.",
+    "Base stop: on risk-on sessions, arm only when QQQ's 09:30 print is below its 20-day SMA * 1.01; if armed and TQQQ closes 4% below the session open, sell at the next minute's open and hold BIL for the rest of the session and the night.",
+    "Overlay (primary, V1): on a monthly option-expiry session (third Friday; rolled back to the prior session when that Friday is an exchange holiday, e.g. 2026-06-19 Juneteenth -> 2026-06-18), keep the overnight TQQQ leg and hold 100% BIL from the 09:31 open to the 15:59 open, then buy TQQQ back.",
+    "If the base strategy is already in BIL (risk-off or stopped out), the overlay changes nothing.",
+    "Optional leg (V4): apply the same intraday-only de-risk to scheduled FOMC decision days. Reported, not promoted: the FOMC intraday swap gain is +26.3 bp with t = 1.04.",
+    "Fills are always the next bar's open; costs are 1 bp one-way in the headline, with 5 bp and 10 bp also reported.",
+    "Long-only, weights sum to <= 1, no leverage and no shorts; 1-minute regular-session bars only."
+  ],
+  "status": "Alternative",
+  "metrics": {
+    "cagr10": 0.6706,
+    "dd10": 0.4065,
+    "cagr5": 0.5383,
+    "dd5": 0.3588,
+    "cagr10_5bp": 0.605,
+    "dd10_5bp": 0.4305,
+    "cagr5_5bp": 0.4816,
+    "dd5_5bp": 0.367
+  },
+  "verdict": "Strict 10-year dominance of the round-1 winner at 1/5/10 bp (+8.26/+5.91/+3.17 pp CAGR, -3.92/-4.02/-2.73 pp DD) and better rolling 3-year consistency (beats the winner on both CAGR and DD in 27 of 28 windows), but the 5-year drawdown is 2.39 pp worse at 1 bp (35.88% vs 33.49%), so it fails the 'lower DD on both windows' bar. OpEx was selected after seeing that FOMC, CPI, NFP and pre-holiday de-risking all lose money, so the effect is a research candidate, not a settled anomaly.",
+  "sources": [
+    {
+      "idea": "Monthly option-expiry (third Friday) sessions have a negative price drift, which is what the overlay trades.",
+      "source": "QuantifiedStrategies - The Options Expiration Week Effect: Backtested Evidence and Trading Strategy Ideas",
+      "url": "https://quantifiedstrategies.substack.com/p/the-options-expiration-week-effect-aa2",
+      "source_type": "blog",
+      "role": "inspired rule",
+      "evidence": "Reports that SPY's return from the prior close to the close of expiration Friday averages -0.77% with a 51.4% win rate and compounds to -23.55% over 1993-2024. My own measurement is the same sign and location, smaller in size: TQQQ open->close on OpEx is -64.1 bp vs +9.2 bp on other risk-on sessions (97 events, 2017-2026).",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Concentrated rollover / dealer-hedging flow on the third Friday gives the effect a mechanism.",
+      "source": "Option returns: a tale of the expiration rollover day (FMA 2025)",
+      "url": "https://www.fma.org/assets/docs/Derivatives2025/GarciaAres.pdf",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Documents order imbalance concentrated on the third Friday and the following Monday as covered-call writers roll positions. I read only the search excerpt (abstract/introduction and the order-imbalance event study); I did not replicate it.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "The expiry cycle matters for equity returns and is worth testing as a calendar overlay.",
+      "source": "Quantpedia - Option-Expiration Week Effect",
+      "url": "https://quantpedia.com/strategies/option-expiration-week-effect",
+      "source_type": "report",
+      "role": "tested only",
+      "evidence": "Useful as a map of the expiry cycle, but its claim is the opposite sign to the rule: average weekly returns are HIGHER during expiration weeks. It does not support day-level OpEx weakness and should not be presented as if it does.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "FOMC decision days are special enough to be worth a de-risk leg.",
+      "source": "Lucca & Moench (2015) - The Pre-FOMC Announcement Drift, NY Fed Staff Report 512",
+      "url": "https://www.newyorkfed.org/medialibrary/media/research/staff_reports/sr512.pdf",
+      "source_type": "paper",
+      "role": "rejected",
+      "evidence": "Motivated testing an FOMC leg, but the paper's claim is a pre-announcement (24h before) drift, not post-announcement intraday weakness. My FOMC leg is intraday and only +26.3 bp of swap gain at t = 1.04, so it is reported as an optional variant and not promoted.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Do not build a pre-FOMC drift rule: the anomaly is gone in the modern sample.",
+      "source": "The disappearing pre-FOMC announcement drift (2021, Finance Research Letters)",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7525326",
+      "source_type": "paper",
+      "role": "rejected",
+      "evidence": "Extends the sample to 2019 and finds the pre-FOMC drift essentially disappeared after 2015. Consistent with my FOMC overnight row (+70 bp), which is ordinary TQQQ overnight drift rather than a special pre-FOMC premium.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Pre-holiday sessions might be worth de-risking.",
+      "source": "Quantpedia - Pre-Holiday Effect",
+      "url": "https://quantpedia.com/strategies/pre-holiday-effect",
+      "source_type": "report",
+      "role": "rejected",
+      "evidence": "Documents pre-holiday returns several times the average day. My data agrees (+58.3 bp close-to-close on risk-on pre-holiday sessions), which is exactly why de-risking them costs about -0.4%/yr of log return. Tested and dropped.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Same pre-holiday claim, with a long historical table by holiday.",
+      "source": "StockCharts ChartSchool - The Pre-Holiday Effect",
+      "url": "https://chartschool.stockcharts.com/table-of-contents/trading-strategies-and-models/trading-strategies/the-pre-holiday-effect",
+      "source_type": "blog",
+      "role": "rejected",
+      "evidence": "50-year S&P 500 table showing positive pre-holiday returns across most holidays. Used only to confirm that the sign of the effect is against de-risking.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Stop-loss rules add value when returns have momentum - the basis for the base winner's 4% stop, not for this overlay.",
+      "source": "Kaminski & Lo (2014) - When do stop-loss rules stop losses?",
+      "url": "https://doi.org/10.1016/j.finmar.2013.07.001",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "The theoretical licence for the inherited stop: stops pay when returns exhibit momentum, and cost little when they do not. Inherited from the round-1 winner; this agent did not re-test it.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Ex-ante FOMC meeting dates (scheduled decision days only).",
+      "source": "Federal Reserve - FOMC meeting calendars",
+      "url": "https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm",
+      "source_type": "data",
+      "role": "supports assumption",
+      "evidence": "Decision days scraped from fomcpresconfYYYYMMDD / fomcminutesYYYYMMDD links (2012-2026) plus fomchistorical2016/2017/2018/2020. The calendar is published roughly a year ahead. Emergency meetings (2020-03-03, 2020-03-15) are deliberately excluded because they are not knowable in advance.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Ex-ante CPI and Employment Situation release dates.",
+      "source": "BLS release schedules - Consumer Price Index and Employment Situation",
+      "url": "https://www.bls.gov/schedule/news_release/cpi.htm",
+      "source_type": "data",
+      "role": "supports assumption",
+      "evidence": "One archived bls.gov schedule snapshot per year (2017-2026) via web.archive.org, parsed for 08:30 ET release dates. BLS publishes the whole following year in advance. Caveat: the 2025 federal shutdown moved four prints (Oct-2025 CPI to 2025-10-24, Nov-2025 CPI not published, Nov/Dec-2025 NFP shifted).",
+      "confidence": "high"
+    },
+    {
+      "idea": "OpEx and pre-holiday dates as pure calendar objects (no data fitting).",
+      "source": "Own test / no external source",
+      "url": null,
+      "source_type": "report",
+      "role": "inspired rule",
+      "evidence": "Third Friday of each month with roll-back over an exchange holiday; last trading session before a full-day NYSE holiday computed from the standard observance rules (including Good Friday computus and Juneteenth from 2022). Deterministic arithmetic, published years ahead.",
+      "confidence": "high"
+    },
+    {
+      "idea": "The measured size of the effect, the intraday-only implementation, and the randomisation test.",
+      "source": "Own test / no external source",
+      "url": null,
+      "source_type": "report",
+      "role": "inspired rule",
+      "evidence": "97 risk-on OpEx sessions: TQQQ open->close -64.1 bp vs +9.2 bp on other sessions; TQQQ->QQQ intraday swap gain +45.4 bp, t = 2.77, 59% hit rate. The OpEx set sits at the 99.3rd percentile of 600 random same-size session sets for CAGR. Sub-period gains +3.73 / +5.37 / +4.69 %/yr for 2017-19 / 2020-22 / 2023-26.",
+      "confidence": "high"
+    }
+  ],
+  "rejected_sources": [
+    {
+      "source": "Lenkey (2024) - Leveraged ETF Rebalancing and Late-Day Flow",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4710812",
+      "why_rejected": "Not a source for this strategy. This agent never cited, read or tested it; it appears to have been attached to the page by the generator from a shared pool. Either remove it or mark it explicitly as unverified background, otherwise the page implies provenance that does not exist."
+    },
+    {
+      "source": "De-risk every event day (FOMC + CPI + NFP + OpEx + pre-holiday) into QQQ",
+      "url": null,
+      "why_rejected": "Tested (V5). It looks good only at 1 bp (10y 60.14%/41.61%, 5y 51.99%/32.09%) and collapses at 5 bp (10y 46.94%/47.50%, 5y 40.26%/32.90%) because it churns 2,107 fills. At 10 bp the 10-year CAGR falls to 31.97%, below TQQQ buy-and-hold. Do not generalise 'de-risk event days' from the OpEx result."
+    },
+    {
+      "source": "CPI-day de-risk",
+      "url": null,
+      "why_rejected": "Tested and rejected. CPI sessions are strongly positive for TQQQ: +78.6 bp close-to-close, +25.0 bp open->close. De-risking costs about -1.3%/yr of log return."
+    },
+    {
+      "source": "NFP-day de-risk and pre-holiday de-risk",
+      "url": null,
+      "why_rejected": "Tested and rejected. NFP intraday +13.4 bp (swap gain -3.8 bp), pre-holiday intraday +11.6 bp (swap gain -5.5 bp); both cost return and neither improves the drawdown."
+    }
+  ],
+  "corrections": [
+    "MOST IMPORTANT: the page describes only the overlay and omits the base strategy. 'Risk-on session' is undefined, so the strategy is not reproducible. Add: hold 100% TQQQ while QQQ's prior close is above its 165-day SMA (else BIL) and keep the winner's armed 4% minute stop (armed when QQQ 09:30 < 20-day SMA * 1.01, sell next minute if TQQQ closes 4% below the session open, stay out for the rest of the day and the night).",
+    "Remove 'Lenkey (2024) Leveraged ETF Rebalancing and Late-Day Flow'. It is not a source for this agent and was never verified here; the page currently implies it inspired or supports the rule.",
+    "Reclassify Quantpedia 'Option Expiration Week Effect'. It documents HIGHER returns during expiration weeks - a different and opposite-sign claim to the day-level weakness this rule trades. Only the QuantifiedStrategies OPEX-day backtest and the FMA rollover paper support the actual rule.",
+    "The NY Fed Staff Report 512 (pre-FOMC drift) should not be presented as support for the FOMC leg. The drift disappeared after 2015 and the measured FOMC intraday swap gain is only +26.3 bp at t = 1.04. Label the FOMC leg as an optional, weakly supported extension (it also wins on both CAGR and DD in only 13 of 28 rolling 3-year windows, vs 27 of 28 for the OpEx-only version).",
+    "Add the 5 bp metrics that are already measured: 10y 60.50% CAGR / 43.05% DD, 5y 48.16% / 36.70%. For reference the 10 bp numbers are 52.67% / 47.33% and 41.37% / 37.74% - still strict 10y dominance of the winner.",
+    "Add the main negative result to the page, so the overlay is not read as 'de-risk event days': CPI, NFP, FOMC and pre-holiday de-risking each lose money, and the all-events version fails at 5 bp. OpEx is the only family with a negative intraday drift.",
+    "Quantify the 5-year drawdown in the verdict. At 1 bp it is 35.88% vs the winner's 33.49% (+2.39 pp); on daily marks 35.50% vs 33.08%; measured from the winner's own peak 34.69% vs 33.49%. The 5-year max-DD episode is 2026-06/07, where the one OpEx day inside it (2026-07-17) gapped -6.3% and then rallied +1.7% intraday - the known failure mode of the rule.",
+    "Replace placeholder paper labels ('link', 'pdf', 'doi') with real titles; three entries currently render as bare 'link'.",
+    "The page's 'curve' is null, so no equity chart is published. That is consistent with what was produced, but the page should say so rather than looking like a missing asset.",
+    "Tagline/name are otherwise accurate, but both should signal that this is an overlay on the round-1 winner rather than a standalone OpEx strategy."
+  ]
+}

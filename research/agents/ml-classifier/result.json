@@ -1,0 +1,449 @@
+{
+  "strategy": "Walk-forward logistic-regression risk-off overlay on QQQ 165d SMA",
+  "data": {
+    "source": "local adjusted 1-minute QQQ/TQQQ/BIL bars, regular session",
+    "start": "2016-01-04",
+    "end": "2026-10-23",
+    "decision_bars": "daily (from 5-minute features)",
+    "fills": "next bar open"
+  },
+  "parameters": {
+    "base": "QQQ close > 165-day SMA",
+    "models": "3 x L2 logistic regression, horizons 5/10/20 trading days",
+    "train_window": 750,
+    "l2": 10.0,
+    "rank_window": 252,
+    "rank_quantile": 0.2,
+    "band": 0.02
+  },
+  "windows": {
+    "10y": {
+      "1bp": {
+        "metrics": {
+          "cagr": 0.749458640565628,
+          "total_return": 239.32232652147343,
+          "max_drawdown": 0.40475218379183064,
+          "volatility": 0.42702013745827183,
+          "sharpe": 1.529556492052426,
+          "sortino": 2.187583005047344,
+          "exposure": 0.9995944849959448,
+          "fills": 353,
+          "turnover": 22022.791342666125,
+          "ending_equity": 24032232.65214734
+        },
+        "years": 9.801391740816792,
+        "tqqq": {
+          "cagr": 0.39276118134983373,
+          "total_return": 24.71529114449331,
+          "max_drawdown": 0.8167775208998822,
+          "volatility": 0.6793602367812043,
+          "sharpe": 0.8326459224678261,
+          "ending_equity": 2571529.114449331
+        },
+        "yearly": {
+          "2017": {
+            "strategy": 1.0924333856365163,
+            "tqqq": 1.1296022387355191
+          },
+          "2018": {
+            "strategy": -0.07456292520435692,
+            "tqqq": -0.2352392790445227
+          },
+          "2019": {
+            "strategy": 0.7276744847053631,
+            "tqqq": 1.3047583908023346
+          },
+          "2020": {
+            "strategy": 4.0377947562640335,
+            "tqqq": 0.9982374677191261
+          },
+          "2021": {
+            "strategy": 1.4146411555991145,
+            "tqqq": 0.9088089050398851
+          },
+          "2022": {
+            "strategy": -0.17811489591912633,
+            "tqqq": -0.7970480995639474
+          },
+          "2023": {
+            "strategy": 0.5502033649899751,
+            "tqqq": 2.048926455333064
+          },
+          "2024": {
+            "strategy": 1.4658166780092383,
+            "tqqq": 0.666976773100751
+          },
+          "2025": {
+            "strategy": 0.3728040327667239,
+            "tqqq": 0.35217538633636325
+          },
+          "2026": {
+            "strategy": 0.33154305895351555,
+            "tqqq": 0.2737569904243631
+          }
+        }
+      },
+      "5bp": {
+        "metrics": {
+          "cagr": 0.7244364219599175,
+          "total_return": 207.6756546422633,
+          "max_drawdown": 0.41091068201749703,
+          "volatility": 0.4269338956704689,
+          "sharpe": 1.4959070260327811,
+          "sortino": 2.1363533784297504,
+          "exposure": 0.9995944849959448,
+          "fills": 353,
+          "turnover": 19638.856131407465,
+          "ending_equity": 20867565.46422633
+        },
+        "years": 9.801391740816792,
+        "tqqq": {
+          "cagr": 0.39276118134983373,
+          "total_return": 24.71529114449331,
+          "max_drawdown": 0.8167775208998822,
+          "volatility": 0.6793602367812043,
+          "sharpe": 0.8326459224678261,
+          "ending_equity": 2571529.114449331
+        },
+        "yearly": {
+          "2017": {
+            "strategy": 1.088252951102299,
+            "tqqq": 1.1296022387355191
+          },
+          "2018": {
+            "strategy": -0.09288780893112247,
+            "tqqq": -0.2352392790445227
+          },
+          "2019": {
+            "strategy": 0.7070662852539202,
+            "tqqq": 1.3047583908023346
+          },
+          "2020": {
+            "strategy": 3.886950233691235,
+            "tqqq": 0.9982374677191261
+          },
+          "2021": {
+            "strategy": 1.3801194720455268,
+            "tqqq": 0.9088089050398851
+          },
+          "2022": {
+            "strategy": -0.1840112170496363,
+            "tqqq": -0.7970480995639474
+          },
+          "2023": {
+            "strategy": 0.5292633121764918,
+            "tqqq": 2.048926455333064
+          },
+          "2024": {
+            "strategy": 1.4325085762259526,
+            "tqqq": 0.666976773100751
+          },
+          "2025": {
+            "strategy": 0.36077635543429887,
+            "tqqq": 0.35217538633636325
+          },
+          "2026": {
+            "strategy": 0.3062212964053379,
+            "tqqq": 0.2737569904243631
+          }
+        }
+      }
+    },
+    "5y": {
+      "1bp": {
+        "metrics": {
+          "cagr": 0.512882759055765,
+          "total_return": 6.9053069625713155,
+          "max_drawdown": 0.3319579293756548,
+          "volatility": 0.38013926166633183,
+          "sharpe": 1.2846124123899556,
+          "sortino": 1.8850889608098937,
+          "exposure": 0.999203187250996,
+          "fills": 193,
+          "turnover": 693.2543117549543,
+          "ending_equity": 790530.6962571315
+        },
+        "years": 4.993839835728953,
+        "tqqq": {
+          "cagr": 0.13882830069818142,
+          "total_return": 0.9140067435916837,
+          "max_drawdown": 0.8167775208998822,
+          "volatility": 0.6890440178052744,
+          "sharpe": 0.5337457657381789,
+          "ending_equity": 191400.67435916836
+        },
+        "yearly": {
+          "2021": {
+            "strategy": 0.4155622637656322,
+            "tqqq": 0.13957158437845396
+          },
+          "2022": {
+            "strategy": -0.17811489591912633,
+            "tqqq": -0.7970480995639474
+          },
+          "2023": {
+            "strategy": 0.550203364989976,
+            "tqqq": 2.048926455333064
+          },
+          "2024": {
+            "strategy": 1.46581667800924,
+            "tqqq": 0.666976773100751
+          },
+          "2025": {
+            "strategy": 0.3728040327667237,
+            "tqqq": 0.35217538633636325
+          },
+          "2026": {
+            "strategy": 0.331543058953516,
+            "tqqq": 0.2737569904243631
+          }
+        }
+      },
+      "5bp": {
+        "metrics": {
+          "cagr": 0.4896749162288392,
+          "total_return": 6.317980583747229,
+          "max_drawdown": 0.334092247491928,
+          "volatility": 0.3800697996148382,
+          "sharpe": 1.2439062264668312,
+          "sortino": 1.8218451326814753,
+          "exposure": 0.999203187250996,
+          "fills": 193,
+          "turnover": 656.8969782226951,
+          "ending_equity": 731798.0583747228
+        },
+        "years": 4.993839835728953,
+        "tqqq": {
+          "cagr": 0.13882830069818142,
+          "total_return": 0.9140067435916837,
+          "max_drawdown": 0.8167775208998822,
+          "volatility": 0.6890440178052744,
+          "sharpe": 0.5337457657381789,
+          "ending_equity": 191400.67435916836
+        },
+        "yearly": {
+          "2021": {
+            "strategy": 0.394766377875043,
+            "tqqq": 0.13957158437845396
+          },
+          "2022": {
+            "strategy": -0.18401121704963652,
+            "tqqq": -0.7970480995639474
+          },
+          "2023": {
+            "strategy": 0.5292633121764918,
+            "tqqq": 2.048926455333064
+          },
+          "2024": {
+            "strategy": 1.4325085762259513,
+            "tqqq": 0.666976773100751
+          },
+          "2025": {
+            "strategy": 0.36077635543429953,
+            "tqqq": 0.35217538633636325
+          },
+          "2026": {
+            "strategy": 0.30622129640533835,
+            "tqqq": 0.2737569904243631
+          }
+        }
+      }
+    }
+  },
+  "benchmarks": {
+    "daily_sma165_10y": {
+      "cagr": 0.45305705695451426,
+      "total_return": 37.95794156591846,
+      "max_drawdown": 0.5870748176143445,
+      "volatility": 0.5022108985985204,
+      "sharpe": 1.0011267950603595,
+      "sortino": 1.3838636990813304,
+      "exposure": 0.9995944849959448,
+      "fills": 81.0,
+      "turnover": 794.4975036895856,
+      "ending_equity": 3895794.156591846
+    },
+    "daily_sma165_5y": {
+      "cagr": 0.3460856440181854,
+      "total_return": 3.4113178746240926,
+      "max_drawdown": 0.3686132274497639,
+      "volatility": 0.46416694925247004,
+      "sharpe": 0.8762108877323544,
+      "sortino": 1.2534893599436558,
+      "exposure": 0.999203187250996,
+      "fills": 45.0,
+      "turnover": 81.94282369145515,
+      "ending_equity": 441131.78746240924
+    }
+  },
+  "mandated_30_60_min": {
+    "30min": {
+      "model": "5-min bars, 27 causal features, L2 logistic, annual walk-forward, 2016 warmup",
+      "oos_accuracy_range": "51.0%-54.0% (base rate 51.6%-54.5%)",
+      "best_rule_e0.55_x0.45_hold12_10y": {
+        "cagr": 0.2714,
+        "max_drawdown": 0.73,
+        "fills": 1141
+      },
+      "best_rule_e0.60_x0.40_hold12_10y": {
+        "cagr": 0.2894,
+        "max_drawdown": 0.774,
+        "fills": 225
+      },
+      "verdict": "fail: CAGR below TQQQ on both windows; no reliable edge"
+    },
+    "60min": {
+      "model": "5-min bars, 27 causal features, L2 logistic, annual walk-forward, 2016 warmup",
+      "oos_accuracy_range": "51.5%-54.7% (base rate 49.6%-56.7%)",
+      "rule_e0.55_x0.45_hold12": {
+        "10y_1bp": {
+          "cagr": 0.4187,
+          "max_drawdown": 0.718,
+          "sharpe": 0.9,
+          "fills": 977
+        },
+        "5y_1bp": {
+          "cagr": 0.2302,
+          "max_drawdown": 0.718,
+          "sharpe": 0.65,
+          "fills": 165
+        },
+        "10y_5bp": {
+          "cagr": 0.3632,
+          "max_drawdown": 0.731
+        },
+        "5y_5bp": {
+          "cagr": 0.2141,
+          "max_drawdown": 0.731
+        }
+      },
+      "verdict": "marginal 1bp pass vs TQQQ; fails 10y CAGR at 5bp and is far below the daily baseline"
+    }
+  },
+  "pass": {
+    "10y": {
+      "1bp": true,
+      "5bp": true,
+      "cagr_margin_1bp": 0.35665864056562807,
+      "maxdd_margin_1bp": 0.4120478162081693
+    },
+    "5y": {
+      "1bp": true,
+      "5bp": true,
+      "cagr_margin_1bp": 0.378182759055765,
+      "maxdd_margin_1bp": 0.48484207062434515
+    }
+  },
+  "diagnostics": {
+    "tqqq_days": 0.6792376317923763,
+    "exits_vs_base": 364,
+    "switches": 176,
+    "features": [
+      "q_r1",
+      "q_r2",
+      "q_r5",
+      "q_r10",
+      "q_r20",
+      "q_r60",
+      "q_r120",
+      "q_r250",
+      "rv10",
+      "rv20",
+      "rv60",
+      "rv_ratio",
+      "rv_pct",
+      "rsi14",
+      "sma20",
+      "sma50",
+      "sma100",
+      "sma165",
+      "sma200",
+      "ema20",
+      "ema50",
+      "dd252",
+      "dd20",
+      "up20",
+      "t_r20",
+      "t_r60",
+      "decay60",
+      "bil_r20",
+      "overnight20",
+      "intraday20",
+      "rv5_20",
+      "gap",
+      "intraday",
+      "first30",
+      "last30",
+      "vwap_dist",
+      "close_loc",
+      "dow"
+    ]
+  },
+  "robustness": {
+    "grid_48": {
+      "note": "4 training windows x 4 L2 values x 3 exit quantiles; 1 bp",
+      "10y_cagr_median": 0.578,
+      "10y_dd_median": 0.471,
+      "5y_cagr_median": 0.405,
+      "5y_dd_median": 0.356,
+      "10y_cagr_min": 0.412,
+      "10y_cagr_max": 0.78,
+      "5y_cagr_min": 0.198,
+      "5y_cagr_max": 0.565,
+      "configs_passing_both": 48,
+      "configs_tested": 48
+    },
+    "placebo_200_random_exits": {
+      "mean_10y_cagr": 0.341,
+      "p5_10y_cagr": 0.202,
+      "p95_10y_cagr": 0.484,
+      "max_10y_cagr": 0.563,
+      "ml_percentile": 1.0
+    },
+    "block_bootstrap_1000": {
+      "mean_10y_cagr": 0.791,
+      "p5_10y_cagr": 0.454,
+      "p1_10y_cagr": 0.332
+    },
+    "ex_2020": {
+      "10y_cagr": 0.543,
+      "10y_dd": 0.4048
+    },
+    "exit_alpha_next_intraday": {
+      "exit_days": 364,
+      "exit_mean": -0.0028,
+      "held_days": 1824,
+      "held_mean": 0.00124,
+      "difference": 0.00405,
+      "t_stat": 2.23
+    },
+    "band_sensitivity": "0%, 2%, 5% band give identical CAGR/DD to 2 decimals"
+  },
+  "targets": {
+    "tqqq_10y_readme": {
+      "cagr": 0.3928,
+      "max_drawdown": 0.8168,
+      "sharpe": 0.83
+    },
+    "tqqq_5y_readme": {
+      "cagr": 0.1347,
+      "max_drawdown": 0.8168,
+      "sharpe": 0.53
+    },
+    "tqqq_5y_harness_daily": {
+      "cagr": 0.13882830069818142,
+      "max_drawdown": 0.8167775208998822
+    },
+    "daily_baseline_10y": {
+      "cagr": 0.4531,
+      "max_drawdown": 0.5871,
+      "sharpe": 1.0
+    },
+    "daily_baseline_5y": {
+      "cagr": 0.3461,
+      "max_drawdown": 0.3686,
+      "sharpe": 0.88
+    },
+    "note": "5y TQQQ buy-and-hold is 13.47% in the README and 13.88% on the harness daily bars; the pass test uses the stricter 13.47%."
+  }
+}

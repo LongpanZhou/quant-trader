@@ -1,0 +1,76 @@
+{
+  "primary": [
+    0.5146,
+    0.3929,
+    0.73,
+    607
+  ],
+  "binary_sizing": [
+    0.6028,
+    0.5943,
+    0.661,
+    607
+  ],
+  "cooldown_1": [
+    0.4031,
+    0.3473,
+    0.661,
+    475
+  ],
+  "cooldown_2": [
+    0.2968,
+    0.3753,
+    0.619,
+    397
+  ],
+  "cooldown_5": [
+    0.2031,
+    0.3241,
+    0.512,
+    265
+  ],
+  "atr_mult_055": [
+    0.5563,
+    0.3602,
+    0.716,
+    685
+  ],
+  "atr_mult_100": [
+    0.463,
+    0.421,
+    0.75,
+    498
+  ],
+  "fixed_4pct": [
+    0.4538,
+    0.4205,
+    0.761,
+    441
+  ],
+  "size_floor_030": [
+    0.5108,
+    0.3981,
+    0.734,
+    607
+  ],
+  "size_floor_050": [
+    0.5197,
+    0.3982,
+    0.721,
+    607
+  ],
+  "target_atr_030": [
+    0.4407,
+    0.3267,
+    0.711,
+    607
+  ],
+  "target_atr_050": [
+    0.5498,
+    0.4769,
+    0.73,
+    607
+  ]
+}
+done 76s -> result.json
+{"slug": "vol-scaled-crash-stop", "mode": "full", "calls": 57, "error": null, "seconds": 76.2, "restored": ["restored dev_panel.npz", "restored result.json"], "match_score": 1.0, "found": true, "kw": {"band": 0.02, "slippage_bps": 1.0, "start_equity": 100000.0}, "bars": 1056144, "k": 3}

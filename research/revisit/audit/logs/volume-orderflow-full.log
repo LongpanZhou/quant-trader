@@ -1,0 +1,3 @@
+dev 1bp CAGR 2.49%  DD 16.85%  events 5  corr_vs_base +0.132
+wrote C:\Users\27175\Desktop\quant-trader-research\research\revisit\volume-orderflow\result.json
+{"slug": "volume-orderflow", "mode": "full", "calls": 8, "error": null, "seconds": 17.4, "restored": ["restored result.json"], "match_score": 1.0, "found": true, "kw": {"band": 0.02, "slippage_bps": 1.0, "start_equity": 100000.0}, "bars": 1056144, "k": 3}

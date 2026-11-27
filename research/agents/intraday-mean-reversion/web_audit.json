@@ -1,0 +1,161 @@
+{
+  "slug": "intraday-mean-reversion",
+  "name": "3% Intraday Crash Stop (SMA-165 regime)",
+  "tagline": "Hold TQQQ while QQQ is above its 165-day SMA; step aside for the rest of any session where QQQ falls 3% intraday, then buy back at the next open.",
+  "summary": "A daily QQQ 165-day SMA regime holds 100% TQQQ in uptrends and BIL otherwise, with one intraday overlay: while long TQQQ, a 3% QQQ decline versus the previous daily close at any 5-minute close sends the position to BIL for the rest of the session, and it is bought back at the next 09:30 open if the regime is still on. The only genuine mean-reversion leg is that re-entry: after a capitulation the rest of the trigger session is flat (+0.13%), the overnight gap is negative (-0.69%), and the next session's open-to-close is strongly positive (+1.17%). It passes both windows versus TQQQ with a much smaller drawdown, but the return edge is a crash-tail effect concentrated in a few episodes, not a stable per-trade premium.",
+  "decision_process": "At each session's 15:59 close, QQQ close versus its 165-day SMA sets tomorrow's target (TQQQ if above, BIL if below), executed at the next 09:30 open. During the session the stop is evaluated on every 5-minute QQQ close against the previous daily close; a print at or below -3.0% sets a BIL target filled at the next 5-minute open, and re-entry is blocked until the next session. No signal uses data after the bar that sets it; every fill is the next bar's open with 1 bp slippage (5/10/20 bp reported).",
+  "rules": [
+    "Regime: if QQQ close > 165-day SMA of QQQ closes at the session close, target 100% TQQQ; otherwise 100% BIL. Fill at the next session's 09:30 open.",
+    "Crash stop: while long TQQQ, if QQQ / prior daily close - 1 <= -3.0% at any 5-minute close, target 100% BIL, filled at the next 5-minute open. At most one stop per session.",
+    "Session block: after a stop, no re-entry for the remainder of that session.",
+    "Re-entry: at the next session's 09:30 open if the regime is still on. This is the mean-reversion leg (buy back after capitulation).",
+    "No other exits; overnight exposure is held while the regime is on. Long-only, weights in {0, 1}, no leverage beyond TQQQ itself."
+  ],
+  "status": "Verified",
+  "metrics": {
+    "cagr10": 0.50957,
+    "dd10": 0.448296,
+    "cagr5": 0.355048,
+    "dd5": 0.362866,
+    "cagr10_5bp": 0.494308,
+    "dd10_5bp": 0.454441,
+    "cagr5_5bp": 0.344992,
+    "dd5_5bp": 0.365917
+  },
+  "verdict": "Passes versus TQQQ on both windows (10y 50.96% / 44.83%, 5y 35.50% / 36.29%, 5-minute marks; daily-marked drawdowns 43.38% / 36.16%) and survives 5/10/20 bp. The drawdown cut is structural and parameter-stable (every stop from 1% to 5% passes), but the CAGR edge is not statistically significant (stop-vs-hold +0.61% per event, t = 0.62; daily-return difference t = 0.56) and the stop-level grid CAGR ranges 45-52%. Treat 50.96% as high-40s to low-50s. The 5-year edge over the daily SMA-165 baseline is inside noise.",
+  "sources": [
+    {
+      "idea": "RSI(2) oversold dip-buying as the entry signal (tested and rejected here)",
+      "source": "Connors & Alvarez, Short Term Trading Strategies That Work (rule as surveyed by Finabase and QuantifiedStrategies)",
+      "url": "https://finabase.io/learn/strategies/rsi-mean-reversion",
+      "source_type": "book",
+      "role": "rejected",
+      "evidence": "The book's RSI(2) rule (buy RSI(2) < 10, exit above a short SMA, only above the 200-day MA) was ported to 5-minute QQQ bars with the 165-day regime. Gross it made +5.87%/yr at 0 bp (10y, one trade/day), -2.43%/yr at 1 bp and -29.61%/yr at 5 bp, so it was not used as an entry.",
+      "confidence": "high"
+    },
+    {
+      "idea": "RSI(2) on QQQ has no net edge after costs",
+      "source": "tradeinsight.info, 'RSI(2) on QQQ has no edge - and costs aren't the reason'",
+      "url": "https://tradeinsight.info/posts/rsi2-has-no-edge",
+      "source_type": "blog",
+      "role": "supports assumption",
+      "evidence": "Reports RSI(2) gross Sharpe 0.72 versus 0.94 for QQQ buy-and-hold, 2010-2025, and attributes part of the drag to entry gaps. Consistent with my gross edge being too small to survive 1 bp.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Overnight and intraday returns predict each other negatively, so the reversal after a capitulation sits across the overnight boundary rather than inside the session",
+      "source": "Lou, Polk & Skouras, 'A Tug of War: Overnight versus Intraday Expected Returns'",
+      "url": "http://www.econ.yale.edu/~shiller/behfin/2015-04-11/lou_polk_skouras.pdf",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Documents negative cross-prediction between overnight and intraday returns. I found the gap effect empirically first (event study of 48 stops); the paper was used afterward as mechanism corroboration, not as the source of the rule.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "End-of-day price pressure is reversed overnight (why exiting before the close and buying the next open helps)",
+      "source": "The Overnight Drift, NY Fed Staff Report 917",
+      "url": "https://www.newyorkfed.org/medialibrary/media/research/staff_reports/sr917.pdf",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Documents the overnight drift and reversals of end-of-day price pressure; used only as context for the overnight-gap mechanism. The paper also reports some reversal returns as economically small, so it is not treated as evidence of a tradable edge.",
+      "confidence": "low"
+    },
+    {
+      "idea": "Moves in the last minutes of the session tend to reverse by the next day",
+      "source": "Alpha Architect, 'Why the Last Few Minutes of Trading Might Matter More Than You Think'",
+      "url": "https://alphaarchitect.com/end-of-trading/",
+      "source_type": "blog",
+      "role": "supports assumption",
+      "evidence": "Blog summary of close-to-open reversal after end-of-day moves; corroborates the exit-before-close / re-enter-next-open timing. Not used to set the 3% threshold.",
+      "confidence": "low"
+    },
+    {
+      "idea": "Intraday moves are momentum, not reversion, so buying an intraday dip is the wrong side",
+      "source": "Gao, Han, Li & Zhou (2018) intraday momentum, and 'Does overnight return predict the first half-hour return for U.S. market indices?'",
+      "url": "https://www.sciencedirect.com/science/article/abs/pii/S1062940826001294",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Intraday-momentum / time-series-continuation evidence, consistent with my finding that -0.5% to -1.0% 30-minute QQQ moves continue over the next 30 minutes (-0.04% to -0.05% TQQQ) instead of reverting.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "3x leveraged-ETF decay is concentrated on high-volatility days, so standing aside on crash days avoids part of the drag",
+      "source": "FinLab, 'Leveraged ETF Decay: Volatility Drag and Costs in 14 Funds'",
+      "url": "https://finlab.finance/en/blog/leveraged-etf-decay",
+      "source_type": "blog",
+      "role": "supports assumption",
+      "evidence": "TQQQ trailed 3x QQQ by 22.1 log points/year 2016-2026 (-15.2 volatility, -6.9 fees/financing); 22.5% of days (QQQ 20-day vol > 25%) carried 52.7% of the decay. Supports de-risking on crash days rather than holding 3x through them.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Daily reset makes leveraged-ETF returns path-dependent (why intraday-only exposure is not simply 3x the index)",
+      "source": "Cheng & Madhavan (2009), 'The Dynamics of Leveraged and Inverse Exchange-Traded Funds' (via Quantpedia)",
+      "url": "https://quantpedia.com/shorting-leveraged-etfs-the-role-of-borrowing-costs-and-rebalancing-in-volatility-decay-strategies/",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Foundational derivation of volatility drag under daily reset; cited for the mechanism only, via the Quantpedia summary.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "QQQ above its 165-day SMA -> TQQQ, else BIL (the regime layer)",
+      "source": "Project README daily baseline (own test)",
+      "url": null,
+      "source_type": "report",
+      "role": "inspired rule",
+      "evidence": "README.md reports 45.31%/58.71% (10y) and 34.61%/36.86% (5y). I reproduced it at 45.23%/58.91% and 34.61%/36.86% on the local data; the strategy keeps this exact regime.",
+      "confidence": "high"
+    },
+    {
+      "idea": "A >=3% QQQ intraday drawdown means exit for the rest of the session and re-enter at the next open",
+      "source": "Own test / no external source",
+      "url": null,
+      "source_type": "data",
+      "role": "inspired rule",
+      "evidence": "Event study over 48 stop events (10y): QQQ drawdown at trigger -3.25%, rest of session +0.13% (48% win), overnight gap -0.69% (56% win), next session open-to-close +1.17% (62% win); stop-minus-hold +0.61% per event, t = 0.62.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Threshold (3%), 5-minute check frequency, one stop per session, same-session block, next-open re-entry",
+      "source": "Own test / no external source",
+      "url": null,
+      "source_type": "data",
+      "role": "inspired rule",
+      "evidence": "Stop grid 1%-5% all pass vs TQQQ; 2.5%-3.5% gives 45-51% CAGR and 40-51% DD on 10y. 1-minute and 5-minute execution give nearly identical results (51.52%/44.47% vs 50.96%/44.83% on 10y), so the frequency is not a tuning artifact.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Execution conventions: long-only, next-bar-open fills, 1 bp slippage on traded notional, no look-ahead",
+      "source": "Project research/bt.py harness (own test)",
+      "url": null,
+      "source_type": "data",
+      "role": "supports assumption",
+      "evidence": "All reported fills are the next bar's open; weights at bar i use data through bar i only. Same-bar close fills were never used.",
+      "confidence": "high"
+    }
+  ],
+  "rejected_sources": [
+    {
+      "source": "Connors & Alvarez, RSI(2) mean reversion (Short Term Trading Strategies That Work)",
+      "url": "https://finabase.io/learn/strategies/rsi-mean-reversion",
+      "why_rejected": "Ported to 5-minute QQQ with a one-trade-per-day limit: +5.87%/yr gross at 0 bp, -2.43%/yr at 1 bp, -29.61%/yr at 5 bp on 10y. The gross edge (about 1-2 bp of excess return per 30 minutes) is below the 2 bp round-trip cost, so it cannot be an entry signal."
+    },
+    {
+      "source": "Bollinger(20,2) lower-band and intraday-VWAP-deviation mean reversion (own test, no external source)",
+      "url": null,
+      "why_rejected": "Bollinger z < -2, exit at the mid-band: -2.65%/yr gross and -9.00%/yr at 1 bp (10y). VWAP deviation < -0.40%: +2.25%/yr gross, -1.03%/yr at 1 bp. The VWAP deviation distribution only spans about +/-0.2% intraday, so the signal is either rare or too small to pay."
+    },
+    {
+      "source": "Opening-gap fade / overnight-overreaction long entry (own test, no external source)",
+      "url": null,
+      "why_rejected": "Gaps continue rather than fade on regime-on days: gap -1.0% to -0.7% gives -0.22% TQQQ to the close; gap +1% to +5% gives +0.68% to the close (69% win). Nothing to fade long-only."
+    }
+  ],
+  "corrections": [
+    "The header claim 'also above the passing daily SMA-165 baseline on both windows' overstates the 5-year result: 35.50% vs 34.61% CAGR and 36.16% vs 36.86% drawdown is inside noise. The defensible claim is 'passes vs TQQQ on both windows and beats the baseline clearly on 10y; the 5y is a near-tie.'",
+    "The phrase 'predicts a weak close' is imprecise. On the 48 stop events the rest of the trigger session is +0.13% on average (flat, 48% win); the negative part is the overnight gap (-0.69%), followed by a positive next session open-to-close (+1.17%). Say 'no intraday recovery, a negative overnight gap, then a positive next session'.",
+    "Metric provenance: 50.96%/44.83% (10y) and 35.50%/36.29% (5y) are 5-minute-marked with the window starting at the start date's 15:59 close; daily-marked drawdowns are 43.38%/36.16%. An independent minute-marked re-run in research/minute_marked.json gives 51.13%/44.83% and 36.49%/36.73% (fills 249/93); the ~1 pp 5y gap is start alignment. Label the marking convention on the page, or publish the verified minute-marked set.",
+    "The 5-year TQQQ benchmark appears as 13.47% (README) and 13.88% (this dataset, start alignment) in different places on the page. Pick one and footnote the other so the pass margin is not read as two different numbers.",
+    "Status wording: 'Verified' is fair because the strategy was independently re-run and passes at 1-20 bp, but if the badge implies a robust return edge it should be 'Fragile'. The stop-level grid CAGR spans 45-52%, the per-event edge is t = 0.62, and the 5-year result is entirely dependent on the 2022 regime exit.",
+    "The sentence 'every RSI / Bollinger / VWAP dip-buy variant loses money after 1 bp' is correct for those families, but do not generalise it to all dip-buying: the morning-capitulation variant (QQQ < -1% from the open before 11:00, exit at the close) makes +4.40%/yr net at 1 bp, just far too little to matter."
+  ]
+}

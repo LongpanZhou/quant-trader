@@ -1,0 +1,51 @@
+{
+  "status": "rejected",
+  "rejection_reasons": [
+    "blend_adds_nothing",
+    "carry_stream_not_a_premium",
+    "reversal_event_study_weak",
+    "placebo_beats_real"
+  ],
+  "corr_vs_165d_baseline": 0.21997663730256892,
+  "windows": {
+    "dev": {
+      "1bp": {
+        "cagr": 0.030400361314314228,
+        "max_drawdown": 0.3267227399945196,
+        "sharpe": 0.3212421895526976,
+        "sortino": 0.46616144267280085,
+        "volatility": 0.113862601837095,
+        "exposure": 0.9999990531594176,
+        "fills": 1037,
+        "turnover": 271.73507822188515,
+        "ending_equity": 138192.23569593154
+      },
+      "5bp": {
+        "cagr": 0.021394016125889426,
+        "max_drawdown": 0.3491352107792497,
+        "sharpe": 0.24378260934215681,
+        "sortino": 0.3527942894296926,
+        "volatility": 0.11383479866349598,
+        "exposure": 0.9999990531594176,
+        "fills": 1037,
+        "turnover": 258.9729369937343,
+        "ending_equity": 125690.0910752934
+      },
+      "10bp": {
+        "cagr": 0.009927379786130563,
+        "max_drawdown": 0.37833787109569894,
+        "sharpe": 0.14409680474573724,
+        "sortino": 0.20777015610864,
+        "volatility": 0.11386127268066143,
+        "exposure": 0.9999990531594176,
+        "fills": 1035,
+        "turnover": 243.51618268690433,
+        "ending_equity": 111260.18764422994
+      }
+    },
+    "holdout": null,
+    "10y": null,
+    "5y": null
+  }
+}
+{"slug": "winner-ensemble-blend", "mode": "full", "calls": 241, "error": null, "seconds": 155.6, "restored": ["restored result.json"], "match_score": 1.0, "found": true, "kw": {"band": 0.02, "slippage_bps": 1.0, "start_equity": 100000.0}, "bars": 1056144, "k": 3}

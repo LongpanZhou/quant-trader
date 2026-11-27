@@ -1,0 +1,158 @@
+{
+  "slug": "vol-scaled-crash-stop",
+  "name": "ATR-scaled crash stop",
+  "tagline": "One-sided volatility scaling: tighten the stop in calm markets, never widen it past the round-1 4%.",
+  "summary": "Keeps the round-1 winner exactly - QQQ above its 165-day SMA holds TQQQ, otherwise BIL - but replaces the fixed 4% intraday stop with stop = clip(0.70 x TQQQ daily ATR(14), 2.5%, 4%). The stop is armed only when QQQ's 09:30 close is below MA20 x 1.01; a trigger exits to BIL at the next bar's open for the rest of the session and the night. Net effect: 62.60% / 40.94% (10y) and 54.88% / 33.49% (5y) at 1 bp versus the winner's 58.80% / 44.56% and 49.88% / 33.49%.",
+  "decision_process": "Before each session the daily regime (QQQ prior close vs its 165-day SMA) and the stop distance (TQQQ ATR(14) through the prior close) are already known. The regime sets 100% TQQQ or 100% BIL for the session. On a risk-on session, the stop is live only if QQQ's 09:30 one-minute close is below its 20-day SMA x 1.01. If armed and TQQQ's one-minute close falls below session_open x (1 - stop distance), the target weight flips to 100% BIL on that bar and the harness fills it at the next bar's open. The book stays BIL through 15:59, so it is also out overnight, and re-enters TQQQ at the next session's open if the regime is still on. No same-day re-entry, no shorts, weights sum to 1.",
+  "rules": [
+    "Regime: QQQ prior close > 165-day SMA of QQQ daily closes -> 100% TQQQ, else 100% BIL (signal from the prior close, filled at the next open).",
+    "Stop distance: 0.70 x ATR(14) of TQQQ daily bars (aggregated from the adjusted 1-minute panel) through the prior close, floored at 2.5% and capped at 4.0%.",
+    "Arm gate: the stop is live only when QQQ's 09:30 one-minute close is below its 20-day SMA x 1.01 (MA through the prior close).",
+    "Trigger: on an armed session, exit to 100% BIL when TQQQ's one-minute close falls below session_open x (1 - stop distance).",
+    "Execution: the exit target is set on the trigger bar and filled at the next bar's open; the book stays BIL for the rest of the session and the night.",
+    "Re-entry: the next session starts 100% TQQQ at the open if the regime is still risk-on, otherwise BIL."
+  ],
+  "status": "Alternative",
+  "metrics": {
+    "cagr10": 0.6259824852679428,
+    "dd10": 0.4093973454162606,
+    "cagr5": 0.5488078055897869,
+    "dd5": 0.33491479661131074,
+    "cagr10_5bp": 0.5701014922721968,
+    "dd10_5bp": 0.44245486590722705,
+    "cagr5_5bp": 0.49745791227565017,
+    "dd5_5bp": 0.34126906592701556
+  },
+  "verdict": "Strictly dominates the round-1 winner on the 10y window (62.60% vs 58.80% CAGR, 40.94% vs 44.56% max DD) and adds +5.0 pp of 5y CAGR with an identical 5y max drawdown (33.49%, same 2026-06-22 -> 2026-07-30 peak/trough and the same eight stop days at exactly 4.00%). Passes at 5 bp (57.01% / 44.25% and 49.75% / 34.13%) and at 10 bp (50.29% / 48.12% and 43.57% / 34.93%). Main caveat: the 5y result is a CAGR win plus a drawdown tie, not a 5y drawdown improvement, so the README's literal strict-dominance test is met only on 10y; and the 4% cap is inherited from the round-1 winner rather than discovered out of sample.",
+  "sources": [
+    {
+      "idea": "Express the stop as a multiple of ATR rather than a fixed percentage (the Chandelier/ATR-exit construction).",
+      "source": "Quant Arenas - Chandelier Exit strategy backtest",
+      "url": "https://quantarenas.com/strategy/trend-17-chandelier-exit",
+      "source_type": "blog",
+      "role": "inspired rule",
+      "evidence": "Standard ATR-multiple exit template (highest high - 3 x ATR). Used for the form of the rule; the multiplier and reference point (session open, not a trailing high) were chosen from own tests.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "ATR-scaled stops are a well-known family, but empirically they are not automatically better than percentage stops.",
+      "source": "Volatility Box - Volatility-Adjusted Stop Losses: ATR, Chandelier, and Keltner Methods",
+      "url": "https://volatilitybox.com/research/volatility-adjusted-stop-losses",
+      "source_type": "blog",
+      "role": "tested only",
+      "evidence": "Compares four volatility-adjusted stop methods; reports the Chandelier variant as best of the four but with only a modest edge. Used as a caution that the ATR form alone is not the edge - which matched the finding that the one-sided cap, not the ATR multiple, is what makes this work.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "The ATR multiplier should be O(1), and a floor is needed because sub-1.0x ATR stops get destroyed by micro-noise.",
+      "source": "FXNX - Stop-Loss Distance vs Hit Rate: 20,000-Trade Study",
+      "url": "https://fxnx.com/en/blog/stop-loss-distance-vs-hit-rate-20-000-trade-study",
+      "source_type": "blog",
+      "role": "inspired rule",
+      "evidence": "20,000-trade FX study: sub-1.0x ATR stops collapse hit rates by >40%; 1.3-1.8x ATR is the reported sweet spot. Used to sanity-check that a 2-3x ATR stop is not automatically 'wider is safer' and that a 2.5% floor is needed at the tight end.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Stop-loss rules add value when returns have momentum / negative conditional skew, and always reduce expected return under a random walk.",
+      "source": "Kaminski & Lo (2014) - When Do Stop-Loss Rules Stop Losses?",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=968338",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "The theoretical license for a stop that is armed only in weak short-term trends: the stopping premium is positive under momentum and negative under a random walk, so the level and the arming condition matter. Inherited from the round-1 winner; not re-derived here.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Volatility-scaled risk exposure is a legitimate family (inverse-variance / volatility-managed portfolios).",
+      "source": "Moreira & Muir (2017) - Volatility-Managed Portfolios",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2659431",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Managed portfolios that take less risk when volatility is high produce large alphas and higher Sharpe ratios. Used as background for scaling risk with volatility; the symmetric (widen the stop when vol rises) application was tested and rejected in this setting.",
+      "confidence": "high"
+    },
+    {
+      "idea": "A fixed percentage stop is a different amount of 'normal travel' in calm vs volatile regimes, so the distance should be volatility-dependent.",
+      "source": "Arrow Algo - Volatility Clustering: What It Is and How to Trade It",
+      "url": "https://arrowalgo.com/volatility-clustering",
+      "source_type": "blog",
+      "role": "supports assumption",
+      "evidence": "A 1% stop may be two hours of normal movement in a calm market and twenty minutes during a volatility cluster; argues for sizing stop distance off recent volatility.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "A large stop-loss study finds ATR-scaled stops roughly match percentage stops and trailing ATR stops underperform.",
+      "source": "Cesar Alvarez (Better System Trader #037) - Stop loss types tested",
+      "url": "https://bettersystemtrader.com/037-cesar-alvarez-studies-stop-losses",
+      "source_type": "blog",
+      "role": "tested only",
+      "evidence": "Used as the null hypothesis: at 3 ATR the results were nearly identical to a 10% percentage stop, and trailing ATR stops had negative/weak expectancy. This is counter-evidence, not support - the test here had to show something the study says is not automatic, and the difference came from the one-sided 4% cap.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Partial exits usually reduce returns relative to the better of 'stay in' or 'get out'.",
+      "source": "Enlightened Stock Trading - Is Taking Partial Profits in Trend Following a Rational Idea?",
+      "url": "https://enlightenedstocktrading.substack.com/p/is-taking-partial-profits-in-trend",
+      "source_type": "blog",
+      "role": "supports assumption",
+      "evidence": "Systematic tests of partial profit-taking inside trend-following show it reduces overall return. Consistent with the tested-and-rejected 50% QQQ de-risk, which cut CAGR more than drawdown.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Partial exits are often not the thing that helps; the stop rule is.",
+      "source": "TradeJournal - Scaling Out of Trades: Does Taking Partial Profits Help or Hurt?",
+      "url": "https://tradejournal.ai/blog/scaling-out-partial-profits",
+      "source_type": "blog",
+      "role": "supports assumption",
+      "evidence": "Argues the partial exit is usually not what produces the improvement and should be tested separately from the stop move. Used when interpreting the 50% QQQ de-risk result (return sacrificed, little drawdown benefit).",
+      "confidence": "medium"
+    },
+    {
+      "idea": "3x daily leverage multiplies both the distance and the volatility drag, so a TQQQ percentage stop is a small index move.",
+      "source": "FinLab - Leveraged ETF Decay: Volatility Drag and Costs in 14 Funds",
+      "url": "https://finlab.finance/en/blog/leveraged-etf-decay",
+      "source_type": "blog",
+      "role": "supports assumption",
+      "evidence": "TQQQ trailed 3x QQQ by ~22 log points a year over 2016-2026, about 15 from volatility. Used to calibrate that a 2.5-4% TQQQ stop is only ~0.8-1.3% on the index, i.e. a normal intraday move rather than a wide stop.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "The 165-day SMA regime itself (inherited unchanged from the round-1 winner).",
+      "source": "Faber (2007) - A Quantitative Approach to Tactical Asset Allocation / Gayed (2016) - Leverage for the Long Run",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=962461",
+      "source_type": "paper",
+      "role": "inspired rule",
+      "evidence": "Trend-following risk management with a long moving average applied to a leveraged equity position. The specific 165-day length is the round-1 implementation, not re-optimised here.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "The 4% cap, the 2.5% floor, the 0.70 multiplier, the MA20 arm gate, the next-open fill convention and the rejections (partial de-risk, uncapped ATR, literal 2-3x intraday ATR).",
+      "source": "Own test / no external source",
+      "url": null,
+      "source_type": "data",
+      "role": "inspired rule",
+      "evidence": "Local 1-minute QQQ/TQQQ/BIL data via research/bt.py. The 4% cap is the round-1 winner's stop (own test), the 2.5% floor is a microstructure-noise bound (~16x TQQQ's 1-minute ATR), and the 0.70 multiplier is the centre of the 0.55-0.75 plateau. Partial de-risking and uncapped ATR were tested and rejected on the same data.",
+      "confidence": "high"
+    }
+  ],
+  "rejected_sources": [
+    {
+      "source": "Blockcircle - Volatility Clustering and What It Means for Risk Management",
+      "url": "https://blockcircle.com/blog/volatility-clustering-and-what-it-means-for-risk-management",
+      "why_rejected": "Its concrete prescription - set stops at ~2x the 20-day ATR - was tested and rejected for a session-open stop: 2x daily ATR is ~8.4% and never binds before the regime flips, while 2x ATR on 1m/5m bars is ~0.3%/0.7% and fires on noise. The useful part (stops should scale with the volatility regime) was kept; the 'wider in high vol' direction is wrong for a gap hedge here."
+    },
+    {
+      "source": "Chandelier-style trailing exit (Quant Arenas) applied as a trailing stop from the day high",
+      "url": "https://quantarenas.com/strategy/trend-17-chandelier-exit",
+      "why_rejected": "The trailing version (from the running high, rather than from the session open) was tested in round 1 and is materially worse: 4% trailing from the day high gave 49.18% / 56.79% on 10y versus 58.80% / 44.56% for the session-open stop. The ATR form was kept, the trailing reference point was rejected."
+    }
+  ],
+  "corrections": [
+    "The page writes 'clip(0.70 x ATR14, 2.5%, 4%)' without a bar size. It must be TQQQ DAILY ATR(14), built from the adjusted 1-minute panel aggregated to daily bars and taken through the prior close. A literal 2x/3x ATR on 1m bars is ~0.3%/0.5% and on 5m bars ~0.7%/1.0% - both are noise-level stops (3xATR5m produced 502 stops and 49.42% CAGR). This is the difference between implementing the strategy and implementing something else.",
+    "Add the arm gate and execution to the rules: the stop is armed only when QQQ's 09:30 one-minute close is below its 20-day SMA x 1.01; the exit fills at the next bar's open and the book stays BIL for the rest of the session and the night, re-entering TQQQ at the next open if the regime is still on. The page currently says only 'Base: round-1 winner'.",
+    "Add the 5 bp metrics: 57.01% / 44.25% (10y) and 49.75% / 34.13% (5y). The page shows 1 bp only. At 10 bp the result is 50.29% / 48.12% (10y) and 43.57% / 34.93% (5y), still better than the winner on both windows.",
+    "Paper attribution: STOP_STUDY (Cesar Alvarez) is counter-evidence, not support - that study finds ATR stops roughly match percentage stops and that trailing ATR stops underperform. Listing it alongside ATR and MOREIRA implies it inspired the rule. Either mark it 'tested only' or replace it with Kaminski & Lo (2014), which is the actual theoretical support for an armed stop.",
+    "Verdict wording: 'the 5y drawdown is mathematically identical to the winner' is accurate, but the page should add that the 5y result is therefore a CAGR win plus a drawdown tie, so the README's literal strict-dominance test does not pass on 5y. As written it can be read as a 5y drawdown improvement.",
+    "Status: 'Alternative' is defensible under the literal criteria (the 5y DD is a tie), but if the site's taxonomy means 'Verified = passes the bar', this entry qualifies - it passes at 1/5/10 bp and strictly dominates on 10y. The label should be applied consistently across round-2 entries.",
+    "The tagline is accurate; adding 'one-sided' would make the actual insight explicit: the gain comes from tightening in calm markets while refusing to widen in stress, not from ATR scaling per se."
+  ]
+}

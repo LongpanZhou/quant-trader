@@ -1,0 +1,197 @@
+{
+  "slug": "winner-ensemble-blend",
+  "name": "Winner/ensemble 75/25",
+  "tagline": "75% round-1 winner + 25% round-1 ensemble, combined as one target-weight portfolio.",
+  "summary": "Combine the round-1 winner (daily QQQ 165-day SMA regime + armed 4% minute stop) and the round-1 ensemble (trend + 20-day volatility budget + 1-minute crash vote) in one account. At every bar the target weight vector is 0.75 x winner target + 0.25 x ensemble target. Both sleeves hold only TQQQ or BIL, so the portfolio is 100% TQQQ when they agree and a partial TQQQ/BIL mix when they disagree; it is a lower-risk substitute for the winner, not a higher-return one.",
+  "decision_process": "Daily regime signals use the prior 15:59 close (QQQ close vs its 165-day SMA). The winner's stop is armed at the first minute using QQQ's first-minute close vs its prior 20-day SMA x 1.01, and triggers when TQQQ closes 4% below the session open; the fill is the next minute's open. The ensemble's 20-day realised-vol budget uses the prior daily closes, and its crash vote uses the current minute's QQQ return, 60-minute EMA, 30-minute momentum and 1-minute RSI, filling at the next minute's open. At the close of bar i both sleeve target vectors are computed from data through bar i, blended 0.75/0.25 into one target, and filled at bar i+1's open; a 2% band suppresses small rebalances. Positions are held overnight unless a sleeve rule changes.",
+  "rules": [
+    "Winner sleeve: QQQ prior close > 165-day SMA -> 100% TQQQ, else BIL. On risk-on days arm a 4% stop from the session open only when QQQ's first-minute close < prior 20-day SMA x 1.01; if armed and TQQQ closes 4% below the open, sell at the next minute's open and stay BIL for the rest of the session and night.",
+    "Ensemble sleeve: QQQ 165-day trend gate; 20-day realised QQQ volatility <= 33.3%, else BIL; a same-session crash vote (QQQ <= -3% from the prior close and trend/momentum/RSI vote <= -2) exits TQQQ to BIL for the rest of the session.",
+    "Blend: target = 0.75 x winner target + 0.25 x ensemble target, with columns QQQ/TQQQ/BIL; long-only, weights sum to 1, and any uninvested residual is BIL.",
+    "Execution: signal at bar i close, fill at bar i+1 open, 2% rebalance band; no leverage beyond 100% TQQQ and no shorting."
+  ],
+  "status": "Alternative",
+  "metrics": {
+    "cagr10": 0.5842,
+    "dd10": 0.4118,
+    "cagr5": 0.4792,
+    "dd5": 0.3233,
+    "cagr10_5bp": 0.5491,
+    "dd10_5bp": 0.4339,
+    "cagr5_5bp": 0.4470,
+    "dd5_5bp": 0.3296
+  },
+  "verdict": "Meets round-2 target #2 at 1 bp on both windows (10y -0.38 pp CAGR / -3.38 pp DD; 5y -1.96 pp CAGR / -1.16 pp DD versus the winner) and still meets it at 5 bp and 10 bp. It beats the winner outright on the 10-year window at 5 bp (54.91% vs 54.60%, DD 43.39% vs 47.08%) and 10 bp (50.63% vs 49.50%, DD 46.04% vs 50.06%). It is not strict dominance: the 5-year 1 bp CAGR margin is only 0.04 pp inside the 2 pp rule, and 5-year Sharpe is slightly below the winner (1.126 vs 1.156).",
+  "sources": [
+    {
+      "idea": "A rebalanced blend of two strategies can beat the weighted average of their geometric returns, and the optimal mix can outperform either component; this motivated testing fixed weights between 50/50 and 95/5 rather than only 50/50.",
+      "source": "Newfound (2020) / Ensembles and Rebalancing",
+      "url": "https://blog.thinknewfound.com/2020/02/ensembles-and-rebalancing",
+      "source_type": "blog",
+      "role": "inspired rule",
+      "evidence": "Explains the concave payoff of rebalancing two strategies and shows an optimal blend can outperform either; used to justify the fixed-weight curve and the 75/25 choice.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "The mathematical rebalancing/diversification return that makes a fixed-weight mix differ from a buy-and-hold mix.",
+      "source": "Diversification Returns, Rebalancing Returns and Volatility Pumping",
+      "url": "https://ssrn.com/abstract=2311240",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Derives the excess-growth term from rebalancing; background for why 75/25 is not simply 75% of the winner's return.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Geometric-return (rebalancing-premium) framing of fixed-weight portfolios.",
+      "source": "Demystifying Rebalancing Premium and Extending Portfolio Theory",
+      "url": "https://ssrn.com/abstract=2927791",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Shows the rebalancing premium in a long-run wealth-maximisation setting; used as background, not as a parameter source.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Inverse-volatility / naive risk-parity weights (tested as IV2 and IV3, not selected).",
+      "source": "DeMiguel, Garlappi & Uppal (2009) / Optimal Versus Naive Diversification",
+      "url": "https://doi.org/10.1093/rfs/hhm075",
+      "source_type": "paper",
+      "role": "tested only",
+      "evidence": "Naive 1/N is hard to beat out of sample; motivated the simple inverse-vol allocation instead of a mean-variance optimiser. IV2/IV3 were tested; neither was selected because of cost fragility or insufficient 5-year return.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Naive risk parity / inverse-volatility allocation equalises risk without expected-return estimates.",
+      "source": "Advances in Portfolio Risk Control: Risk! Parity?",
+      "url": "http://ssrn.com/abstract=2259041",
+      "source_type": "paper",
+      "role": "tested only",
+      "evidence": "Reviews inverse-volatility portfolios and naive risk parity; used to define the IV2/IV3 allocation rule. Tested, not promoted.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Practitioner description of inverse-volatility and risk-parity allocation.",
+      "source": "Quantpedia / Risk Parity Asset Allocation",
+      "url": "https://quantpedia.com/risk-parity-asset-allocation/",
+      "source_type": "blog",
+      "role": "supports assumption",
+      "evidence": "Confirms inverse-volatility weighting is the standard naive risk-parity implementation; used as a cross-check on the IV rule.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Portfolio-level stop-loss / drawdown throttling (tested and rejected).",
+      "source": "Stop-Loss Strategies with Serial Correlation, Regime Switching, and Transactions Costs",
+      "url": "http://ssrn.com/abstract=2695383",
+      "source_type": "paper",
+      "role": "tested only",
+      "evidence": "Finds stop-loss rules can reduce tail risk but often reduce returns, especially with positive drift; consistent with the 20-30 pp CAGR loss in the drawdown-throttle tests.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Drawdown-control framework with an explicit drawdown budget (tested as a naive step throttle).",
+      "source": "Macrosynergy / Drawdown Control",
+      "url": "https://macrosynergy.com/research/drawdown-control/",
+      "source_type": "blog",
+      "role": "tested only",
+      "evidence": "Provides the drawdown-containment framing; the naive 10/20/30% step version was tested on this strategy and failed badly because a 45%-vol portfolio is almost always in a >10% drawdown.",
+      "confidence": "low"
+    },
+    {
+      "idea": "Drawdown control should be a multi-period optimisation with a calibrated risk budget, not a fixed step rule.",
+      "source": "Boyd et al. / Multi-period portfolio selection with drawdown control",
+      "url": "https://stanford.edu/~boyd/papers/pdf/multiperiod_portfolio_drawdown.pdf",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Supports the diagnosis that a drawdown budget must be scaled to the strategy's volatility; the fixed 10-15% thresholds used here were far too tight for a 45%-vol portfolio.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Volatility-managed exposure / volatility targeting (tested as a 38-45% target overlay).",
+      "source": "Moreira & Muir (2017) / Volatility-Managed Portfolios",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2659431",
+      "source_type": "paper",
+      "role": "tested only",
+      "evidence": "Shows volatility-managed portfolios can improve Sharpe ratios; used to motivate the vol-target test. The direct overlay on this blend failed target #2 (10y 53.37%/35.72%, 5y 45.07%/26.86%).",
+      "confidence": "high"
+    },
+    {
+      "idea": "Long-only 165-day trend gate on QQQ (winner and ensemble sleeve).",
+      "source": "Faber (2007) / A Quantitative Approach to Tactical Asset Allocation",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=962461",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "The 10-month moving-average trend rule is the ancestor of the 165-day regime; inherited from the round-1 sleeves, not re-tested here.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Leveraged trend following with a regime filter (TQQQ exposure).",
+      "source": "Gayed & Bilello (2016) / Leverage for the Long Run",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2741701",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Supports holding leveraged equity only in a trend regime; inherited from the round-1 winner, not re-tested here.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Winner sleeve rules (daily 165-day SMA regime + armed 4% minute stop).",
+      "source": "Own test / no external source (round-1 agent 1, daily-regime-minute-entry)",
+      "url": null,
+      "source_type": "report",
+      "role": "inspired rule",
+      "evidence": "Imported unchanged from the round-1 winner; reproduced exactly at 58.80%/44.56% (10y) and 49.88%/33.49% (5y) at 1 bp.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Ensemble sleeve rules (trend + 20-day vol budget + 1-minute crash vote).",
+      "source": "Own test / no external source (round-1 agent 8, ensemble-signals)",
+      "url": null,
+      "source_type": "report",
+      "role": "inspired rule",
+      "evidence": "Imported unchanged from the round-1 ensemble; reproduced exactly at 54.73%/39.91% (10y) and 40.79%/34.93% (5y) at 1 bp.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Momentum sleeve rules (overnight drift + first-hour QQQ momentum).",
+      "source": "Own test / no external source (round-1 agent 4, intraday-momentum)",
+      "url": null,
+      "source_type": "report",
+      "role": "tested only",
+      "evidence": "Used only in the IV2/IV3 variants; not part of the recommended WE75 blend because its 2 fills/day make the blend cost-fragile.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Single-account target-weight blending, next-open fills, 2% band, long-only constraint.",
+      "source": "Own test / no external source (research/bt.py harness convention)",
+      "url": null,
+      "source_type": "report",
+      "role": "inspired rule",
+      "evidence": "The blend is one target vector per bar, not two sub-accounts; this is the convention used for every reported metric.",
+      "confidence": "high"
+    }
+  ],
+  "rejected_sources": [
+    {
+      "source": "Moreira & Muir (2017) / Volatility-Managed Portfolios (vol-target overlay application)",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2659431",
+      "why_rejected": "The 38-45% volatility-target overlay reduced CAGR too much: 53.37%/35.72% at 10y and 45.07%/26.86% at 5y at 1 bp, failing target #2 versus the winner. The paper's result did not transfer to a 3x ETF blend with a 45% unconditional vol."
+    },
+    {
+      "source": "Stop-loss / drawdown-control rules (SSRN 2695383; Macrosynergy; Boyd et al.)",
+      "url": "http://ssrn.com/abstract=2695383",
+      "why_rejected": "Portfolio-level step throttles at 10/20/30% and 15/25/35% cut drawdown but destroyed 20-30 pp of CAGR (e.g. 50/50 + 10/20/30% gave 33.63%/28.20% at 10y). A 45%-vol strategy is below its running peak by >10% almost all the time, so the throttle was active on 100% of bars (mean g 0.69)."
+    },
+    {
+      "source": "DeMiguel, Garlappi & Uppal (2009) / inverse-volatility allocation (IV2/IV3 application)",
+      "url": "https://doi.org/10.1093/rfs/hhm075",
+      "why_rejected": "Inverse-vol weights were tested as IV2 (winner/momentum) and IV3 (winner/ensemble/momentum). IV2 passed target #2 at 1 bp but was cost-fragile (10 bp: 40.10%/46.82% and 33.11%/33.12%); IV3 had the lowest drawdown but 5y CAGR 2.79 pp below the winner. The fixed 75/25 blend was more robust at 5 and 10 bp."
+    }
+  ],
+  "corrections": [
+    "The web card's `decision` field describes two separate capital sleeves evaluated as sequential checks ('75% capital in the winner; 25% capital in the ensemble'). The actual strategy is a single blended target vector: target(i) = 0.75 x winner_target(i) + 0.25 x ensemble_target(i). When both sleeves are risk-on the portfolio is 100% TQQQ, not 75% TQQQ; when they disagree it holds a partial TQQQ/BIL mix. There are no sub-accounts and no per-sleeve rebalancing.",
+    "Remove the uncited paper 'Asness, Frazzini & Pedersen (2012) / Leverage Aversion and Risk Parity' (https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2149341) from the card's papers list. It is not in the report and was not used; it appears to have been added by the export. The paper list should match the report's Sources section.",
+    "Clarify the summary claim 'the only headline blend that meets the lower-drawdown / comparable-return rule at 1, 5 and 10 bp': it is the only one of the three headline blends (WE75, IV2, IV3) that meets the rule at all three cost levels. At 1 bp alone, IV2 also meets it. Add that the 5-year 1 bp margin is only 0.04 pp inside the 2 pp rule.",
+    "Add the measured 5 bp metrics to the card (currently only 1 bp is shown): 10y CAGR 0.5491 / DD 0.4339; 5y CAGR 0.4470 / DD 0.3296. The 10 bp numbers are 10y 0.5063/0.4604 and 5y 0.4077/0.3374.",
+    "The card's `rules` array omits the execution convention. It should include: signal at bar i close, fill at bar i+1 open, 2% band, long-only, weights sum to 1, residual in BIL. The current three bullets are directionally correct but incomplete.",
+    "Cosmetic paper labels: 'SSRN 2259041' should read 'Advances in Portfolio Risk Control: Risk! Parity?' and 'link' should read 'Quantpedia / Risk Parity Asset Allocation'. The URLs are correct.",
+    "The card's `tagline` ('A 75% winner + 25% ensemble blend.') and status ('Alternative') are accurate; no change needed. The current /research/winner-ensemble-blend.md page is an accurate copy of the report, including the post-fix inverse-vol numbers and the 1.96 pp 5-year caveat."
+  ]
+}

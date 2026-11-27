@@ -1,0 +1,84 @@
+{
+  "agent": "letf-rebalance-flow",
+  "original": "research/agents2/letf-rebalance-flow",
+  "status": "design_only",
+  "idea": "Nasdaq underperformance vs SPY at the close is temporary LETF/flow pressure; buy TQQQ for a three-session reversal.",
+  "hypothesis": "z(QQQ-SPY daily relative return) < -1.25 predicts positive next-three-session TQQQ returns with <0.60 correlation to the old 165-day baseline.",
+  "universe": [
+    "TQQQ",
+    "BIL",
+    "QQQ (signal)",
+    "SPY (signal)"
+  ],
+  "frozen_commit": null,
+  "variants_tried": 0,
+  "corr_vs_165d_baseline": 0.40332226494244533,
+  "max_corr_vs_other_rebuilds": null,
+  "windows": {
+    "dev": {
+      "1bp": {
+        "cagr": 0.13198637649002998,
+        "total_return": 1.6908219823878299,
+        "max_drawdown": 0.4180024497391086,
+        "volatility": 0.36517797077176795,
+        "sharpe": 0.5241202521473756,
+        "sortino": 0.7394758426662396,
+        "exposure": 0.9999987210313603,
+        "fills": 601,
+        "turnover": 789.557859490226,
+        "ending_equity": 269082.198238783,
+        "years": 7.984312495246787
+      },
+      "5bp": {
+        "cagr": 0.09841135672933587,
+        "total_return": 1.1158292409514243,
+        "max_drawdown": 0.426323162410008,
+        "volatility": 0.36501193382588965,
+        "sharpe": 0.44143247872013813,
+        "sortino": 0.6213084338673887,
+        "exposure": 0.9999987210313603,
+        "fills": 601,
+        "turnover": 681.3190548806364,
+        "ending_equity": 211582.92409514243,
+        "years": 7.984312495246787
+      },
+      "10bp": {
+        "cagr": 0.057839517671155916,
+        "total_return": 0.5666616398947009,
+        "max_drawdown": 0.4749834589177837,
+        "volatility": 0.3648977442991878,
+        "sharpe": 0.33797367628910385,
+        "sortino": 0.4742744981480529,
+        "exposure": 0.9999987210313603,
+        "fills": 601,
+        "turnover": 570.4654885028893,
+        "ending_equity": 156666.16398947008,
+        "years": 7.984312495246787
+      }
+    },
+    "holdout": {},
+    "10y": {},
+    "5y": {}
+  },
+  "marks": "1m",
+  "benchmarks": {
+    "tqqq": {
+      "cagr": 0.3615406632934588,
+      "total_return": 10.752826498520793,
+      "max_drawdown": 0.8229021592363336,
+      "volatility": 0.6654592718640882,
+      "sharpe": 0.8011699599655372,
+      "ending_equity": 1175282.6498520793,
+      "years": 7.984312495246787
+    },
+    "qqq": {
+      "cagr": 0.18912874422247206,
+      "total_return": 2.9870424941803697,
+      "max_drawdown": 0.3730047872557426,
+      "volatility": 0.2201773147609827,
+      "sharpe": 0.8999556826271142,
+      "ending_equity": 398704.249418037,
+      "years": 7.984312495246787
+    }
+  }
+}

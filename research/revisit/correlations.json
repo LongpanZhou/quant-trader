@@ -1,0 +1,50 @@
+{
+  "set": "audited survivors",
+  "period": [
+    "2016-01-04",
+    "2023-12-29"
+  ],
+  "strategies": [
+    "ratio-pairs",
+    "intraday-seasonality",
+    "intraday-mean-reversion",
+    "gap-capitulation-reversal"
+  ],
+  "pairwise": {
+    "ratio-pairs": {
+      "ratio-pairs": 1.0,
+      "intraday-seasonality": 0.3829285671932376,
+      "intraday-mean-reversion": 0.12230984829945724,
+      "gap-capitulation-reversal": 0.1001229086441639
+    },
+    "intraday-seasonality": {
+      "ratio-pairs": 0.3829285671932376,
+      "intraday-seasonality": 1.0,
+      "intraday-mean-reversion": 0.2890362682860629,
+      "gap-capitulation-reversal": 0.2289106873266751
+    },
+    "intraday-mean-reversion": {
+      "ratio-pairs": 0.12230984829945724,
+      "intraday-seasonality": 0.2890362682860629,
+      "intraday-mean-reversion": 1.0,
+      "gap-capitulation-reversal": 0.15166350733702652
+    },
+    "gap-capitulation-reversal": {
+      "ratio-pairs": 0.1001229086441639,
+      "intraday-seasonality": 0.2289106873266751,
+      "intraday-mean-reversion": 0.15166350733702652,
+      "gap-capitulation-reversal": 1.0
+    }
+  },
+  "vs_165d_baseline": {
+    "ratio-pairs": 0.5279115792444845,
+    "intraday-seasonality": 0.260983126489857,
+    "intraday-mean-reversion": 0.13310760434652955,
+    "gap-capitulation-reversal": 0.027220310440623684
+  },
+  "average_pairwise": 0.21249529784777055,
+  "max_pairwise": 0.3829285671932376,
+  "min_pairwise": 0.1001229086441639,
+  "original_set_average": 0.86,
+  "note": "Original 26 shared-base strategies averaged about 0.86 pairwise. This matrix covers only the strategies that passed their development gates and were frozen for the holdout."
+}

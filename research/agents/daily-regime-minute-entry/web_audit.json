@@ -1,0 +1,185 @@
+{
+  "slug": "daily-regime-minute-entry",
+  "name": "Armed 4% minute stop",
+  "tagline": "QQQ 165-day regime with a selective, armed 4% intraday crash stop (~16 triggers a year).",
+  "summary": "Hold 100% TQQQ while QQQ's prior daily close is above its 165-day SMA, else 100% BIL. On risk-on days, arm a 4% stop from the session open only when QQQ is at or below its 20-day MA (+1%); the first 1-minute close 4% below the open moves the book to BIL for the rest of the session and the night, and the position re-enters at the next session's open if the regime is still on. The stop is a crash hedge, not a continuous trading signal: it fired 153 times in the 10-year test window.",
+  "decision_process": "At each session the prior daily QQQ close vs its 165-day SMA sets the regime (TQQQ if above, BIL if below). On risk-on days the arm flag is fixed at the open from the QQQ 09:30-bar close vs MA20 x 1.01, where MA20 is built from daily closes through the prior session. Every minute the strategy checks whether TQQQ's close is 4% or more below that session's open; the first such close sets the target to BIL, filled at the next minute's open. A stopped session stays in BIL through 15:59 and through the overnight, so the next fill is the following session's 09:31 open, where TQQQ is re-bought if the regime is still risk-on. All signals use only bars at or before i, targets fill at bar i+1's open, long-only, 100% TQQQ or 100% BIL.",
+  "rules": [
+    "Regime: QQQ prior daily close > 165-day SMA of QQQ daily closes -> risk-on (100% TQQQ, including overnight); otherwise 100% BIL.",
+    "Arm: on a risk-on day, arm the stop only if QQQ's 09:30-bar close is below its 20-day SMA of daily closes (through the prior session) times 1.01.",
+    "Stop: while armed, the first 1-minute TQQQ close that is 4% or more below the session open sells at the next minute's open.",
+    "After a stop: stay in BIL for the rest of the session and the following night; re-enter TQQQ at the next session's 09:31 open if the regime is still risk-on.",
+    "Long-only, one position at a time, no leverage beyond 100% TQQQ, no shorts; 1 bp one-way base cost, with 5 bp and 10 bp reported."
+  ],
+  "status": "Verified",
+  "metrics": {
+    "cagr10": 0.5880,
+    "dd10": 0.4456,
+    "cagr5": 0.4988,
+    "dd5": 0.3349,
+    "cagr10_5bp": 0.5460,
+    "dd10_5bp": 0.4708,
+    "cagr5_5bp": 0.4589,
+    "dd5_5bp": 0.3413
+  },
+  "verdict": "Round-1 winner and the project's strict two-window baseline: 58.80% / 44.56% (10y) and 49.88% / 33.49% (5y) at 1 bp, beating both TQQQ buy-and-hold and the daily QQQ 165-day baseline; it still passes vs TQQQ at 10 bp (49.50% / 50.06% and 41.05% / 34.93%). Rolling 3-year windows: lower drawdown than TQQQ in 27/27, higher return in 23/27. Main caveat: the return edge is a crash hedge concentrated in 2020 and a handful of gap nights (median stop event is about zero), so 58.8% is not a stable annual expectation; the 10y drawdown is still 44.6%.",
+  "sources": [
+    {
+      "idea": "Base rule: QQQ above its 165-day SMA -> hold TQQQ, else BIL, with next-open fills.",
+      "source": "Repo research/README.md daily baseline (internal report)",
+      "url": null,
+      "source_type": "report",
+      "role": "inspired rule",
+      "evidence": "The README's passing daily baseline is exactly this regime at 45.31% / 58.71% (10y) and 34.61% / 36.86% (5y). My no-overlay control reproduces it on 1-minute marks at 46.63% / 58.76% and 36.14% / 42.17%, which is the apples-to-apples reference for the stop overlay.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Long-only price-above-moving-average trend timing is a robust, widely documented rule family.",
+      "source": "Faber (2007) - A Quantitative Approach to Tactical Asset Allocation",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=962461",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Uses a 10-month SMA to switch between risk assets and cash; reports broad parameter stability across five asset classes. Supports the class of rule, not the specific 165-day parameter, which came from the repo baseline.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Stop-loss rules can add value when returns exhibit momentum / regime shifts, and cost relatively little otherwise.",
+      "source": "Kaminski & Lo (2014) - When Do Stop-Loss Rules Stop Losses? Journal of Financial Markets 18, 234-254",
+      "url": "https://doi.org/10.1016/j.finmar.2013.07.001",
+      "source_type": "paper",
+      "role": "inspired rule",
+      "evidence": "Analytical framework showing 0/1 stop-loss rules always reduce expected return under a random walk but can add value in the presence of momentum; daily index-futures evidence that certain stop policies raise expected return while substantially reducing volatility. This is the theoretical license for a conditional stop, and the reason the stop is armed only in weak short-term trends.",
+      "confidence": "high"
+    },
+    {
+      "idea": "A slow daily trend filter on TQQQ has its worst drawdown in a fast crash (Feb-Apr 2020), because the average cannot react within a month.",
+      "source": "FinLab - TQQQ 200-day moving average strategy: 7 leveraged ETF rules",
+      "url": "https://finlab.finance/en/blog/leveraged-etf-timing-backtest",
+      "source_type": "blog",
+      "role": "supports assumption",
+      "evidence": "Backtest 2017-2026: QQQ 200-day rule on TQQQ returned about 45.1%/yr vs 39.6% buy-and-hold, cut max DD from -81.7% to -60.9%, and its own worst drawdown was Feb-Apr 2020. That documented failure mode is exactly what the intraday stop targets.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Independent corroboration that the slow-regime worst drawdown is the 2020 crash.",
+      "source": "Exent - TQQQ and the 200-Day Moving Average: An Exit Rule, Tested",
+      "url": "https://www.exent.ai/resources/leveraged-etf-200-day-rule",
+      "source_type": "blog",
+      "role": "supports assumption",
+      "evidence": "Backtest Jan 2017-Sep 2026: 46.4%/yr vs 42.5% for holding, worst fall cut from -81.6% to -54.8%, invested about 82-83% of the time. Corroborates both the regime's return profile and its Feb-Apr 2020 weakness.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "TQQQ's drift is overwhelmingly overnight, so an intraday-only design cannot compete and minute data should be used mainly for exits.",
+      "source": "Lou, Polk & Skouras (2019) - A Tug of War: Overnight versus Intraday Expected Returns",
+      "url": "https://doi.org/10.1016/j.jfineco.2019.03.011",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Documents large overnight vs intraday return components and that momentum profits are higher overnight and partially revert intraday. Supports holding TQQQ through the night and restricting minute decisions to rare risk exits.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Own measurement of the overnight/intraday split on this exact 1-minute panel.",
+      "source": "Own test / no external source",
+      "url": null,
+      "source_type": "data",
+      "role": "supports assumption",
+      "evidence": "2017-01-03 to 2026-10-23, 1-minute bars, 15:59 close to next 09:30 open: TQQQ overnight total +1,354.8% (mean +0.143%/day) vs intraday +81.2% (mean +0.081%/day); QQQ +245.0% overnight vs +82.6% intraday. This is why the strategy is never flat overnight and why continuous intraday timing failed.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Arm the stop only when QQQ is near/below its 20-day MA (+1%), so bull-market dips are not stopped out.",
+      "source": "Own test / no external source",
+      "url": null,
+      "source_type": "data",
+      "role": "inspired rule",
+      "evidence": "Gate surface with the 4% stop (10y / 5y CAGR and DD): no gate 61.28%/45.62% and 43.87%/36.92%; QQQ<MA20 56.11%/41.73% and 45.31%/34.82%; QQQ<MA20x1.01 58.80%/44.56% and 49.88%/33.49%; QQQ<MA50 51.05%/43.95% and 44.80%/32.51%. MA20x1.01 was chosen for lower drawdown and a much better 5-year window, at roughly half the turnover.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Use a fixed 4% stop from the session open rather than an ATR-scaled or trailing stop.",
+      "source": "Own test / no external source",
+      "url": null,
+      "source_type": "data",
+      "role": "inspired rule",
+      "evidence": "Stop-level surface (10y / 5y CAGR and DD): 2.5% 59.88%/41.24% and 38.28%/37.09%; 3.0% 59.17%/47.50% and 39.21%/39.21%; 3.5% 63.16%/47.12% and 47.69%/32.71%; 4.0% 61.28%/45.62% and 43.87%/36.92%; 4.5% 55.89%/42.18% and 36.59%/39.63%; 5.0% 52.77%/42.48% and 37.23%/41.58%; 6.0% 49.67%/47.25% and 41.92%/40.99%. Every level beats the no-overlay control; 4% is mid-surface, not the peak (3.5% is). TQQQ ATR20 is about 6%, so ATR-scaled stops of 0.8-1.5x barely armed.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "After a stop, stay out overnight instead of re-entering at the close.",
+      "source": "Own test / no external source",
+      "url": null,
+      "source_type": "data",
+      "role": "inspired rule",
+      "evidence": "Same 4% stop with three re-entry rules (10y / 5y CAGR and DD): out overnight 58.80%/44.56% and 49.88%/33.49%; re-enter at the close 56.10%/50.64% and 42.58%/38.94% (ungated); 2-day lockout 46.07%/45.08% and 35.97%/34.05%. The benefit is specifically skipping the rest of the crash session and the following night.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Moving-average risk management applied to leveraged equity is a documented, robust approach.",
+      "source": "Gayed & Bilello (2016) - Leverage for the Long Run",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2741701",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Applies a 200-day MA risk switch to 1.5x/2x/3x equity exposure and reports robustness across leverage amounts and MA periods. Cited as background for the regime; it did not set the 165-day or 4% parameters.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Benchmark and test-window definitions used for pass/fail.",
+      "source": "Repo data/intraday-hf 1-minute QQQ/TQQQ/BIL and research/README.md benchmarks",
+      "url": null,
+      "source_type": "data",
+      "role": "benchmark",
+      "evidence": "Adjusted 1-minute regular-session bars, 2016-01-04 to 2026-10-23 warm-up plus test, 1,057,023 bars. README TQQQ buy-and-hold: 39.28%/81.68% (10y) and 13.47%/81.68% (5y) on daily bars; the harness 1-minute-marked benchmark is 39.38%/82.29% and 14.29%/82.29%. Pass/fail conclusion is identical either way.",
+      "confidence": "high"
+    }
+  ],
+  "rejected_sources": [
+    {
+      "source": "Scanz - VWAP Trading Strategy",
+      "url": "https://scanz.com/vwap-trading-strategy",
+      "why_rejected": "A continuous 1-minute VWAP hold (TQQQ close > session VWAP) destroyed the account: -22.63% CAGR and 92.27% max DD on 10y with 65,321 fills. Adding a 5 bp buffer and 3-bar confirmation still gave -3.75% / 54.54% with 29,817 fills. At ~26 round trips a day the 1 bp cost overwhelms the ~8 bp/day gross intraday drift."
+    },
+    {
+      "source": "Gao, Han, Li & Zhou (2018) - Market Intraday Momentum",
+      "url": "https://doi.org/10.1016/j.jfineco.2018.05.009",
+      "why_rejected": "The first-30-minute direction filter (hold TQQQ to the close only if the first 30 minutes are up) returned 31.58% / 55.17% (10y) and 16.71% / 37.22% (5y) with 4,259 fills - far below the 46.63% / 58.76% no-overlay control. The documented intraday momentum does not survive 1-minute costs and the overnight-drift opportunity cost in TQQQ."
+    },
+    {
+      "source": "Zarattini & Aziz (2023) - Can Day Trading Really Be Profitable? (opening-range breakout)",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4416622",
+      "why_rejected": "A 30-minute TQQQ opening-range breakout entry inside the regime returned 14.56% / 42.50% (10y) and 11.36% / 32.66% (5y) with 11,897 fills. Rejected as the entry rule: the breakout entry is a small part of a multi-year hold and adds turnover without edge."
+    },
+    {
+      "source": "Standard 1-minute EMA crossover (no external source)",
+      "url": null,
+      "why_rejected": "EMA20/60 on 1-minute TQQQ gave -15.79% / 84.94% (10y) with 27,907 fills; EMA50/200 gave 24.31% / 47.18% with 9,081 fills. Even the cheaper variant gives up ~22 pp of CAGR to the control."
+    },
+    {
+      "source": "Quant Arenas - Chandelier / ATR exit",
+      "url": "https://quantarenas.com/strategy/trend-17-chandelier-exit",
+      "why_rejected": "An ATR20-scaled stop (0.8-1.5x) armed on only ~100 occasions over 10 years because TQQQ ATR20 is about 6%, so the stop rarely triggered and the result (about 46.6-47.7% CAGR) was no better than the control. A fixed 4% stop, roughly 0.65x ATR20, was kept."
+    },
+    {
+      "source": "Minute-entry timing experiments (VWAP reclaim, 10:00 entry, opening-range breakout, -1% pullback) - own tests, no single source",
+      "url": null,
+      "why_rejected": "Delaying the first buy of each of the 21 regime-flip episodes by waiting for a VWAP reclaim, 10:00, 11:30, an opening-range breakout, a touch of the open, or a -1% pullback all landed within +/-0.5 pp of simply buying at the next open (control 46.63% / 36.14%; variants 44.22-46.71% / 33.49-36.60%). With ~2 entries a year there is no edge and waiting often buys higher."
+    },
+    {
+      "source": "Intraday 165-day SMA crossover (own variant, no external source)",
+      "url": null,
+      "why_rejected": "Evaluating the QQQ-vs-165-day-SMA cross every minute and trading it directly gave 41.01% / 54.85% (10y) and 23.39% / 46.33% (5y) with a 1% buffer, and worse with tighter buffers. Intraday crossings whipsaw around the average and miss the rebound; the regime must be evaluated at the close."
+    }
+  ],
+  "corrections": [
+    "PAPER ATTRIBUTION (most important): the page lists 'FinLab - Leveraged ETF Decay' (https://finlab.finance/en/blog/leveraged-etf-decay). That article was not used. The FinLab source for this strategy is the 200-day timing backtest https://finlab.finance/en/blog/leveraged-etf-timing-backtest, which is already on the page but shown only as an unlabeled 'FinLab' link. Remove the decay entry and label the timing link 'FinLab - TQQQ 200-day moving average strategy'.",
+    "MISSING CORE SOURCE: the page does not prominently credit Kaminski & Lo (2014), 'When Do Stop-Loss Rules Stop Losses?' (Journal of Financial Markets 18). It is the theoretical basis for the stop rule and currently appears only as an unlabeled trailing link with the text 'doi' and URL https://doi.org/10.1016/j.finmar.2013.07.001. Label it properly and move it up the paper list.",
+    "UNUSED SOURCE: the page lists 'Haghani, Ragulin & Dewey - Night Moves: Overnight Drift' (ELM). I did not use or cite it. The overnight-drift evidence in the report is Lou/Polk/Skouras plus the own +1,354.8% vs +81.2% decomposition. Remove it, or label it explicitly as generic background only.",
+    "DUPLICATE: Lou/Polk/Skouras appears twice (the DOI link and the personal.lse.ac.uk PDF). Keep one.",
+    "TAGLINE: 'rare' overstates it. The stop fired 153 times in the 10y test window (~16/yr, ~6% of sessions). 'Selective' or 'armed' is accurate; the corrected tagline in this audit says 'selective' and quantifies the trigger rate.",
+    "RULE 2 PRECISION: the page should say the MA20 is built from QQQ daily closes through the prior session and is compared with the QQQ 09:30-bar close, not an intraday-updated MA. As written, 'QQQ's first minute' is ambiguous.",
+    "RULE 3 PRECISION: 'stay out until the next session' should read 'stay in BIL for the rest of the session and the following night, and re-enter at the next session's 09:31 open if the regime is still risk-on'. The current wording can be read as a full extra day out.",
+    "VERDICT COMPLETENESS: '27/27 rolling 3-year windows have lower drawdown than TQQQ' is correct, but the companion return statistic is 23/27 (the four lags are 2018-04, 2018-07, 2019-01, 2023-01). State both so the page does not imply 27/27 on both metrics.",
+    "PROVENANCE NUANCE: Faber (2007) supports the general price-above-SMA rule family, but the specific 165-day window and the QQQ gate come from the repo's own daily baseline (README), not from Faber. The page's paper list should not imply Faber supplied the 165-day parameter.",
+    "METRICS: verified, no change. 58.80% / 44.56% (10y) and 49.88% / 33.49% (5y) at 1 bp; 54.60% / 47.08% and 45.89% / 34.13% at 5 bp; 49.50% / 50.06% and 41.05% / 34.93% at 10 bp. Status 'Verified' is supported by research/winner.md and research/verification/verify_agent1.py."
+  ]
+}

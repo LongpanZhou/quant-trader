@@ -1,0 +1,1 @@
+{"slug": "ratio-pairs", "mode": "dev", "calls": 11, "error": null, "seconds": 2.8, "restored": ["restored result.json"], "match_score": null, "found": true, "kw": {"band": 0.02, "slippage_bps": 1.0, "start_equity": 100000.0}, "bars": 781490, "k": 3}

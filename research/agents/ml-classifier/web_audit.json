@@ -1,0 +1,197 @@
+{
+  "slug": "ml-classifier",
+  "name": "ML risk-off overlay",
+  "tagline": "A multi-horizon walk-forward logistic risk-off overlay on the daily QQQ trend.",
+  "summary": "Three L2 logistic models predict whether TQQQ beats BIL over the next 5, 10 and 20 trading days from 38 causal features. Each model trains on the prior 750 trading days and is retrained annually with an h+1 purge. The average of their trailing 252-day probability ranks must stay at or above 0.20 for TQQQ; otherwise the book moves to BIL. The 165-day QQQ SMA is the base regime, and all fills are at the next open.",
+  "decision_process": "At the close of day i, compute the 38 features from data through that close. Three L2 logistic models (5/10/20-day labels, each trained on the prior 750 trading days and retrained annually with an h+1 purge) output P(TQQQ beats BIL over the horizon). Convert each probability to a trailing 252-day percentile and average the three. Target TQQQ only if QQQ close > its 165-day SMA and the average rank is at least 0.20; otherwise target BIL. The target fills at the next day's open with a 2% band.",
+  "rules": [
+    "Base regime: QQQ close > 165-day SMA means default TQQQ; otherwise BIL.",
+    "Three L2 logistic models predict TQQQ-vs-BIL over 5/10/20 trading days from 38 causal features, trained on the prior 750 trading days and retrained each calendar year with the last h+1 boundary rows purged.",
+    "Rank each model's probability in its trailing 252-day distribution and average the three ranks.",
+    "Target TQQQ only if QQQ close > 165-day SMA AND the average rank is at least 0.20; otherwise target BIL.",
+    "Fill at the next day's open with a 2% band; long-only, weights sum to at most 1, no margin or shorting."
+  ],
+  "status": "Verified",
+  "metrics": {
+    "cagr10": 0.7495,
+    "dd10": 0.4048,
+    "cagr5": 0.5129,
+    "dd5": 0.3320,
+    "cagr10_5bp": 0.7244,
+    "dd10_5bp": 0.4109,
+    "cagr5_5bp": 0.4897,
+    "dd5_5bp": 0.3341
+  },
+  "metrics_note": "1 bp Sharpe 1.53 (10y) / 1.28 (5y), 353 / 193 fills, turnover 22,023x / 693x. 5 bp Sharpe 1.50 / 1.24. Max DD dates: 2018-08-29 to 2019-03-08 (10y), 2023-07-31 to 2023-10-26 (5y).",
+  "verdict": "Passes both windows at 1 bp and 5 bp, with the highest 10y headline (74.95%/40.48%; 5 bp 72.44%/41.09%) and a 5y pass (51.29%/33.20%; 5 bp 48.97%/33.41%). Caveat: this is a daily-decision overlay, not a 30/60-minute strategy. The 30-minute model failed; the 60-minute model only passed at 1 bp (41.87% vs 39.28% 10y, 71.8% DD) and failed at 5 bp (36.32% CAGR, 73.1% DD). The 10y CAGR is 2020-inflated (2020 +403.8% vs TQQQ +99.8%; ex-2020 54.30%); the 48-config grid median is 57.8%/47.1% (10y) and 40.5%/35.6% (5y).",
+  "sources": [
+    {
+      "idea": "QQQ above its 165-day SMA is risk-on (TQQQ); below it is risk-off (BIL). This is the base regime.",
+      "source": "research/README.md - documented daily baseline",
+      "url": null,
+      "source_type": "report",
+      "role": "inspired rule",
+      "evidence": "The README specifies the 165-day QQQ SMA baseline with a 2% band. bt.py reproduces it exactly: 45.31%/58.71% (10y) and 34.61%/36.86% (5y) at 1 bp. The strategy reuses this as its base regime.",
+      "confidence": "high"
+    },
+    {
+      "idea": "A long moving-average trend filter is a sensible risk-on/risk-off base for a leveraged equity position.",
+      "source": "Faber (2007) - A Quantitative Approach to Tactical Asset Allocation",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=962461",
+      "source_type": "paper",
+      "role": "inspired rule",
+      "evidence": "Faber's long moving-average trend rule is the general inspiration. The specific 165-trading-day QQQ parameter and the 2% band come from the repo baseline, not from Faber's 10-month SMA.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Strict walk-forward validation with a purge/embargo so labels overlapping the test period cannot leak into training.",
+      "source": "Deep, Deep & Lamptey (2025) - Interpretable Hypothesis-Driven Trading: A Rigorous Walk-Forward Validation Framework for Market Microstructure Signals",
+      "url": "https://arxiv.org/abs/2512.12924",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Describes strict information-set discipline, rolling walk-forward validation, and realistic transaction costs. Used as the methodological template, not as a signal source.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Overlapping labels and non-IID samples require purging/embargo and a smaller effective sample size.",
+      "source": "Lopez de Prado (2018) - The 10 Reasons Most Machine Learning Funds Fail",
+      "url": "https://www.garp.org/hubfs/Whitepapers/a1Z1W0000054x6lUAA.pdf",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Identifies overlapping-label/non-IID pitfalls and purging/embargo. Used to justify the h+1 purge and the caveat that 750 rows are not 750 independent observations. The canonical SSRN version is abstract_id=3104816.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Out-of-sample testing methods in ML finance must prevent lookahead; purged cross-validation is the relevant comparison.",
+      "source": "Backtest Overfitting in the Machine Learning Era: A Comparison of Out-of-Sample Testing Methods in a Synthetic Controlled Environment",
+      "url": "https://www.sciencedirect.com/science/article/abs/pii/S0950705124011110",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Compares out-of-sample testing methods and emphasizes purged cross-validation and lookahead prevention. Supports the annual walk-forward design.",
+      "confidence": "high"
+    },
+    {
+      "idea": "A strategy selected from many trials must be discounted; report the trial count and a robustness distribution rather than only the best run.",
+      "source": "Bailey, Borwein, Lopez de Prado & Zhu - The Probability of Backtest Overfitting",
+      "url": "https://www.davidhbailey.com/dhbpapers/backtest-prob.pdf",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "The PBO framework motivates the 48-configuration grid, the median/min/max report, the placebo test, and the explicit selection-bias caveat.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Report all trials and avoid data-mined backtests; use an explicit research protocol.",
+      "source": "Arnott, Harvey & Markowitz (2019) - A Backtesting Protocol in the Era of Machine Learning",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3275654",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Protocol for ML backtests. The report discloses the 48-config grid and feature subsets instead of presenting only the best run.",
+      "confidence": "high"
+    },
+    {
+      "idea": "L2-regularized logistic regression is an appropriate simple classifier for a low signal-to-noise direction problem.",
+      "source": "Own test / no external source",
+      "url": null,
+      "source_type": "report",
+      "role": "inspired rule",
+      "evidence": "Standard L2 logistic regression implemented with Newton/IRLS, chosen for simplicity and interpretability per the agent mandate. No external paper prescribed this exact model.",
+      "confidence": "high"
+    },
+    {
+      "idea": "The 38-feature set: returns, realized volatility, RSI, distance from VWAP/EMA/SMA, time-of-day, overnight/intraday structure, leverage decay, BIL yield.",
+      "source": "Own test / no external source",
+      "url": null,
+      "source_type": "report",
+      "role": "inspired rule",
+      "evidence": "Feature families were specified by the agent mandate; exact windows (1/2/5/10/20/60/120/250-day returns, RSI14, EMA20/50, SMA20/50/100/165/200, etc.) were built and tested by us. The builder creates 38 features; the 2017 fit drops the 250-day feature because its coverage in the one-year training window is below 50%. No external paper prescribed the exact set.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Use three horizons (5/10/20 days) and a trailing-rank bottom-quintile exit instead of a 30/60-minute trading signal.",
+      "source": "Own test / no external source",
+      "url": null,
+      "source_type": "report",
+      "role": "inspired rule",
+      "evidence": "The 30/60-minute classifiers had no reliable OOS edge, so the horizons were extended. The 0.20 threshold is the bottom quintile; the 48-config grid tests 0.15/0.20/0.25 and all pass.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Use a 750-trading-day rolling training window with annual retraining.",
+      "source": "Own test / no external source",
+      "url": null,
+      "source_type": "report",
+      "role": "inspired rule",
+      "evidence": "750 trading days is approximately three years. The grid tests 500/750/1000/expanding windows; all 48 configurations pass both windows.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Long-only TQQQ/BIL with next-open fills, a 2% no-trade band, and 1 bp primary / 5 bp sensitivity costs.",
+      "source": "research/bt.py and research/README.md - harness and cost conventions",
+      "url": null,
+      "source_type": "data",
+      "role": "supports assumption",
+      "evidence": "The harness enforces long-only weights at most 1, next-bar-open fills, 1 bp default slippage, and the 2% band. The README sets the 1 bp primary and 5 bp sensitivity convention.",
+      "confidence": "high"
+    },
+    {
+      "idea": "TQQQ resets daily; long-horizon leveraged-ETF returns are path-dependent, so the strategy must stay long-only and avoid margin.",
+      "source": "SEC/FINRA - Updated Investor Bulletin: Leveraged and Inverse ETFs",
+      "url": "https://www.investor.gov/introduction-investing/general-resources/news-alerts/alerts-bulletins/investor-alerts/sec-finra",
+      "source_type": "report",
+      "role": "supports assumption",
+      "evidence": "The bulletin explains daily reset and divergence over longer periods. Used for the long-only, no-margin treatment and the leveraged-ETF risk caveat.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Benchmark: TQQQ buy-and-hold 39.28%/81.68% (10y) and 13.47%/81.68% (5y); daily baseline 45.31%/58.71% and 34.61%/36.86%.",
+      "source": "research/README.md - benchmark table, reproduced with research/bt.py",
+      "url": null,
+      "source_type": "report",
+      "role": "benchmark",
+      "evidence": "The README target is 13.47% for the 5y TQQQ; the harness daily bars give 13.88%. The pass test uses the stricter 13.47%. The daily baseline is reproduced exactly by bt.run.",
+      "confidence": "high"
+    },
+    {
+      "idea": "The mandated 30/60-minute logistic classifiers were tested first and are not the passing strategy.",
+      "source": "Own test / no external source",
+      "url": null,
+      "source_type": "report",
+      "role": "tested only",
+      "evidence": "30-minute OOS accuracy 51.0-54.0% vs base 51.6-54.5%, IC approximately zero, best direct rule 28.94%/77.4%. 60-minute accuracy 51.5-54.7%; rule 41.87%/71.8% at 1 bp but 36.32% at 5 bp. Reported as a negative/marginal result.",
+      "confidence": "high"
+    }
+  ],
+  "rejected_sources": [
+    {
+      "source": "Lopez de Prado (2016) - Building Diversified Portfolios that Outperform Out-of-Sample",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2708678",
+      "why_rejected": "Not used. This is the hierarchical risk-parity portfolio-construction paper. The strategy is a binary TQQQ/BIL timing overlay and uses no HRP allocation. The relevant Lopez de Prado citation for this strategy is 'The 10 Reasons Most Machine Learning Funds Fail'."
+    },
+    {
+      "source": "Zarattini & Antonacci (2024) - A Century of Profitable Industry Trends",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4857230",
+      "why_rejected": "Not used. This is an industry/cross-sectional trend paper. The strategy has no industry signal and no cross-sectional ranking; it is a single-asset TQQQ/BIL timing model. The attribution appears to be a placeholder on the current page."
+    },
+    {
+      "source": "30/60-minute logistic classifier (own test)",
+      "url": null,
+      "why_rejected": "Tested first per the mandate. OOS accuracy was at the base rate (30-minute 51.0-54.0%; 60-minute 51.5-54.7%), IC was approximately zero, and decile returns were non-monotonic. The best 30-minute rule made 28.94% CAGR / 77.4% DD; the 60-minute rule made 41.87%/71.8% at 1 bp but only 36.32% at 5 bp (73.1% DD). Rejected as the primary strategy because it is not robust to costs and does not beat the daily baseline."
+    },
+    {
+      "source": "Minute-only feature set (own test)",
+      "url": null,
+      "why_rejected": "Tested with the same walk-forward protocol. Nine minute-derived features alone produced 31.4% CAGR / 63.7% DD (10y) and 26.7% / 42.2% (5y). The edge is trend/volatility, not minute microstructure; minute features only help at the margin in the full 38-feature model."
+    }
+  ],
+  "corrections": [
+    "Add the 5 bp metrics: 10y 72.44% CAGR / 41.09% DD; 5y 48.97% CAGR / 33.41% DD. The current page shows only the 1 bp figures (74.95%/40.48% and 51.29%/33.20%).",
+    "Correct the verdict: the 30-minute classifier failed, but the 60-minute classifier had a marginal 1 bp pass (41.87% vs 39.28% 10y; 23.02% vs 13.47% 5y) and failed at 5 bp (36.32% 10y) with a 71.8% max DD at 1 bp (73.1% at 5 bp). The passing strategy is the daily 5/10/20-day overlay, not a 30/60-minute strategy.",
+    "Remove LOPEZ_HRP ('Building Diversified Portfolios that Outperform Out-of-Sample') and ZARATTINI_ANT ('A Century of Profitable Industry Trends') from the cited papers; neither was used. Replace them with Lopez de Prado's 'The 10 Reasons Most Machine Learning Funds Fail' and the SEC/FINRA leveraged-ETF bulletin.",
+    "Correct the Arnott, Harvey & Markowitz title from 'A Backtest Is Not a Strategy' to 'A Backtesting Protocol in the Era of Machine Learning' (same SSRN URL, abstract_id=3275654).",
+    "Rewrite the rules/decision process: the current page lists 'Train on a 750-day rolling window, annual retrain, purge h+1' as a session rule. Training is an offline annual model refresh. The session rule is: compute 38 features, get 5/10/20-day probabilities, rank each in its trailing 252-day distribution, average them, target TQQQ only if QQQ close > 165-day SMA and average rank >= 0.20, otherwise BIL; fill at the next open.",
+    "Add the 2020 caveat: 2020 was +403.8% for the strategy vs +99.8% for TQQQ; ex-2020 CAGR is 54.30% / 40.48% DD. The 48-config grid median is 57.8%/47.1% (10y) and 40.5%/35.6% (5y), and all 48 configurations pass. The 74.95% headline is an upper estimate, not a repeatable expectation.",
+    "Clarify the tagline/summary: use 'multi-horizon walk-forward logistic risk-off overlay' and specify that the rule is the average of the three trailing 252-day probability ranks below 0.20, not merely 'a low trailing rank'.",
+    "Relabel the generic 'arxiv.org', 'sciencedirect.com', 'garp.org' and 'investor.gov' paper links with their actual titles; the provenance section has the full citations.",
+    "Keep status 'Verified'. The strategy has the highest 10y headline but is not the overall leader: the round-2 ratio-pairs strategy has a better 5y CAGR/DD and rolling consistency. Do not mark this as 'Leader' on the strength of the 10y CAGR alone."
+  ]
+}

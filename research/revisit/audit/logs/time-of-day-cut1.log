@@ -1,0 +1,31 @@
+Traceback (most recent call last):
+  File "C:\Users\27175\Desktop\quant-trader-research\research\revisit\audit\worker.py", line 235, in main
+    exec(compile(src, str(path), "exec"), g)
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\27175\Desktop\quant-trader-research\research\revisit\time-of-day\strategy.py", line 509, in <module>
+    main()
+    ~~~~^^
+  File "C:\Users\27175\Desktop\quant-trader-research\research\revisit\time-of-day\strategy.py", line 410, in main
+    _, ss = run_window(w, ts, op, cl, lo, hi, 1.0)
+            ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\27175\Desktop\quant-trader-research\research\revisit\time-of-day\strategy.py", line 275, in run_window
+    return res, bt.stats(res, BARS_1M)
+                ~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\27175\Desktop\quant-trader-research\research\bt.py", line 406, in stats
+    years = (result["ts"][-1] - result["ts"][0]).total_seconds() / (365.25 * 86400)
+             ~~~~~~~~~~~~^^^^
+  File "C:\Users\27175\AppData\Roaming\Python\Python313\site-packages\pandas\core\indexes\datetimelike.py", line 1439, in __getitem__
+    result = super().__getitem__(key)
+  File "C:\Users\27175\AppData\Roaming\Python\Python313\site-packages\pandas\core\indexes\base.py", line 5697, in __getitem__
+    return maybe_unbox_numpy_scalar(getitem(key), object_with_dtype=self)
+                                    ~~~~~~~^^^^^
+  File "C:\Users\27175\AppData\Roaming\Python\Python313\site-packages\pandas\core\arrays\datetimelike.py", line 380, in __getitem__
+    result = cast("Self | DTScalarOrNaT", super().__getitem__(key))
+                                          ~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\27175\AppData\Roaming\Python\Python313\site-packages\pandas\core\arrays\_mixins.py", line 391, in __getitem__
+    result = self._ndarray[key]
+             ~~~~~~~~~~~~~^^^^^
+IndexError: index -1 is out of bounds for axis 0 with size 0
+dev panel 409,459 bars, 1055 sessions, 2016-01-04 .. 2020-03-12
+165d baseline dev: CAGR 16.71% DD 56.98%
+{"slug": "time-of-day", "mode": "cut1", "calls": 5, "error": "IndexError: index -1 is out of bounds for axis 0 with size 0", "seconds": 9.3, "restored": [], "match_score": 0.9389973301082818, "found": true, "kw": {"band": 0.02, "slippage_bps": 1.0, "start_equity": 100000.0}, "bars": 390280, "k": 3}

@@ -1,0 +1,171 @@
+{
+  "slug": "stop-reentry-recovery",
+  "name": "Gradual stop re-entry",
+  "tagline": "Half-size next-session re-entry after a weak stop-day close, full re-entry with a 2% stop after a recovered close.",
+  "summary": "Keeps the round-1 winner's QQQ 165-day SMA regime and armed 4% TQQQ stop, then re-enters the next session at 09:31 instead of always waiting a full day. If the stopped session closed above its stop level, it re-enters 100% with a 2% stop for that session; if the close stayed below the stop level, it re-enters only 50% and holds that half through the session and the following night. A clean session restores 100%/4%, and the 2% regime chains after further stops. Same-day VWAP / 5m EMA / 15m EMA / QQQ-MA20 reclaim re-entry was tested and rejected, and is not used.",
+  "decision_process": "Each session: (1) QQQ prior daily close above its 165-day SMA -> risk-on, hold TQQQ, else BIL. (2) On risk-on days, arm the 4% stop only when QQQ's first-minute close is below its prior 20-day SMA x 1.01. (3) If armed and TQQQ closes 4% below the session open, sell at the next minute's open and stay in BIL for the rest of the session and the night. (4) Next session at 09:31: if the stopped session closed above its own stop level, re-enter 100% with a 2% stop for that session; if it closed below, re-enter 50% and hold that half through the session and the following night. (5) The 2% stop is checked from the first minute, so a gap-down first minute cancels the re-entry; the 2% regime chains while stops keep firing. All signals use only bars <= i; targets fill at the next bar's open.",
+  "rules": [
+    "Regime: hold TQQQ while QQQ's prior daily close is above its 165-day SMA; otherwise hold BIL.",
+    "Arm the 4% stop only when QQQ's first-minute close is below its prior 20-day SMA x 1.01.",
+    "If armed and TQQQ closes 4% below the session open, sell at the next minute's open and stay in BIL for the rest of the session and the night.",
+    "Weak-close re-entry: if the stopped session closes below its own stop level, hold 50% TQQQ / 50% BIL for the next session (fill 09:31) and through the following night.",
+    "Recovered-close re-entry: if the stopped session closes above its own stop level, re-enter 100% TQQQ at 09:31 with a 2% stop from that session's open.",
+    "The 2% stop is checked from the first minute and chains after further stops; a gap-down first minute cancels the re-entry. One clean session restores 100% / 4%.",
+    "Long-only, one position at a time, no leverage beyond 100% TQQQ; BIL earns its carry while out."
+  ],
+  "status": "Leader",
+  "metrics": {
+    "cagr10": 0.6103,
+    "dd10": 0.3992,
+    "cagr5": 0.5157,
+    "dd5": 0.2996,
+    "cagr10_5bp": 0.5702,
+    "dd10_5bp": 0.4068,
+    "cagr5_5bp": 0.4765,
+    "dd5_5bp": 0.3038
+  },
+  "verdict": "Strict dominance vs the round-1 winner at 1, 5 and 10 bp on both windows: 10y 61.03%/39.92%, 5y 51.57%/29.96% at 1 bp; 57.02%/40.68% and 47.65%/30.38% at 5 bp; 52.15%/43.63% and 42.90%/30.90% at 10 bp. The drawdown cut is the robust part (lower in 19 of 27 rolling 3-year windows and all five sub-periods). The CAGR edge is not statistically strong (monthly bootstrap t = 0.65; 90% CI -2.1 to +5.2 pp) and is concentrated in 2018 and 2026, with 2019 and 2024 giving some back. Same-day VWAP/EMA/MA20 re-entry failed and is not part of the rule.",
+  "sources": [
+    {
+      "idea": "Base strategy and benchmark: QQQ 165-day SMA regime, MA20 arm, 4% TQQQ stop from the session open, flat rest of day and night.",
+      "source": "Round-1 winner `daily-regime-minute-entry` (internal report)",
+      "url": null,
+      "source_type": "report",
+      "role": "benchmark",
+      "evidence": "Defines and verifies the base at 58.80%/44.56% (10y) and 49.88%/33.49% (5y) at 1 bp, with 657/337 fills. Every comparison in this audit is against it.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Stop-loss rules add value only when returns exhibit momentum/regime shifts and are a cost otherwise; supports arming the 4% stop only in weak short-term trends.",
+      "source": "Kaminski & Lo (2014) / When do stop-loss rules stop losses?",
+      "url": "https://doi.org/10.1016/j.finmar.2013.07.001",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "The paper's condition for stop-loss value is the theoretical license for the armed stop and for treating the stop as tail insurance, not free alpha.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Daily/monthly stop-loss and re-entry rules on the S&P 500 add no value, and whipsawing is only not a problem when the technical signal is long enough. Supports the negative same-day result and the slow/partial re-entry design.",
+      "source": "Clare, Seaton, Smith & Thomas (2013) / Breaking into the blackbox: Trend following, stop losses and the frequency of trading",
+      "url": "https://openaccess.city.ac.uk/id/eprint/17842",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Tests breakout/re-entry stop rules on the S&P 500, 1988-2011; finds no value in stop-loss rules and that more frequent trading damages returns.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Rule-based re-entry after a stop is not automatically additive; it must be tested rather than assumed.",
+      "source": "Duarte (2022) / Trailing Stop-Loss and Re-Entry Strategies in Europe",
+      "url": "https://eu-opensci.org/index.php/ejbmr/article/view/51426",
+      "source_type": "paper",
+      "role": "inspired rule",
+      "evidence": "Tests a +3% re-entry after a 3% trailing stop in Germany, France, Spain and Greece; results are mixed versus buy-and-hold. Motivated testing re-entry, but did not dictate the 50%/2% rule.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Moving-average/trend regime management reduces drawdown in leveraged equity; supports the 165-day SMA regime family.",
+      "source": "Faber (2007) / A Quantitative Approach to Tactical Asset Allocation",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=962461",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Trend-following tactical allocation. The exact 165-day parameter comes from the internal round-1 baseline, not from Faber.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Most of TQQQ's drift is earned overnight; staying fully out overnight is costly, which is why the weak-close re-entry keeps a half position overnight instead of staying fully out.",
+      "source": "Lou, Polk & Skouras (2019) / A Tug of War: Overnight versus Intraday Expected Returns",
+      "url": "https://personal.lse.ac.uk/polk/research/TugOfWar.pdf",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Documents the overnight/intraday return split. The round-1 report measured +1,355% overnight versus +81% intraday for TQQQ on this data.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Whipsaw is the main cost of trend/stop systems, and partial position sizing is a standard mitigation.",
+      "source": "CapitalMEG / Trend Following Strategy: Entries, Exits, Sizing",
+      "url": "https://www.cmelitegroup.com/knowledge-hub/trend-following",
+      "source_type": "blog",
+      "role": "supports assumption",
+      "evidence": "Discusses whipsaw as the main cost and position sizing/partial exposure. The exact 50% block and 2% stop are own tests, not from this page.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "VWAP crossover/reclaim filters with volume confirmation or multi-bar reversal do not create edge after multiple-testing correction; supports the negative same-day result.",
+      "source": "EdgeTools / Everyone Uses VWAP Wrong (TradingView)",
+      "url": "https://www.tradingview.com/chart/ES1!/tVJcD92K-Everyone-Uses-VWAP-Wrong/",
+      "source_type": "blog",
+      "role": "supports assumption",
+      "evidence": "Reports 427,319 VWAP tests with Bonferroni correction: volume confirmation and multi-bar reversal filters add almost nothing.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "VWAP reclaim entry shape: wait until at least 09:45/10:00, require a close above VWAP, confirm with volume or a retest, and stop below VWAP or the reclaim candle.",
+      "source": "VWAP reclaim practitioner literature (Scanz; Section 32; Tradezella; QuantCore)",
+      "url": "https://scanz.com/vwap-trading-strategy",
+      "source_type": "blog",
+      "role": "tested only",
+      "evidence": "Implemented as 1-3 bar confirmations, 0/5 bp buffers, a 10:00 start, and a VWAP-failure stop. Every variant lost CAGR and/or added drawdown; the final strategy uses no VWAP.",
+      "confidence": "high"
+    },
+    {
+      "idea": "The specific 2% re-entry-day stop, 50% weak-close block, chaining rule, and all reported metrics.",
+      "source": "Own test / no external source",
+      "url": null,
+      "source_type": "data",
+      "role": "tested only",
+      "evidence": "Backtested on local adjusted 1-minute QQQ/TQQQ/BIL data with research/bt.py (next-bar-open fills, 1/5/10 bp). The full 5x4 parameter grid and the same-day variants are in research/agents2/stop-reentry-recovery/. No external page supplied these exact parameters.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Data and benchmark: local 1-minute QQQ/TQQQ/BIL, regular session, 2017-01-03 to 2026-10-23; TQQQ buy-and-hold as the benchmark.",
+      "source": "Own test / local data and research/bt.py",
+      "url": null,
+      "source_type": "data",
+      "role": "benchmark",
+      "evidence": "1,057,023 bars and 2,718 sessions. TQQQ buy-and-hold: 39.28%/81.68% (10y) and 13.47%/81.68% (5y) on daily bars; the 1-minute harness gives 39.38%/82.29% and 14.29%/82.29%.",
+      "confidence": "high"
+    }
+  ],
+  "rejected_sources": [
+    {
+      "source": "Scanz / VWAP Trading Strategy",
+      "url": "https://scanz.com/vwap-trading-strategy",
+      "why_rejected": "Inspired the same-day VWAP reclaim variants. A 1-bar reclaim with a 2% stop returned 53.25%/47.00% (10y) and 40.53%/41.23% (5y), versus the winner's 58.80%/44.56% and 49.88%/33.49%. The reclaim arrives late and post-stop drift is negative."
+    },
+    {
+      "source": "Section 32 / How to Trade the VWAP Reclaim",
+      "url": "https://section32collective.com/vwap-reclaim.html",
+      "why_rejected": "The volume/retest confirmation was implemented as a 3-bar reclaim with a 2% stop: 52.99%/44.76% (10y) and 40.54%/40.90% (5y). Confirmation did not repair the negative post-reclaim drift."
+    },
+    {
+      "source": "Tradezella / VWAP Trading Strategy",
+      "url": "https://www.tradezella.com/blog/vwap-trading-strategy",
+      "why_rejected": "The 'wait until 10:00, strong close above VWAP, exit if it sells back below VWAP' shape was implemented as a VWAP-failure stop: 56.96%/48.55% (10y) and 50.47%/34.36% (5y). It adds 5-year CAGR but worsens drawdown and loses 1.8 pp of 10-year CAGR."
+    },
+    {
+      "source": "QuantCore.AI / VWAP Trading Strategy for Options",
+      "url": "https://qntcore.ai/blog/vwap-trading-strategy-options",
+      "why_rejected": "The claim that a VWAP reclaim is the single most reliable VWAP setup did not hold: 67 reclaim events, -0.236% mean to the close and -0.813% to the next open from the fill. The plain 1-bar reclaim returned 48.68%/53.00% (10y) and 40.52%/40.72% (5y)."
+    },
+    {
+      "source": "Cesar Alvarez / Stop-Loss Studies",
+      "url": "https://bettersystemtrader.com/037-cesar-alvarez-studies-stop-losses",
+      "why_rejected": "Not used in this research: it was not consulted, is not cited in the agent report, and did not inform the rule. The current web page lists it as provenance; remove it or mark it background-only."
+    }
+  ],
+  "corrections": [
+    "Status: change 'Verified' to 'Leader'. The strategy strictly dominates the current round-1 leader on both windows at 1/5/10 bp (higher CAGR and lower max drawdown). If the site reserves 'Leader' for statistically robust edges, keep 'Verified' but make the caveat explicit in the verdict.",
+    "Add the missing 5 bp metrics: 10y 0.5702 CAGR / 0.4068 DD, 5y 0.4765 / 0.3038. Also show the 10 bp row in the verdict: 0.5215 / 0.4363 (10y) and 0.4290 / 0.3090 (5y).",
+    "Tagline: 'Re-enter gradually after the 4% stop instead of staying out' can be read as same-day re-entry. Use: 'Half-size next-session re-entry after a weak stop-day close, full re-entry with a 2% stop after a recovered close.' Same-day reclaim re-entry was tested and rejected.",
+    "Summary: state that the 50% is held through the session and the following night, and that the 2% stop is checked from the first minute so a gap-down first minute cancels the re-entry. The current summary omits both.",
+    "Decision/rules: 'Base: round-1 winner' is not implementable. Spell out the 165-day SMA regime, the MA20 x 1.01 arm, the 4% stop from the session open, the next-minute fill, and staying out overnight.",
+    "Papers: move Scanz, Section 32, Tradezella and QuantCore into a 'tested and rejected' block. They inspired the same-day variants, not the final rule; the final strategy uses no VWAP. Presenting them as support for the final strategy is a provenance error.",
+    "Papers: remove 'Cesar Alvarez - Stop-Loss Studies'. It was not used, is not in the report, and is not part of the idea chain. Add Clare et al. (2013) and Duarte (2022), which are the key cautionary sources for the negative same-day result and the mixed re-entry evidence.",
+    "Paper label: replace 'doi:10.1016/j.finmar.2013.07.001' with 'Kaminski & Lo (2014) - When do stop-loss rules stop losses?' so the attribution is readable.",
+    "Attribution: Faber (2007) supports the moving-average trend-filter family, but the exact 165-day parameter comes from the internal round-1 baseline, not from Faber. Do not attribute the parameter to the paper.",
+    "Verdict: quantify the statistical caveat. Monthly bootstrap t = 0.65; 90% CI of the annualized return difference is -2.1 to +5.2 pp; the 10-year gain is concentrated in 2018 (+14.7 pp log difference) and 2026 (+8.2 pp), with 2019 (-6.6 pp) and 2024 (-4.2 pp) giving some back.",
+    "Clarify 'restore 100% after a clean session': the 50% block is restored to 100% at the next session if the regime is on; the 'clean session' language refers to the 2% stop chain (one session without a 2% stop restores 4%).",
+    "Metrics footnote: the TQQQ 39.28%/81.68% and 13.47%/81.68% figures are the README daily-bar numbers; the 1-minute harness gives 39.38%/82.29% and 14.29%/82.29%. State which convention the page uses.",
+    "The current page's 'decision' wording '(2) stop-day close above stop -> 100% re-entry with 2% stop; (3) below -> 50%' is correct but should note that the 50% is half of equity (the rest in BIL) and that the weak-close branch bypasses the 2% stop for that session."
+  ]
+}

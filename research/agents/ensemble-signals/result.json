@@ -1,0 +1,1221 @@
+{
+  "strategy": "ensemble_signals",
+  "description": "QQQ 165-day trend gate; 20-day realised-vol budget (TQQQ when <=1/3, BIL otherwise); 1m crash vote (-3% intraday, 60m EMA, 30m momentum, RSI(14) veto) exits TQQQ to BIL for the session.",
+  "symbols": [
+    "QQQ",
+    "TQQQ",
+    "BIL"
+  ],
+  "windows": {
+    "10y": [
+      "2017-01-03",
+      "2026-10-23"
+    ],
+    "5y": [
+      "2021-10-25",
+      "2026-10-23"
+    ]
+  },
+  "parameters": {
+    "sma_len": 165,
+    "vol_len": 20,
+    "vol_max": 0.333333,
+    "crash_drop": 0.03,
+    "rsi_len": 14,
+    "rsi_floor": 30.0,
+    "ema_len": 60,
+    "mom_len": 30,
+    "high_asset": "BIL"
+  },
+  "metrics": {
+    "10y_1bp": {
+      "cagr": 0.547297,
+      "total_return": 71.148407,
+      "max_drawdown": 0.399101,
+      "daily_max_drawdown": 0.383296,
+      "daily_dd_peak": "2018-08-29",
+      "daily_dd_trough": "2019-06-03",
+      "volatility": 0.458122,
+      "sharpe": 1.1864,
+      "sortino": 1.6878,
+      "exposure": 1.0,
+      "fills": 225,
+      "turnover": 4507.8,
+      "ending_equity": 7214840.72,
+      "years": 9.8021,
+      "benchmark_cagr": 0.393777,
+      "benchmark_max_drawdown": 0.822902,
+      "benchmark_sharpe": 0.0424,
+      "yearly": {
+        "2017": {
+          "strategy": 1.1508,
+          "benchmark": 1.1454
+        },
+        "2018": {
+          "strategy": 0.1682,
+          "benchmark": -0.2076
+        },
+        "2019": {
+          "strategy": 0.404,
+          "benchmark": 1.4823
+        },
+        "2020": {
+          "strategy": 1.831,
+          "benchmark": 1.0414
+        },
+        "2021": {
+          "strategy": 0.4413,
+          "benchmark": 0.8105
+        },
+        "2022": {
+          "strategy": -0.2177,
+          "benchmark": -0.7939
+        },
+        "2023": {
+          "strategy": 1.1852,
+          "benchmark": 1.9205
+        },
+        "2024": {
+          "strategy": 0.7461,
+          "benchmark": 0.6243
+        },
+        "2025": {
+          "strategy": 0.2668,
+          "benchmark": 0.321
+        },
+        "2026": {
+          "strategy": 0.2122,
+          "benchmark": 0.2262
+        }
+      }
+    },
+    "10y_5bp": {
+      "cagr": 0.533155,
+      "total_return": 64.938687,
+      "max_drawdown": 0.404842,
+      "daily_max_drawdown": 0.389188,
+      "daily_dd_peak": "2018-08-29",
+      "daily_dd_trough": "2019-06-03",
+      "volatility": 0.458132,
+      "sharpe": 1.1663,
+      "sortino": 1.6587,
+      "exposure": 1.0,
+      "fills": 225,
+      "turnover": 4201.2,
+      "ending_equity": 6593868.67,
+      "years": 9.8021,
+      "benchmark_cagr": 0.393777,
+      "benchmark_max_drawdown": 0.822902,
+      "benchmark_sharpe": 0.0424,
+      "yearly": {
+        "2017": {
+          "strategy": 1.1465,
+          "benchmark": 1.1454
+        },
+        "2018": {
+          "strategy": 0.1543,
+          "benchmark": -0.2076
+        },
+        "2019": {
+          "strategy": 0.3895,
+          "benchmark": 1.4823
+        },
+        "2020": {
+          "strategy": 1.7728,
+          "benchmark": 1.0414
+        },
+        "2021": {
+          "strategy": 0.4276,
+          "benchmark": 0.8105
+        },
+        "2022": {
+          "strategy": -0.2196,
+          "benchmark": -0.7939
+        },
+        "2023": {
+          "strategy": 1.1765,
+          "benchmark": 1.9205
+        },
+        "2024": {
+          "strategy": 0.7266,
+          "benchmark": 0.6243
+        },
+        "2025": {
+          "strategy": 0.2587,
+          "benchmark": 0.321
+        },
+        "2026": {
+          "strategy": 0.1987,
+          "benchmark": 0.2262
+        }
+      }
+    },
+    "5y_1bp": {
+      "cagr": 0.407946,
+      "total_return": 4.522366,
+      "max_drawdown": 0.349319,
+      "daily_max_drawdown": 0.332428,
+      "daily_dd_peak": "2023-07-18",
+      "daily_dd_trough": "2023-10-26",
+      "volatility": 0.452562,
+      "sharpe": 0.9873,
+      "sortino": 1.403,
+      "exposure": 1.0,
+      "fills": 89,
+      "turnover": 292.3,
+      "ending_equity": 552236.58,
+      "years": 4.9946,
+      "benchmark_cagr": 0.142904,
+      "benchmark_max_drawdown": 0.822902,
+      "benchmark_sharpe": 0.0271,
+      "yearly": {
+        "2021": {
+          "strategy": 0.1605,
+          "benchmark": 0.1602
+        },
+        "2022": {
+          "strategy": -0.2177,
+          "benchmark": -0.7939
+        },
+        "2023": {
+          "strategy": 1.1852,
+          "benchmark": 1.9205
+        },
+        "2024": {
+          "strategy": 0.7461,
+          "benchmark": 0.6243
+        },
+        "2025": {
+          "strategy": 0.2668,
+          "benchmark": 0.321
+        },
+        "2026": {
+          "strategy": 0.2122,
+          "benchmark": 0.2262
+        }
+      }
+    },
+    "5y_5bp": {
+      "cagr": 0.397947,
+      "total_return": 4.329228,
+      "max_drawdown": 0.349319,
+      "daily_max_drawdown": 0.332428,
+      "daily_dd_peak": "2023-07-18",
+      "daily_dd_trough": "2023-10-26",
+      "volatility": 0.452562,
+      "sharpe": 0.9715,
+      "sortino": 1.3803,
+      "exposure": 1.0,
+      "fills": 89,
+      "turnover": 285.8,
+      "ending_equity": 532922.85,
+      "years": 4.9946,
+      "benchmark_cagr": 0.142904,
+      "benchmark_max_drawdown": 0.822902,
+      "benchmark_sharpe": 0.0271,
+      "yearly": {
+        "2021": {
+          "strategy": 0.16,
+          "benchmark": 0.1602
+        },
+        "2022": {
+          "strategy": -0.2196,
+          "benchmark": -0.7939
+        },
+        "2023": {
+          "strategy": 1.1765,
+          "benchmark": 1.9205
+        },
+        "2024": {
+          "strategy": 0.7266,
+          "benchmark": 0.6243
+        },
+        "2025": {
+          "strategy": 0.2587,
+          "benchmark": 0.321
+        },
+        "2026": {
+          "strategy": 0.1987,
+          "benchmark": 0.2262
+        }
+      }
+    }
+  },
+  "pass_fail_vs_tqqq": {
+    "10y": {
+      "cagr_gt_tqqq": true,
+      "maxdd_lt_tqqq": true,
+      "pass": true,
+      "tqqq_cagr": 0.3928,
+      "tqqq_maxdd": 0.8168
+    },
+    "5y": {
+      "cagr_gt_tqqq": true,
+      "maxdd_lt_tqqq": true,
+      "pass": true,
+      "tqqq_cagr": 0.1347,
+      "tqqq_maxdd": 0.8168
+    }
+  },
+  "baseline_daily_reference": {
+    "10y": {
+      "cagr": 0.4531,
+      "max_drawdown": 0.5871
+    },
+    "5y": {
+      "cagr": 0.3461,
+      "max_drawdown": 0.3686
+    }
+  },
+  "ablations_1bp": {
+    "daily_trend_only": {
+      "10y_1bp": {
+        "cagr": 0.454712,
+        "total_return": 38.405902,
+        "max_drawdown": 0.59635,
+        "daily_max_drawdown": 0.587075,
+        "daily_dd_peak": "2020-02-19",
+        "daily_dd_trough": "2020-04-21",
+        "volatility": 0.502691,
+        "sharpe": 1.0022,
+        "sortino": 1.3966,
+        "exposure": 1.0,
+        "fills": 81,
+        "turnover": 803.6,
+        "ending_equity": 3940590.24,
+        "years": 9.8021,
+        "benchmark_cagr": 0.393777,
+        "benchmark_max_drawdown": 0.822902,
+        "benchmark_sharpe": 0.0424,
+        "yearly": {
+          "2017": {
+            "strategy": 1.1452,
+            "benchmark": 1.1454
+          },
+          "2018": {
+            "strategy": -0.0431,
+            "benchmark": -0.2076
+          },
+          "2019": {
+            "strategy": 0.4707,
+            "benchmark": 1.4823
+          },
+          "2020": {
+            "strategy": 0.7362,
+            "benchmark": 1.0414
+          },
+          "2021": {
+            "strategy": 0.8105,
+            "benchmark": 0.8105
+          },
+          "2022": {
+            "strategy": -0.2314,
+            "benchmark": -0.7939
+          },
+          "2023": {
+            "strategy": 1.1852,
+            "benchmark": 1.9205
+          },
+          "2024": {
+            "strategy": 0.4995,
+            "benchmark": 0.6243
+          },
+          "2025": {
+            "strategy": 0.3263,
+            "benchmark": 0.321
+          },
+          "2026": {
+            "strategy": 0.1368,
+            "benchmark": 0.2262
+          }
+        }
+      },
+      "5y_1bp": {
+        "cagr": 0.355869,
+        "total_return": 3.574791,
+        "max_drawdown": 0.421712,
+        "daily_max_drawdown": 0.368613,
+        "daily_dd_peak": "2024-07-10",
+        "daily_dd_trough": "2024-08-05",
+        "volatility": 0.46579,
+        "sharpe": 0.8916,
+        "sortino": 1.2527,
+        "exposure": 1.0,
+        "fills": 45,
+        "turnover": 84.9,
+        "ending_equity": 457479.08,
+        "years": 4.9946,
+        "benchmark_cagr": 0.142904,
+        "benchmark_max_drawdown": 0.822902,
+        "benchmark_sharpe": 0.0271,
+        "yearly": {
+          "2021": {
+            "strategy": 0.1605,
+            "benchmark": 0.1602
+          },
+          "2022": {
+            "strategy": -0.2314,
+            "benchmark": -0.7939
+          },
+          "2023": {
+            "strategy": 1.1852,
+            "benchmark": 1.9205
+          },
+          "2024": {
+            "strategy": 0.4995,
+            "benchmark": 0.6243
+          },
+          "2025": {
+            "strategy": 0.3263,
+            "benchmark": 0.321
+          },
+          "2026": {
+            "strategy": 0.1368,
+            "benchmark": 0.2262
+          }
+        }
+      }
+    },
+    "trend_plus_vol": {
+      "10y_1bp": {
+        "cagr": 0.519309,
+        "total_return": 59.327963,
+        "max_drawdown": 0.43707,
+        "daily_max_drawdown": 0.422264,
+        "daily_dd_peak": "2018-08-29",
+        "daily_dd_trough": "2019-06-03",
+        "volatility": 0.475687,
+        "sharpe": 1.1218,
+        "sortino": 1.5842,
+        "exposure": 1.0,
+        "fills": 89,
+        "turnover": 1399.4,
+        "ending_equity": 6032796.26,
+        "years": 9.8021,
+        "benchmark_cagr": 0.393777,
+        "benchmark_max_drawdown": 0.822902,
+        "benchmark_sharpe": 0.0424,
+        "yearly": {
+          "2017": {
+            "strategy": 1.1452,
+            "benchmark": 1.1454
+          },
+          "2018": {
+            "strategy": 0.0357,
+            "benchmark": -0.2076
+          },
+          "2019": {
+            "strategy": 0.4707,
+            "benchmark": 1.4823
+          },
+          "2020": {
+            "strategy": 1.41,
+            "benchmark": 1.0414
+          },
+          "2021": {
+            "strategy": 0.6572,
+            "benchmark": 0.8105
+          },
+          "2022": {
+            "strategy": -0.2177,
+            "benchmark": -0.7939
+          },
+          "2023": {
+            "strategy": 1.1852,
+            "benchmark": 1.9205
+          },
+          "2024": {
+            "strategy": 0.4995,
+            "benchmark": 0.6243
+          },
+          "2025": {
+            "strategy": 0.3263,
+            "benchmark": 0.321
+          },
+          "2026": {
+            "strategy": 0.2434,
+            "benchmark": 0.2262
+          }
+        }
+      },
+      "5y_1bp": {
+        "cagr": 0.385319,
+        "total_return": 4.093099,
+        "max_drawdown": 0.421712,
+        "daily_max_drawdown": 0.368613,
+        "daily_dd_peak": "2024-07-10",
+        "daily_dd_trough": "2024-08-05",
+        "volatility": 0.464492,
+        "sharpe": 0.9393,
+        "sortino": 1.3201,
+        "exposure": 1.0,
+        "fills": 45,
+        "turnover": 104.3,
+        "ending_equity": 509309.86,
+        "years": 4.9946,
+        "benchmark_cagr": 0.142904,
+        "benchmark_max_drawdown": 0.822902,
+        "benchmark_sharpe": 0.0271,
+        "yearly": {
+          "2021": {
+            "strategy": 0.1605,
+            "benchmark": 0.1602
+          },
+          "2022": {
+            "strategy": -0.2177,
+            "benchmark": -0.7939
+          },
+          "2023": {
+            "strategy": 1.1852,
+            "benchmark": 1.9205
+          },
+          "2024": {
+            "strategy": 0.4995,
+            "benchmark": 0.6243
+          },
+          "2025": {
+            "strategy": 0.3263,
+            "benchmark": 0.321
+          },
+          "2026": {
+            "strategy": 0.2434,
+            "benchmark": 0.2262
+          }
+        }
+      }
+    },
+    "trend_plus_crash": {
+      "10y_1bp": {
+        "cagr": 0.544602,
+        "total_return": 69.925739,
+        "max_drawdown": 0.444815,
+        "daily_max_drawdown": 0.430212,
+        "daily_dd_peak": "2018-08-29",
+        "daily_dd_trough": "2019-06-03",
+        "volatility": 0.470729,
+        "sharpe": 1.1634,
+        "sortino": 1.6543,
+        "exposure": 1.0,
+        "fills": 245,
+        "turnover": 4489.8,
+        "ending_equity": 7092573.89,
+        "years": 9.8021,
+        "benchmark_cagr": 0.393777,
+        "benchmark_max_drawdown": 0.822902,
+        "benchmark_sharpe": 0.0424,
+        "yearly": {
+          "2017": {
+            "strategy": 1.1508,
+            "benchmark": 1.1454
+          },
+          "2018": {
+            "strategy": 0.0794,
+            "benchmark": -0.2076
+          },
+          "2019": {
+            "strategy": 0.404,
+            "benchmark": 1.4823
+          },
+          "2020": {
+            "strategy": 2.0708,
+            "benchmark": 1.0414
+          },
+          "2021": {
+            "strategy": 0.574,
+            "benchmark": 0.8105
+          },
+          "2022": {
+            "strategy": -0.2314,
+            "benchmark": -0.7939
+          },
+          "2023": {
+            "strategy": 1.1852,
+            "benchmark": 1.9205
+          },
+          "2024": {
+            "strategy": 0.7461,
+            "benchmark": 0.6243
+          },
+          "2025": {
+            "strategy": 0.2668,
+            "benchmark": 0.321
+          },
+          "2026": {
+            "strategy": 0.1082,
+            "benchmark": 0.2262
+          }
+        }
+      },
+      "5y_1bp": {
+        "cagr": 0.378015,
+        "total_return": 3.960373,
+        "max_drawdown": 0.363039,
+        "daily_max_drawdown": 0.357379,
+        "daily_dd_peak": "2026-06-02",
+        "daily_dd_trough": "2026-07-29",
+        "volatility": 0.453895,
+        "sharpe": 0.9381,
+        "sortino": 1.3328,
+        "exposure": 1.0,
+        "fills": 89,
+        "turnover": 266.1,
+        "ending_equity": 496037.29,
+        "years": 4.9946,
+        "benchmark_cagr": 0.142904,
+        "benchmark_max_drawdown": 0.822902,
+        "benchmark_sharpe": 0.0271,
+        "yearly": {
+          "2021": {
+            "strategy": 0.1605,
+            "benchmark": 0.1602
+          },
+          "2022": {
+            "strategy": -0.2314,
+            "benchmark": -0.7939
+          },
+          "2023": {
+            "strategy": 1.1852,
+            "benchmark": 1.9205
+          },
+          "2024": {
+            "strategy": 0.7461,
+            "benchmark": 0.6243
+          },
+          "2025": {
+            "strategy": 0.2668,
+            "benchmark": 0.321
+          },
+          "2026": {
+            "strategy": 0.1082,
+            "benchmark": 0.2262
+          }
+        }
+      }
+    },
+    "no_rsi_veto": {
+      "10y_1bp": {
+        "cagr": 0.527838,
+        "total_return": 62.730743,
+        "max_drawdown": 0.398928,
+        "daily_max_drawdown": 0.383119,
+        "daily_dd_peak": "2018-08-29",
+        "daily_dd_trough": "2019-06-03",
+        "volatility": 0.457056,
+        "sharpe": 1.1603,
+        "sortino": 1.6498,
+        "exposure": 1.0,
+        "fills": 229,
+        "turnover": 4056.3,
+        "ending_equity": 6373074.3,
+        "years": 9.8021,
+        "benchmark_cagr": 0.393777,
+        "benchmark_max_drawdown": 0.822902,
+        "benchmark_sharpe": 0.0424,
+        "yearly": {
+          "2017": {
+            "strategy": 1.1602,
+            "benchmark": 1.1454
+          },
+          "2018": {
+            "strategy": 0.1179,
+            "benchmark": -0.2076
+          },
+          "2019": {
+            "strategy": 0.4022,
+            "benchmark": 1.4823
+          },
+          "2020": {
+            "strategy": 1.7071,
+            "benchmark": 1.0414
+          },
+          "2021": {
+            "strategy": 0.4441,
+            "benchmark": 0.8105
+          },
+          "2022": {
+            "strategy": -0.2177,
+            "benchmark": -0.7939
+          },
+          "2023": {
+            "strategy": 1.1852,
+            "benchmark": 1.9205
+          },
+          "2024": {
+            "strategy": 0.6973,
+            "benchmark": 0.6243
+          },
+          "2025": {
+            "strategy": 0.2551,
+            "benchmark": 0.321
+          },
+          "2026": {
+            "strategy": 0.2089,
+            "benchmark": 0.2262
+          }
+        }
+      },
+      "5y_1bp": {
+        "cagr": 0.396635,
+        "total_return": 4.304296,
+        "max_drawdown": 0.349319,
+        "daily_max_drawdown": 0.332428,
+        "daily_dd_peak": "2023-07-18",
+        "daily_dd_trough": "2023-10-26",
+        "volatility": 0.452088,
+        "sharpe": 0.97,
+        "sortino": 1.3778,
+        "exposure": 1.0,
+        "fills": 89,
+        "turnover": 283.1,
+        "ending_equity": 530429.58,
+        "years": 4.9946,
+        "benchmark_cagr": 0.142904,
+        "benchmark_max_drawdown": 0.822902,
+        "benchmark_sharpe": 0.0271,
+        "yearly": {
+          "2021": {
+            "strategy": 0.1605,
+            "benchmark": 0.1602
+          },
+          "2022": {
+            "strategy": -0.2177,
+            "benchmark": -0.7939
+          },
+          "2023": {
+            "strategy": 1.1852,
+            "benchmark": 1.9205
+          },
+          "2024": {
+            "strategy": 0.6973,
+            "benchmark": 0.6243
+          },
+          "2025": {
+            "strategy": 0.2551,
+            "benchmark": 0.321
+          },
+          "2026": {
+            "strategy": 0.2089,
+            "benchmark": 0.2262
+          }
+        }
+      }
+    },
+    "drop_and_rsi_only": {
+      "10y_1bp": {
+        "cagr": 0.547297,
+        "total_return": 71.148407,
+        "max_drawdown": 0.399101,
+        "daily_max_drawdown": 0.383296,
+        "daily_dd_peak": "2018-08-29",
+        "daily_dd_trough": "2019-06-03",
+        "volatility": 0.458122,
+        "sharpe": 1.1864,
+        "sortino": 1.6878,
+        "exposure": 1.0,
+        "fills": 225,
+        "turnover": 4507.8,
+        "ending_equity": 7214840.72,
+        "years": 9.8021,
+        "benchmark_cagr": 0.393777,
+        "benchmark_max_drawdown": 0.822902,
+        "benchmark_sharpe": 0.0424,
+        "yearly": {
+          "2017": {
+            "strategy": 1.1508,
+            "benchmark": 1.1454
+          },
+          "2018": {
+            "strategy": 0.1682,
+            "benchmark": -0.2076
+          },
+          "2019": {
+            "strategy": 0.404,
+            "benchmark": 1.4823
+          },
+          "2020": {
+            "strategy": 1.831,
+            "benchmark": 1.0414
+          },
+          "2021": {
+            "strategy": 0.4413,
+            "benchmark": 0.8105
+          },
+          "2022": {
+            "strategy": -0.2177,
+            "benchmark": -0.7939
+          },
+          "2023": {
+            "strategy": 1.1852,
+            "benchmark": 1.9205
+          },
+          "2024": {
+            "strategy": 0.7461,
+            "benchmark": 0.6243
+          },
+          "2025": {
+            "strategy": 0.2668,
+            "benchmark": 0.321
+          },
+          "2026": {
+            "strategy": 0.2122,
+            "benchmark": 0.2262
+          }
+        }
+      },
+      "5y_1bp": {
+        "cagr": 0.407946,
+        "total_return": 4.522366,
+        "max_drawdown": 0.349319,
+        "daily_max_drawdown": 0.332428,
+        "daily_dd_peak": "2023-07-18",
+        "daily_dd_trough": "2023-10-26",
+        "volatility": 0.452562,
+        "sharpe": 0.9873,
+        "sortino": 1.403,
+        "exposure": 1.0,
+        "fills": 89,
+        "turnover": 292.3,
+        "ending_equity": 552236.58,
+        "years": 4.9946,
+        "benchmark_cagr": 0.142904,
+        "benchmark_max_drawdown": 0.822902,
+        "benchmark_sharpe": 0.0271,
+        "yearly": {
+          "2021": {
+            "strategy": 0.1605,
+            "benchmark": 0.1602
+          },
+          "2022": {
+            "strategy": -0.2177,
+            "benchmark": -0.7939
+          },
+          "2023": {
+            "strategy": 1.1852,
+            "benchmark": 1.9205
+          },
+          "2024": {
+            "strategy": 0.7461,
+            "benchmark": 0.6243
+          },
+          "2025": {
+            "strategy": 0.2668,
+            "benchmark": 0.321
+          },
+          "2026": {
+            "strategy": 0.2122,
+            "benchmark": 0.2262
+          }
+        }
+      }
+    },
+    "high_asset_qqq": {
+      "10y_1bp": {
+        "cagr": 0.528871,
+        "total_return": 63.154562,
+        "max_drawdown": 0.414833,
+        "daily_max_drawdown": 0.399442,
+        "daily_dd_peak": "2018-08-29",
+        "daily_dd_trough": "2019-06-03",
+        "volatility": 0.461311,
+        "sharpe": 1.1554,
+        "sortino": 1.6402,
+        "exposure": 1.0,
+        "fills": 243,
+        "turnover": 4214.1,
+        "ending_equity": 6415456.21,
+        "years": 9.8021,
+        "benchmark_cagr": 0.393777,
+        "benchmark_max_drawdown": 0.822902,
+        "benchmark_sharpe": 0.0424,
+        "yearly": {
+          "2017": {
+            "strategy": 1.1508,
+            "benchmark": 1.1454
+          },
+          "2018": {
+            "strategy": 0.1376,
+            "benchmark": -0.2076
+          },
+          "2019": {
+            "strategy": 0.404,
+            "benchmark": 1.4823
+          },
+          "2020": {
+            "strategy": 1.6002,
+            "benchmark": 1.0414
+          },
+          "2021": {
+            "strategy": 0.4844,
+            "benchmark": 0.8105
+          },
+          "2022": {
+            "strategy": -0.2225,
+            "benchmark": -0.7939
+          },
+          "2023": {
+            "strategy": 1.1852,
+            "benchmark": 1.9205
+          },
+          "2024": {
+            "strategy": 0.7461,
+            "benchmark": 0.6243
+          },
+          "2025": {
+            "strategy": 0.2668,
+            "benchmark": 0.321
+          },
+          "2026": {
+            "strategy": 0.1774,
+            "benchmark": 0.2262
+          }
+        }
+      },
+      "5y_1bp": {
+        "cagr": 0.398033,
+        "total_return": 4.33088,
+        "max_drawdown": 0.349319,
+        "daily_max_drawdown": 0.332428,
+        "daily_dd_peak": "2023-07-18",
+        "daily_dd_trough": "2023-10-26",
+        "volatility": 0.452698,
+        "sharpe": 0.9715,
+        "sortino": 1.3805,
+        "exposure": 1.0,
+        "fills": 93,
+        "turnover": 293.3,
+        "ending_equity": 533088.05,
+        "years": 4.9946,
+        "benchmark_cagr": 0.142904,
+        "benchmark_max_drawdown": 0.822902,
+        "benchmark_sharpe": 0.0271,
+        "yearly": {
+          "2021": {
+            "strategy": 0.1605,
+            "benchmark": 0.1602
+          },
+          "2022": {
+            "strategy": -0.2225,
+            "benchmark": -0.7939
+          },
+          "2023": {
+            "strategy": 1.1852,
+            "benchmark": 1.9205
+          },
+          "2024": {
+            "strategy": 0.7461,
+            "benchmark": 0.6243
+          },
+          "2025": {
+            "strategy": 0.2668,
+            "benchmark": 0.321
+          },
+          "2026": {
+            "strategy": 0.1774,
+            "benchmark": 0.2262
+          }
+        }
+      }
+    }
+  },
+  "stability": {
+    "vol_max_x_crash_drop": [
+      {
+        "vol_max": 0.3,
+        "crash_drop": 0.025,
+        "10y": {
+          "cagr": 0.485962,
+          "max_drawdown": 0.482536
+        },
+        "5y": {
+          "cagr": 0.362596,
+          "max_drawdown": 0.353939
+        }
+      },
+      {
+        "vol_max": 0.3,
+        "crash_drop": 0.03,
+        "10y": {
+          "cagr": 0.507808,
+          "max_drawdown": 0.399101
+        },
+        "5y": {
+          "cagr": 0.354835,
+          "max_drawdown": 0.359779
+        }
+      },
+      {
+        "vol_max": 0.3,
+        "crash_drop": 0.035,
+        "10y": {
+          "cagr": 0.485585,
+          "max_drawdown": 0.463919
+        },
+        "5y": {
+          "cagr": 0.294885,
+          "max_drawdown": 0.463919
+        }
+      },
+      {
+        "vol_max": 0.3,
+        "crash_drop": 0.04,
+        "10y": {
+          "cagr": 0.483779,
+          "max_drawdown": 0.464056
+        },
+        "5y": {
+          "cagr": 0.312382,
+          "max_drawdown": 0.464056
+        }
+      },
+      {
+        "vol_max": 0.3333,
+        "crash_drop": 0.025,
+        "10y": {
+          "cagr": 0.520591,
+          "max_drawdown": 0.464014
+        },
+        "5y": {
+          "cagr": 0.416011,
+          "max_drawdown": 0.353939
+        }
+      },
+      {
+        "vol_max": 0.3333,
+        "crash_drop": 0.03,
+        "10y": {
+          "cagr": 0.547297,
+          "max_drawdown": 0.399101
+        },
+        "5y": {
+          "cagr": 0.407946,
+          "max_drawdown": 0.349319
+        }
+      },
+      {
+        "vol_max": 0.3333,
+        "crash_drop": 0.035,
+        "10y": {
+          "cagr": 0.523886,
+          "max_drawdown": 0.428096
+        },
+        "5y": {
+          "cagr": 0.345754,
+          "max_drawdown": 0.421563
+        }
+      },
+      {
+        "vol_max": 0.3333,
+        "crash_drop": 0.04,
+        "10y": {
+          "cagr": 0.522033,
+          "max_drawdown": 0.424664
+        },
+        "5y": {
+          "cagr": 0.363939,
+          "max_drawdown": 0.421712
+        }
+      },
+      {
+        "vol_max": 0.36,
+        "crash_drop": 0.025,
+        "10y": {
+          "cagr": 0.492573,
+          "max_drawdown": 0.504789
+        },
+        "5y": {
+          "cagr": 0.385908,
+          "max_drawdown": 0.365226
+        }
+      },
+      {
+        "vol_max": 0.36,
+        "crash_drop": 0.03,
+        "10y": {
+          "cagr": 0.519971,
+          "max_drawdown": 0.444815
+        },
+        "5y": {
+          "cagr": 0.378015,
+          "max_drawdown": 0.363039
+        }
+      },
+      {
+        "vol_max": 0.36,
+        "crash_drop": 0.035,
+        "10y": {
+          "cagr": 0.490639,
+          "max_drawdown": 0.471604
+        },
+        "5y": {
+          "cagr": 0.317144,
+          "max_drawdown": 0.421563
+        }
+      },
+      {
+        "vol_max": 0.36,
+        "crash_drop": 0.04,
+        "10y": {
+          "cagr": 0.498496,
+          "max_drawdown": 0.468433
+        },
+        "5y": {
+          "cagr": 0.334942,
+          "max_drawdown": 0.421712
+        }
+      },
+      {
+        "vol_max": 0.4,
+        "crash_drop": 0.025,
+        "10y": {
+          "cagr": 0.509399,
+          "max_drawdown": 0.504789
+        },
+        "5y": {
+          "cagr": 0.385908,
+          "max_drawdown": 0.365226
+        }
+      },
+      {
+        "vol_max": 0.4,
+        "crash_drop": 0.03,
+        "10y": {
+          "cagr": 0.531404,
+          "max_drawdown": 0.444815
+        },
+        "5y": {
+          "cagr": 0.378015,
+          "max_drawdown": 0.363039
+        }
+      },
+      {
+        "vol_max": 0.4,
+        "crash_drop": 0.035,
+        "10y": {
+          "cagr": 0.495459,
+          "max_drawdown": 0.471604
+        },
+        "5y": {
+          "cagr": 0.317144,
+          "max_drawdown": 0.421563
+        }
+      },
+      {
+        "vol_max": 0.4,
+        "crash_drop": 0.04,
+        "10y": {
+          "cagr": 0.487904,
+          "max_drawdown": 0.468433
+        },
+        "5y": {
+          "cagr": 0.334942,
+          "max_drawdown": 0.421712
+        }
+      }
+    ],
+    "sma_len": [
+      {
+        "sma_len": 150,
+        "10y": {
+          "cagr": 0.549983,
+          "max_drawdown": 0.38313
+        },
+        "5y": {
+          "cagr": 0.35711,
+          "max_drawdown": 0.38313
+        }
+      },
+      {
+        "sma_len": 165,
+        "10y": {
+          "cagr": 0.547297,
+          "max_drawdown": 0.399101
+        },
+        "5y": {
+          "cagr": 0.407946,
+          "max_drawdown": 0.349319
+        }
+      },
+      {
+        "sma_len": 180,
+        "10y": {
+          "cagr": 0.541367,
+          "max_drawdown": 0.415393
+        },
+        "5y": {
+          "cagr": 0.405087,
+          "max_drawdown": 0.349319
+        }
+      }
+    ],
+    "vol_len": [
+      {
+        "vol_len": 15,
+        "10y": {
+          "cagr": 0.552498,
+          "max_drawdown": 0.399101
+        },
+        "5y": {
+          "cagr": 0.390918,
+          "max_drawdown": 0.349319
+        }
+      },
+      {
+        "vol_len": 20,
+        "10y": {
+          "cagr": 0.547297,
+          "max_drawdown": 0.399101
+        },
+        "5y": {
+          "cagr": 0.407946,
+          "max_drawdown": 0.349319
+        }
+      },
+      {
+        "vol_len": 30,
+        "10y": {
+          "cagr": 0.517945,
+          "max_drawdown": 0.444815
+        },
+        "5y": {
+          "cagr": 0.385041,
+          "max_drawdown": 0.363039
+        }
+      }
+    ],
+    "rsi_floor": [
+      {
+        "rsi_floor": 20.0,
+        "10y": {
+          "cagr": 0.537799,
+          "max_drawdown": 0.398928
+        },
+        "5y": {
+          "cagr": 0.407901,
+          "max_drawdown": 0.349319
+        }
+      },
+      {
+        "rsi_floor": 30.0,
+        "10y": {
+          "cagr": 0.547297,
+          "max_drawdown": 0.399101
+        },
+        "5y": {
+          "cagr": 0.407946,
+          "max_drawdown": 0.349319
+        }
+      },
+      {
+        "rsi_floor": 40.0,
+        "10y": {
+          "cagr": 0.538329,
+          "max_drawdown": 0.404632
+        },
+        "5y": {
+          "cagr": 0.412428,
+          "max_drawdown": 0.349319
+        }
+      }
+    ]
+  }
+}

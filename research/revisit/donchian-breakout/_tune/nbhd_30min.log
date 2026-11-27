@@ -1,0 +1,11 @@
+centre                       30min  hold 0bp  13.36% | 1bp  10.86% DD  20.8% Sh  0.85 | 5bp   1.43% 10bp  -9.26% | fills   2165 lev 0.63 on 0.43 mix 11.95%/0.88 | corr 0.43 |   4.1/ 38.2/  0.8
+fast_entry=15                30min  hold 0bp  14.04% | 1bp  11.38% DD  17.8% Sh  0.88 | 5bp   1.35% 10bp  -9.93% | fills   2290 lev 0.65 on 0.44 mix 12.46%/0.89 | corr 0.45 |   4.0/ 38.8/  2.5
+fast_entry=25                30min  hold 0bp  13.47% | 1bp  11.12% DD  17.1% Sh  0.88 | 5bp   2.19% 10bp  -7.98% | fills   2052 lev 0.62 on 0.42 mix 11.65%/0.87 | corr 0.42 |   3.9/ 36.0/  3.7
+med_entry=45                 30min  hold 0bp  13.27% | 1bp  10.69% DD  26.4% Sh  0.83 | 5bp   0.93% 10bp -10.08% | fills   2240 lev 0.65 on 0.45 mix 12.39%/0.88 | corr 0.43 |   5.1/ 39.3/ -2.6
+med_entry=65                 30min  hold 0bp  11.78% | 1bp   9.36% DD  20.0% Sh  0.76 | 5bp   0.20% 10bp -10.19% | fills   2125 lev 0.62 on 0.42 mix 11.79%/0.88 | corr 0.42 |   3.6/ 32.6/  0.4
+slow_entry=300               30min  hold 0bp  14.20% | 1bp  11.62% DD  22.9% Sh  0.89 | 5bp   1.87% 10bp  -9.14% | fills   2254 lev 0.65 on 0.44 mix 12.40%/0.88 | corr 0.44 |   5.0/ 41.5/ -0.6
+slow_entry=480               30min  hold 0bp  12.96% | 1bp  10.48% DD  20.6% Sh  0.83 | 5bp   1.09% 10bp  -9.53% | fills   2149 lev 0.63 on 0.43 mix 12.05%/0.89 | corr 0.43 |   4.0/ 36.8/  0.5
+atr_k=2.0                    30min  hold 0bp  12.25% | 1bp   9.60% DD  18.7% Sh  0.79 | 5bp  -0.40% 10bp -11.63% | fills   2324 lev 0.61 on 0.42 mix 11.57%/0.88 | corr 0.43 |   3.7/ 34.1/ -0.0
+atr_k=3.0                    30min  hold 0bp  13.65% | 1bp  11.27% DD  20.3% Sh  0.87 | 5bp   2.25% 10bp  -8.01% | fills   2060 lev 0.65 on 0.43 mix 12.45%/0.89 | corr 0.44 |   4.3/ 38.2/  1.9
+target_vol=0.25              30min  hold 0bp  12.52% | 1bp  10.07% DD  19.7% Sh  0.86 | 5bp   0.78% 10bp  -9.75% | fills   2194 lev 0.57 on 0.43 mix 11.02%/0.88 | corr 0.43 |   4.2/ 33.6/  1.0
+target_vol=0.35              30min  hold 0bp  14.37% | 1bp  11.83% DD  21.8% Sh  0.86 | 5bp   2.23% 10bp  -8.62% | fills   2124 lev 0.68 on 0.43 mix 12.64%/0.86 | corr 0.43 |   4.2/ 43.0/  0.7

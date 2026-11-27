@@ -1,0 +1,96 @@
+{
+  "agent": "volume-orderflow",
+  "original": "research/agents2/volume-orderflow",
+  "status": "pending_audit",
+  "idea": "A heavy-volume intraday decline that closes in the upper half of its range marks absorbed supply, so TQQQ rises over the next five sessions.",
+  "hypothesis": "Participation-conditioned supply climaxes forecast positive five-session TQQQ returns after costs.",
+  "universe": [
+    "QQQ (signal)",
+    "TQQQ (3x expression)",
+    "BIL (cash)"
+  ],
+  "frozen_commit": null,
+  "windows": {
+    "dev": {
+      "1bp": {
+        "cagr": 0.008746321428849901,
+        "max_drawdown": 0.16663716265949313,
+        "sharpe": 0.15438377074945722,
+        "sortino": 0.22765482404433002,
+        "volatility": 0.07459048905933724,
+        "exposure": 0.9999987210313603,
+        "turnover": 13.593321442896428,
+        "fills": 13
+      },
+      "5bp": {
+        "cagr": 0.008089577008412174,
+        "max_drawdown": 0.16796947720104982,
+        "sharpe": 0.14562364101178515,
+        "sortino": 0.21431610928004,
+        "volatility": 0.07459358377439836,
+        "exposure": 0.9999987210313603,
+        "turnover": 13.558680265225115,
+        "fills": 13
+      },
+      "10bp": {
+        "cagr": 0.007269275717056489,
+        "max_drawdown": 0.17103442458251328,
+        "sharpe": 0.13466728345584597,
+        "sortino": 0.1977064152981138,
+        "volatility": 0.07460689964714959,
+        "exposure": 0.9999987210313603,
+        "turnover": 13.515545192895168,
+        "fills": 13
+      }
+    },
+    "holdout": null,
+    "10y": null,
+    "5y": null
+  },
+  "marks": "1m",
+  "info": {
+    "params": {
+      "rvol_hi": 1.5,
+      "rvol_n": 20.0,
+      "intraday_lo": -0.008,
+      "clv_min": 0.0,
+      "hold": 5.0,
+      "size": 1.0
+    },
+    "sessions": 2012,
+    "events": 3,
+    "event_dates": [
+      "2020-09-04",
+      "2021-05-04",
+      "2021-07-27"
+    ],
+    "sessions_long": 15,
+    "exposure": 0.007455268389662028,
+    "first_session": "2016-01-04",
+    "last_session": "2023-12-29"
+  },
+  "corr_vs_165d_baseline": 0.1411973025032134,
+  "max_corr_vs_other_rebuilds": null,
+  "benchmarks": {
+    "tqqq": {
+      "cagr": 0.36152361155523893,
+      "max_drawdown": 0.8229021592363336,
+      "sharpe": 0.8011510649133299
+    },
+    "qqq": {
+      "cagr": 0.18910021530222187,
+      "max_drawdown": 0.3730047872557426,
+      "sharpe": 0.89984613657449
+    },
+    "bil": {
+      "cagr": 0.013937758410987211,
+      "max_drawdown": 0.0024388417668438356,
+      "sharpe": 0.9240502609003339
+    },
+    "baseline_165d": {
+      "cagr": 0.44764720668821134,
+      "max_drawdown": 0.5876387357729533,
+      "sharpe": 1.0250944101451582
+    }
+  }
+}

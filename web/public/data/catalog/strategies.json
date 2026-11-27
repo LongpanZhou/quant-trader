@@ -1,0 +1,845 @@
+{
+ "generated": "2026-11-27",
+ "strategies": [
+  {
+   "id": "preset:nasdaq-leveraged-trend",
+   "slug": "nasdaq-leveraged-trend",
+   "kind": "preset",
+   "name": "Nasdaq Leveraged Trend",
+   "group": "Preset",
+   "status": "Runnable",
+   "tagline": "Trend-followed Nasdaq leverage with a volatility budget.",
+   "summary": "Own a volatility-sized mix of QQQ and TQQQ while the Nasdaq-100 is above its 165-day average. When the trend breaks, move to T-bills.",
+   "window": "10y/5y",
+   "metrics": {
+    "cagr10": 0.37372945372253374,
+    "dd10": 0.3832558812456416,
+    "cagr5": 0.2640440160474642,
+    "dd5": 0.29348151242566567
+   },
+   "href": "/strategies/nasdaq-leveraged-trend",
+   "runnable": true,
+   "accent": "#9ae6a5",
+   "tags": [
+    "QQQ",
+    "TQQQ",
+    "BIL",
+    "daily"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
+   "id": "preset:nasdaq-3x-simple",
+   "slug": "nasdaq-3x-simple",
+   "kind": "preset",
+   "name": "Nasdaq 3x Simple Trend",
+   "group": "Preset",
+   "status": "Runnable",
+   "tagline": "The same Nasdaq rule without the volatility target.",
+   "summary": "Hold TQQQ at full size while QQQ is above its 200-day average; hold BIL below it. An ablation that shows what the volatility target adds.",
+   "window": "10y/5y",
+   "metrics": {
+    "cagr10": 0.3394713759739343,
+    "dd10": 0.5766461489424948,
+    "cagr5": 0.15830582201546317,
+    "dd5": 0.522860035151467
+   },
+   "href": "/strategies/nasdaq-3x-simple",
+   "runnable": true,
+   "accent": "#fcd34d",
+   "tags": [
+    "QQQ",
+    "TQQQ",
+    "BIL",
+    "daily"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
+   "id": "preset:sp500-2x-trend",
+   "slug": "sp500-2x-trend",
+   "kind": "preset",
+   "name": "S&P 500 2x Trend",
+   "group": "Preset",
+   "status": "Runnable",
+   "tagline": "The original leverage rotation, applied to the S&P 500.",
+   "summary": "Hold the 2x S&P 500 fund (SSO) while SPY is above its 200-day average; hold short-term Treasuries (SHY) below it. No volatility target.",
+   "window": "10y/5y",
+   "metrics": {
+    "cagr10": 0.1591872552642295,
+    "dd10": 0.36794780090383217,
+    "cagr5": 0.0860830347627457,
+    "dd5": 0.3678996114230877
+   },
+   "href": "/strategies/sp500-2x-trend",
+   "runnable": true,
+   "accent": "#93c5fd",
+   "tags": [
+    "SPY",
+    "SSO",
+    "SHY",
+    "daily"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
+   "id": "research:ratio-froth",
+   "slug": "ratio-froth",
+   "kind": "research",
+   "name": "Ratio froth",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "The original 165-day shared-base leader, included as a strategy for the same-window comparison.",
+   "summary": "No separate treatment; same 2016-2026 window and metrics.",
+   "window": "2016-2026",
+   "cagr": 0.622138391674053,
+   "dd": 0.3665052096417841,
+   "sharpe": 1.4293032127870318,
+   "metrics": {
+    "cagr10": 0.622138391674053,
+    "dd10": 0.3665052096417841,
+    "cagr5": 0.622138391674053,
+    "dd5": 0.3665052096417841
+   },
+   "href": "/research/ratio-froth",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
+   "id": "research:vol-scaled-crash-stop",
+   "slug": "vol-scaled-crash-stop",
+   "kind": "research",
+   "name": "Vol-scaled crash system",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "A stop distance should scale with volatility (0.7 daily ATR) but never widen past the 4% level that protects against gap nights.",
+   "summary": "Always-long TQQQ, with an inverse-vol position size and a one-sided ATR barrier that exits to BIL for the rest of the trigger session and the night, should beat the old 165-day base's drawdown with a daily-return correlation below 0.60.",
+   "window": "2016-2026",
+   "cagr": 0.513228000797648,
+   "dd": 0.37878038411882764,
+   "sharpe": 1.2649272669012215,
+   "metrics": {
+    "cagr10": 0.513228000797648,
+    "dd10": 0.37878038411882764,
+    "cagr5": 0.513228000797648,
+    "dd5": 0.37878038411882764
+   },
+   "href": "/research/vol-scaled-crash-stop",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
+   "id": "research:intraday-seasonality",
+   "slug": "intraday-seasonality",
+   "kind": "research",
+   "name": "Close-flow exhaustion",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "QQQ down more than 1% by the close forces leveraged-ETF selling into the close; buy the closing print and own the one-session reversal.",
+   "summary": "TQQQ bought at the 15:59 print after an orderly intraday QQQ decline outperforms cash over the next session.",
+   "window": "2016-2026",
+   "cagr": 0.26413419137875205,
+   "dd": 0.39236922880122205,
+   "sharpe": 0.9569086320487205,
+   "metrics": {
+    "cagr10": 0.26413419137875205,
+    "dd10": 0.39236922880122205,
+    "cagr5": 0.26413419137875205,
+    "dd5": 0.39236922880122205
+   },
+   "href": "/research/intraday-seasonality",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
+   "id": "research:event-risk-overlay",
+   "slug": "event-risk-overlay",
+   "kind": "research",
+   "name": "OpEx cycle",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "The monthly option-expiry session is the one systematically weak session of the expiry cycle; own the cycle and step out for the expiry session.",
+   "summary": "Dealer roll and gamma unwind create a recurring negative intraday drift on the expiry session, so a calendar-only strategy that holds TQQQ around the cycle but never through the expiry session earns a flow premium that is uncorrelated with trend following.",
+   "window": "2016-2026",
+   "cagr": 0.22204158785002037,
+   "dd": 0.36972926463260625,
+   "sharpe": 0.962359908485912,
+   "metrics": {
+    "cagr10": 0.22204158785002037,
+    "dd10": 0.36972926463260625,
+    "cagr5": 0.22204158785002037,
+    "dd5": 0.36972926463260625
+   },
+   "href": "/research/event-risk-overlay",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
+   "id": "research:ratio-pairs",
+   "slug": "ratio-pairs",
+   "kind": "research",
+   "name": "Ratio-cycle standalone",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "The TQQQ/QQQ ratio is a leverage-cycle meter: froth precedes amplified shocks, a deep discount with a turn precedes convex rebounds, and the average state does not pay for 3x drag.",
+   "summary": "Hold QQQ by default, cash in ratio froth or variance expansion, and a bounded 40% TQQQ sleeve only after a deep ratio discount turns up.",
+   "window": "2016-2026",
+   "cagr": 0.2042383750727359,
+   "dd": 0.33942548338752876,
+   "sharpe": 1.1340444026468461,
+   "metrics": {
+    "cagr10": 0.2042383750727359,
+    "dd10": 0.33942548338752876,
+    "cagr5": 0.2042383750727359,
+    "dd5": 0.33942548338752876
+   },
+   "href": "/research/ratio-pairs",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
+   "id": "research:time-of-day",
+   "slug": "time-of-day",
+   "kind": "research",
+   "name": "Closing-pressure overnight carry",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "The overnight+first-30m block pays because it settles the previous session's closing pressure, so it should be held selectively after a sold close rather than every night.",
+   "summary": "Block return is decreasing in the last-30-minute QQQ return; conditioning plus a self-referential vol gate beats holding every night.",
+   "window": "2016-2026",
+   "cagr": 0.1720686466450867,
+   "dd": 0.31778000954771257,
+   "sharpe": 0.8901603484581297,
+   "metrics": {
+    "cagr10": 0.1720686466450867,
+    "dd10": 0.31778000954771257,
+    "cagr5": 0.1720686466450867,
+    "dd5": 0.31778000954771257
+   },
+   "href": "/research/time-of-day",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
+   "id": "research:ml-classifier",
+   "slug": "ml-classifier",
+   "kind": "research",
+   "name": "Unsupervised regime allocator",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "Unsupervised regime clustering allocates TQQQ/QQQ/BIL by each cluster's past forward returns.",
+   "summary": "A causal k-means fit on short-horizon market-state features identifies persistent regimes; the historically strongest regime deserves TQQQ, the second QQQ, the rest BIL.",
+   "window": "2016-2026",
+   "cagr": 0.16146368725304394,
+   "dd": 0.3660388035467561,
+   "sharpe": 0.6679942633274778,
+   "metrics": {
+    "cagr10": 0.16146368725304394,
+    "dd10": 0.3660388035467561,
+    "cagr5": 0.16146368725304394,
+    "dd5": 0.3660388035467561
+   },
+   "href": "/research/ml-classifier",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
+   "id": "research:ml-crash-overlay-winner",
+   "slug": "ml-crash-overlay-winner",
+   "kind": "research",
+   "name": "Leverage-decay timing",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "TQQQ's 3x daily reset makes leverage favorable only when the path is smooth; a walk-forward ML classifier of 5-session TQQQ-vs-3xQQQ decay rotates between TQQQ, QQQ and BIL.",
+   "summary": "A causal classifier of the worst-quartile 5-session decay can time when to use TQQQ instead of QQQ, and when to hold BIL, with a lower drawdown than the old 165-day TQQQ base and correlation < 0.60.",
+   "window": "2016-2026",
+   "cagr": 0.15069195280188397,
+   "dd": 0.23327381019605842,
+   "sharpe": 0.7621205520867631,
+   "metrics": {
+    "cagr10": 0.15069195280188397,
+    "dd10": 0.23327381019605842,
+    "cagr5": 0.15069195280188397,
+    "dd5": 0.23327381019605842
+   },
+   "href": "/research/ml-crash-overlay-winner",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
+   "id": "research:intraday-momentum",
+   "slug": "intraday-momentum",
+   "kind": "research",
+   "name": "Time-of-day leverage ladder",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "A weekly three-state leverage ladder on the Nasdaq-100: 3x TQQQ when the overnight-minus-intraday spread and the first-hour return are both above their 26-week medians, 1x QQQ when only one is, and BIL otherwise.",
+   "summary": "Weeks with an unusually strong overnight-vs-intraday spread and first-hour momentum have a stronger time-of-day drift; a 3x/1x/0x ladder should beat static QQQ/TQQQ on a risk-adjusted basis with low correlation to the 165-day price-trend base.",
+   "window": "2016-2026",
+   "cagr": 0.14654800584623517,
+   "dd": 0.6355113529285439,
+   "sharpe": 0.6119122198650161,
+   "metrics": {
+    "cagr10": 0.14654800584623517,
+    "dd10": 0.6355113529285439,
+    "cagr5": 0.14654800584623517,
+    "dd5": 0.6355113529285439
+   },
+   "href": "/research/intraday-momentum",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
+   "id": "research:intraday-mean-reversion",
+   "slug": "intraday-mean-reversion",
+   "kind": "research",
+   "name": "Post-capitulation reversal",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "After a >=3% intraday QQQ capitulation, buy TQQQ at the next open and sell before that session's close; flat (BIL) and never overnight otherwise.",
+   "summary": "A capitulation session transfers stock from forced sellers to liquidity providers; the compensation is realised in the next session's open-to-close, not in the trigger session or its overnight gap.",
+   "window": "2016-2026",
+   "cagr": 0.12405987325644818,
+   "dd": 0.21481480260812214,
+   "sharpe": 0.7073053215818224,
+   "metrics": {
+    "cagr10": 0.12405987325644818,
+    "dd10": 0.21481480260812214,
+    "cagr5": 0.12405987325644818,
+    "dd5": 0.21481480260812214
+   },
+   "href": "/research/intraday-mean-reversion",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
+   "id": "research:overnight-crash-filter",
+   "slug": "overnight-crash-filter",
+   "kind": "research",
+   "name": "Night continuation / day reversal",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "Night continues an up day; the day reverses a down night; size by a 3-sigma gap budget.",
+   "summary": "Block-conditional positions capture the overnight/intraday premium without a moving-average regime.",
+   "window": "2016-2026",
+   "cagr": 0.11339372110200974,
+   "dd": 0.2697769077466272,
+   "sharpe": 0.8086034236537867,
+   "metrics": {
+    "cagr10": 0.11339372110200974,
+    "dd10": 0.2697769077466272,
+    "cagr5": 0.11339372110200974,
+    "dd5": 0.2697769077466272
+   },
+   "href": "/research/overnight-crash-filter",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
+   "id": "research:letf-rebalance-flow",
+   "slug": "letf-rebalance-flow",
+   "kind": "research",
+   "name": "Relative Nasdaq flow dip",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "Nasdaq underperformance vs SPY at the close is temporary LETF/flow pressure; buy TQQQ for a three-session reversal.",
+   "summary": "z(QQQ-SPY daily relative return) < -1.25 predicts positive next-three-session TQQQ returns with <0.60 correlation to the old 165-day baseline.",
+   "window": "2016-2026",
+   "cagr": 0.0780472822338596,
+   "dd": 0.42979669886652716,
+   "sharpe": 0.3950846487084748,
+   "metrics": {
+    "cagr10": 0.0780472822338596,
+    "dd10": 0.42979669886652716,
+    "cagr5": 0.0780472822338596,
+    "dd5": 0.42979669886652716
+   },
+   "href": "/research/letf-rebalance-flow",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
+   "id": "research:risk-parity-hrp",
+   "slug": "risk-parity-hrp",
+   "kind": "research",
+   "name": "Volatility-state risk parity",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "Equal-risk QQQ/TQQQ composition with a risk budget that rises after transient volatility spikes and is damped in persistent high-vol regimes.",
+   "summary": "The conditional Sharpe ratio of the equity factor rises after a transient vol spike and not in a persistent high-vol regime.",
+   "window": "2016-2026",
+   "cagr": 0.06493151446145395,
+   "dd": 0.1789000564137989,
+   "sharpe": 0.6922421795500426,
+   "metrics": {
+    "cagr10": 0.06493151446145395,
+    "dd10": 0.1789000564137989,
+    "cagr5": 0.06493151446145395,
+    "dd5": 0.1789000564137989
+   },
+   "href": "/research/risk-parity-hrp",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
+   "id": "research:dual-speed-regime",
+   "slug": "dual-speed-regime",
+   "kind": "research",
+   "name": "Intraday 60-minute trend",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "QQQ's 60-minute EMA cross measures intraday trend persistence; hold TQQQ only while that trend is up and flat overnight.",
+   "summary": "An intraday-only, trend-tiered TQQQ position has development correlation below 0.60 with the 165-day overnight base and a positive Sharpe after 5 bp costs.",
+   "window": "2016-2026",
+   "cagr": 0.05153512944557814,
+   "dd": 0.36927344747894875,
+   "sharpe": 0.3476221609356034,
+   "metrics": {
+    "cagr10": 0.05153512944557814,
+    "dd10": 0.36927344747894875,
+    "cagr5": 0.05153512944557814,
+    "dd5": 0.36927344747894875
+   },
+   "href": "/research/dual-speed-regime",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
+   "id": "research:gap-capitulation-reversal",
+   "slug": "gap-capitulation-reversal",
+   "kind": "research",
+   "name": "Quiet capitulation",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "Buy a quiet, short-term-oversold capitulation in QQQ, not a generic gap-down in a 165-day bull regime.",
+   "summary": "A large QQQ decline on below-average volume while the market is already 20-day oversold reverses over the next 3 sessions; high-volume declines do not.",
+   "window": "2016-2026",
+   "cagr": 0.046430076244588614,
+   "dd": 0.10628488667021574,
+   "sharpe": 0.8157515281102473,
+   "metrics": {
+    "cagr10": 0.046430076244588614,
+    "dd10": 0.10628488667021574,
+    "cagr5": 0.046430076244588614,
+    "dd5": 0.10628488667021574
+   },
+   "href": "/research/gap-capitulation-reversal",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
+   "id": "research:winner-ensemble-blend",
+   "slug": "winner-ensemble-blend",
+   "kind": "research",
+   "name": "Two-stream risk parity",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "Inverse-volatility allocation across two independent return streams: calm QQQ carry (1x) and panic-reversal TQQQ (3x).",
+   "summary": "The risk-parity blend earns a positive risk-adjusted return with a lower drawdown than either stream and <0.60 daily correlation with the old 165-day TQQQ baseline.",
+   "window": "2016-2026",
+   "cagr": 0.030391223484073526,
+   "dd": 0.3053226056365562,
+   "sharpe": 0.33267255118809014,
+   "metrics": {
+    "cagr10": 0.030391223484073526,
+    "dd10": 0.3053226056365562,
+    "cagr5": 0.030391223484073526,
+    "dd5": 0.3053226056365562
+   },
+   "href": "/research/winner-ensemble-blend",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
+   "id": "research:volume-orderflow",
+   "slug": "volume-orderflow",
+   "kind": "research",
+   "name": "Participation exhaustion",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "A heavy-volume intraday decline that closes in the upper half of its range marks absorbed supply, so TQQQ rises over the next five sessions.",
+   "summary": "Participation-conditioned supply climaxes forecast positive five-session TQQQ returns after costs.",
+   "window": "2016-2026",
+   "cagr": 0.024937448345958124,
+   "dd": 0.1310899083182998,
+   "sharpe": 0.3586811661980105,
+   "metrics": {
+    "cagr10": 0.024937448345958124,
+    "dd10": 0.1310899083182998,
+    "cagr5": 0.024937448345958124,
+    "dd5": 0.1310899083182998
+   },
+   "href": "/research/volume-orderflow",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
+   "id": "research:dynamic-leverage-throttle",
+   "slug": "dynamic-leverage-throttle",
+   "kind": "research",
+   "name": "Volatility-shock recovery",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "Volatility-shock recovery: buy TQQQ when a realised-vol shock is decaying inside a market drawdown, sized inversely to vol.",
+   "summary": "Post-shock volatility decay marks the end of forced deleveraging; inverse-vol TQQQ captures the recovery with low correlation to the 165-day trend base.",
+   "window": "2016-2026",
+   "cagr": 0.02376029443635841,
+   "dd": 0.15296708932399972,
+   "sharpe": 0.5380182361377437,
+   "metrics": {
+    "cagr10": 0.02376029443635841,
+    "dd10": 0.15296708932399972,
+    "cagr5": 0.02376029443635841,
+    "dd5": 0.15296708932399972
+   },
+   "href": "/research/dynamic-leverage-throttle",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
+   "id": "research:gap-fill-fade",
+   "slug": "gap-fill-fade",
+   "kind": "research",
+   "name": "Failed gap-up fade",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "Short QQQ on confirmed failed small gap-ups in a weak, stressed tape.",
+   "summary": "The confirmed gap-failure short has positive net expectancy after 1 bp and low correlation with the 165-day base.",
+   "window": "2016-2026",
+   "cagr": 0.02205970523981704,
+   "dd": 0.0038409121758838927,
+   "sharpe": 6.534809415819199,
+   "metrics": {
+    "cagr10": 0.02205970523981704,
+    "dd10": 0.0038409121758838927,
+    "cagr5": 0.02205970523981704,
+    "dd5": 0.0038409121758838927
+   },
+   "href": "/research/gap-fill-fade",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
+   "id": "research:stop-reentry-recovery",
+   "slug": "stop-reentry-recovery",
+   "kind": "research",
+   "name": "LETF overshoot recovery",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "Buy TQQQ after a leveraged-ETF downside overshoot (TQQQ falls >=3% intraday and underperforms 3x QQQ by >=1pp), scaling in 50% then 100% after a recovery close, with a 2% stop and a 3-session hold.",
+   "summary": "The relative downside overshoot is a rebalancing/flow effect that reverses over the next 1-3 sessions; a gradual scale-in captures it with low correlation to the 165-day trend base.",
+   "window": "2016-2026",
+   "cagr": 0.020541667638967143,
+   "dd": 0.012453516091380235,
+   "sharpe": 5.088872180648806,
+   "metrics": {
+    "cagr10": 0.020541667638967143,
+    "dd10": 0.012453516091380235,
+    "cagr5": 0.020541667638967143,
+    "dd5": 0.012453516091380235
+   },
+   "href": "/research/stop-reentry-recovery",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
+   "id": "research:daily-regime-minute-entry",
+   "slug": "daily-regime-minute-entry",
+   "kind": "research",
+   "name": "Crash-continuation short",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "A 4% break below the TQQQ session open predicts continuation into the close; trade it as an intraday short instead of a long-book exit.",
+   "summary": "Shorting TQQQ from the break to the close, flat (BIL) otherwise, earns a positive net return with low correlation to the 165-day long base.",
+   "window": "2016-2026",
+   "cagr": 0.020427334372890904,
+   "dd": 0.6281799590779985,
+   "sharpe": 0.20029760061890226,
+   "metrics": {
+    "cagr10": 0.020427334372890904,
+    "dd10": 0.6281799590779985,
+    "cagr5": 0.020427334372890904,
+    "dd5": 0.6281799590779985
+   },
+   "href": "/research/daily-regime-minute-entry",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
+   "id": "research:ensemble-signals",
+   "slug": "ensemble-signals",
+   "kind": "research",
+   "name": "Volatility contraction recovery",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "Volatility spikes mean-revert; the high-vol contraction phase is a distinct TQQQ recovery window, while rising vol from a low is a de-risking signal and QQQ is the default risk asset.",
+   "summary": "A daily volatility-percentile/slope state machine with multi-day holds captures a post-spike recovery premium that is not the old 165-day trend base.",
+   "window": "2016-2026",
+   "cagr": 0.013379613998549589,
+   "dd": 0.759088031109904,
+   "sharpe": 0.20253632512976474,
+   "metrics": {
+    "cagr10": 0.013379613998549589,
+    "dd10": 0.759088031109904,
+    "cagr5": 0.013379613998549589,
+    "dd5": 0.759088031109904
+   },
+   "href": "/research/ensemble-signals",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
+   "id": "research:vol-kelly-overlay",
+   "slug": "vol-kelly-overlay",
+   "kind": "research",
+   "name": "Vol-spike reflation",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "Buy a volatility-scaled TQQQ position after a 1-minute-RV spike, an oversold QQQ drawdown and the first up-close; exit on vol normalization, a short time stop or a price stop.",
+   "summary": "Post-spike volatility mean reversion plus TQQQ convexity gives a positive 1-3 session rebound that is independent of the 165-day trend.",
+   "window": "2016-2026",
+   "cagr": 0.010340797218945985,
+   "dd": 0.1649614949799516,
+   "sharpe": 0.16919266047267234,
+   "metrics": {
+    "cagr10": 0.010340797218945985,
+    "dd10": 0.1649614949799516,
+    "cagr5": 0.010340797218945985,
+    "dd5": 0.1649614949799516
+   },
+   "href": "/research/vol-kelly-overlay",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
+   "id": "research:drawdown-regime",
+   "slug": "drawdown-regime",
+   "kind": "research",
+   "name": "Deep drawdown recovery",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "After a >=20% QQQ drawdown, own TQQQ only inside a confirmed 60-session recovery window, then stand aside until the drawdown heals.",
+   "summary": "The post-capitulation recovery is a distinct, time-limited return state; a confirmed turn after a deep drawdown captures it with low exposure and low correlation to slow trend-following.",
+   "window": "2016-2026",
+   "cagr": -0.0011136908707780613,
+   "dd": 0.4754736543065029,
+   "sharpe": 0.06561315146794255,
+   "metrics": {
+    "cagr10": -0.0011136908707780613,
+    "dd10": 0.4754736543065029,
+    "cagr5": -0.0011136908707780613,
+    "dd5": 0.4754736543065029
+   },
+   "href": "/research/drawdown-regime",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
+   "id": "research:donchian-breakout",
+   "slug": "donchian-breakout",
+   "kind": "research",
+   "name": "Donchian alignment ladder",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "A Donchian breakout is only worth leveraging when short, medium and long breakout horizons agree; the alignment count is the trend/sizing signal.",
+   "summary": "Scaling from BIL to QQQ to TQQQ with three-horizon breakout alignment captures trend persistence while cutting whipsaw exposure, with low correlation to the old 165-day MA base.",
+   "window": "2016-2026",
+   "cagr": -0.0094246999458647,
+   "dd": 0.3576770825793282,
+   "sharpe": 0.013099925260041313,
+   "metrics": {
+    "cagr10": -0.0094246999458647,
+    "dd10": 0.3576770825793282,
+    "cagr5": -0.0094246999458647,
+    "dd5": 0.3576770825793282
+   },
+   "href": "/research/donchian-breakout",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
+   "id": "research:opening-range-breakout",
+   "slug": "opening-range-breakout",
+   "kind": "research",
+   "name": "Opening-range failed-breakdown reclaim",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "A failed breakdown of the 30-minute opening range that reclaims the range low is a liquidity-sweep reversal; buy the reclaim and target the opposite side of the range before the close.",
+   "summary": "After a brief break below the opening-range low, the reclaim traps breakout sellers and the reversal continues to the opening-range high; the edge is intraday and independent of the overnight TQQQ drift.",
+   "window": "2016-2026",
+   "cagr": -0.013159267433528687,
+   "dd": 0.19987404968910905,
+   "sharpe": -0.32700726935796953,
+   "metrics": {
+    "cagr10": -0.013159267433528687,
+    "dd10": 0.19987404968910905,
+    "cagr5": -0.013159267433528687,
+    "dd5": 0.19987404968910905
+   },
+   "href": "/research/opening-range-breakout",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
+   "id": "research:drawdown-stop-overlay",
+   "slug": "drawdown-stop-overlay",
+   "kind": "research",
+   "name": "Failed-breakdown spring",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "A failed breakdown / stop-run reclaim: buy TQQQ after QQQ undercuts its prior 20-day low intraday but closes back above it.",
+   "summary": "Forced selling from a failed breakdown is exhausted; the next few days tend to rebound, so an event-driven TQQQ long with a 5-day hold beats a pure stop overlay and has low correlation with the old 165-day base.",
+   "window": "2016-2026",
+   "cagr": -0.023677582901783123,
+   "dd": 0.5533465363529745,
+   "sharpe": 0.06454879131448492,
+   "metrics": {
+    "cagr10": -0.023677582901783123,
+    "dd10": 0.5533465363529745,
+    "cagr5": -0.023677582901783123,
+    "dd5": 0.5533465363529745
+   },
+   "href": "/research/drawdown-stop-overlay",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  }
+ ]
+}

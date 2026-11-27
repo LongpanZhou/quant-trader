@@ -1,0 +1,26 @@
+Traceback (most recent call last):
+  File "C:\Users\27175\Desktop\quant-trader-research\research\revisit\audit\worker.py", line 235, in main
+    exec(compile(src, str(path), "exec"), g)
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\27175\Desktop\quant-trader-research\research\revisit\dual-speed-regime\strategy.py", line 347, in <module>
+    main()
+    ~~~~^^
+  File "C:\Users\27175\Desktop\quant-trader-research\research\revisit\dual-speed-regime\strategy.py", line 320, in main
+    "2022-23": sub_period(curves["strategy"], curves["strategy"]["ts"], "2022-01-03", "2023-12-29"),
+               ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\27175\Desktop\quant-trader-research\research\revisit\dual-speed-regime\strategy.py", line 244, in sub_period
+    yrs = (ser.index[-1] - ser.index[0]).total_seconds() / (365.25 * 86400)
+           ~~~~~~~~~^^^^
+  File "C:\Users\27175\AppData\Roaming\Python\Python313\site-packages\pandas\core\indexes\datetimelike.py", line 1439, in __getitem__
+    result = super().__getitem__(key)
+  File "C:\Users\27175\AppData\Roaming\Python\Python313\site-packages\pandas\core\indexes\base.py", line 5697, in __getitem__
+    return maybe_unbox_numpy_scalar(getitem(key), object_with_dtype=self)
+                                    ~~~~~~~^^^^^
+  File "C:\Users\27175\AppData\Roaming\Python\Python313\site-packages\pandas\core\arrays\datetimelike.py", line 380, in __getitem__
+    result = cast("Self | DTScalarOrNaT", super().__getitem__(key))
+                                          ~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\27175\AppData\Roaming\Python\Python313\site-packages\pandas\core\arrays\_mixins.py", line 391, in __getitem__
+    result = self._ndarray[key]
+             ~~~~~~~~~~~~~^^^^^
+IndexError: index -1 is out of bounds for axis 0 with size 0
+{"slug": "dual-speed-regime", "mode": "cut1", "calls": 4, "error": "IndexError: index -1 is out of bounds for axis 0 with size 0", "seconds": 10.9, "restored": [], "match_score": 1.0, "found": true, "kw": {"band": 0.02, "slippage_bps": 1.0, "start_equity": 100000.0}, "bars": 409459, "k": 3}

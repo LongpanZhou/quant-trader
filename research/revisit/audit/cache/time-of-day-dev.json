@@ -1,0 +1,1 @@
+{"slug": "time-of-day", "mode": "dev", "calls": 259, "error": null, "seconds": 52.4, "restored": [], "match_score": null, "found": true, "kw": {"band": 0.02, "slippage_bps": 1.0, "start_equity": 100000.0}, "bars": 781490, "k": 3}

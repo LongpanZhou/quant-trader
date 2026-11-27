@@ -1,0 +1,179 @@
+{
+  "agent": "ml-crash-overlay-winner",
+  "original": "research/agents2/ml-crash-overlay-winner",
+  "status": "pending",
+  "idea": "TQQQ's 3x daily reset makes leverage favorable only when the path is smooth; a walk-forward ML classifier of 5-session TQQQ-vs-3xQQQ decay rotates between TQQQ, QQQ and BIL.",
+  "hypothesis": "A causal classifier of the worst-quartile 5-session decay can time when to use TQQQ instead of QQQ, and when to hold BIL, with a lower drawdown than the old 165-day TQQQ base and correlation < 0.60.",
+  "universe": [
+    "QQQ",
+    "TQQQ",
+    "BIL"
+  ],
+  "frozen_commit": null,
+  "variants_tried": 0,
+  "corr_vs_165d_baseline": 0.5035253593230691,
+  "max_corr_vs_other_rebuilds": null,
+  "windows": {
+    "dev": {
+      "1bp": {
+        "cagr": 0.157980424660489,
+        "max_drawdown": 0.224166078476986,
+        "sharpe": 0.8129107276657093,
+        "sortino": 1.1308942694223025,
+        "vol": 0.20763316798855774,
+        "fills": 461,
+        "exposure": 0.9999987210313603,
+        "turnover": 794.9231717085086
+      },
+      "5bp": {
+        "cagr": 0.13154301217655662,
+        "max_drawdown": 0.23686601262801765,
+        "sharpe": 0.7011105195746724,
+        "sortino": 0.9727203327372843,
+        "vol": 0.2077077078597466,
+        "fills": 461,
+        "exposure": 0.9999987210313603,
+        "turnover": 716.7253312215321
+      },
+      "10bp": {
+        "cagr": 0.09934342844846156,
+        "max_drawdown": 0.2534716383981179,
+        "sharpe": 0.5612612357645455,
+        "sortino": 0.7760124246515627,
+        "vol": 0.20792568318050736,
+        "fills": 461,
+        "exposure": 0.9999987210313603,
+        "turnover": 632.2622780640879
+      }
+    },
+    "holdout": null,
+    "10y": null,
+    "5y": null
+  },
+  "marks": "1m",
+  "benchmarks": {
+    "tqqq": {
+      "cagr": 0.3615406632934588,
+      "total_return": 10.752826498520793,
+      "max_drawdown": 0.8229021592363336,
+      "volatility": 0.6654592718640882,
+      "sharpe": 0.8011699599655372,
+      "ending_equity": 1175282.6498520793,
+      "years": 7.984312495246787
+    },
+    "qqq": {
+      "cagr": 0.18912874422247206,
+      "total_return": 2.9870424941803697,
+      "max_drawdown": 0.3730047872557426,
+      "volatility": 0.2201773147609827,
+      "sharpe": 0.8999556826271142,
+      "ending_equity": 398704.249418037,
+      "years": 7.984312495246787
+    },
+    "spy": null,
+    "original": {
+      "10y_1bp": {
+        "cagr": 0.7224007779592674,
+        "total_return": 205.35669785483125,
+        "max_drawdown": 0.4149929660080848,
+        "volatility": 0.41705569302122414,
+        "sharpe": 1.5183379166424986,
+        "sortino": 2.173964161936996,
+        "exposure": 0.9999989571873257,
+        "fills": 889,
+        "turnover": 38560.45456100522,
+        "ending_equity": 20635669.785483126
+      },
+      "5y_1bp": {
+        "cagr": 0.5309646769263769,
+        "total_return": 7.39118386510364,
+        "max_drawdown": 0.3166855816567039,
+        "volatility": 0.38912467563959763,
+        "sharpe": 1.2963949171901212,
+        "sortino": 1.8514731954797983,
+        "exposure": 0.999997949382559,
+        "fills": 437,
+        "turnover": 1452.5994416663711,
+        "ending_equity": 839118.386510364
+      }
+    }
+  },
+  "diagnostics": {
+    "features": [
+      "r1",
+      "r2",
+      "r5",
+      "r10",
+      "r20",
+      "r60",
+      "rv1",
+      "rv5",
+      "rv20",
+      "rv60",
+      "rv_ratio",
+      "rv_pct",
+      "skew1",
+      "skew20",
+      "dvol",
+      "dvol20",
+      "vwap_dist",
+      "dd_high",
+      "first30",
+      "last30",
+      "close_loc",
+      "gap",
+      "gap20",
+      "intraday",
+      "up20",
+      "dd20",
+      "dd60",
+      "sma20",
+      "rsi14",
+      "decay5",
+      "decay20",
+      "bil5",
+      "dow",
+      "range",
+      "range20",
+      "vol_ratio",
+      "vol_z20"
+    ],
+    "n_features": 37,
+    "last_year": 2023,
+    "state_days": {
+      "0": 1020,
+      "1": 271,
+      "2": 721
+    },
+    "state_share": {
+      "0": 0.5069582504970179,
+      "1": 0.13469184890656064,
+      "2": 0.35834990059642147
+    },
+    "n_switches": 230,
+    "mean_threshold": -0.0038642600419476446,
+    "auc_by_year": {
+      "2017": 0.5222602739726028,
+      "2018": 0.7173241095083898,
+      "2019": 0.7141289236847882,
+      "2020": 0.7728182045511378,
+      "2021": 0.767799506360357,
+      "2022": 0.6712779973649539,
+      "2023": 0.6668388429752066
+    },
+    "mean_decay_by_state": {
+      "0": -0.0027989430725951464,
+      "1": -0.0028770405931670536,
+      "2": -0.006643416312617338
+    }
+  },
+  "rules": {
+    "label": "5-session open-to-open TQQQ-vs-3xQQQ decay < training-window 25th percentile",
+    "model": "L2 logistic, lambda 10, 750-session rolling window, annual retrain, 6-session purge",
+    "rank": "trailing 252-session percentile of the probability, min 60",
+    "states": "rank<0.15 TQQQ; 0.15<=rank<0.70 QQQ; rank>=0.70 BIL",
+    "holding": "minimum 5 sessions; immediate BIL exit on a high-risk crossing",
+    "sizing": "100% one asset, long-only, no leverage, no shorts",
+    "fills": "next bar open, 2% band"
+  }
+}

@@ -1,0 +1,99 @@
+{
+  "agent": "risk-parity-hrp",
+  "original": "research/agents2/risk-parity-hrp",
+  "status": "rejected",
+  "idea": "Equal-risk QQQ/TQQQ composition with a risk budget that rises after transient volatility spikes and is damped in persistent high-vol regimes.",
+  "hypothesis": "The conditional Sharpe ratio of the equity factor rises after a transient vol spike and not in a persistent high-vol regime.",
+  "universe": [
+    "QQQ",
+    "TQQQ",
+    "BIL"
+  ],
+  "frozen_commit": null,
+  "variants_tried": 12,
+  "corr_vs_165d_baseline": 0.7780953055866948,
+  "max_corr_vs_other_rebuilds": null,
+  "windows": {
+    "dev": {
+      "1bp": {
+        "cagr": 0.05704195677039192,
+        "max_drawdown": 0.184571620425527,
+        "sharpe": 0.6531120813526612,
+        "fills": 767,
+        "turnover": 29.652572297719818,
+        "exposure": 0.9965647112355349
+      },
+      "5bp": {
+        "cagr": 0.05581336213998611,
+        "max_drawdown": 0.18481888273079794,
+        "sharpe": 0.640450382709811,
+        "fills": 767,
+        "turnover": 29.501380181536582,
+        "exposure": 0.996564356675671
+      },
+      "10bp": {
+        "cagr": 0.054272252153356515,
+        "max_drawdown": 0.18510451872043177,
+        "sharpe": 0.6245620026010457,
+        "fills": 767,
+        "turnover": 29.31118383894642,
+        "exposure": 0.996561708216446
+      }
+    },
+    "holdout": {
+      "1bp": null,
+      "5bp": null,
+      "10bp": null
+    },
+    "10y": {
+      "1bp": null,
+      "5bp": null
+    },
+    "5y": {
+      "1bp": null,
+      "5bp": null
+    }
+  },
+  "marks": "1m",
+  "benchmarks": {
+    "qqq": {
+      "cagr": 0.18912874422247206,
+      "max_drawdown": 0.3730047872557426,
+      "sharpe": 0.8999556826271142
+    },
+    "tqqq": {
+      "cagr": 0.3615406632934588,
+      "max_drawdown": 0.8229021592363336,
+      "sharpe": 0.8011699599655372
+    },
+    "bil": {
+      "cagr": 0.013922937868313001,
+      "max_drawdown": 0.0024388417668437246,
+      "sharpe": 0.9230732630692111
+    },
+    "base_165d": {
+      "cagr": 0.43983556471698937,
+      "max_drawdown": 0.5960271800221864
+    }
+  },
+  "info": {
+    "mean_budget": 0.24185837707400146,
+    "median_budget": 0.19831720410546627,
+    "mean_wT": 0.2505617225955926,
+    "mean_wQ": 0.7494382774044073,
+    "mean_sleeve_vol": 0.30653563348557566,
+    "brake_days": {
+      "0": 1352,
+      "1": 660,
+      "2": 0
+    },
+    "flat_days": 120,
+    "tilt_mean": -0.15525860042218273,
+    "tilt_std": 0.5468952768484421,
+    "spike_events": 8
+  },
+  "notes": [
+    "dev only; holdout 2024-2026 not inspected",
+    "10y/5y windows overlap the holdout and are left to the lead"
+  ]
+}

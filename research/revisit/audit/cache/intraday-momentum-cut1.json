@@ -1,0 +1,1 @@
+{"slug": "intraday-momentum", "mode": "cut1", "calls": 4, "error": null, "seconds": 13.5, "restored": ["restored result.json"], "match_score": 1.0, "found": true, "kw": {"band": 0.02, "slippage_bps": 1.0, "start_equity": 100000.0}, "bars": 409459, "k": 3}

@@ -1,0 +1,49 @@
+{
+  "agent": "ensemble-signals",
+  "original": "research/agents/ensemble-signals",
+  "status": "pending_holdout",
+  "idea": "Volatility spikes mean-revert; the high-vol contraction phase is a distinct TQQQ recovery window, while rising vol from a low is a de-risking signal and QQQ is the default risk asset.",
+  "hypothesis": "A daily volatility-percentile/slope state machine with multi-day holds captures a post-spike recovery premium that is not the old 165-day trend base.",
+  "universe": [
+    "QQQ",
+    "TQQQ",
+    "BIL"
+  ],
+  "frozen_commit": null,
+  "variants_tried": 0,
+  "corr_vs_165d_baseline": 0.4701120842225621,
+  "max_corr_vs_other_rebuilds": null,
+  "windows": {
+    "dev": {
+      "1bp": {
+        "cagr": -0.05212268079668536,
+        "max_drawdown": 0.7604247755412554,
+        "sharpe": -0.023477642257403203,
+        "fills": 754,
+        "turnover": 380.260489510032,
+        "corr_vs_165d_baseline": 0.4701120842225621
+      },
+      "5bp": {
+        "cagr": -0.06726207938902418,
+        "max_drawdown": 0.7675237658984644,
+        "sharpe": -0.07633394804076171,
+        "fills": 754,
+        "turnover": 359.02225141589804,
+        "corr_vs_165d_baseline": 0.4697377466604637
+      },
+      "10bp": {
+        "cagr": -0.0858450847208504,
+        "max_drawdown": 0.7761009872460487,
+        "sharpe": -0.14227313112429493,
+        "fills": 754,
+        "turnover": 334.6614719336247,
+        "corr_vs_165d_baseline": 0.4692043152404018
+      }
+    },
+    "holdout": {},
+    "10y": {},
+    "5y": {}
+  },
+  "marks": "1m",
+  "benchmarks": {}
+}

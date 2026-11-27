@@ -1,0 +1,232 @@
+{
+  "agent": "time-of-day",
+  "original": "research/agents/time-of-day",
+  "status": "retired_overlay_only",
+  "idea": "The overnight+first-30m block pays because it settles the previous session's closing pressure, so it should be held selectively after a sold close rather than every night.",
+  "hypothesis": "Block return is decreasing in the last-30-minute QQQ return; conditioning plus a self-referential vol gate beats holding every night.",
+  "universe": [
+    "TQQQ",
+    "BIL (idle variant only)",
+    "cash"
+  ],
+  "frozen_commit": "a541931301bebd29",
+  "variants_tried": 6,
+  "corr_vs_165d_baseline": 0.33896176235155245,
+  "max_corr_vs_other_rebuilds": null,
+  "windows": {
+    "dev": {
+      "1bp": {
+        "cagr": 0.19680801658953007,
+        "max_drawdown": 0.3180511562755932,
+        "sharpe": 0.9714407382964751,
+        "sortino": 1.4509600178657547,
+        "volatility": 0.20781826680160512,
+        "fills": 1221,
+        "turnover": 2544.150019725347,
+        "exposure": 0.023107749005715633,
+        "ending_equity": 419525.4265057756
+      },
+      "5bp": {
+        "cagr": 0.13093031480995387,
+        "max_drawdown": 0.34808623740783373,
+        "sharpe": 0.6978098191635261,
+        "sortino": 1.0407624027793234,
+        "volatility": 0.2078899990171505,
+        "fills": 1221,
+        "turnover": 1934.3614295881182,
+        "exposure": 0.023107312301186383,
+        "ending_equity": 266994.4231599554
+      },
+      "10bp": {
+        "cagr": 0.053664627070177495,
+        "max_drawdown": 0.38378190972963,
+        "sharpe": 0.3559588642976385,
+        "sortino": 0.5296898877500412,
+        "volatility": 0.2081264860536721,
+        "fills": 1220,
+        "turnover": 1403.9495315643499,
+        "exposure": 0.023106828100225407,
+        "ending_equity": 151775.23144038816
+      }
+    },
+    "holdout": {},
+    "10y": {},
+    "5y": {}
+  },
+  "marks": "1m",
+  "benchmarks": {
+    "tqqq": {
+      "dev": {
+        "cagr": 0.36392597560380757,
+        "total_return": 10.908109936673187,
+        "max_drawdown": 0.8229021592363336,
+        "volatility": 0.6655966953969756,
+        "sharpe": 0.8038557386638827,
+        "ending_equity": 1190810.9936673187,
+        "years": 7.981574644459655,
+        "symbol": "TQQQ"
+      }
+    },
+    "qqq": {
+      "dev": {
+        "cagr": 0.18983497723654685,
+        "total_return": 3.004082185547702,
+        "max_drawdown": 0.3730047872557426,
+        "volatility": 0.22022289167943332,
+        "sharpe": 0.9026444720871925,
+        "ending_equity": 400408.2185547703,
+        "years": 7.981574644459655
+      }
+    },
+    "spy": null,
+    "original": {
+      "note": "original result.json is on 2017-2026 / 2021-2026 windows, 10y 49.23%/42.66%, 5y 28.89%/34.54% at 1bp"
+    }
+  },
+  "diagnostics": {
+    "falsifiers": {
+      "F1_sign_and_size": false,
+      "F2_conditioning_beats_unconditional": false,
+      "F3_risk": true,
+      "F4_subperiods": false,
+      "F5_placebo": true,
+      "F6_independence": true,
+      "F7_cost_5bp": false,
+      "V4_opposite_sign_cagr": 0.009965468184124804,
+      "V0_cagr": 0.3499814537554029,
+      "V1_cagr": 0.25413910303061416
+    },
+    "f1_conditional": {
+      "n_neg": 1010,
+      "n_pos": 1001,
+      "mean_bp_after_sold_close": 22.270933080962614,
+      "mean_bp_after_bought_close": 5.472886534556977,
+      "diff_bp": 16.798046546405637,
+      "t_stat": 1.3533668466213689,
+      "hit_rate_neg": 0.5534653465346535,
+      "hit_rate_pos": 0.5554445554445554
+    },
+    "f5_placebo": {
+      "n_draws": 200,
+      "real_cagr": 0.19680801658953007,
+      "placebo_mean": 0.09449931981857265,
+      "placebo_p95": 0.22026891960924122,
+      "p_value": 0.095
+    },
+    "neighbourhood": {
+      "vol_look": {
+        "5": {
+          "cagr": 0.1727634715459545,
+          "max_drawdown": 0.27098683886006614,
+          "sharpe": 0.9083589459142851
+        },
+        "10": {
+          "cagr": 0.19680801658953007,
+          "max_drawdown": 0.3180511562755932,
+          "sharpe": 0.9714407382964751
+        },
+        "20": {
+          "cagr": 0.16433562610706254,
+          "max_drawdown": 0.2809412280443173,
+          "sharpe": 0.8062738305965075
+        }
+      },
+      "ref_look": {
+        "40": {
+          "cagr": 0.19079821924496998,
+          "max_drawdown": 0.2296702756365664,
+          "sharpe": 0.9352443660153328
+        },
+        "60": {
+          "cagr": 0.19680801658953007,
+          "max_drawdown": 0.3180511562755932,
+          "sharpe": 0.9714407382964751
+        },
+        "90": {
+          "cagr": 0.16351175227723824,
+          "max_drawdown": 0.28268242784491115,
+          "sharpe": 0.8395632917949396
+        }
+      },
+      "vol_mult": {
+        "1.25": {
+          "cagr": 0.13610291955464948,
+          "max_drawdown": 0.27431888284446915,
+          "sharpe": 0.7756703324963834
+        },
+        "1.5": {
+          "cagr": 0.19680801658953007,
+          "max_drawdown": 0.3180511562755932,
+          "sharpe": 0.9714407382964751
+        },
+        "2.0": {
+          "cagr": 0.1793801853153867,
+          "max_drawdown": 0.2684542506668274,
+          "sharpe": 0.8510018761077971
+        }
+      },
+      "close_window": {
+        "20": {
+          "cagr": 0.21135035981447925,
+          "max_drawdown": 0.28344026137418676,
+          "sharpe": 1.0436316100693253
+        },
+        "30": {
+          "cagr": 0.19680801658953007,
+          "max_drawdown": 0.3180511562755932,
+          "sharpe": 0.9714407382964751
+        },
+        "45": {
+          "cagr": 0.19943842096115416,
+          "max_drawdown": 0.23347923816084248,
+          "sharpe": 1.0246643005794935
+        }
+      },
+      "close_min_z": {
+        "0.0": {
+          "cagr": 0.27641302534909484,
+          "max_drawdown": 0.41058028038706806,
+          "sharpe": 1.1782993121616705
+        },
+        "0.5": {
+          "cagr": 0.19680801658953007,
+          "max_drawdown": 0.3180511562755932,
+          "sharpe": 0.9714407382964751
+        },
+        "1.0": {
+          "cagr": 0.19283501690022575,
+          "max_drawdown": 0.3165714095880192,
+          "sharpe": 1.0817777092426863
+        }
+      },
+      "vol_target": {
+        "0.3": {
+          "cagr": 0.17567661778508903,
+          "max_drawdown": 0.25749669248029106,
+          "sharpe": 0.9901231037682782
+        },
+        "0.4": {
+          "cagr": 0.19680801658953007,
+          "max_drawdown": 0.3180511562755932,
+          "sharpe": 0.9714407382964751
+        },
+        "0.5": {
+          "cagr": 0.20745835093426268,
+          "max_drawdown": 0.3590048534960514,
+          "sharpe": 0.9465628029074612
+        }
+      }
+    },
+    "baseline_dev": {
+      "cagr": 0.4387720234520087,
+      "max_drawdown": 0.5963502290424079,
+      "sharpe": 1.0114650439702018,
+      "sortino": 1.4099630120183262,
+      "volatility": 0.47206833093569345,
+      "fills": 59,
+      "turnover": 265.05011349160105,
+      "exposure": 0.9995009533071441,
+      "ending_equity": 1823999.9302943607
+    }
+  }
+}

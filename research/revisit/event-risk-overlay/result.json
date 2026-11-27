@@ -1,0 +1,291 @@
+{
+  "agent": "event-risk-overlay",
+  "original": "research/agents2/event-risk-overlay",
+  "status": "rejected",
+  "falsifiers": {
+    "F1_beats_placebo": true,
+    "F2_sharpe_dd": false,
+    "F3_corr_below_0.60": true,
+    "F4_subperiods": true,
+    "F5_cost_robust": true
+  },
+  "idea": "The monthly option-expiry session is the one systematically weak session of the expiry cycle; own the cycle and step out for the expiry session.",
+  "hypothesis": "Dealer roll and gamma unwind create a recurring negative intraday drift on the expiry session, so a calendar-only strategy that holds TQQQ around the cycle but never through the expiry session earns a flow premium that is uncorrelated with trend following.",
+  "universe": [
+    "QQQ 1-min",
+    "TQQQ 1-min",
+    "BIL 1-min"
+  ],
+  "frozen_commit": null,
+  "variants_tried": 13,
+  "corr_vs_165d_baseline": 0.34187042912158666,
+  "max_corr_vs_other_rebuilds": null,
+  "windows": {
+    "dev": {
+      "1bp": {
+        "cagr": 0.2694131140216969,
+        "max_drawdown": 0.3903570452509316,
+        "sharpe": 1.08340902384785,
+        "sortino": 1.555874843619638,
+        "fills": 885,
+        "exposure": 0.9999987210313603,
+        "turnover": 2101.3150540107613
+      },
+      "5bp": {
+        "cagr": 0.22728092478616757,
+        "max_drawdown": 0.40684815236599636,
+        "sharpe": 0.9475840626591335,
+        "sortino": 1.3597195407204397,
+        "fills": 883,
+        "exposure": 0.9999987210313603,
+        "turnover": 1772.962715556183
+      },
+      "10bp": {
+        "cagr": 0.1767238334786343,
+        "max_drawdown": 0.4268934173730038,
+        "sharpe": 0.7781794495343596,
+        "sortino": 1.1151054033144063,
+        "fills": 881,
+        "exposure": 0.9999987210313603,
+        "turnover": 1445.2111358370482
+      }
+    },
+    "holdout": {},
+    "10y": {},
+    "5y": {}
+  },
+  "marks": "1m",
+  "benchmarks": {
+    "tqqq": {
+      "cagr": 0.3615406632934588,
+      "max_drawdown": 0.8229021592363336,
+      "sharpe": 0.8011699599655372
+    },
+    "qqq": {
+      "cagr": 0.18912874422247206,
+      "max_drawdown": 0.3730047872557426,
+      "sharpe": 0.8999556826271142
+    },
+    "bil": {
+      "cagr": 0.013922937868313001,
+      "max_drawdown": 0.0024388417668437246,
+      "sharpe": 0.9230732630692111
+    }
+  },
+  "spec": {
+    "n_sessions": 2012,
+    "n_designated": 576,
+    "exposure_share": 0.28628230616302186,
+    "n_expiry_sessions": 96,
+    "n_blocks": 192,
+    "offsets": [
+      -4,
+      -3,
+      -2,
+      -1,
+      1,
+      2
+    ],
+    "size": 1.0,
+    "asset": "TQQQ",
+    "vol_cap": {
+      "on": true,
+      "n": 20,
+      "thr": 0.25,
+      "size": 0.5
+    },
+    "n_halved": 151
+  },
+  "diagnostics": {
+    "neighbourhood_dev_1bp": {
+      "primary": {
+        "cagr": 0.2694131140216969,
+        "max_drawdown": 0.3903570452509316,
+        "sharpe": 1.08340902384785,
+        "fills": 885,
+        "exposure": 0.9999987210313603,
+        "corr": 0.34187042912158666,
+        "exposure_share": 0.28628230616302186
+      },
+      "no_vol_cap": {
+        "cagr": 0.2629168068375771,
+        "max_drawdown": 0.44530231954263777,
+        "sharpe": 0.8645856733952597,
+        "fills": 769,
+        "exposure": 0.9999987210313603,
+        "corr": 0.3026917195215214,
+        "exposure_share": 0.28628230616302186
+      },
+      "half_size": {
+        "cagr": 0.14318309216103375,
+        "max_drawdown": 0.19877975124253877,
+        "sharpe": 1.1335175821928722,
+        "fills": 889,
+        "exposure": 0.9999987210313603,
+        "corr": 0.34197730560900425,
+        "exposure_share": 0.28628230616302186
+      },
+      "week_only": {
+        "cagr": 0.15910309401885137,
+        "max_drawdown": 0.41638483442373264,
+        "sharpe": 0.8138054558433615,
+        "fills": 469,
+        "exposure": 0.9999987210313603,
+        "corr": 0.2833396590062919,
+        "exposure_share": 0.1908548707753479
+      },
+      "post_only": {
+        "cagr": 0.11043262154189137,
+        "max_drawdown": 0.1813305922583467,
+        "sharpe": 0.8318517417465365,
+        "fills": 417,
+        "exposure": 0.9999987210313603,
+        "corr": 0.19064173015880884,
+        "exposure_share": 0.09542743538767395
+      },
+      "wider": {
+        "cagr": 0.22752026198827657,
+        "max_drawdown": 0.5053908676462924,
+        "sharpe": 0.8854240958964515,
+        "fills": 927,
+        "exposure": 0.9999987210313603,
+        "corr": 0.36117979765235125,
+        "exposure_share": 0.33399602385685884
+      },
+      "narrower": {
+        "cagr": 0.2570350940754542,
+        "max_drawdown": 0.24166930360593053,
+        "sharpe": 1.1196614549214237,
+        "fills": 867,
+        "exposure": 0.9999987210313603,
+        "corr": 0.294007097203228,
+        "exposure_share": 0.23856858846918488
+      },
+      "qqq_instead": {
+        "cagr": 0.0971351024734004,
+        "max_drawdown": 0.1322805314584352,
+        "sharpe": 1.160100958780213,
+        "fills": 775,
+        "exposure": 0.9999987210313603,
+        "corr": 0.3392140058311449,
+        "exposure_share": 0.28628230616302186
+      },
+      "session_only": {
+        "cagr": 0.1653149332348154,
+        "max_drawdown": 0.3241159315897828,
+        "sharpe": 0.8258555619412957,
+        "fills": 2355,
+        "exposure": 0.9999987210313603,
+        "corr": 0.29896782828250734,
+        "exposure_share": 0.28628230616302186
+      },
+      "vol_thr_20": {
+        "cagr": 0.2590258038981508,
+        "max_drawdown": 0.2703149877330402,
+        "sharpe": 1.150243615685696,
+        "fills": 935,
+        "exposure": 0.9999987210313603,
+        "corr": 0.33542491655063467,
+        "exposure_share": 0.28628230616302186
+      },
+      "vol_thr_30": {
+        "cagr": 0.26882453976259635,
+        "max_drawdown": 0.3761719944438957,
+        "sharpe": 1.0250112643831375,
+        "fills": 867,
+        "exposure": 0.9999987210313603,
+        "corr": 0.33526861937576496,
+        "exposure_share": 0.28628230616302186
+      },
+      "placebo_1w": {
+        "cagr": 0.08172828111052688,
+        "max_drawdown": 0.3306984959534607,
+        "sharpe": 0.4478752297285408,
+        "fills": 893,
+        "exposure": 0.9999987210313603,
+        "corr": 0.40318505339566324,
+        "exposure_share": 0.28628230616302186
+      },
+      "placebo_2w": {
+        "cagr": 0.0831256082732208,
+        "max_drawdown": 0.5327391811261453,
+        "sharpe": 0.4519387954031759,
+        "fills": 895,
+        "exposure": 0.9999987210313603,
+        "corr": 0.4381870414314804,
+        "exposure_share": 0.2852882703777336
+      }
+    },
+    "subperiods_dev_1bp": {
+      "2016-2019": {
+        "cagr": 0.2863861178170197,
+        "max_drawdown": 0.2518630906487537,
+        "sharpe": 1.3585806719542572
+      },
+      "2020-2021": {
+        "cagr": 0.43096533774065837,
+        "max_drawdown": 0.18999019253963623,
+        "sharpe": 1.357115712270082
+      },
+      "2022-2023": {
+        "cagr": 0.09724838669380809,
+        "max_drawdown": 0.35419508580270087,
+        "sharpe": 0.4684068623734803
+      }
+    },
+    "permutation": {
+      "p_value": 0.245,
+      "in_window_mean": 0.00311682739303303,
+      "random_mean": 0.0020658647464680637,
+      "n_sessions": 576
+    },
+    "month_bootstrap": {
+      "5": {
+        "cagr": 0.12062892514312674,
+        "max_drawdown": 0.1816518372135893
+      },
+      "50": {
+        "cagr": 0.26431447991085,
+        "max_drawdown": 0.2637009527011023
+      },
+      "95": {
+        "cagr": 0.431679805885898,
+        "max_drawdown": 0.39906955676745237
+      }
+    },
+    "yearly_dev": {
+      "2016": {
+        "strategy": 0.49510225025425725,
+        "benchmark": 0.19864262661415033
+      },
+      "2017": {
+        "strategy": 0.19182745723206152,
+        "benchmark": 1.1834653995188278
+      },
+      "2018": {
+        "strategy": 0.03205924561313189,
+        "benchmark": -0.19583753693794803
+      },
+      "2019": {
+        "strategy": 0.48518170142309924,
+        "benchmark": 1.331055753396933
+      },
+      "2020": {
+        "strategy": 0.6008314000337076,
+        "benchmark": 1.0961179967465502
+      },
+      "2021": {
+        "strategy": 0.2777089009842153,
+        "benchmark": 0.8296958963840777
+      },
+      "2022": {
+        "strategy": -0.2823027324434445,
+        "benchmark": -0.7906535076278614
+      },
+      "2023": {
+        "strategy": 0.6753720468482227,
+        "benchmark": 1.9836611885152622
+      }
+    }
+  }
+}

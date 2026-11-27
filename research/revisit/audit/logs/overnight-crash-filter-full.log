@@ -1,0 +1,7 @@
+{
+  "agent": "overnight-crash-filter",
+  "status": "passed",
+  "corr_vs_165d_baseline": 0.2170567504612452
+}
+dev      1bp CAGR  11.34%  DD 27.62%  Sharpe 0.82  fills 4,376
+{"slug": "overnight-crash-filter", "mode": "full", "calls": 6, "error": null, "seconds": 8.5, "restored": ["restored result.json"], "match_score": 1.0, "found": true, "kw": {"band": 0.02, "slippage_bps": 0.0, "start_equity": 100000.0}, "bars": 1056144, "k": 3}

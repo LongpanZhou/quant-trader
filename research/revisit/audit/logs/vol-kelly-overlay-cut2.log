@@ -1,0 +1,121 @@
+{
+  "agent": "vol-kelly-overlay",
+  "original": "research/agents/vol-kelly-overlay",
+  "status": "pending_test",
+  "idea": "Buy a volatility-scaled TQQQ position after a 1-minute-RV spike, an oversold QQQ drawdown and the first up-close; exit on vol normalization, a short time stop or a price stop.",
+  "hypothesis": "Post-spike volatility mean reversion plus TQQQ convexity gives a positive 1-3 session rebound that is independent of the 165-day trend.",
+  "universe": [
+    "QQQ",
+    "TQQQ",
+    "BIL"
+  ],
+  "frozen_commit": null,
+  "variants_tried": 0,
+  "corr_vs_165d_baseline": 0.29437993180412986,
+  "max_corr_vs_other_rebuilds": null,
+  "windows": {
+    "dev": {
+      "1bp": {
+        "cagr": 0.012778314590077278,
+        "max_drawdown": 0.1921645312337108,
+        "sharpe": 0.18421771473483955,
+        "fills": 79,
+        "turnover": 28.692239940902667
+      },
+      "5bp": {
+        "cagr": 0.01144596988592328,
+        "max_drawdown": 0.19303290265185535,
+        "sharpe": 0.16983412829413824,
+        "fills": 81,
+        "turnover": 28.63477003204847
+      },
+      "10bp": {
+        "cagr": 0.00937658668720398,
+        "max_drawdown": 0.19619732236904097,
+        "sharpe": 0.1477124471521716,
+        "fills": 81,
+        "turnover": 28.424579750853074
+      }
+    },
+    "holdout": {},
+    "10y": {},
+    "5y": {}
+  },
+  "dev_daily_marks": {
+    "1bp": {
+      "cagr": 0.01306067044517456,
+      "max_drawdown": 0.16453332311939883,
+      "sharpe": 0.18522867726206246,
+      "fills": 55,
+      "turnover": 28.225847902015797
+    },
+    "5bp": {
+      "cagr": 0.01145179410740882,
+      "max_drawdown": 0.16723422235116403,
+      "sharpe": 0.16833034745344944,
+      "fills": 55,
+      "turnover": 28.066240911411096
+    },
+    "10bp": {
+      "cagr": 0.009445436233614268,
+      "max_drawdown": 0.1705957173638295,
+      "sharpe": 0.14720369405911213,
+      "fills": 55,
+      "turnover": 27.86845959199647
+    }
+  },
+  "dev_events": {
+    "n_events": 11,
+    "marks": "1D",
+    "mean_event_return": 0.0001457735321131218,
+    "median_event_return": 0.03855607571020969,
+    "hit_rate": 0.6363636363636364,
+    "bootstrap_p": 0.4879,
+    "best_event": 0.06409992516742413,
+    "worst_event": -0.10799590315370733
+  },
+  "dev_subperiods": {
+    "2016_19": {
+      "cagr": 0.028926410496014743,
+      "max_drawdown": 0.10005559811438813,
+      "sharpe": 0.4252097785097696,
+      "fills": 55,
+      "turnover": 28.225847902015797
+    },
+    "2020_21": {
+      "cagr": -0.04269600224554182,
+      "max_drawdown": 0.136723438059008,
+      "sharpe": -0.2761367163097685,
+      "fills": 55,
+      "turnover": 28.225847902015797
+    },
+    "2022_23": {
+      "cagr": 0.09075613826418283,
+      "max_drawdown": 0.03226726539147995,
+      "sharpe": 1.0939934939786327,
+      "fills": 55,
+      "turnover": 28.225847902015797
+    }
+  },
+  "marks": "1m",
+  "benchmarks": {
+    "tqqq": {
+      "cagr": 0.31135893964813266,
+      "max_drawdown": 0.7522583618426831,
+      "sharpe": 0.7466707328679525
+    },
+    "qqq": {
+      "cagr": 0.1704874946466124,
+      "max_drawdown": 0.3258826122874644,
+      "sharpe": 0.8029837608304738
+    },
+    "spy": "not available for 2016-2023 in the local archive",
+    "original": {
+      "cagr10": 0.4753,
+      "dd10": 0.4532,
+      "cagr5": 0.3459,
+      "dd5": 0.3629
+    }
+  }
+}
+{"slug": "vol-kelly-overlay", "mode": "cut2", "calls": 8, "error": null, "seconds": 18.3, "restored": ["restored result.json"], "match_score": 1.0, "found": true, "kw": {"band": 0.02, "slippage_bps": 1.0, "start_equity": 100000.0}, "bars": 654958, "k": 3}

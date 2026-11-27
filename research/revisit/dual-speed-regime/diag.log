@@ -1,0 +1,36 @@
+## exposure
+minutes TQQQ>0: 0.439; BIL>0: 0.702; QQQ 0; short 0
+avg TQQQ weight 0.368; avg gross leverage (3x TQQQ) 1.105; when long 2.52
+minutes at 100%: 0.298, at 50%: 0.142
+## costs
+| strategy 0bp | 12.29% | 30.87% | 0.66 | fills/yr 744
+| strategy 1bp | 5.89% | 39.37% | 0.38 | fills/yr 744
+| strategy 5bp | -16.28% | 83.44% | -0.75 | fills/yr 744
+| strategy 10bp | -37.59% | 97.89% | -2.13 | fills/yr 744
+corr vs 165d: 0.352
+## leverage-matched static and placebos (1bp)
+| static 0.37 TQQQ / BIL | 19.07% | 42.37% | 0.84 | corr 0.716
+| intraday TQQQ 0.84 10:30-15:30 every day | -3.16% | 72.39% | 0.08 | corr 0.496
+|   same, cash instead of BIL | -0.34% | 68.16% | 0.16 |
+|   same, 0bp | 5.38% | 61.27% | 0.32 |
+| lagged-EMA (1 bar) placebo | 2.32% | 45.19% | 0.21 |
+random-day permutation (20): CAGR mean 1.28% [-7.17,15.10], Sharpe mean 0.18 max 0.67; strategy beats 85%
+## per year (1bp)
+| 2016 | 8.0% | 19.9% | 9.7% |
+| 2017 | 8.3% | 114.5% | 31.9% |
+| 2018 | -6.8% | -20.8% | -0.6% |
+| 2019 | -1.8% | 148.2% | 41.8% |
+| 2020 | 8.3% | 104.1% | 47.0% |
+| 2021 | -3.1% | 81.1% | 27.0% |
+| 2022 | -14.6% | -79.4% | -32.9% |
+| 2023 | 64.2% | 192.0% | 53.7% |
+## TQQQ return decomposition by window (sum of log returns, dev)
+| overnight (close->open) | +1.562 | +21.6%/yr |
+| 09:30-10:30 | +0.991 | +13.2%/yr |
+| 10:30-15:30 | +0.604 | +7.9%/yr |
+| 15:30-16:00 | -0.698 | -8.4%/yr |
+TQQQ log ret inside 10:30-15:30 while strategy long: +0.850; while flat: -0.614
+  sized (weight x TQQQ simple ret) while long: +0.986
+## trades
+trades 1371, per yr 172; hit rate (TQQQ fill-to-fill > 0) 0.537; mean gross 7.9 bp; median 13.0 bp
+mean net of 1bp x2 TQQQ + 1bp x2 BIL: 3.9 bp; t-stat 1.60

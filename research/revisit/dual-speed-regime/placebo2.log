@@ -1,0 +1,6 @@
+ON (overnight, cash, no tiers): real CAGR 32.25% Sharpe 1.09; placebo CAGR mean 8.75% p95 28.55%; Sharpe mean 0.40 p95 0.81; p(placebo Sharpe >= real) = 0.01
+   static 0.41 TQQQ / cash: CAGR 19.94% DD 46.0% Sharpe 0.80
+   static 0.41 TQQQ / bil: CAGR 20.95% DD 45.8% Sharpe 0.84
+ONT (overnight, cash, tiers): real CAGR 28.53% Sharpe 1.06; placebo CAGR mean 8.36% p95 25.76%; Sharpe mean 0.40 p95 0.83; p(placebo Sharpe >= real) = 0.00
+   static 0.35 TQQQ / cash: CAGR 17.01% DD 40.4% Sharpe 0.80
+   static 0.35 TQQQ / bil: CAGR 18.02% DD 40.2% Sharpe 0.83

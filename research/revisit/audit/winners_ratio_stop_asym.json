@@ -1,0 +1,134 @@
+{
+ "tqqq_stop_on_qqq": {
+  "stats": {
+   "sessions": 2718,
+   "risk_on": 2126,
+   "froth": 584,
+   "stops": 160,
+   "stops_froth": 26,
+   "stops_tqqq": 134
+  },
+  "daily": {
+   "start": "2016-01-04",
+   "end": "2026-10-23",
+   "years": 10.80082135523614,
+   "cagr": 0.622138391674053,
+   "max_drawdown": 0.3665052096417841,
+   "sharpe": 1.4290401589129378,
+   "volatility": 0.39375440310461157,
+   "calmar": 1.6974885357894922,
+   "ending_multiple": 185.83260259429238
+  },
+  "minute": {
+   "cagr": 0.6221101470197523,
+   "max_drawdown_minute": 0.39109530235928314,
+   "sharpe_minute": 1.44141266029057,
+   "volatility_minute": 0.3903573831689027,
+   "fills": 919,
+   "turnover": 41018.906716836376,
+   "exposure": 0.9999990531594176,
+   "ending_equity": 18585388.48835329
+  },
+  "exposure": {
+   "mean_qqq": 0.2105205350785499,
+   "mean_tqqq": 0.5371606523352876,
+   "mean_bil": 0.2523188125861625,
+   "sessions": 2718,
+   "tqqq_sessions_any": 0.5180279617365711,
+   "tqqq_sessions_full": 0.5180279617365711,
+   "qqq_sessions_any": 0.2052980132450331,
+   "cash_sessions_full": 0.2766740250183959,
+   "mean_tqqq_when_held": 1.0,
+   "min_tqqq_when_held": 1.0,
+   "max_tqqq": 1.0
+  }
+ },
+ "qqq_asset_stop": {
+  "stats": {
+   "sessions": 2718,
+   "risk_on": 2126,
+   "froth": 584,
+   "stops": 135,
+   "stops_froth": 1,
+   "stops_tqqq": 134
+  },
+  "daily": {
+   "start": "2016-01-04",
+   "end": "2026-10-23",
+   "years": 10.80082135523614,
+   "cagr": 0.6051249650227586,
+   "max_drawdown": 0.3653945193170992,
+   "sharpe": 1.4037342705142133,
+   "volatility": 0.3931719643741586,
+   "calmar": 1.6560865941659482,
+   "ending_multiple": 165.83048486819217
+  },
+  "minute": {
+   "cagr": 0.6050979966692172,
+   "max_drawdown_minute": 0.3910953023592829,
+   "sharpe_minute": 1.4125276959076873,
+   "volatility_minute": 0.3910219438397645,
+   "fills": 853,
+   "turnover": 36325.95874323429,
+   "exposure": 0.9999990531594176,
+   "ending_equity": 16584947.643530466
+  },
+  "exposure": {
+   "mean_qqq": 0.21459289642321502,
+   "mean_tqqq": 0.5371606523352876,
+   "mean_bil": 0.24824645124149738,
+   "sessions": 2718,
+   "tqqq_sessions_any": 0.5180279617365711,
+   "tqqq_sessions_full": 0.5180279617365711,
+   "qqq_sessions_any": 0.21449595290654894,
+   "cash_sessions_full": 0.26747608535688006,
+   "mean_tqqq_when_held": 1.0,
+   "min_tqqq_when_held": 1.0,
+   "max_tqqq": 1.0
+  }
+ },
+ "no_qqq_stop": {
+  "stats": {
+   "sessions": 2718,
+   "risk_on": 2126,
+   "froth": 584,
+   "stops": 134,
+   "stops_froth": 0,
+   "stops_tqqq": 134
+  },
+  "daily": {
+   "start": "2016-01-04",
+   "end": "2026-10-23",
+   "years": 10.80082135523614,
+   "cagr": 0.6071965615042323,
+   "max_drawdown": 0.3653945193170992,
+   "sharpe": 1.4069340731847126,
+   "volatility": 0.3932093752969889,
+   "calmar": 1.661756072967506,
+   "ending_multiple": 168.15678578167197
+  },
+  "minute": {
+   "cagr": 0.6071694383013246,
+   "max_drawdown_minute": 0.3910953023592829,
+   "sharpe_minute": 1.4157314947490534,
+   "volatility_minute": 0.39106448954930684,
+   "fills": 851,
+   "turnover": 36075.71811996643,
+   "exposure": 0.9999990531594176,
+   "ending_equity": 16817604.376602348
+  },
+  "exposure": {
+   "mean_qqq": 0.21480498871366027,
+   "mean_tqqq": 0.5371606523352876,
+   "mean_bil": 0.24803435895105214,
+   "sessions": 2718,
+   "tqqq_sessions_any": 0.5180279617365711,
+   "tqqq_sessions_full": 0.5180279617365711,
+   "qqq_sessions_any": 0.21486387049300956,
+   "cash_sessions_full": 0.2671081677704194,
+   "mean_tqqq_when_held": 1.0,
+   "min_tqqq_when_held": 1.0,
+   "max_tqqq": 1.0
+  }
+ }
+}

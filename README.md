@@ -243,19 +243,38 @@ Long-run tests:
 The `web/` folder is a local Next.js portal for systematic strategies. The
 landing page lists every strategy in `web/public/data/strategies.json`; each
 one opens its own performance page with equity, drawdowns, yearly and monthly
-returns, trade statistics, the exact rule and its paper trail. The site reads
-static JSON exported by the Rust backtester, so it needs no database or API
-server.
+returns, trade statistics, the exact rule and its paper trail.
+
+The portals read static JSON. The **Backtest Lab** (`/lab`) is different: it is
+a local Next.js API route that builds a TOML config and runs the Rust binary, so
+the site is a local server rather than a static export. The custom-strategy
+workspace (`/lab/custom`) runs user code in the browser, not on the server.
 
 The catalog ships with the promoted Nasdaq rule plus two research variants:
 the original S&P 500 2x rotation and a Nasdaq 3x trend without the volatility
 target. They are website research entries, not live presets.
 
+The lab can rerun any preset with different parameters, costs and benchmarks.
+The custom workspace lets you write a `decide(ctx)` function and run it on
+daily or intraday Yahoo bars in a browser worker. Intraday history is short
+because of Yahoo's limits: 1-minute bars cover at most 7 days, 5/15-minute bars
+59 days, and hourly bars 2 years. The preset strategies stay daily because their
+165–200-day averages need more history than the intraday feed provides.
+
 ```powershell
 cd web
 bun install
 bun run dev      # http://localhost:3000
-bun run build    # static site in web/out
+
+# local production server (the lab needs /api/backtest)
+bun run build
+bun run start
+```
+
+The Backtest Lab also needs the Rust binary:
+
+```powershell
+cargo build --release
 ```
 
 Regenerate the JSON after changing the strategy or refreshing the data:
@@ -266,6 +285,74 @@ Regenerate the JSON after changing the strategy or refreshing the data:
 
 The site is not deployed anywhere. Run it locally; if you later want to publish
 it, choose the host and URL first.
+
+## Intraday 1-minute research
+
+The repo can also run the main rule on 1-minute bars from a free third-party
+dataset. It is kept in `data/intraday-hf/`, which is gitignored; the raw data is
+not redistributed here.
+
+Source: [Syncster Historical Market Data](https://huggingface.co/datasets/syncster-data/historical-market-data)
+on Hugging Face. The dataset is free research data with license "other", not an
+official exchange feed. It covers 2016-2026. QQQ/TQQQ minute prices are adjusted
+to total return with Yahoo Finance daily `adjclose / close` factors; BIL's 2017
+reverse split is repaired before adjustment.
+
+The free archive starts in 2016, so it can support a 5- or 10-year study. A
+26-year 1-minute archive is not available from Yahoo or this free dataset; that
+needs a paid historical minute feed.
+
+QQQ itself launched on **1999-03-10**. The earliest 1-minute coverage from the
+main vendors is:
+
+| Vendor | 1-minute start | Access |
+|---|---|---|
+| Kibot | 1999-03-10 | paid |
+| EODData | 1999-03-10 | paid |
+| Portara | 1999-03-11 | paid |
+| FirstRateData | 2000-01-03 | paid |
+| MarketParquet | 2000-01-03 | paid |
+
+A 26-year window ending 2026-11-25 starts **2000-11-25**, so the paid archives
+cover it. The free feeds do not.
+
+Kibot's live quote for the exact three-symbol order (1-minute, regular session,
+split+dividend adjusted, full history) is **$145** for QQQ + TQQQ + BIL
+(439 MB, 27.74 years). QQQ alone is **$99** (232 MB). TQQQ did not exist before
+2010-02-11 and BIL before 2007-05-30, so the earlier years still need the same
+synthetic 3x/T-bill treatment used by the 26-year daily study.
+
+```powershell
+pip install -r scripts/requirements-intraday.txt
+python scripts/intraday_1m_backtest.py --download
+# defaults: 2021-10-25 .. 2026-10-23, 2% band, 1 bp slippage
+# add --sensitivity for band and slippage tables
+```
+
+The same rule, same 5-year window, 1 bp slippage:
+
+| Decisions | Bars | CAGR | vs QQQ | Max DD | Sharpe | Fills | Turnover |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| Every 1 minute | 487,658 | **20.20%** | +6.10pp | 39.19% | 0.70 | 2,352 | 1,187x |
+| Once per day | 1,255 | **31.56%** | +17.60pp | 29.29% | 0.96 | 808 | 212x |
+| Rust daily engine (same window) | 1,253 | **29.92%** | +16.07pp | 29.35% | 0.91 | 855 | 224x |
+
+The Python daily run is within about 1.6pp of the Rust engine, which validates
+the simulator. The 1-minute version is clearly worse: the slow 165-day filter
+whipsaws when it is evaluated every minute, and 1,187x turnover makes costs
+matter. At 0 bp slippage the 1-minute CAGR is 22.20%; at 5 bp it falls to
+12.56%. The daily rule remains the right frequency.
+
+The same free archive also supports a longer **9.8-year** test
+(2017-01-03 to 2026-10-23, 958,945 bars): 1-minute decisions returned
+**31.41% CAGR** with a **40.17% drawdown** and **8,161x turnover**, versus
+**32.38% / 38.56% / 1,010x** for daily decisions. The 1-minute version gets
+closer over the longer window, but it still has the deeper drawdown and eight
+times the turnover, so the cost and risk conclusions do not change.
+
+A 26-year 1-minute test cannot be built from this free archive: it starts in
+2016. The exact QQQ 1-minute history back to 1999/2000 is a paid dataset
+(MarketParquet about $79 one-time, Portara, FirstRateData, Kibot or EODData).
 
 ## Read more
 
@@ -292,6 +379,6 @@ src/       backtester, live loop, paper broker, data feeds, strategy
 configs/   live/5-year preset and 20-year research preset
 docs/      full study, audit, research map, expansion research
 web/       Next.js dashboard and exported JSON
-scripts/   data export for the dashboard
+scripts/   web-data export and 1-minute research
 config.toml  default config (same as the live preset)
 ```

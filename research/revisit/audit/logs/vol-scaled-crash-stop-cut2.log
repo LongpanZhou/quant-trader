@@ -1,0 +1,12 @@
+Traceback (most recent call last):
+  File "C:\Users\27175\Desktop\quant-trader-research\research\revisit\audit\worker.py", line 235, in main
+    exec(compile(src, str(path), "exec"), g)
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\27175\Desktop\quant-trader-research\research\revisit\vol-scaled-crash-stop\strategy.py", line 368, in <module>
+    main()
+    ~~~~^^
+  File "C:\Users\27175\Desktop\quant-trader-research\research\revisit\vol-scaled-crash-stop\strategy.py", line 298, in main
+    yearly={str(y): float(r["equity"][r["ts"].year == y][-1] /
+                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^
+IndexError: index -1 is out of bounds for axis 0 with size 0
+{"slug": "vol-scaled-crash-stop", "mode": "cut2", "calls": 13, "error": "IndexError: index -1 is out of bounds for axis 0 with size 0", "seconds": 19.3, "restored": ["restored dev_panel.npz"], "match_score": 1.0, "found": true, "kw": {"band": 0.02, "slippage_bps": 1.0, "start_equity": 100000.0}, "bars": 654958, "k": 3}

@@ -1,0 +1,18 @@
+Traceback (most recent call last):
+  File "C:\Users\27175\Desktop\quant-trader-research\research\revisit\audit\worker.py", line 235, in main
+    exec(compile(src, str(path), "exec"), g)
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\27175\Desktop\quant-trader-research\research\revisit\winner-ensemble-blend\strategy.py", line 508, in <module>
+    main()
+    ~~~~^^
+  File "C:\Users\27175\Desktop\quant-trader-research\research\revisit\winner-ensemble-blend\strategy.py", line 349, in main
+    w, info = build_weights(ts, o, c)
+              ~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\27175\Desktop\quant-trader-research\research\revisit\winner-ensemble-blend\strategy.py", line 238, in build_weights
+    w, wA, wB, info, events = _build_from_signals(qc, tc, bc, dates, on_a, entry_b, sma10, p)
+                              ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\27175\Desktop\quant-trader-research\research\revisit\winner-ensemble-blend\strategy.py", line 131, in _build_from_signals
+    wA[on_a, 0] = p["carry_qqq_weight"]
+    ~~^^^^^^^^^
+IndexError: arrays used as indices must be of integer (or boolean) type
+{"slug": "winner-ensemble-blend", "mode": "cut2", "calls": 0, "error": "IndexError: arrays used as indices must be of integer (or boolean) type", "seconds": 8.6, "restored": [], "match_score": -1.0, "found": false}

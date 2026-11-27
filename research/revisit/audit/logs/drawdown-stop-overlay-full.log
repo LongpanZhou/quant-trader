@@ -1,0 +1,43 @@
+{
+  "status": "pending",
+  "corr_vs_165d_baseline": 0.244543425279654,
+  "windows": {
+    "dev": {
+      "1bp": {
+        "cagr": -0.023665876987559287,
+        "max_drawdown": 0.5771916501992591,
+        "sharpe": 0.046676411690339016,
+        "sortino": 0.06554089041566438,
+        "volatility": 0.26989750778724997,
+        "fills": 177.0,
+        "turnover": 148.20668226550845,
+        "exposure": 0.9999990531594176
+      },
+      "5bp": {
+        "cagr": -0.03004449434298495,
+        "max_drawdown": 0.5989368095087451,
+        "sharpe": 0.022336437577958213,
+        "sortino": 0.0313253039354612,
+        "volatility": 0.269951117311696,
+        "fills": 177.0,
+        "turnover": 143.27885602343594,
+        "exposure": 0.9999990531594176
+      },
+      "10bp": {
+        "cagr": -0.037959179087313166,
+        "max_drawdown": 0.6266989455436397,
+        "sharpe": -0.00804679290958341,
+        "sortino": -0.011267892945327882,
+        "volatility": 0.27004523977734446,
+        "fills": 177.0,
+        "turnover": 137.43068177745252,
+        "exposure": 0.9999990531594176
+      }
+    },
+    "holdout": null,
+    "10y": null,
+    "5y": null
+  }
+}
+wrote C:\Users\27175\Desktop\quant-trader-research\research\revisit\drawdown-stop-overlay\result.json
+{"slug": "drawdown-stop-overlay", "mode": "full", "calls": 32, "error": null, "seconds": 18.2, "restored": ["restored result.json"], "match_score": 1.0, "found": true, "kw": {"band": 0.02, "slippage_bps": 1.0, "start_equity": 100000.0}, "bars": 1056144, "k": 3}

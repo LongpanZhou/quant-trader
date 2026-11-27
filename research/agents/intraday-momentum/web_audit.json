@@ -1,0 +1,113 @@
+{
+  "slug": "intraday-momentum",
+  "name": "First-hour afternoon filter",
+  "tagline": "Overnight drift plus a first-hour gate for the afternoon, under a 165-day QQQ regime.",
+  "summary": "Hold TQQQ overnight (15:59 to 09:31) and through the first hour while QQQ is above its 165-day SMA. At 10:29 compute the QQQ first-hour return; hold TQQQ for the afternoon only if it is non-negative, otherwise move to cash at the 10:30 open and re-enter at 15:59. Risk-off days are 100% BIL.",
+  "decision_process": "Each session: (1) the 165-day SMA regime uses QQQ's prior close; risk-off means 100% BIL. (2) On risk-on days, enter TQQQ at the 15:59 open (decision on the 15:58 QQQ close vs the SMA through the prior day) and hold through the next 09:31 open. (3) Hold through the first hour. (4) At the 10:29 close compute r60 = QQQ close(10:29) / QQQ open(09:30) - 1; if r60 >= 0 hold TQQQ to the 15:59 open, else sell at the 10:30 open and hold cash until the 15:59 open, then re-enter for the overnight. All signals use only data through the decision bar; all fills are at the next bar's open.",
+  "rules": [
+    "Regime: QQQ close(t-1) > 165-day SMA of QQQ closes through t-1 -> risk-on; otherwise 100% BIL.",
+    "Risk-on: hold TQQQ from the 15:59 open through the next 09:31 open (overnight) and through the first hour.",
+    "At 10:29 compute r60 = QQQ close(10:29) / QQQ open(09:30) - 1.",
+    "If r60 >= 0, hold TQQQ from the 10:30 open to the 15:59 open; if r60 < 0, sell at the 10:30 open, hold cash until the 15:59 open, then re-enter TQQQ for the overnight.",
+    "Long-only, weights <= 100%; 1 bp per side primary, 5 bp sensitivity; 2% band; no look-ahead."
+  ],
+  "status": "Verified",
+  "metrics": {
+    "cagr10": 0.5563,
+    "dd10": 0.4489,
+    "cagr5": 0.4636,
+    "dd5": 0.3264,
+    "cagr10_5bp": 0.4346,
+    "dd10_5bp": 0.4690,
+    "cagr5_5bp": 0.3580,
+    "dd5_5bp": 0.3450
+  },
+  "verdict": "Passes vs TQQQ at 1 bp and 5 bp on both windows, and beats the daily baseline on all four metrics at 1 bp (10y 55.63%/44.89%, 5y 46.36%/32.64%). At 5 bp the 10y CAGR is 43.46%, 1.85 pp below the baseline's 1 bp figure and about 0.7 pp below the baseline's own 5 bp figure, so this is not a clean win at realistic costs. The max drawdown is the COVID crash (-44.6%), and the first-hour signal is statistically weak (t ~1.4-2.3).",
+  "sources": [
+    {
+      "idea": "The first half-hour return predicts the last half-hour return (market intraday momentum).",
+      "source": "Gao, Han, Li & Zhou (2018) / Market Intraday Momentum, JFE 129(2)",
+      "url": "https://doi.org/10.1016/j.jfineco.2018.05.009",
+      "source_type": "paper",
+      "role": "inspired rule",
+      "evidence": "Documents the first-half-hour -> last-half-hour effect in SPY 1993-2013 and ten other ETFs, stronger on volatile, high-volume and macro-news days. We tested the mechanism directly: the last-30-minute version does not replicate in QQQ/TQQQ 2016-2026, but the broader first-hour -> afternoon version does (see rejected_sources for the failed last-30m version).",
+      "confidence": "high"
+    },
+    {
+      "idea": "Intraday momentum is driven by gamma hedging from option dealers and leveraged ETFs; the rest-of-day return predicts the last 30 minutes.",
+      "source": "Baltussen, Da, Lammers & Martens (2021) / Hedging Demand and Market Intraday Momentum, JFE 142(1)",
+      "url": "https://doi.org/10.1016/j.jfineco.2021.04.029",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Documents intraday momentum across 60+ futures (1974-2020) and links it to hedging demand from market makers and leveraged ETFs. This is the economic rationale for using the first-hour signal to time the TQQQ afternoon and for expecting the effect to be concentrated around leveraged-ETF rebalancing.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Strategy premia accrue either overnight or intraday; momentum-type premia are earned overnight.",
+      "source": "Lou, Polk & Skouras (2019) / A Tug of War: Overnight versus Intraday Expected Returns, JFE 134(1)",
+      "url": "https://doi.org/10.1016/j.jfineco.2019.03.011",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Documents the overnight/intraday decomposition and the persistence of overnight premia. Our own QQQ/TQQQ decomposition agrees: TQQQ earns 30.2%/yr overnight vs 5.9%/yr intraday (2016-2026), which is why the strategy keeps the overnight leg and why pure intraday timing fails.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Daily re-leveraging of 3x ETFs creates path dependence and end-of-day rebalancing flows.",
+      "source": "Cheng & Madhavan (2009) / The Dynamics of Leveraged and Inverse Exchange-Traded Funds, JOIM",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=1393995",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Explains the daily reset/path dependence of TQQQ and the mechanical end-of-day hedging flows. Used to motivate the leveraged-ETF channel and the caveat that TQQQ's realized path and future rebalancing flows may differ from a simple 3x overlay.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Use a 165-day SMA on QQQ as the risk-on/risk-off gate; use cash (not BIL) for the afternoon exit.",
+      "source": "Own test / no external source (project daily baseline)",
+      "url": null,
+      "source_type": "data",
+      "role": "inspired rule",
+      "evidence": "The 165-day SMA is the project's pre-existing daily baseline (README: 45.31%/58.71% 10y, 34.61%/36.86% 5y). We inherited the parameter rather than fitting it. Cash-vs-BIL for the afternoon exit was chosen by direct comparison: cash improved 10y CAGR by 2.9 pp at 1 bp and 13.2 pp at 5 bp.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Overnight drift: US equity returns are concentrated in the close-to-open period.",
+      "source": "Haghani, Ragulin & Dewey / Night Moves: Overnight Drift (Elm Wealth)",
+      "url": "https://elmwealth.com/wp-content/uploads/2026/04/Elm-Night-Moves-Overnight-Drift.pdf",
+      "source_type": "report",
+      "role": "supports assumption",
+      "evidence": "The current web page lists this as a supporting paper. It documents the overnight drift, consistent with our own decomposition (TQQQ 30.2%/yr overnight vs 5.9%/yr intraday). It was not used to set the rule and is not cited in the original report; keep it only as a supporting reference.",
+      "confidence": "medium"
+    }
+  ],
+  "rejected_sources": [
+    {
+      "source": "Gao, Han, Li & Zhou (2018) / last-half-hour timing version",
+      "url": "https://doi.org/10.1016/j.jfineco.2018.05.009",
+      "why_rejected": "Tested directly and it does not replicate in QQQ/TQQQ 2016-2026: TQQQ's last-30-minute return after a positive first 30m is -1.60 bp/day on the 10y window and -2.43 bp/day on the 5y window. The predictability is in the midday/afternoon (+17.1 bp/day for TQQQ 10:00-15:30 after a positive first 30m on 10y), not in the close, so the strategy holds the afternoon rather than only the last 30 minutes."
+    },
+    {
+      "source": "Own test / no external source - pure intraday 30m and 60m variants (P1, P2)",
+      "url": null,
+      "why_rejected": "Long TQQQ only from 10:00/10:30 to the close on a positive first-30/60m signal, flat overnight, earns 12.89%/8.96% CAGR on the 10y window (10.80%/32.26% on 5y after 1 bp costs). TQQQ's drift is mostly overnight (30.2%/yr vs 5.9%/yr intraday), so pure intraday timing cannot reach TQQQ's 39.28%/13.47%."
+    },
+    {
+      "source": "Own test / no external source - overnight-only + 165-day SMA (P4)",
+      "url": null,
+      "why_rejected": "Overnight-only earns 27.66%/47.18% on 10y and 14.42%/34.69% on 5y; it passes the 5y TQQQ test but fails the 10y CAGR (27.66% < 39.28%). It also loses -8.46%/yr at 5 bp because of the daily round trips. The first-hour afternoon sleeve is needed for the 10y."
+    },
+    {
+      "source": "Own test / no external source - afternoon exit to BIL instead of cash",
+      "url": null,
+      "why_rejected": "Exiting to BIL doubles the fills (two legs each way) and lowered 10y CAGR from 55.63% to 52.71% at 1 bp and from 43.46% to 30.25% at 5 bp. Cash was kept for the intraday exit; BIL is still used for the multi-day risk-off regime."
+    }
+  ],
+  "corrections": [
+    "Rule text ambiguity: the current page says 'Hold TQQQ from 15:59 to 10:30'. This is only the overnight + first-hour leg. After 10:30 the position is held to 15:59 only if r60 >= 0; if r60 < 0 it is sold at the 10:30 open and re-entered at 15:59. The rule list should say this explicitly.",
+    "Missing 5 bp metrics: the page shows only the 1 bp figures. Add 10y 43.46% CAGR / 46.90% DD and 5y 35.80% CAGR / 34.50% DD. At 5 bp the 10y CAGR is 1.85 pp below the baseline's 1 bp figure and about 0.7 pp below the baseline's own 5 bp figure, while the DD is 11.8 pp lower.",
+    "Name: 'First-hour momentum' overstates the intraday component. The edge is a hybrid: the overnight drift is the main return source and the first-hour signal only gates the afternoon. A more accurate display name is 'First-hour afternoon filter' or 'Overnight + first-hour filter'.",
+    "Drawdown convention: the page's 44.89% (10y) and 32.64% (5y) are minute-mark drawdowns; the daily-close marks are 44.59% and 30.37%. The TQQQ 81.68% benchmark is a daily-close figure, so state the convention or show both for comparability.",
+    "Paper list: the page includes Elm Wealth's 'Night Moves: Overnight Drift', which is not cited in the original report. Either keep it explicitly as a supporting reference for the overnight drift (medium confidence) or remove it; do not present it as the source of the rule.",
+    "Verdict is one-sided: it says 'Fails the daily baseline at 5 bp on the 10y' but does not say that it beats the daily baseline on all four metrics at 1 bp. Add the 1 bp comparison so the reader sees both sides.",
+    "Report wording (also applies to the report, not only the page): the 5 bp comparison quotes the baseline's 1 bp CAGR (45.31%). The fair 5 bp comparison is 43.46% vs about 44.2% (roughly a 0.7 pp gap), so the report should label which cost assumption each number uses."
+  ]
+}

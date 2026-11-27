@@ -1,0 +1,2128 @@
+{
+  "agent": "volume-orderflow",
+  "strategy": "165d QQQ regime + 4% minute stop armed by relative volume",
+  "rules": {
+    "regime": "QQQ prior close > 165-day SMA -> TQQQ, else BIL",
+    "stop": "4% below session open, next-minute fill, out for the rest of the session and the overnight",
+    "arming": "(QQQ@09:30 < MA20(prev)*1.01 or rvol>1.5) and rvol>1.0",
+    "rvol": "cumulative QQQ volume / 20-day same-time-of-day mean",
+    "fills": "next bar open",
+    "band": 0.02
+  },
+  "diagnostics": {
+    "stop_events": 195,
+    "rearmed_by_volume": 110,
+    "events_by_year": {
+      "2016": 7,
+      "2017": 12,
+      "2018": 30,
+      "2019": 13,
+      "2020": 28,
+      "2021": 28,
+      "2022": 4,
+      "2023": 13,
+      "2024": 23,
+      "2025": 20,
+      "2026": 17
+    },
+    "events": [
+      {
+        "date": "2016-09-09",
+        "minute_of_day": 273,
+        "rvol": 3.005193068509274,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2016-10-11",
+        "minute_of_day": 249,
+        "rvol": 1.1071352911965109,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2016-11-01",
+        "minute_of_day": 258,
+        "rvol": 1.0011116535606333,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2016-11-10",
+        "minute_of_day": 43,
+        "rvol": 1.886501400253582,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2016-11-14",
+        "minute_of_day": 91,
+        "rvol": 1.9235677235837372,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2016-12-01",
+        "minute_of_day": 77,
+        "rvol": 1.164691448855524,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2016-12-30",
+        "minute_of_day": 282,
+        "rvol": 1.8387985951912578,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2017-03-21",
+        "minute_of_day": 123,
+        "rvol": 2.0254068890668058,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": false
+      },
+      {
+        "date": "2017-05-17",
+        "minute_of_day": 309,
+        "rvol": 2.474201082608296,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": false
+      },
+      {
+        "date": "2017-06-09",
+        "minute_of_day": 196,
+        "rvol": 2.305737515654054,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": false
+      },
+      {
+        "date": "2017-06-14",
+        "minute_of_day": 340,
+        "rvol": 1.6011995635204204,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2017-06-27",
+        "minute_of_day": 380,
+        "rvol": 1.480305517368494,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2017-06-29",
+        "minute_of_day": 111,
+        "rvol": 1.659450030840727,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2017-07-03",
+        "minute_of_day": 181,
+        "rvol": 1.0076566191070384,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2017-07-27",
+        "minute_of_day": 226,
+        "rvol": 1.531873319706613,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": false
+      },
+      {
+        "date": "2017-08-10",
+        "minute_of_day": 185,
+        "rvol": 1.8108002118121211,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2017-08-17",
+        "minute_of_day": 331,
+        "rvol": 2.06034223316577,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2017-11-29",
+        "minute_of_day": 53,
+        "rvol": 3.076164927955763,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": false
+      },
+      {
+        "date": "2017-12-04",
+        "minute_of_day": 83,
+        "rvol": 2.0705802452265174,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2018-01-24",
+        "minute_of_day": 228,
+        "rvol": 2.083232268160577,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": false
+      },
+      {
+        "date": "2018-02-02",
+        "minute_of_day": 333,
+        "rvol": 1.8237565672259128,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2018-02-05",
+        "minute_of_day": 334,
+        "rvol": 2.4471801916982456,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2018-02-08",
+        "minute_of_day": 80,
+        "rvol": 1.1566959871064801,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2018-02-09",
+        "minute_of_day": 77,
+        "rvol": 1.5605475032992326,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2018-03-19",
+        "minute_of_day": 130,
+        "rvol": 1.4512792662390264,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2018-03-23",
+        "minute_of_day": 327,
+        "rvol": 1.4942929125145588,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2018-03-26",
+        "minute_of_day": 108,
+        "rvol": 1.4576988516605622,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2018-03-27",
+        "minute_of_day": 181,
+        "rvol": 1.1157417760128814,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2018-03-28",
+        "minute_of_day": 77,
+        "rvol": 2.509623573963402,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2018-04-02",
+        "minute_of_day": 86,
+        "rvol": 1.3057139123643653,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2018-04-03",
+        "minute_of_day": 45,
+        "rvol": 1.332227108278482,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2018-04-06",
+        "minute_of_day": 311,
+        "rvol": 1.005046888526098,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2018-04-24",
+        "minute_of_day": 332,
+        "rvol": 1.5009522672350635,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": false
+      },
+      {
+        "date": "2018-04-25",
+        "minute_of_day": 32,
+        "rvol": 1.4181563398009343,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2018-04-27",
+        "minute_of_day": 57,
+        "rvol": 1.7582861004267376,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": false
+      },
+      {
+        "date": "2018-06-25",
+        "minute_of_day": 112,
+        "rvol": 2.026406069591182,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2018-06-27",
+        "minute_of_day": 328,
+        "rvol": 1.297360282440726,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2018-07-03",
+        "minute_of_day": 200,
+        "rvol": 1.136191402177539,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2018-07-27",
+        "minute_of_day": 180,
+        "rvol": 1.500180538798228,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": false
+      },
+      {
+        "date": "2018-07-30",
+        "minute_of_day": 102,
+        "rvol": 2.2107656629931953,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2018-09-05",
+        "minute_of_day": 53,
+        "rvol": 1.5381915687856427,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": false
+      },
+      {
+        "date": "2018-09-06",
+        "minute_of_day": 97,
+        "rvol": 1.8953604878937869,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2018-09-17",
+        "minute_of_day": 385,
+        "rvol": 1.1194696436813798,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2018-10-04",
+        "minute_of_day": 128,
+        "rvol": 1.7586923555550458,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2018-10-05",
+        "minute_of_day": 133,
+        "rvol": 1.9481231882653158,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2018-10-10",
+        "minute_of_day": 27,
+        "rvol": 2.705233344192664,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2018-10-17",
+        "minute_of_day": 72,
+        "rvol": 1.1997876413875572,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2018-10-18",
+        "minute_of_day": 125,
+        "rvol": 1.002885230711348,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2018-10-24",
+        "minute_of_day": 140,
+        "rvol": 1.0198949615754167,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2019-03-22",
+        "minute_of_day": 148,
+        "rvol": 2.0381479500818585,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": false
+      },
+      {
+        "date": "2019-05-07",
+        "minute_of_day": 235,
+        "rvol": 1.8538267275539233,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2019-05-10",
+        "minute_of_day": 70,
+        "rvol": 1.3918997569435538,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2019-06-03",
+        "minute_of_day": 171,
+        "rvol": 1.5109278481368211,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2019-07-31",
+        "minute_of_day": 318,
+        "rvol": 1.3951875058926733,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2019-08-02",
+        "minute_of_day": 247,
+        "rvol": 2.5991345733737266,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2019-08-05",
+        "minute_of_day": 198,
+        "rvol": 2.7399109604781526,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2019-08-14",
+        "minute_of_day": 152,
+        "rvol": 1.3920108446289723,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2019-08-23",
+        "minute_of_day": 124,
+        "rvol": 1.531972852361026,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2019-09-24",
+        "minute_of_day": 172,
+        "rvol": 1.1942790374009558,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2019-09-27",
+        "minute_of_day": 208,
+        "rvol": 1.1976044989176946,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2019-10-02",
+        "minute_of_day": 161,
+        "rvol": 1.8253496633484894,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2019-12-02",
+        "minute_of_day": 62,
+        "rvol": 1.9714937417997858,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": false
+      },
+      {
+        "date": "2020-01-24",
+        "minute_of_day": 263,
+        "rvol": 1.5012995370114577,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": false
+      },
+      {
+        "date": "2020-01-31",
+        "minute_of_day": 107,
+        "rvol": 1.511740496575836,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": false
+      },
+      {
+        "date": "2020-02-05",
+        "minute_of_day": 70,
+        "rvol": 2.1713238166073117,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": false
+      },
+      {
+        "date": "2020-02-20",
+        "minute_of_day": 135,
+        "rvol": 1.5633342197545486,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": false
+      },
+      {
+        "date": "2020-02-21",
+        "minute_of_day": 243,
+        "rvol": 2.0273488581640984,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": false
+      },
+      {
+        "date": "2020-02-25",
+        "minute_of_day": 62,
+        "rvol": 1.8096619040797364,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2020-02-27",
+        "minute_of_day": 63,
+        "rvol": 3.0714412042498744,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2020-03-03",
+        "minute_of_day": 23,
+        "rvol": 1.7042066801445273,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2020-03-11",
+        "minute_of_day": 191,
+        "rvol": 1.0154237639269075,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2020-05-13",
+        "minute_of_day": 162,
+        "rvol": 1.5023466113282393,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": false
+      },
+      {
+        "date": "2020-05-27",
+        "minute_of_day": 90,
+        "rvol": 1.5257836435601908,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": false
+      },
+      {
+        "date": "2020-06-11",
+        "minute_of_day": 211,
+        "rvol": 1.50564756393651,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": false
+      },
+      {
+        "date": "2020-06-12",
+        "minute_of_day": 235,
+        "rvol": 1.50201727244315,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": false
+      },
+      {
+        "date": "2020-07-13",
+        "minute_of_day": 365,
+        "rvol": 1.508228030421711,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": false
+      },
+      {
+        "date": "2020-08-27",
+        "minute_of_day": 203,
+        "rvol": 1.7143476732153395,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": false
+      },
+      {
+        "date": "2020-09-02",
+        "minute_of_day": 27,
+        "rvol": 1.8233175836312567,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": false
+      },
+      {
+        "date": "2020-09-03",
+        "minute_of_day": 50,
+        "rvol": 1.7640665338887402,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": false
+      },
+      {
+        "date": "2020-09-04",
+        "minute_of_day": 24,
+        "rvol": 2.9910691982248907,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": false
+      },
+      {
+        "date": "2020-09-10",
+        "minute_of_day": 185,
+        "rvol": 1.093976607024294,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2020-09-11",
+        "minute_of_day": 182,
+        "rvol": 1.2381237803684142,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2020-09-18",
+        "minute_of_day": 83,
+        "rvol": 1.392883885326844,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2020-10-26",
+        "minute_of_day": 197,
+        "rvol": 1.0232769247595919,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2020-10-28",
+        "minute_of_day": 46,
+        "rvol": 1.4756158151480068,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2020-10-30",
+        "minute_of_day": 53,
+        "rvol": 1.500620341739204,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2020-11-02",
+        "minute_of_day": 228,
+        "rvol": 1.0479698298274238,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2020-11-09",
+        "minute_of_day": 291,
+        "rvol": 1.8747170447001793,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": false
+      },
+      {
+        "date": "2020-11-10",
+        "minute_of_day": 66,
+        "rvol": 1.495036399859775,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2020-12-09",
+        "minute_of_day": 257,
+        "rvol": 1.5411172276182978,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": false
+      },
+      {
+        "date": "2021-01-04",
+        "minute_of_day": 93,
+        "rvol": 1.5429361573129325,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": false
+      },
+      {
+        "date": "2021-01-25",
+        "minute_of_day": 102,
+        "rvol": 1.5026481940329974,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": false
+      },
+      {
+        "date": "2021-01-27",
+        "minute_of_day": 19,
+        "rvol": 1.928484900615731,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": false
+      },
+      {
+        "date": "2021-01-29",
+        "minute_of_day": 173,
+        "rvol": 1.497318011073611,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2021-02-23",
+        "minute_of_day": 14,
+        "rvol": 3.542216695417374,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2021-02-25",
+        "minute_of_day": 140,
+        "rvol": 2.207744437935123,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2021-02-26",
+        "minute_of_day": 58,
+        "rvol": 2.8558780825616163,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2021-03-02",
+        "minute_of_day": 130,
+        "rvol": 1.1490718727191873,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2021-03-03",
+        "minute_of_day": 45,
+        "rvol": 1.5778692539639814,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2021-03-04",
+        "minute_of_day": 204,
+        "rvol": 2.9967269708946693,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2021-03-05",
+        "minute_of_day": 24,
+        "rvol": 2.2793359752267124,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2021-03-08",
+        "minute_of_day": 260,
+        "rvol": 1.4490229301318052,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2021-03-10",
+        "minute_of_day": 69,
+        "rvol": 1.3580598594833277,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2021-03-18",
+        "minute_of_day": 356,
+        "rvol": 1.0188873071873237,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2021-05-04",
+        "minute_of_day": 42,
+        "rvol": 2.6233527350167294,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2021-05-10",
+        "minute_of_day": 84,
+        "rvol": 1.3648808483306734,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2021-06-16",
+        "minute_of_day": 311,
+        "rvol": 1.5515656105578755,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": false
+      },
+      {
+        "date": "2021-07-27",
+        "minute_of_day": 128,
+        "rvol": 1.504349113308719,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": false
+      },
+      {
+        "date": "2021-09-17",
+        "minute_of_day": 306,
+        "rvol": 1.8153007454617311,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2021-09-20",
+        "minute_of_day": 284,
+        "rvol": 2.017702513930325,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2021-09-28",
+        "minute_of_day": 98,
+        "rvol": 2.4167954332776223,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2021-10-04",
+        "minute_of_day": 60,
+        "rvol": 1.254118762830206,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2021-11-22",
+        "minute_of_day": 384,
+        "rvol": 1.7005836744775562,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": false
+      },
+      {
+        "date": "2021-11-26",
+        "minute_of_day": 112,
+        "rvol": 1.6866402816959243,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2021-11-30",
+        "minute_of_day": 91,
+        "rvol": 1.7226598376925082,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2021-12-01",
+        "minute_of_day": 333,
+        "rvol": 1.514043356696726,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2021-12-03",
+        "minute_of_day": 31,
+        "rvol": 1.4294074528175638,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2021-12-16",
+        "minute_of_day": 39,
+        "rvol": 1.2765504570722594,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2022-01-05",
+        "minute_of_day": 283,
+        "rvol": 1.2678054710165014,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2022-01-07",
+        "minute_of_day": 81,
+        "rvol": 1.7042611619944004,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2022-01-10",
+        "minute_of_day": 67,
+        "rvol": 1.8288125374695483,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2022-01-13",
+        "minute_of_day": 101,
+        "rvol": 1.090954155734545,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2023-02-23",
+        "minute_of_day": 110,
+        "rvol": 1.2738398985954869,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2023-03-07",
+        "minute_of_day": 314,
+        "rvol": 1.338865397023989,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2023-03-09",
+        "minute_of_day": 300,
+        "rvol": 1.1063280006909781,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2023-03-10",
+        "minute_of_day": 236,
+        "rvol": 1.6744075364300082,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2023-04-25",
+        "minute_of_day": 387,
+        "rvol": 1.0355738127867482,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2023-08-02",
+        "minute_of_day": 145,
+        "rvol": 1.6366325069397352,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2023-08-17",
+        "minute_of_day": 339,
+        "rvol": 1.1230698466517754,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2023-08-24",
+        "minute_of_day": 47,
+        "rvol": 1.4194437147407786,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2023-10-03",
+        "minute_of_day": 286,
+        "rvol": 1.3048439315629303,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2023-10-19",
+        "minute_of_day": 371,
+        "rvol": 1.4173681302589636,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2023-10-20",
+        "minute_of_day": 122,
+        "rvol": 1.337240673845926,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2023-10-25",
+        "minute_of_day": 192,
+        "rvol": 1.1760057351168003,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2023-10-26",
+        "minute_of_day": 156,
+        "rvol": 1.3695093950506056,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2024-03-08",
+        "minute_of_day": 208,
+        "rvol": 1.756159845769792,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": false
+      },
+      {
+        "date": "2024-04-15",
+        "minute_of_day": 228,
+        "rvol": 1.0598978627894702,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2024-04-17",
+        "minute_of_day": 154,
+        "rvol": 1.1438078713477735,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2024-04-19",
+        "minute_of_day": 157,
+        "rvol": 1.527449278586366,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2024-05-31",
+        "minute_of_day": 96,
+        "rvol": 1.4254414859181144,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2024-07-11",
+        "minute_of_day": 88,
+        "rvol": 1.6309380081485005,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": false
+      },
+      {
+        "date": "2024-07-17",
+        "minute_of_day": 389,
+        "rvol": 1.8246926187797983,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2024-07-18",
+        "minute_of_day": 104,
+        "rvol": 1.48466868213194,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2024-07-24",
+        "minute_of_day": 114,
+        "rvol": 1.4537643478441202,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2024-07-25",
+        "minute_of_day": 38,
+        "rvol": 2.0923252627729427,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2024-07-30",
+        "minute_of_day": 293,
+        "rvol": 1.000048782005768,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2024-08-01",
+        "minute_of_day": 98,
+        "rvol": 1.0602612963281364,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2024-08-02",
+        "minute_of_day": 42,
+        "rvol": 2.209767548397464,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2024-09-06",
+        "minute_of_day": 55,
+        "rvol": 1.352317228489156,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2024-09-11",
+        "minute_of_day": 60,
+        "rvol": 1.1566271966951658,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2024-10-01",
+        "minute_of_day": 39,
+        "rvol": 1.6659398925171687,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": false
+      },
+      {
+        "date": "2024-10-23",
+        "minute_of_day": 248,
+        "rvol": 1.2796394891894096,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2024-10-31",
+        "minute_of_day": 77,
+        "rvol": 1.483619103373421,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2024-11-15",
+        "minute_of_day": 156,
+        "rvol": 2.072607662598057,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2024-11-21",
+        "minute_of_day": 37,
+        "rvol": 1.5533558118609394,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": false
+      },
+      {
+        "date": "2024-12-18",
+        "minute_of_day": 364,
+        "rvol": 1.5010614697573863,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": false
+      },
+      {
+        "date": "2024-12-19",
+        "minute_of_day": 383,
+        "rvol": 1.7512617463947158,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2024-12-27",
+        "minute_of_day": 46,
+        "rvol": 1.443627705823186,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2025-01-02",
+        "minute_of_day": 190,
+        "rvol": 1.3577017065412984,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2025-01-07",
+        "minute_of_day": 67,
+        "rvol": 1.184518497970213,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2025-01-10",
+        "minute_of_day": 37,
+        "rvol": 1.6101518405116477,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2025-02-21",
+        "minute_of_day": 187,
+        "rvol": 1.5768720995244394,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": false
+      },
+      {
+        "date": "2025-02-24",
+        "minute_of_day": 37,
+        "rvol": 1.9072070345563892,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2025-02-25",
+        "minute_of_day": 48,
+        "rvol": 1.754029621743948,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2025-02-27",
+        "minute_of_day": 26,
+        "rvol": 1.701589127207175,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2025-03-03",
+        "minute_of_day": 217,
+        "rvol": 1.1109369577493646,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2025-03-06",
+        "minute_of_day": 288,
+        "rvol": 1.640429525271389,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2025-05-29",
+        "minute_of_day": 150,
+        "rvol": 1.5178666170365045,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": false
+      },
+      {
+        "date": "2025-07-31",
+        "minute_of_day": 285,
+        "rvol": 1.504143207566678,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": false
+      },
+      {
+        "date": "2025-08-20",
+        "minute_of_day": 38,
+        "rvol": 2.036609636022026,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2025-09-05",
+        "minute_of_day": 89,
+        "rvol": 1.8348118026742326,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": false
+      },
+      {
+        "date": "2025-10-10",
+        "minute_of_day": 116,
+        "rvol": 1.5006365781894773,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": false
+      },
+      {
+        "date": "2025-10-16",
+        "minute_of_day": 282,
+        "rvol": 1.2036837217726122,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2025-11-07",
+        "minute_of_day": 106,
+        "rvol": 1.4377212675134279,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2025-11-13",
+        "minute_of_day": 207,
+        "rvol": 1.1554904840541362,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2025-11-20",
+        "minute_of_day": 125,
+        "rvol": 1.5104180955690272,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2025-12-15",
+        "minute_of_day": 58,
+        "rvol": 1.0203891880255727,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2025-12-17",
+        "minute_of_day": 83,
+        "rvol": 1.0126007153545133,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2026-01-02",
+        "minute_of_day": 101,
+        "rvol": 1.6065209761868853,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2026-01-29",
+        "minute_of_day": 44,
+        "rvol": 1.5184686798844824,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": false
+      },
+      {
+        "date": "2026-02-03",
+        "minute_of_day": 32,
+        "rvol": 1.292239542914756,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2026-02-04",
+        "minute_of_day": 129,
+        "rvol": 1.3452189630228555,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2026-02-11",
+        "minute_of_day": 57,
+        "rvol": 1.054931405112873,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2026-02-12",
+        "minute_of_day": 91,
+        "rvol": 1.0027241091435941,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2026-02-26",
+        "minute_of_day": 46,
+        "rvol": 1.5700914537560395,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2026-06-05",
+        "minute_of_day": 129,
+        "rvol": 1.5789003450841999,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": false
+      },
+      {
+        "date": "2026-06-09",
+        "minute_of_day": 74,
+        "rvol": 1.2736958312943387,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2026-06-25",
+        "minute_of_day": 16,
+        "rvol": 1.1916392498864776,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2026-07-02",
+        "minute_of_day": 158,
+        "rvol": 1.0015291330269485,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2026-07-27",
+        "minute_of_day": 53,
+        "rvol": 1.096307971098905,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2026-07-29",
+        "minute_of_day": 70,
+        "rvol": 1.0015250127395983,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2026-07-31",
+        "minute_of_day": 37,
+        "rvol": 1.7270395041852504,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2026-10-14",
+        "minute_of_day": 260,
+        "rvol": 1.450588079354338,
+        "rearmed_by_volume": false,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2026-10-16",
+        "minute_of_day": 152,
+        "rvol": 1.77774220081708,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": true
+      },
+      {
+        "date": "2026-10-22",
+        "minute_of_day": 271,
+        "rvol": 1.6480734823416556,
+        "rearmed_by_volume": true,
+        "qqq_below_ma20_at_open": true
+      }
+    ]
+  },
+  "windows": {
+    "10y": {
+      "cagr": 0.6589821186742195,
+      "total_return": 141.8621779441734,
+      "max_drawdown": 0.4249192369203375,
+      "max_drawdown_daily_marks": 0.3943316632648389,
+      "sharpe": 1.3520559052793408,
+      "sortino": 1.9166522808895718,
+      "volatility": 0.4518749930065433,
+      "exposure": 0.9999989571873257,
+      "fills": 801,
+      "turnover": 27448.78578140044,
+      "ending_equity": 14286217.79441734,
+      "years": 9.80213134078637,
+      "yearly": {
+        "2017": {
+          "strategy": 1.431901003336471,
+          "benchmark": 1.1454004749279192
+        },
+        "2018": {
+          "strategy": -0.01935710375272004,
+          "benchmark": -0.20761930070677803
+        },
+        "2019": {
+          "strategy": 0.5719891178269412,
+          "benchmark": 1.4822913617582225
+        },
+        "2020": {
+          "strategy": 2.6784912271396033,
+          "benchmark": 1.041403713646452
+        },
+        "2021": {
+          "strategy": 0.44351400769759497,
+          "benchmark": 0.8105368933493498
+        },
+        "2022": {
+          "strategy": -0.17988557013464823,
+          "benchmark": -0.7938942799960799
+        },
+        "2023": {
+          "strategy": 1.4630196399965794,
+          "benchmark": 1.9204706377461225
+        },
+        "2024": {
+          "strategy": 0.6687533091509568,
+          "benchmark": 0.6242856987415559
+        },
+        "2025": {
+          "strategy": 0.5651602240778326,
+          "benchmark": 0.32102763513768995
+        },
+        "2026": {
+          "strategy": 0.24398937411481958,
+          "benchmark": 0.22620776845743662
+        }
+      },
+      "benchmark": {
+        "cagr": 0.3937769088546701,
+        "total_return": 24.90605739927442,
+        "max_drawdown": 0.8229021592363336,
+        "volatility": 0.6660830006628599,
+        "sharpe": 0.8363742587502527,
+        "ending_equity": 2590605.739927442,
+        "years": 9.80213134078637
+      }
+    },
+    "5y": {
+      "cagr": 0.531655374406959,
+      "total_return": 7.410108878589934,
+      "max_drawdown": 0.2864018832745261,
+      "max_drawdown_daily_marks": 0.28203453174828774,
+      "sharpe": 1.2083845135150275,
+      "sortino": 1.71782215040659,
+      "volatility": 0.43264763510673787,
+      "exposure": 0.999997949382559,
+      "fills": 361,
+      "turnover": 1463.890732014237,
+      "ending_equity": 841010.8878589934,
+      "years": 4.994579435698532,
+      "yearly": {
+        "2021": {
+          "strategy": 0.23430055966736707,
+          "benchmark": 0.1602012789583116
+        },
+        "2022": {
+          "strategy": -0.17988557013464845,
+          "benchmark": -0.7938942799960799
+        },
+        "2023": {
+          "strategy": 1.4630196399965794,
+          "benchmark": 1.9204706377461225
+        },
+        "2024": {
+          "strategy": 0.668753309150959,
+          "benchmark": 0.6242856987415559
+        },
+        "2025": {
+          "strategy": 0.565160224077832,
+          "benchmark": 0.32102763513768995
+        },
+        "2026": {
+          "strategy": 0.2439893741148189,
+          "benchmark": 0.22620776845743662
+        }
+      },
+      "benchmark": {
+        "cagr": 0.14290446062165096,
+        "total_return": 0.9486560583739754,
+        "max_drawdown": 0.8229021592363336,
+        "volatility": 0.6689740298239589,
+        "sharpe": 0.5356891786075214,
+        "ending_equity": 194865.60583739757,
+        "years": 4.994579435698532
+      }
+    }
+  },
+  "winner_reference": {
+    "10y": {
+      "cagr": 0.5879785880913142,
+      "max_drawdown": 0.44564680498822296,
+      "max_drawdown_daily_marks": 0.41616169563979055,
+      "sharpe": 1.2388753897227764,
+      "fills": 657,
+      "turnover": 17331.307700635232
+    },
+    "5y": {
+      "cagr": 0.4988453970770166,
+      "max_drawdown": 0.33491479661131085,
+      "max_drawdown_daily_marks": 0.3308443530240621,
+      "sharpe": 1.1559674953958763,
+      "fills": 337,
+      "turnover": 1295.0482452291587
+    }
+  },
+  "cost_sensitivity": {
+    "1bp": {
+      "10y": {
+        "cagr": 0.6589821186742195,
+        "max_drawdown": 0.4249192369203375,
+        "sharpe": 1.3520559052793408,
+        "fills": 801,
+        "turnover": 27448.78578140044
+      },
+      "5y": {
+        "cagr": 0.531655374406959,
+        "max_drawdown": 0.2864018832745261,
+        "sharpe": 1.2083845135150275,
+        "fills": 361,
+        "turnover": 1463.890732014237
+      }
+    },
+    "5bp": {
+      "10y": {
+        "cagr": 0.6056320391508208,
+        "max_drawdown": 0.454495811779566,
+        "sharpe": 1.2793477944984786,
+        "fills": 801,
+        "turnover": 21250.852924276376
+      },
+      "5y": {
+        "cagr": 0.4880071960601904,
+        "max_drawdown": 0.29351705395510264,
+        "sharpe": 1.1410361803950733,
+        "fills": 361,
+        "turnover": 1331.1910806534981
+      }
+    },
+    "10bp": {
+      "10y": {
+        "cagr": 0.5413505713357512,
+        "max_drawdown": 0.4893367124670567,
+        "sharpe": 1.1883400003530786,
+        "fills": 801,
+        "turnover": 15511.66984408826
+      },
+      "5y": {
+        "cagr": 0.4351920134074143,
+        "max_drawdown": 0.3026418975849907,
+        "sharpe": 1.0567652148512061,
+        "fills": 361,
+        "turnover": 1184.3430300721138
+      }
+    }
+  },
+  "ablation": {
+    "volume_floor_only": {
+      "10y": {
+        "cagr": 0.5769640003448957,
+        "max_drawdown": 0.42862341303635654,
+        "fills": 617
+      },
+      "5y": {
+        "cagr": 0.5178623121270434,
+        "max_drawdown": 0.299124578950439,
+        "fills": 309
+      }
+    },
+    "high_volume_rearm_only": {
+      "10y": {
+        "cagr": 0.670569576670649,
+        "max_drawdown": 0.4420529897853397,
+        "fills": 841
+      },
+      "5y": {
+        "cagr": 0.512465649549638,
+        "max_drawdown": 0.33491479661131096,
+        "fills": 389
+      }
+    },
+    "neither_round1_winner": {
+      "10y": {
+        "cagr": 0.5879785880913142,
+        "max_drawdown": 0.44564680498822296,
+        "fills": 657
+      },
+      "5y": {
+        "cagr": 0.4988453970770166,
+        "max_drawdown": 0.33491479661131085,
+        "fills": 337
+      }
+    }
+  },
+  "rolling_3y": {
+    "candidate": [
+      {
+        "start": "2017-01-03",
+        "end": "2020-01-03",
+        "cagr": 0.5693560085021128,
+        "dd": 0.4249192369203375,
+        "bench_cagr": 0.5985739793609453,
+        "bench_dd": 0.5936067465643124
+      },
+      {
+        "start": "2017-04-03",
+        "end": "2020-04-03",
+        "cagr": 0.42091223540758715,
+        "dd": 0.4249192369203375,
+        "bench_cagr": 0.14110824522007714,
+        "bench_dd": 0.727425881325032
+      },
+      {
+        "start": "2017-07-03",
+        "end": "2020-07-03",
+        "cagr": 0.5607254481057267,
+        "dd": 0.4249192369203375,
+        "bench_cagr": 0.4615161234700724,
+        "bench_dd": 0.727425881325032
+      },
+      {
+        "start": "2017-10-03",
+        "end": "2020-10-03",
+        "cagr": 0.719958847033213,
+        "dd": 0.4249192369203375,
+        "bench_cagr": 0.48776150010339325,
+        "bench_dd": 0.727425881325032
+      },
+      {
+        "start": "2018-01-03",
+        "end": "2021-01-03",
+        "cagr": 0.7780578921134007,
+        "dd": 0.4249192369203375,
+        "bench_cagr": 0.5513740813781094,
+        "bench_dd": 0.727425881325032
+      },
+      {
+        "start": "2018-04-03",
+        "end": "2021-04-03",
+        "cagr": 0.6948445239218428,
+        "dd": 0.41591011082051677,
+        "bench_cagr": 0.6236496536771201,
+        "bench_dd": 0.727425881325032
+      },
+      {
+        "start": "2018-07-03",
+        "end": "2021-07-03",
+        "cagr": 0.7814324349809649,
+        "dd": 0.41591011082051677,
+        "bench_cagr": 0.6280497653971755,
+        "bench_dd": 0.727425881325032
+      },
+      {
+        "start": "2018-10-03",
+        "end": "2021-10-03",
+        "cagr": 0.6672336619312171,
+        "dd": 0.41591011082051677,
+        "bench_cagr": 0.5225686721994853,
+        "bench_dd": 0.727425881325032
+      },
+      {
+        "start": "2019-01-03",
+        "end": "2022-01-03",
+        "cagr": 1.0639341146162447,
+        "dd": 0.41591011082051677,
+        "bench_cagr": 1.1045228824267803,
+        "bench_dd": 0.727425881325032
+      },
+      {
+        "start": "2019-04-03",
+        "end": "2022-04-03",
+        "cagr": 0.867056139095326,
+        "dd": 0.41591011082051677,
+        "bench_cagr": 0.5668424190532622,
+        "bench_dd": 0.727425881325032
+      },
+      {
+        "start": "2019-07-03",
+        "end": "2022-07-03",
+        "cagr": 0.8734494303364946,
+        "dd": 0.41591011082051677,
+        "bench_cagr": 0.14336270598844303,
+        "bench_dd": 0.7667642956522223
+      },
+      {
+        "start": "2019-10-03",
+        "end": "2022-10-03",
+        "cagr": 0.9298887094566575,
+        "dd": 0.41591011082051677,
+        "bench_cagr": 0.11640419169055072,
+        "bench_dd": 0.7890594919984255
+      },
+      {
+        "start": "2020-01-03",
+        "end": "2023-01-03",
+        "cagr": 0.6536381650862697,
+        "dd": 0.41591011082051677,
+        "bench_cagr": -0.0684610717055879,
+        "bench_dd": 0.8229021592363336
+      },
+      {
+        "start": "2020-04-03",
+        "end": "2023-04-03",
+        "cagr": 0.772770252885421,
+        "dd": 0.41591011082051677,
+        "bench_cagr": 0.3665895375543833,
+        "bench_dd": 0.8229021592363336
+      },
+      {
+        "start": "2020-07-03",
+        "end": "2023-07-03",
+        "cagr": 0.6933131510347585,
+        "dd": 0.41591011082051677,
+        "bench_cagr": 0.15844698092665355,
+        "bench_dd": 0.8229021592363336
+      },
+      {
+        "start": "2020-10-03",
+        "end": "2023-10-03",
+        "cagr": 0.44084438176229956,
+        "dd": 0.41591011082051677,
+        "bench_cagr": 0.04230864429002068,
+        "bench_dd": 0.8229021592363336
+      },
+      {
+        "start": "2021-01-03",
+        "end": "2024-01-03",
+        "cagr": 0.40326071788535445,
+        "dd": 0.41591011082051677,
+        "bench_cagr": 0.017484150200689053,
+        "bench_dd": 0.8229021592363336
+      },
+      {
+        "start": "2021-04-03",
+        "end": "2024-04-03",
+        "cagr": 0.6315705065661774,
+        "dd": 0.27468631717851033,
+        "bench_cagr": 0.07465766228877713,
+        "bench_dd": 0.8229021592363336
+      },
+      {
+        "start": "2021-07-03",
+        "end": "2024-07-03",
+        "cagr": 0.6058590072413172,
+        "dd": 0.27468631717851033,
+        "bench_cagr": 0.07527620799398638,
+        "bench_dd": 0.8229021592363336
+      },
+      {
+        "start": "2021-10-03",
+        "end": "2024-10-03",
+        "cagr": 0.6046589495503236,
+        "dd": 0.2861312911567184,
+        "bench_cagr": 0.04428610150408674,
+        "bench_dd": 0.8229021592363336
+      },
+      {
+        "start": "2022-01-03",
+        "end": "2025-01-03",
+        "cagr": 0.47449580572383065,
+        "dd": 0.2861312911567184,
+        "bench_cagr": -0.004774685638554876,
+        "bench_dd": 0.8110481640795589
+      },
+      {
+        "start": "2022-04-03",
+        "end": "2025-04-03",
+        "cagr": 0.5760779436236243,
+        "dd": 0.2861312911567184,
+        "bench_cagr": -0.018875430481541167,
+        "bench_dd": 0.7365273934379706
+      },
+      {
+        "start": "2022-07-03",
+        "end": "2025-07-03",
+        "cagr": 0.7045481001658698,
+        "dd": 0.2861312911567184,
+        "bench_cagr": 0.5562027916109908,
+        "bench_dd": 0.6220535108154731
+      },
+      {
+        "start": "2022-10-03",
+        "end": "2025-10-03",
+        "cagr": 0.8567439076415408,
+        "dd": 0.2861312911567184,
+        "bench_cagr": 0.7777634612501882,
+        "bench_dd": 0.6220535108154731
+      },
+      {
+        "start": "2023-01-03",
+        "end": "2026-01-03",
+        "cagr": 0.8452746103974698,
+        "dd": 0.2861312911567184,
+        "bench_cagr": 0.8341422108747734,
+        "bench_dd": 0.6220535108154731
+      },
+      {
+        "start": "2023-04-03",
+        "end": "2026-04-03",
+        "cagr": 0.634182149473091,
+        "dd": 0.2861312911567184,
+        "bench_cagr": 0.4813592593435212,
+        "bench_dd": 0.6220535108154731
+      },
+      {
+        "start": "2023-07-03",
+        "end": "2026-07-03",
+        "cagr": 0.7106361215927595,
+        "dd": 0.2861312911567184,
+        "bench_cagr": 0.5463175615584399,
+        "bench_dd": 0.6220535108154731
+      },
+      {
+        "start": "2023-10-03",
+        "end": "2026-10-03",
+        "cagr": 0.7644898084053806,
+        "dd": 0.2864018832745261,
+        "bench_cagr": 0.6715241429135674,
+        "bench_dd": 0.6220535108154731
+      }
+    ],
+    "winner": [
+      {
+        "start": "2017-01-03",
+        "end": "2020-01-03",
+        "cagr": 0.49657084260073026,
+        "dd": 0.44564680498822296,
+        "bench_cagr": 0.5985739793609453,
+        "bench_dd": 0.5936067465643124
+      },
+      {
+        "start": "2017-04-03",
+        "end": "2020-04-03",
+        "cagr": 0.2878708761658808,
+        "dd": 0.44564680498822296,
+        "bench_cagr": 0.14110824522007714,
+        "bench_dd": 0.727425881325032
+      },
+      {
+        "start": "2017-07-03",
+        "end": "2020-07-03",
+        "cagr": 0.4905374011187742,
+        "dd": 0.44564680498822296,
+        "bench_cagr": 0.4615161234700724,
+        "bench_dd": 0.727425881325032
+      },
+      {
+        "start": "2017-10-03",
+        "end": "2020-10-03",
+        "cagr": 0.6214690615503873,
+        "dd": 0.44564680498822296,
+        "bench_cagr": 0.48776150010339325,
+        "bench_dd": 0.727425881325032
+      },
+      {
+        "start": "2018-01-03",
+        "end": "2021-01-03",
+        "cagr": 0.6108830480365741,
+        "dd": 0.44564680498822296,
+        "bench_cagr": 0.5513740813781094,
+        "bench_dd": 0.727425881325032
+      },
+      {
+        "start": "2018-04-03",
+        "end": "2021-04-03",
+        "cagr": 0.5277081931778789,
+        "dd": 0.41499296600808533,
+        "bench_cagr": 0.6236496536771201,
+        "bench_dd": 0.727425881325032
+      },
+      {
+        "start": "2018-07-03",
+        "end": "2021-07-03",
+        "cagr": 0.6221865399559972,
+        "dd": 0.41499296600808533,
+        "bench_cagr": 0.6280497653971755,
+        "bench_dd": 0.727425881325032
+      },
+      {
+        "start": "2018-10-03",
+        "end": "2021-10-03",
+        "cagr": 0.5383553160864432,
+        "dd": 0.41499296600808533,
+        "bench_cagr": 0.5225686721994853,
+        "bench_dd": 0.727425881325032
+      },
+      {
+        "start": "2019-01-03",
+        "end": "2022-01-03",
+        "cagr": 0.9225142838130587,
+        "dd": 0.41499296600808533,
+        "bench_cagr": 1.1045228824267803,
+        "bench_dd": 0.727425881325032
+      },
+      {
+        "start": "2019-04-03",
+        "end": "2022-04-03",
+        "cagr": 0.7535226637727528,
+        "dd": 0.41499296600808533,
+        "bench_cagr": 0.5668424190532622,
+        "bench_dd": 0.727425881325032
+      },
+      {
+        "start": "2019-07-03",
+        "end": "2022-07-03",
+        "cagr": 0.7595271865360163,
+        "dd": 0.41499296600808533,
+        "bench_cagr": 0.14336270598844303,
+        "bench_dd": 0.7667642956522223
+      },
+      {
+        "start": "2019-10-03",
+        "end": "2022-10-03",
+        "cagr": 0.8127139442869626,
+        "dd": 0.41499296600808533,
+        "bench_cagr": 0.11640419169055072,
+        "bench_dd": 0.7890594919984255
+      },
+      {
+        "start": "2020-01-03",
+        "end": "2023-01-03",
+        "cagr": 0.5718158287629969,
+        "dd": 0.41499296600808533,
+        "bench_cagr": -0.0684610717055879,
+        "bench_dd": 0.8229021592363336
+      },
+      {
+        "start": "2020-04-03",
+        "end": "2023-04-03",
+        "cagr": 0.7806649787337783,
+        "dd": 0.41499296600808533,
+        "bench_cagr": 0.3665895375543833,
+        "bench_dd": 0.8229021592363336
+      },
+      {
+        "start": "2020-07-03",
+        "end": "2023-07-03",
+        "cagr": 0.66081069391198,
+        "dd": 0.41499296600808533,
+        "bench_cagr": 0.15844698092665355,
+        "bench_dd": 0.8229021592363336
+      },
+      {
+        "start": "2020-10-03",
+        "end": "2023-10-03",
+        "cagr": 0.4421137670222832,
+        "dd": 0.41499296600808533,
+        "bench_cagr": 0.04230864429002068,
+        "bench_dd": 0.8229021592363336
+      },
+      {
+        "start": "2021-01-03",
+        "end": "2024-01-03",
+        "cagr": 0.4595489212435573,
+        "dd": 0.41499296600808533,
+        "bench_cagr": 0.017484150200689053,
+        "bench_dd": 0.8229021592363336
+      },
+      {
+        "start": "2021-04-03",
+        "end": "2024-04-03",
+        "cagr": 0.6779000777524908,
+        "dd": 0.2664320887959122,
+        "bench_cagr": 0.07465766228877713,
+        "bench_dd": 0.8229021592363336
+      },
+      {
+        "start": "2021-07-03",
+        "end": "2024-07-03",
+        "cagr": 0.6464381993506476,
+        "dd": 0.2664320887959122,
+        "bench_cagr": 0.07527620799398638,
+        "bench_dd": 0.8229021592363336
+      },
+      {
+        "start": "2021-10-03",
+        "end": "2024-10-03",
+        "cagr": 0.6127889405093154,
+        "dd": 0.2943099668377178,
+        "bench_cagr": 0.04428610150408674,
+        "bench_dd": 0.8229021592363336
+      },
+      {
+        "start": "2022-01-03",
+        "end": "2025-01-03",
+        "cagr": 0.4831344981591623,
+        "dd": 0.2943099668377178,
+        "bench_cagr": -0.004774685638554876,
+        "bench_dd": 0.8110481640795589
+      },
+      {
+        "start": "2022-04-03",
+        "end": "2025-04-03",
+        "cagr": 0.543058327881436,
+        "dd": 0.2943099668377178,
+        "bench_cagr": -0.018875430481541167,
+        "bench_dd": 0.7365273934379706
+      },
+      {
+        "start": "2022-07-03",
+        "end": "2025-07-03",
+        "cagr": 0.6719677667247421,
+        "dd": 0.2943099668377178,
+        "bench_cagr": 0.5562027916109908,
+        "bench_dd": 0.6220535108154731
+      },
+      {
+        "start": "2022-10-03",
+        "end": "2025-10-03",
+        "cagr": 0.8171275308952644,
+        "dd": 0.2943099668377178,
+        "bench_cagr": 0.7777634612501882,
+        "bench_dd": 0.6220535108154731
+      },
+      {
+        "start": "2023-01-03",
+        "end": "2026-01-03",
+        "cagr": 0.8022628557873579,
+        "dd": 0.2943099668377178,
+        "bench_cagr": 0.8341422108747734,
+        "bench_dd": 0.6220535108154731
+      },
+      {
+        "start": "2023-04-03",
+        "end": "2026-04-03",
+        "cagr": 0.6073759945898054,
+        "dd": 0.2943099668377178,
+        "bench_cagr": 0.4813592593435212,
+        "bench_dd": 0.6220535108154731
+      },
+      {
+        "start": "2023-07-03",
+        "end": "2026-07-03",
+        "cagr": 0.6337288953010518,
+        "dd": 0.2943099668377178,
+        "bench_cagr": 0.5463175615584399,
+        "bench_dd": 0.6220535108154731
+      },
+      {
+        "start": "2023-10-03",
+        "end": "2026-10-03",
+        "cagr": 0.6811026496959611,
+        "dd": 0.33491479661131085,
+        "bench_cagr": 0.6715241429135674,
+        "bench_dd": 0.6220535108154731
+      }
+    ],
+    "summary": {
+      "n": 28,
+      "beat_tqqq_cagr": 26,
+      "lower_dd_than_tqqq": 28,
+      "beat_winner_cagr": 21,
+      "lower_dd_than_winner": 14
+    }
+  },
+  "negative_tests": {
+    "1m_clv_flow_vs_next30m_corr": -0.0101,
+    "1m_vwap_dev_vs_next30m_corr": -0.0088,
+    "1m_cum_rvol_vs_next30m_corr": -0.0468,
+    "5m_cum_flow_vs_next30m_corr": 0.0011,
+    "5m_vwap_dev_vs_next30m_corr": 0.007,
+    "5m_cum_rvol_vs_next30m_corr": 0.0061,
+    "first30_return_vs_last30_corr": 0.022,
+    "overnight_gate_rvol1.5_10y": [
+      0.5735,
+      0.4452
+    ],
+    "overnight_gate_rvol1.5_5y": [
+      0.4108,
+      0.3614
+    ],
+    "volume_confirmed_regime_exit_10y": [
+      0.5118,
+      0.523
+    ],
+    "distribution_day_overlay_10y": [
+      0.0914,
+      0.3823
+    ],
+    "vwap165_regime_10y": [
+      0.4708,
+      0.5803
+    ],
+    "note": "all rejected; see report.md section 7"
+  },
+  "pass_vs_tqqq": {
+    "10y": true,
+    "5y": true
+  },
+  "pass_vs_winner_strict_dominance": {
+    "10y": true,
+    "5y": true
+  },
+  "single_event_sensitivity": {
+    "note": "re-enabling the 2026-06-24 stop (rvol 0.87, suppressed by the floor)",
+    "10y": {
+      "cagr": 0.6454064846502015,
+      "max_drawdown": 0.4249192369203375
+    },
+    "5y": {
+      "cagr": 0.5071541879494834,
+      "max_drawdown": 0.34162279623663494
+    }
+  }
+}

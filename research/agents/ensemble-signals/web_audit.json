@@ -1,0 +1,189 @@
+{
+  "slug": "ensemble-signals",
+  "name": "Ensemble crash vote",
+  "tagline": "Trend gate + volatility budget + a same-session crash vote.",
+  "summary": "A daily QQQ trend gate and a 20-day realised-volatility budget decide the session default: TQQQ when QQQ is above its 165-day SMA and vol is at most 1/3, otherwise BIL. While in TQQQ, a same-session vote from a 60-minute EMA, 30-minute momentum and RSI(14) can cut exposure to BIL for the rest of the day. The only asset actually held in the primary configuration is TQQQ or BIL; QQQ is the tested de-lever alternative.",
+  "decision_process": "At 09:30 ET the session default comes from the prior completed daily close: QQQ above its 165-day SMA and 20-day annualised realised vol at most 1/3 -> 100% TQQQ; otherwise 100% BIL. While the session default is TQQQ, each minute computes three votes: the 60-minute EMA vote is risk-off when QQQ is below it, the 30-minute momentum vote is risk-off when the 30-minute return is negative, and the RSI(14) vote is risk-on when RSI is below 30 (oversold) and risk-off otherwise. If QQQ is at least 3% below the prior close and the vote sum is at most -2, the target becomes BIL at that bar's close and fills at the next minute's open; it stays BIL for the rest of the session. At 15:59 the next session's open is reset from that day's completed close (SMA and vol). All fills are next-bar open; signals use only data through the current bar. The crash exit does not persist overnight; the next session is governed by the daily layer.",
+  "rules": [
+    "Daily trend gate: prior completed QQQ close above its 165-day SMA -> risk-on; otherwise 100% BIL.",
+    "Volatility budget: risk-on and 20-day annualised QQQ realised vol at most 1/3 -> 100% TQQQ; vol above 1/3 -> 100% BIL in the primary BIL configuration.",
+    "Intraday trend vote: QQQ below its 60-minute EMA is a risk-off vote; above it is risk-on.",
+    "Intraday momentum vote: 30-minute QQQ return below zero is a risk-off vote; at or above zero is risk-on.",
+    "Mean-reversion vote: 1-minute RSI(14) below 30 is a risk-on vote (do not sell a panic low); RSI at or above 30 is risk-off.",
+    "Crash exit: while in TQQQ, if QQQ is at least 3% below the prior close and the three-vote sum is at most -2, sell to BIL at the next minute's open and stay BIL for the rest of the session.",
+    "Next-session reset: at the 15:59 close the next open is set from that day's trend gate and vol budget; re-enter TQQQ only if both allow it.",
+    "Execution: long-only, one position at a time, 0/1 weights, next-bar-open fills, 2% rebalance band, 1 bp primary cost and 5 bp sensitivity."
+  ],
+  "status": "Verified",
+  "metrics": {
+    "cagr10": 0.5473,
+    "dd10": 0.3991,
+    "cagr5": 0.4079,
+    "dd5": 0.3493,
+    "cagr10_5bp": 0.5332,
+    "dd10_5bp": 0.4048,
+    "cagr5_5bp": 0.3979,
+    "dd5_5bp": 0.3493
+  },
+  "verdict": "Passes vs TQQQ on both windows and at 5 bp: 54.73% / 39.91% (10y) and 40.79% / 34.93% (5y) at 1 bp, with Sharpe 1.19 / 0.99 and 225 / 89 fills. It also beats the daily SMA-165 baseline (+9.42 pp CAGR and -18.80 pp DD over 10y; +6.18 pp and -1.93 pp over 5y on 1-minute marks, -3.62 pp on daily closes). Main caveat: the 5-year drawdown margin over the daily baseline is thin on 1-minute marks, the edge is concentrated in high-volatility crash years, and it is not the leader (ratio-pairs is 69.50% / 39.11% 10y and 63.74% / 26.85% 5y).",
+  "sources": [
+    {
+      "idea": "Daily trend gate: own QQQ above its long moving average, T-bills below it.",
+      "source": "Faber (2007), A Quantitative Approach to Tactical Asset Allocation",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=962461",
+      "source_type": "paper",
+      "role": "inspired rule",
+      "evidence": "The 10-month SMA rule: hold the asset above its average, sit in T-bills below it. The strategy adapts this shape to a 165-day QQQ SMA. The exact 165-day parameter is the repo's live baseline, not Faber's 10-month lookback.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Leveraged trend with a T-bill fallback; volatility is the enemy of a 3x daily-reset fund.",
+      "source": "Gayed & Bilello (2016), Leverage for the Long Run",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2741701",
+      "source_type": "paper",
+      "role": "inspired rule",
+      "evidence": "Holds leveraged equity while the index is above its long average and moves to T-bills below it; the paper's central point is that lower forward volatility in trend regimes is what makes leverage survivable. The strategy uses the same trend/T-bill shape with TQQQ and BIL.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Volatility budget: reduce exposure when trailing realised volatility is high.",
+      "source": "Moreira & Muir (2017), Volatility-Managed Portfolios",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2659431",
+      "source_type": "paper",
+      "role": "inspired rule",
+      "evidence": "Scales exposure by trailing realised variance rather than holding fixed leverage. The strategy uses a binary version: 20-day annualised QQQ vol at most 1/3 -> TQQQ, above -> BIL. The exact 20-day/1/3 calibration is an own test, not the paper's parameterisation.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Volatility-targeted trend following as a risk-managed way to hold a leveraged index.",
+      "source": "Zarattini & Antonacci (2024), A Century of Profitable Industry Trends",
+      "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4857230",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Per-asset volatility targeting with trend filters across a century of industry portfolios; supports the general combination of trend and volatility sizing. It does not test a binary 1/3 vol cutoff on TQQQ.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Trend following works at slow horizons; mean reversion works at fast horizons. This motivates a daily trend gate plus an intraday mean-reversion veto rather than intraday trend following.",
+      "source": "Hudson, McGroarty & Urquhart (2017), Sampling frequency and the performance of different types of technical trading rules",
+      "url": "https://www.sciencedirect.com/science/article/abs/pii/S1544612316303026",
+      "source_type": "paper",
+      "role": "inspired rule",
+      "evidence": "The abstract reports that mean-reversion rules perform increasingly better as sampling frequency rises, while trend-following performance deteriorates at higher frequencies. The strategy uses 1-minute RSI only as an oversold veto and keeps the trend signal daily. Correct citation: Hudson, McGroarty & Urquhart (2017), Finance Research Letters 22, 136-139. The report currently misattributes this paper to Marshall, Nguyen & Visaltanachoti.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Oversold mean-reversion veto: do not sell a panic low when 1-minute RSI is deeply oversold.",
+      "source": "Connors & Alvarez (2008), Short Term Trading Strategies That Work",
+      "url": "https://www.amazon.com/Short-Term-Trading-Strategies-That-Work/dp/0071609174",
+      "source_type": "book",
+      "role": "inspired rule",
+      "evidence": "The RSI(2) oversold pullback rule in an uptrend is the ancestor of the veto. The strategy uses 1-minute RSI(14) below 30 as a risk-on vote; the exact 14/30 choice is an own test, and the book's RSI(2)/5 threshold is not copied literally.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Ensembles of trend signals can improve risk-adjusted returns and drawdowns, but a simple long-lookback momentum rule often has the highest return.",
+      "source": "Book & Gnem (2021), Ensemble Models for Trend Investing (KTH thesis)",
+      "url": "https://www.diva-portal.org/smash/get/diva2:1663269/FULLTEXT01.pdf",
+      "source_type": "report",
+      "role": "supports assumption",
+      "evidence": "The thesis tests ensemble models for trend investing and finds they improve risk-adjusted performance and drawdowns, while the simple 9-month momentum rule has the highest risk-adjusted return. This supports using the fast signals for risk control, not as a return engine.",
+      "confidence": "medium"
+    },
+    {
+      "idea": "Published trend results degrade under robust walk-forward testing; do not overread the headline.",
+      "source": "Massaad et al. (2024), Refining and Robust Backtesting of A Century of Profitable Industry Trends",
+      "url": "https://arxiv.org/abs/2412.14361",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Re-runs the Zarattini/Antonacci century-of-trend rules with walk-forward analysis and alternative fallbacks and reports persistent challenges. Used as a caution, not as a rule source.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Time-series momentum / trend as a persistent asset-class effect.",
+      "source": "Moskowitz, Ooi & Pedersen (2012), Time Series Momentum",
+      "url": "https://doi.org/10.1016/j.jfineco.2011.11.003",
+      "source_type": "paper",
+      "role": "supports assumption",
+      "evidence": "Documents time-series momentum across futures and asset classes; the daily QQQ SMA gate is a simple TSMOM cousin. Not used to calibrate the 165-day or 1/3 thresholds.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Exact 165-day SMA baseline and the daily QQQ -> TQQQ/BIL rule.",
+      "source": "quant-trader-research README / live nasdaq_leveraged_trend preset (local)",
+      "url": null,
+      "source_type": "report",
+      "role": "inspired rule",
+      "evidence": "README gives the daily baseline: QQQ above 165-day SMA -> 100% TQQQ, below -> BIL, 2% band, next-open fills; baseline 45.31%/58.71% over 10y and 34.61%/36.86% over 5y. The 165-day parameter comes from this repo preset, not from Faber's 10-month rule.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Exact 20-day vol lookback, 1/3 vol threshold, 3% crash threshold, RSI(14)/30, and BIL high-vol fallback.",
+      "source": "Own test / no external source",
+      "url": null,
+      "source_type": "data",
+      "role": "inspired rule",
+      "evidence": "Chosen from parameter plateaus in result.json: vol max 30-40% at 3% crash all beat the daily baseline; crash 2.5-3.0% works, 3.5%+ degrades 5y; RSI floor 20/30/40 is flat; BIL fallback beats the QQQ fallback. These are calibrated on the same 2017-2026 sample, so they are in-sample choices, not external prescriptions.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Benchmark and cost model: next-bar-open fills, 1 bp default, 5 bp sensitivity, 2% rebalance band.",
+      "source": "research/bt.py and research/README.md (local harness)",
+      "url": null,
+      "source_type": "data",
+      "role": "benchmark",
+      "evidence": "All results use bt.panel/bt.run/bt.stats; fills are next-bar open; slippage is charged on traded notional; 1 bp is the primary case and 5 bp is reported. The 2% band is an execution detail and has no effect on 0/1 fully invested weights.",
+      "confidence": "high"
+    },
+    {
+      "idea": "Data: adjusted 1-minute QQQ/TQQQ/BIL, regular session, 2016-2026.",
+      "source": "data/intraday-hf (local adjusted 1-minute archive)",
+      "url": null,
+      "source_type": "data",
+      "role": "benchmark",
+      "evidence": "The panel starts 2016-01-04 (500-day warmup) and ends 2026-10-23; QQQ is the calendar, TQQQ/BIL are forward-filled; BIL's 2017 reverse split is handled by the harness. No new downloads were used.",
+      "confidence": "high"
+    }
+  ],
+  "rejected_sources": [
+    {
+      "source": "Gao, Han, Li & Zhou (2018), Market Intraday Momentum",
+      "url": "https://doi.org/10.1016/j.jfineco.2018.05.009",
+      "why_rejected": "Listed on the current web page but not used to build this rule. It documents last-half-hour intraday momentum; our own test of 30-minute QQQ momentum found no standalone edge (down states had slightly higher forward 30-minute returns), so the signal is only a crash confirmation. Mark as context/tested-only, not an inspired rule."
+    },
+    {
+      "source": "Lou, Polk & Skouras (2019), A Tug of War: Overnight versus Intraday Expected Returns",
+      "url": "https://doi.org/10.1016/j.jfineco.2019.03.011",
+      "why_rejected": "Listed on the current web page but not used. The strategy holds TQQQ overnight and does not trade the overnight/intraday return split; the paper is not a source of any rule."
+    },
+    {
+      "source": "Cederburg, O'Doherty, Wang & Yan (2020), On the performance of volatility-managed portfolios",
+      "url": "https://www.lehigh.edu/~xuy219/research/COWY.pdf",
+      "why_rejected": "Counter-evidence, not a rule source: across 103 equity strategies, volatility management does not systematically beat unmanaged portfolios out of sample. It is retained as a caveat on the vol-budget interpretation, not used to calibrate it."
+    },
+    {
+      "source": "Own test / no external source - QQQ high-vol fallback",
+      "url": null,
+      "why_rejected": "Tested as the high-vol asset: 52.89%/41.48% over 10y and 39.80%/34.93% over 5y at 1 bp. It still passes vs TQQQ but is 1.8 pp / 1.0 pp lower CAGR than the BIL fallback with a 1.6 pp higher 10y DD, so BIL is used."
+    },
+    {
+      "source": "Own test / no external source - standalone 1-minute EMA/momentum",
+      "url": null,
+      "why_rejected": "Forward 30-minute QQQ returns were +0.0053% when above the 60-minute EMA versus +0.0078% below it, and +0.0057% when 30-minute momentum was positive versus +0.0073% when negative. The down states were slightly better, so trading 1-minute trend/momentum directly would pay costs for no edge. They are used only as crash confirmations."
+    }
+  ],
+  "corrections": [
+    "Most important citation fix: the sampling-frequency paper is Hudson, McGroarty & Urquhart (2017), Finance Research Letters 22, 136-139, not Marshall, Nguyen & Visaltanachoti. Correct report.md sections 2 and 10 and any web source label.",
+    "The current web page's paper list over-attributes two sources: Gao, Han, Li & Zhou (2018) and Lou, Polk & Skouras (2019) were not used to build this strategy. Gao was only context for intraday momentum, which failed as a standalone signal; Lou was not used at all. Remove them or mark them 'tested only/context'.",
+    "Add Connors & Alvarez (2008), Short Term Trading Strategies That Work, as the inspiration for the RSI(14)<30 oversold veto; the page currently omits the actual source of the mean-reversion vote.",
+    "Replace the generic paper labels 'link', 'SSRN 2741701', 'arXiv 2412.14361', and 'PDF' with proper citations and titles: Hudson, McGroarty & Urquhart (2017); Gayed & Bilello (2016); Massaad et al. (2024); Book & Gnem (2021).",
+    "Expand the rules array: it currently has only three lines and omits the three vote components (60-minute EMA, 30-minute momentum, RSI(14)<30), the RSI veto direction, the 'BIL for the rest of the session' hold, and the next-session reset.",
+    "Make the decision timing explicit: the session default uses the prior completed daily close; the 15:59 close sets the next session's open; the crash vote fills at the next minute's open; the crash exit lasts only for the rest of the session. 'A position is held until a later check changes it' is ambiguous.",
+    "Label the headline metrics as 1 bp and add the 5 bp case: 10y 53.32% CAGR / 40.48% DD, 5y 39.79% / 34.93%. The current page shows only the 1 bp numbers without a cost label.",
+    "Label the DD convention: the page's 39.91%/34.93% are 1-minute mark DDs, while the daily baseline's 58.71%/36.86% are daily-close DDs. On daily closes this strategy is 38.33%/33.24%; the 5y DD margin vs the baseline is 1.9 pp on 1-minute marks but 3.6 pp on daily closes. Do not compare the two conventions without a note.",
+    "Clarify the high-vol fallback in the summary: when 20-day vol is above 1/3 the primary rule holds 100% BIL, not QQQ. The QQQ fallback is a tested alternative (52.89%/41.48% 10y, 39.80%/34.93% 5y) and still passes, but it is not the primary rule.",
+    "Provenance nuance: Faber's rule is a 10-month SMA (~210 days); the 165-day parameter comes from the repo's live preset/daily baseline. Moreira & Muir inspire volatility scaling, not the exact 20-day/1/3 binary cutoff; Zarattini & Antonacci support the general trend+vol combination, not this exact rule. Mark these as 'inspired concept' rather than exact parameter sources.",
+    "The page's status 'Verified' and verdict 'not the leader' are accurate: ratio-pairs leads at 69.50%/39.11% over 10y and 63.74%/26.85% over 5y. The ensemble has a lower 10y DD than the round-1 winner but lower CAGR/Sharpe in both windows. Optionally add Sharpe 1.19/0.99 and fills 225/89 to the verdict.",
+    "Optional naming: 'Ensemble crash vote' is not wrong, but the daily trend and vol layers are as important as the crash vote; 'Ensemble signals' would match the report title. This is style, not an accuracy fix."
+  ]
+}

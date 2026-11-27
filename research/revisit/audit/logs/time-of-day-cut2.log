@@ -1,0 +1,13 @@
+dev panel 654,958 bars, 1686 sessions, 2016-01-04 .. 2022-09-13
+165d baseline dev: CAGR 36.85% DD 59.64%
+V0_unconditional     1bp CAGR  39.40% DD 66.04% sh 0.95 fills  3371 corr 0.53 active 1686
+V1_close_only        1bp CAGR  21.76% DD 29.91% sh 0.82 fills  1251 corr 0.40 active 626
+V2_gate_only         1bp CAGR  40.68% DD 61.58% sh 1.19 fills  2691 corr 0.47 active 1346
+V3_full              1bp CAGR  16.66% DD 30.90% sh 0.88 fills   986 corr 0.35 active 492
+V4_momentum_sign     1bp CAGR   1.08% DD 34.54% sh 0.15 fills   953 corr 0.25 active 476
+V5_full_bil          1bp CAGR  15.60% DD 31.79% sh 0.83 fills  1970 corr 0.35 active 492
+F1 conditional test: {'n_neg': 849, 'n_pos': 836, 'mean_bp_after_sold_close': 19.662095787861457, 'mean_bp_after_bought_close': 10.683490997469395, 'diff_bp': 8.978604790392062, 't_stat': 0.663762303908876, 'hit_rate_neg': 0.5500588928150766, 'hit_rate_pos': 0.5657894736842105}
+F5 placebo: {'n_draws': 200, 'real_cagr': 0.16658643182436506, 'placebo_mean': 0.10916378209509642, 'placebo_p95': 0.25913576862741544, 'p_value': 0.235}
+neighbourhood: {'vol_look': {'5': np.float64(12.8), '10': np.float64(16.7), '20': np.float64(13.1)}, 'ref_look': {'40': np.float64(15.9), '60': np.float64(16.7), '90': np.float64(13.6)}, 'vol_mult': {'1.25': np.float64(9.3), '1.5': np.float64(16.7), '2.0': np.float64(14.6)}, 'close_window': {'20': np.float64(18.3), '30': np.float64(16.7), '45': np.float64(16.3)}, 'close_min_z': {'0.0': np.float64(24.0), '0.5': np.float64(16.7), '1.0': np.float64(14.1)}, 'vol_target': {'0.3': np.float64(14.6), '0.4': np.float64(16.7), '0.5': np.float64(17.1)}}
+wrote result.json
+{"slug": "time-of-day", "mode": "cut2", "calls": 259, "error": null, "seconds": 58.9, "restored": ["restored result.json"], "match_score": 1.0, "found": true, "kw": {"band": 0.02, "slippage_bps": 1.0, "start_equity": 100000.0}, "bars": 654958, "k": 3}

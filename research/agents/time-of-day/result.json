@@ -1,0 +1,261 @@
+{
+  "agent": "time-of-day",
+  "title": "Overnight + first-half-hour TQQQ exposure gated by a 165-day QQQ SMA with a 2% hysteresis band",
+  "verdict": "PASS vs TQQQ on both windows at 1bp; FAIL at 5bp (CAGR bar missed on both windows); does not beat the daily baseline on 5y CAGR",
+  "data": {
+    "source": "local adjusted 1-minute QQQ/TQQQ/BIL in data/intraday-hf (no downloads)",
+    "panel": "2016-01-04 .. 2026-10-23, regular session 09:30-16:00 ET",
+    "bars": 1057023,
+    "trading_days": 2718,
+    "warmup_days": 500
+  },
+  "benchmark_tqqq": {
+    "10y": {"cagr": 0.3928, "max_drawdown": 0.8168, "sharpe": 0.83,
+            "measured_on_panel": {"cagr": 0.3938, "max_drawdown": 0.8229}},
+    "5y": {"cagr": 0.1347, "max_drawdown": 0.8168, "sharpe": 0.53,
+           "measured_on_panel": {"cagr": 0.1429, "max_drawdown": 0.8229}}
+  },
+  "daily_baseline_reference": {
+    "10y": {"cagr": 0.4531, "max_drawdown": 0.5871, "sharpe": 1.0},
+    "5y": {"cagr": 0.3461, "max_drawdown": 0.3686, "sharpe": 0.88},
+    "reproduced_on_daily_bars_1bp": {"10y": {"cagr": 0.4446, "max_drawdown": 0.5871},
+                                     "5y": {"cagr": 0.3461, "max_drawdown": 0.3686}}
+  },
+  "headline_variant": "V2",
+  "variants": {
+    "V1": {
+      "description": "long TQQQ 15:59 open -> 09:31 open next day, QQQ SMA165 with 2% hysteresis band, cash otherwise",
+      "params": {"sma_days": 165, "hysteresis_band": 0.02, "exit_minute_et": "09:31", "day_asset": "cash"},
+      "10y_1bp": {"cagr": 0.4019, "max_drawdown": 0.4349, "sharpe_minute": 1.24,
+                  "sharpe_daily": 1.24, "sortino": 1.75, "volatility": 0.3134,
+                  "fills": 4067, "turnover": 42535.0, "ending_equity": 2742011.0,
+                  "pass_cagr": true, "pass_dd": true, "pass_both": true},
+      "5y_1bp": {"cagr": 0.2405, "max_drawdown": 0.3177, "sharpe_minute": 0.88,
+                 "sharpe_daily": 0.87, "sortino": 1.25, "volatility": 0.2971,
+                 "fills": 1883, "turnover": 4298.0, "ending_equity": 293464.0,
+                 "pass_cagr": true, "pass_dd": true, "pass_both": true},
+      "10y_5bp": {"cagr": 0.1875, "max_drawdown": 0.4427, "pass_both": false},
+      "5y_5bp": {"cagr": 0.0671, "max_drawdown": 0.3403, "pass_both": false}
+    },
+    "V1b": {
+      "description": "same as V1 but with no hysteresis band (0%)",
+      "10y_1bp": {"cagr": 0.3400, "max_drawdown": 0.5170, "sharpe_daily": 1.09,
+                  "fills": 4077, "turnover": 28941.0, "pass_both": false},
+      "5y_1bp": {"cagr": 0.2053, "max_drawdown": 0.3211, "sharpe_daily": 0.78,
+                 "pass_both": false},
+      "10y_5bp": {"cagr": 0.1346, "max_drawdown": 0.5263, "pass_both": false}
+    },
+    "V2": {
+      "description": "RECOMMENDED. long TQQQ 15:59 open -> 10:01 open next day (overnight + first 30 minutes), QQQ SMA165 with 2% hysteresis band, cash otherwise",
+      "params": {"sma_days": 165, "hysteresis_band": 0.02, "exit_minute_et": "10:01",
+                 "entry": "15:59 open of the last bar of the day", "day_asset": "cash",
+                 "regime_lag_days": 1, "long_only": true},
+      "10y_1bp": {"cagr": 0.4923, "max_drawdown": 0.4266, "sharpe_minute": 1.31,
+                  "sharpe_daily": 1.35, "sortino": 1.85, "volatility": 0.3570,
+                  "fills": 4069, "turnover": 71725.0, "ending_equity": 5060444.0,
+                  "max_dd_window": "2020-02-19..2020-03-09",
+                  "pass_cagr": true, "pass_dd": true, "pass_both": true},
+      "5y_1bp": {"cagr": 0.2889, "max_drawdown": 0.3454, "sharpe_minute": 0.92,
+                 "sharpe_daily": 0.94, "sortino": 1.31, "volatility": 0.3389,
+                 "fills": 1883, "turnover": 4298.0, "ending_equity": 355276.0,
+                 "max_dd_window": "2025-01-22..2025-05-23",
+                 "pass_cagr": true, "pass_dd": true, "pass_both": true},
+      "10y_0bp": {"cagr": 0.5556, "max_drawdown": 0.4252},
+      "5y_0bp": {"cagr": 0.3385, "max_drawdown": 0.3400},
+      "10y_2bp": {"cagr": 0.4316, "max_drawdown": 0.4281, "pass_both": true},
+      "5y_2bp": {"cagr": 0.2413, "max_drawdown": 0.3508, "pass_both": true},
+      "10y_3bp": {"cagr": 0.3734, "max_drawdown": 0.4296, "pass_both": false},
+      "5y_3bp": {"cagr": 0.1953, "max_drawdown": 0.3561, "pass_both": false},
+      "10y_5bp": {"cagr": 0.2640, "max_drawdown": 0.4326, "pass_both": false},
+      "5y_5bp": {"cagr": 0.1085, "max_drawdown": 0.3673, "pass_both": false},
+      "sub_periods_1bp": {
+        "2017-01-03..2021-12-31": {"cagr": 0.5838, "max_drawdown": 0.4266},
+        "2022-01-03..2026-10-23": {"cagr": 0.2521, "max_drawdown": 0.345}
+      },
+      "yearly": {"2017": 0.525, "2018": 0.548, "2019": 0.605, "2020": 1.619,
+                 "2021": 0.604, "2022": -0.082, "2023": 0.597, "2024": 0.568,
+                 "2025": 0.322, "2026_ytd": -0.044},
+      "time_in_market": {"regime_on_days_pct": 0.78, "hours_per_active_day": 17.0,
+                          "approx_calendar_time_pct": 0.54, "bar_weighted_exposure": 0.068}
+    },
+    "V2b": {
+      "description": "V2 with no hysteresis band (0%)",
+      "10y_1bp": {"cagr": 0.4151, "max_drawdown": 0.5097, "sharpe_daily": 1.19,
+                  "fills": 4079, "turnover": 45428.0, "pass_both": true},
+      "5y_1bp": {"cagr": 0.2328, "max_drawdown": 0.3412, "sharpe_daily": 0.81,
+                 "pass_both": true},
+      "10y_5bp": {"cagr": 0.1981, "max_drawdown": 0.5158, "pass_both": false}
+    },
+    "V3": {
+      "description": "V2 plus a turn-of-month overlay: if the day is one of the last 1 or first 3 trading days of the month, hold the whole session instead of exiting at 10:01",
+      "10y_1bp": {"cagr": 0.5529, "max_drawdown": 0.3425, "sharpe_daily": 1.33,
+                  "sortino": 1.87, "volatility": 0.3929, "fills": 3293,
+                  "turnover": 73134.0, "ending_equity": 7473326.0, "pass_both": true},
+      "5y_1bp": {"cagr": 0.3563, "max_drawdown": 0.3160, "sharpe_daily": 1.02,
+                 "sortino": 1.44, "volatility": 0.3707, "fills": 1519,
+                 "turnover": 3841.0, "ending_equity": 458247.0, "pass_both": true},
+      "10y_2bp": {"cagr": 0.5016, "max_drawdown": 0.3452, "pass_both": true},
+      "5y_2bp": {"cagr": 0.3156, "max_drawdown": 0.3230, "pass_both": true},
+      "10y_3bp": {"cagr": 0.4520, "max_drawdown": 0.3480, "pass_both": true},
+      "5y_3bp": {"cagr": 0.2762, "max_drawdown": 0.3298, "pass_both": true},
+      "10y_5bp": {"cagr": 0.3576, "max_drawdown": 0.3534, "pass_both": false},
+      "5y_5bp": {"cagr": 0.2008, "max_drawdown": 0.3434, "pass_both": false},
+      "recommended": false,
+      "reason_not_recommended": "TOM width sweep rises monotonically with window width (47%->68% CAGR for 4->11 days), so the gain cannot be separated from extra market beta; TOM day-session beats non-TOM in only 7 of 11 years and per-year t-stats are mostly below 2"
+    },
+    "V4": {
+      "description": "reference: 24h TQQQ when the regime is on, cash otherwise (the daily baseline executed at the 15:59 print), 11 fills",
+      "10y_1bp": {"cagr": 0.5111, "max_drawdown": 0.4855, "sharpe_daily": 1.08,
+                  "fills": 11, "turnover": 189.0, "ending_equity": 5719862.0,
+                  "pass_both": true},
+      "5y_1bp": {"cagr": 0.3237, "max_drawdown": 0.4217, "sharpe_daily": 0.83,
+                 "pass_both": true},
+      "10y_5bp": {"cagr": 0.5104, "max_drawdown": 0.4855, "pass_both": true}
+    }
+  },
+  "yearly_all_variants_1bp": {
+    "2017": {"V2": 0.525, "V3": 0.535, "V4": 1.145, "tqqq": 1.145},
+    "2018": {"V2": 0.548, "V3": 0.618, "V4": 0.093, "tqqq": -0.208},
+    "2019": {"V2": 0.605, "V3": 0.496, "V4": 0.610, "tqqq": 1.482},
+    "2020": {"V2": 1.619, "V3": 2.334, "V4": 1.273, "tqqq": 1.041},
+    "2021": {"V2": 0.604, "V3": 0.347, "V4": 0.811, "tqqq": 0.811},
+    "2022": {"V2": -0.082, "V3": -0.162, "V4": -0.282, "tqqq": -0.794},
+    "2023": {"V2": 0.597, "V3": 1.097, "V4": 1.294, "tqqq": 1.920},
+    "2024": {"V2": 0.568, "V3": 0.463, "V4": 0.624, "tqqq": 0.624},
+    "2025": {"V2": 0.322, "V3": 0.506, "V4": 0.180, "tqqq": 0.321},
+    "2026_ytd": {"V2": -0.044, "V3": 0.059, "V4": 0.068, "tqqq": 0.226}
+  },
+  "cost_sensitivity_V2": {
+    "0bp": {"10y": 0.5556, "5y": 0.3385},
+    "1bp": {"10y": 0.4923, "5y": 0.2889},
+    "2bp": {"10y": 0.4316, "5y": 0.2413},
+    "3bp": {"10y": 0.3734, "5y": 0.1953},
+    "5bp": {"10y": 0.2640, "5y": 0.1085},
+    "comment": "survives 1-2bp, fails the TQQQ CAGR bar at 3bp and 5bp; ~6.3pp/yr drag at 1bp for ~1.5 round trips a day"
+  },
+  "sensitivity_V2": {
+    "sma_days": {"100": {"10y": 0.4151, "5y": 0.2868},
+                 "125": {"10y": 0.4277, "5y": 0.1855},
+                 "150": {"10y": 0.4452, "5y": 0.2077},
+                 "165": {"10y": 0.4923, "5y": 0.2889},
+                 "200": {"10y": 0.4331, "5y": 0.2531},
+                 "250": {"10y": 0.4168, "5y": 0.2268}},
+    "band": {"0.00": {"10y": 0.4151, "5y": 0.2328},
+             "0.01": {"10y": 0.4438, "5y": 0.2724},
+             "0.02": {"10y": 0.4923, "5y": 0.2889},
+             "0.03": {"10y": 0.4832, "5y": 0.2739},
+             "0.05": {"10y": 0.4494, "5y": 0.2698}},
+    "exit_time_et": {"09:31": {"10y": 0.4019, "5y": 0.2405},
+                     "10:01": {"10y": 0.4923, "5y": 0.2889},
+                     "10:31": {"10y": 0.4881, "5y": 0.2465},
+                     "11:01": {"10y": 0.3957, "5y": 0.1585},
+                     "11:31": {"10y": 0.4728, "5y": 0.2535},
+                     "12:01": {"10y": 0.5022, "5y": 0.3006}},
+    "regime_lag_days": {"0": {"10y": 0.4662, "5y": 0.2912},
+                        "1": {"10y": 0.4923, "5y": 0.2889},
+                        "2": {"10y": 0.4595, "5y": 0.2765},
+                        "3": {"10y": 0.4195, "5y": 0.2533}},
+    "all_neighbours_pass_at_1bp": true,
+    "level_uncertainty": "the 21 neighbouring settings span 40-50% on the 10y CAGR, so read the headline as mid-40s +/- 5pp"
+  },
+  "walk_forward": {
+    "method": "rank every (exit time, hysteresis band) combination on 2017-2021, then evaluate 2022-2026",
+    "rank_correlation_is_vs_oos": 0.83,
+    "rows": [
+      {"variant": "exit 10:01 band 2% (best IS)", "is_cagr": 0.7606, "is_dd": 0.427, "oos_cagr": 0.2521, "oos_dd": 0.345},
+      {"variant": "exit 10:01 band 3%", "is_cagr": 0.7602, "is_dd": 0.427, "oos_cagr": 0.2369, "oos_dd": 0.348},
+      {"variant": "exit 10:01 band 5%", "is_cagr": 0.6878, "is_dd": 0.537, "oos_cagr": 0.2327, "oos_dd": 0.308},
+      {"variant": "exit 10:01 band 1%", "is_cagr": 0.6715, "is_dd": 0.510, "oos_cagr": 0.2354, "oos_dd": 0.309},
+      {"variant": "exit 10:01 band 0%", "is_cagr": 0.6585, "is_dd": 0.510, "oos_cagr": 0.1955, "oos_dd": 0.301},
+      {"variant": "exit 09:31 band 2%", "is_cagr": 0.6001, "is_dd": 0.435, "oos_cagr": 0.2186, "oos_dd": 0.318},
+      {"variant": "exit 09:31 band 3%", "is_cagr": 0.5988, "is_dd": 0.435, "oos_cagr": 0.2063, "oos_dd": 0.322},
+      {"variant": "exit 09:31 band 5%", "is_cagr": 0.5342, "is_dd": 0.537, "oos_cagr": 0.2233, "oos_dd": 0.278},
+      {"variant": "exit 09:31 band 1%", "is_cagr": 0.5181, "is_dd": 0.495, "oos_cagr": 0.2046, "oos_dd": 0.276},
+      {"variant": "exit 09:31 band 0% (worst IS)", "is_cagr": 0.5072, "is_dd": 0.517, "oos_cagr": 0.1826, "oos_dd": 0.290}
+    ]
+  },
+  "block_anatomy_tqqq_gross": {
+    "overnight_close_to_open": {"full_2016_2026": 0.3141, "2017_2021": 0.567, "2022_2026": 0.0947,
+                                "share_of_total_log_return": 0.784, "positive_years": "10/11"},
+    "intraday_open_to_close": {"full_2016_2026": 0.0625, "2017_2021": 0.108, "2022_2026": 0.0177},
+    "first30_open_to_1000": {"full_2016_2026": 0.0809, "2016_2018": 0.0534,
+                             "2019_2021": 0.2627, "2022_2026": -0.0026},
+    "last30_1530_to_close": {"full_2016_2026": -0.0574, "mean_bp_per_day": -1.48},
+    "qqq_overnight": {"full_2016_2026": 0.1243, "share_of_total_log_return": 0.653},
+    "qqq_intraday": {"full_2016_2026": 0.0643},
+    "corr_overnight_vs_intraday": 0.010
+  },
+  "seasonality_findings": {
+    "turn_of_month": {
+      "definition": "last 1 + first 3 trading days of the month",
+      "tom_days": 519,
+      "mean_bp_per_day_session": {"tom": 27.5, "other": 3.6},
+      "mean_bp_per_day_overnight": {"tom": 2.3, "other": 15.9},
+      "mean_bp_per_day_close_to_close": {"tom": 29.5, "other": 19.6},
+      "tom_day_session_better_years": "7/11",
+      "max_per_year_t_stat_on_c2c_difference": 1.98,
+      "used_in_recommended_strategy": false,
+      "reason": "width sweep is monotone in window width and the effect is not statistically distinguishable from extra market exposure"
+    },
+    "day_of_week": {
+      "monday_c2c_bp_per_day": {"2017_2021": 33.4, "2022_2026": 56.7},
+      "monday_session_bp_per_day": {"2017_2021": 21.9, "2022_2026": 56.6},
+      "thursday_session_bp_per_day": {"2017_2021": 14.0, "2022_2026": -24.6},
+      "used_in_recommended_strategy": false,
+      "reason": "sign flips across eras, especially the overnight component"
+    },
+    "month_of_year": {
+      "september_total_return": {"2017_2021": -0.331, "2022_2026": -0.218},
+      "screening_september_out_effect": {"10y_cagr_before": 0.4923, "after": 0.4639},
+      "used_in_recommended_strategy": false
+    }
+  },
+  "regime": {
+    "sma_days": 165,
+    "hysteresis_band": 0.02,
+    "days_on": 2121,
+    "days_total": 2718,
+    "pct_on": 0.780,
+    "switches_10y": 11,
+    "switches_without_band": 41,
+    "flat_episodes": [
+      "2018-10-25..2019-03-12",
+      "2020-03-10..2020-04-14",
+      "2022-01-21..2023-01-26",
+      "2025-03-11..2025-05-12",
+      "2026-03-23..2026-04-13"
+    ]
+  },
+  "verification": {
+    "independent_simulator_matches_harness": true,
+    "block_return_reconstruction_max_cagr_diff_pp": 0.17,
+    "daily_baseline_reproduced": {"10y_cagr": 0.4446, "10y_dd": 0.5871,
+                                  "5y_cagr": 0.3461, "5y_dd": 0.3686,
+                                  "note": "5y matches the README exactly"},
+    "qqq_1m_vs_yahoo_daily_return_diff": {"mean_abs_bp": 2.631, "max_abs_bp": 95.68,
+                                          "days_over_5bp": 355,
+                                          "note": "P&L uses only 1m opens, so this adds noise but no bias"},
+    "look_ahead": "regime uses closes through d-1 only; band state is a causal recursion; entries fill at 15:59:00 open, exits at 10:01:00"
+  },
+  "overfitting_risk": {
+    "level": "moderate",
+    "why": [
+      "21 neighbouring parameter settings all pass at 1bp, and walk-forward rank correlation is 0.83",
+      "but the level ranges 40-50% across those neighbours, i.e. +/-5pp",
+      "the first-30-minute add-on that lifts V2 above V1 is era-dependent (+5.3% / +26.3% / -0.3%)",
+      "the 2% hysteresis band is worth ~8pp of CAGR and rests on ~5 discrete regime episodes",
+      "the strategy is flat during session rallies, so a decade with intraday drift would break it",
+      "cost sensitivity is severe: 6.3pp/yr at 1bp, and the CAGR bar is missed at 3bp and 5bp"
+    ],
+    "most_defensible_version": "V1 (exit 09:31, no first-30 add-on): 40.19%/43.49% 10y and 24.05%/31.77% 5y at 1bp, still passing both windows",
+    "highest_return_version": "V2 (recommended): 49.23%/42.66% 10y and 28.89%/34.54% 5y at 1bp"
+  },
+  "links": [
+    "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=1004081",
+    "https://ifr.hkust.edu.hk/uploads/upload/files/20250212/445bce5ab83ffca69c4fe4b56c8055e1.pdf",
+    "https://doi.org/10.1016/j.jfineco.2018.05.009",
+    "https://www.newyorkfed.org/medialibrary/media/research/staff_reports/sr917.pdf",
+    "https://tideline.jbpscapital.com/learn/overnight-vs-intraday",
+    "https://business.purdue.edu/faculty/mcconnell/publications/Equity-Returns-at-the-Turn-of-the-Month.pdf"
+  ]
+}
