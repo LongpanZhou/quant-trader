@@ -8,6 +8,7 @@
   "dd": 0.1310899083182998,
   "sharpe": 0.3586811661980105
  },
+ "status": "verified-full",
  "assessment": {
   "verdict": "unsupported",
   "reason": "3 events in 2,012 sessions; cross-sectional/monthly literature; CLV filter untested; below its own ~40-event gate."

@@ -8,6 +8,7 @@
   "dd": 0.4754736543065029,
   "sharpe": 0.06561315146794255
  },
+ "status": "verified-full",
  "assessment": {
   "verdict": "plausible-but-weak",
   "reason": "8 episodes; 3 of 5 2022-23 episodes lost 12–14%; 49% DD; Sharpe 0.78 vs 0.92 for a constant 14% TQQQ mix."

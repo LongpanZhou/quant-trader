@@ -8,6 +8,7 @@
   "dd": 0.35795913584596806,
   "sharpe": 1.1509971557524818
  },
+ "status": "verified-full",
  "assessment": {
   "verdict": "Verified - trend/vol timing",
   "reason": "Passes the full-window bar and causality audit. All 8 grid cells pass, but a 3-session execution delay drops dev CAGR to 33.6%; the edge is crash avoidance concentrated in 2020, and a simpler trend+spike sibling earns more raw CAGR."

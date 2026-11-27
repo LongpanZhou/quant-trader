@@ -8,6 +8,7 @@
   "dd": 0.42979669886652716,
   "sharpe": 0.3950846487084748
  },
+ "status": "verified-full",
  "assessment": {
   "verdict": "unsupported",
   "reason": "13.2% CAGR is the 72nd percentile of a random-entry placebo (z=0.53); hold=3 is a cliff (h2 +0.3%, h3 13.2%); QQQ-beta version similar."

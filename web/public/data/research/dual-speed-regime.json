@@ -8,6 +8,7 @@
   "dd": 0.36927344747894875,
   "sharpe": 0.3476221609356034
  },
+ "status": "verified-full",
  "assessment": {
   "verdict": "overlay-only",
   "reason": "Pre-registered intraday-only: 5.4%/1 bp, **−16.7%/5 bp**. Shipped variant adds `OVERNIGHT=True` and makes 28.8%; 90% of the gap is TQQQ overnight drift."

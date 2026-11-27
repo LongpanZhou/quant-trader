@@ -221,9 +221,31 @@ def _build(ts, o, c, cfg=CFG, bars=None, log=None):
     return w, info
 
 
-def build_weights(ts, o, c):
-    """Required public API. Returns (n, 3) weights: QQQ, TQQQ, BIL."""
-    return _build(ts, o, c)[0]
+def load_full(ts):
+    """Full-panel TQQQ OHLCV aligned to `ts` (holdout adapter).
+
+    The frozen dev loader stops at 2023-12-29.  This adapter reads the same
+    1-minute TQQQ archive through the panel's actual end and aligns it to the
+    requested bars; it changes no signal or parameter.
+    """
+    lo, hi = pd.Timestamp(ts[0]), pd.Timestamp(ts[-1])
+    df = bt.load_1m("TQQQ")
+    return df[(df["ts"] >= lo) & (df["ts"] <= hi)].set_index("ts").reindex(ts).ffill()
+
+
+def build_weights(ts, o, c, bars=None):
+    """Required public API. Returns (n, 3) weights: QQQ, TQQQ, BIL.
+
+    `bars` is an optional TQQQ OHLCV frame aligned to `ts`.  When omitted, the
+    frozen dev loader is used (2016-2023 only).  A full-panel holdout must pass
+    load_full(ts).
+    """
+    return _build(ts, o, c, CFG, bars)[0]
+
+
+def build_holdout_weights(ts, o, c):
+    """Full-panel holdout entry point: same frozen logic, full TQQQ bars."""
+    return build_weights(ts, o, c, bars=load_full(ts))
 
 
 def metrics(ts, opens, closes, w, slip):

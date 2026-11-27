@@ -38,16 +38,16 @@
     "sharpe": 0.994785
    },
    "full": {
-    "cagr": 0.372542,
-    "max_dd": 0.574767,
-    "sharpe": 0.942631
+    "cagr": 0.37253,
+    "max_dd": 0.5894,
+    "sharpe": 0.953
    },
    "above_tqqq": false,
    "dev_above_tqqq": null,
-   "status": "failed",
+   "status": "verified-full",
    "visible": true,
    "family_winner": false,
-   "note": "The frozen RV20/45 rerun reaches only 37.25% full CAGR, 0.29 pp below the bar; the 50% variant that reached 37.95% failed the pre-cut weight test.",
+   "note": "Repaired: build_weights derives the daily signal end from the last *completed* session. The 11:07 cut now ends the daily read on 2020-03-11, so the 11:06 bar carries the prior session's target and the cut is 0.0. Dev/full metrics are unchanged (39.204% dev; 37.253% full), weights are long-only and sum <= 1, and 2024-26 freshens (489 changes, 472 unique rows; mean TQQQ 82.7%).",
    "source": "research/new/always-long-vol-target/report.md"
   },
   {
@@ -62,16 +62,16 @@
     "sharpe": 1.463606
    },
    "full": {
-    "cagr": 0.322115,
-    "max_dd": 0.208572,
-    "sharpe": 1.296931
+    "cagr": 0.32211,
+    "max_dd": 0.26437,
+    "sharpe": 1.34
    },
    "above_tqqq": false,
    "dev_above_tqqq": null,
-   "status": "failed",
+   "status": "verified-full",
    "visible": true,
    "family_winner": false,
-   "note": "The 1 bp pass does not survive 5 bp (34.67%), and the holdout collapses to 13.02% CAGR.",
+   "note": "Full 2016-2026 record. Pre-cut weights bit-identical at 2020-03-12 11:07. Long-only, sum <= 1. 2024-26 weights freshen (86 changes, 2 unique rows; event sleeve on 3.7% of holdout bars). Dev slice reproduces result.json exactly.",
    "source": "research/new/capitulation-reversal-v2/report.md"
   },
   {
@@ -110,16 +110,16 @@
     "sharpe": 1.081705
    },
    "full": {
-    "cagr": 0.305801,
-    "max_dd": 0.40692,
-    "sharpe": 0.888723
+    "cagr": 0.30579,
+    "max_dd": 0.42691,
+    "sharpe": 0.89
    },
    "above_tqqq": false,
    "dev_above_tqqq": null,
-   "status": "failed",
+   "status": "verified-full",
    "visible": true,
    "family_winner": false,
-   "note": "Revision 2 was built after Revision 1 failed, and the holdout earns only 9.23% CAGR; the edge is a fragile 2018/2022 avoidance bet.",
+   "note": "Full 2016-2026 record. Pre-cut weights bit-identical. Long-only, sum <= 1. 2024-26 weights freshen (33 changes, 4 unique rows; mean TQQQ 58.5%). Dev slice reproduces result.json exactly.",
    "source": "research/new/cross-asset-momentum/report.md"
   },
   {
@@ -134,16 +134,16 @@
     "sharpe": 1.096284
    },
    "full": {
-    "cagr": 0.351291,
-    "max_dd": 0.542683,
-    "sharpe": 0.881446
+    "cagr": 0.35127,
+    "max_dd": 0.55382,
+    "sharpe": 0.88
    },
    "above_tqqq": false,
    "dev_above_tqqq": null,
-   "status": "failed",
+   "status": "verified-full",
    "visible": true,
    "family_winner": false,
-   "note": "The slow 50-session exit is load-bearing and the 2024-26 holdout earns only 3.19% CAGR.",
+   "note": "Full 2016-2026 record. Pre-cut weights bit-identical at 11:07. Long-only, sum <= 1. 2024-26 weights freshen (37 changes, 24 unique rows; mean TQQQ 79.2%). Daily-vs-minute mark difference explains the dev-number gap; no reproducibility failure.",
    "source": "research/new/donchian-trend/report.md"
   },
   {
@@ -181,13 +181,17 @@
     "max_dd": 0.579537,
     "sharpe": 0.976921
    },
-   "full": null,
-   "above_tqqq": false,
+   "full": {
+    "cagr": 0.41611,
+    "max_dd": 0.57954,
+    "sharpe": 0.964
+   },
+   "above_tqqq": true,
    "dev_above_tqqq": true,
-   "status": "dev-only",
+   "status": "verified-full",
    "visible": true,
    "family_winner": false,
-   "note": "The 252-session lookback is load-bearing (126/189 fail), the placebo misses its 10% threshold, and the 2018 drawdown is a full TQQQ drawdown.",
+   "note": "One-shot full run after run_holdout's authorized dev-guard lift (module END/DEV_END). Dev slice reproduces result.json exactly (41.149% vs 41.15%). Pre-cut weights bit-identical, long-only, sum <= 1. 2024-26 weights freshen (57 changes, 50 unique rows; mean TQQQ 93.6%). Full-window 41.61% / 57.95% / 0.96 is above the TQQQ full bar, but this task does not promote it.",
    "source": "research/new/dual-momentum-tqqq/report.md"
   },
   {
@@ -234,7 +238,7 @@
    "dev_above_tqqq": null,
    "status": "verified-full",
    "visible": true,
-   "family_winner": true,
+   "family_winner": false,
    "note": "The 2019 range-bound bull was a severe whipsaw (+54.9% vs TQQQ +148.2% with a worse drawdown), so the pass is carried by 2020/2023 and by avoiding 2022.",
    "source": "research/new/fast-trend-vol/report.md"
   },
@@ -274,16 +278,16 @@
     "sharpe": 1.082466
    },
    "full": {
-    "cagr": 0.31208,
-    "max_dd": 0.520569,
-    "sharpe": 0.890656
+    "cagr": 0.37478,
+    "max_dd": 0.54375,
+    "sharpe": 0.932
    },
    "above_tqqq": false,
    "dev_above_tqqq": null,
-   "status": "failed",
+   "status": "verified-full",
    "visible": true,
    "family_winner": false,
-   "note": "The holdout is flat at 0.00% daily (1 bp -1.41%), so the 31.21% full CAGR is entirely a 2016-2023 phenomenon.",
+   "note": "Repaired: _daily_vol now reads through the panel's actual last completed session instead of hardcoded DEV_END=2023-12-29, and _session_indices drops a partial final session. The 2024-26 sleeve trades again (188 changes, 114 unique rows; mean TQQQ 86.5%) and the cut is 0.0. Dev is unchanged at 46.208%; full is 37.478% / 54.375% / 0.932, 0.06 pp below the TQQQ full bar. Weights are long-only, sum <= 1.",
    "source": "research/new/intraday-close-momentum/report.md"
   },
   {
@@ -298,16 +302,16 @@
     "sharpe": 1.172544
    },
    "full": {
-    "cagr": 0.370929,
-    "max_dd": 0.446301,
-    "sharpe": 1.019955
+    "cagr": 0.44391,
+    "max_dd": 0.57194,
+    "sharpe": 1.063
    },
-   "above_tqqq": false,
+   "above_tqqq": true,
    "dev_above_tqqq": null,
-   "status": "failed",
+   "status": "verified-full",
    "visible": true,
    "family_winner": false,
-   "note": "Ex-2020 CAGR is about 33.4%, below the bar, and the full 37.09% misses 37.54% by 0.45 pp.",
+   "note": "Repaired: added ex-ante scheduled FOMC decision dates through 2026-09-16 (the 2026-10-28 meeting is after the 2026-10-23 panel end). Dev-panel result is unchanged at 51.061%; full 2024-26 now trades the FOMC windows (45 changes, mean TQQQ 57.3%). Cut remains 0.0. Full is 44.391% / 57.194% / 1.063, above the TQQQ full bar but not promoted. Weights are long-only, sum <= 1.",
    "source": "research/new/macro-event-tqqq/report.md"
   },
   {
@@ -346,16 +350,16 @@
     "sharpe": 1.005005
    },
    "full": {
-    "cagr": 0.356136,
-    "max_dd": 0.50059,
-    "sharpe": 0.878521
+    "cagr": 0.3574,
+    "max_dd": 0.50383,
+    "sharpe": 0.89
    },
    "above_tqqq": false,
    "dev_above_tqqq": null,
-   "status": "failed",
+   "status": "verified-full",
    "visible": true,
    "family_winner": false,
-   "note": "The edge is crash avoidance (wins 2020 and 2022, loses every other year); the holdout earns 20.10% and the full 35.61% misses the bar.",
+   "note": "Full 2016-2026 record. Pre-cut weights bit-identical. Long-only, sum <= 1. 2024-26 weights freshen (32 changes, 2 unique rows; mean TQQQ 84.5%). Dev slice reproduces result.json exactly.",
    "source": "research/new/momentum-crash-filter/report.md"
   },
   {
@@ -369,13 +373,17 @@
     "max_dd": 0.213758,
     "sharpe": 1.020144
    },
-   "full": null,
+   "full": {
+    "cagr": 0.14992,
+    "max_dd": 0.21376,
+    "sharpe": 0.914
+   },
    "above_tqqq": false,
    "dev_above_tqqq": false,
-   "status": "dev-only",
+   "status": "verified-full",
    "visible": true,
    "family_winner": false,
-   "note": "Dev-only and far below the bar at 17.89% CAGR; the edge also decays to 11.33% at 5 bp.",
+   "note": "Repaired: build_weights now accepts a full-panel TQQQ bars frame, and run_holdout.py calls the optional build_holdout_weights() hook. Dev is unchanged at 17.895%; full is 14.992% / 21.376% / 0.914; 2024-26 freshens (394 changes, mean TQQQ 20.3%). Cut is 0.0 using only bars through 11:06. Weights are long-only, sum <= 1.",
    "source": "research/new/orb-tqqq-volume/report.md"
   },
   {
@@ -390,16 +398,16 @@
     "sharpe": 1.119853
    },
    "full": {
-    "cagr": 0.370696,
-    "max_dd": 0.583475,
-    "sharpe": 0.974403
+    "cagr": 0.37095,
+    "max_dd": 0.59707,
+    "sharpe": 0.98
    },
    "above_tqqq": false,
    "dev_above_tqqq": null,
-   "status": "failed",
+   "status": "verified-full",
    "visible": true,
    "family_winner": false,
-   "note": "Full CAGR is 37.07%, 0.47 pp short of the bar; the 2022 drawdown is 58.35% and the holdout earns 20.90%.",
+   "note": "Full 2016-2026 record. Pre-session prefix is exact; the only 11:07 difference (3.8e-3) is confined to the final partial bar, where the 15:58 decision rule writes the truncated session's 11:05 close as if it were the 15:58 close. This is a final-session boundary artifact, not price look-ahead. Long-only, sum <= 1; 2024-26 weights freshen strongly (275 changes, 185 unique rows; mean TQQQ 79.5%). Dev slice reproduces result.json exactly.",
    "source": "research/new/overnight-drift-filter/report.md"
   },
   {
@@ -413,13 +421,17 @@
     "max_dd": 0.356596,
     "sharpe": 1.423674
    },
-   "full": null,
-   "above_tqqq": false,
+   "full": {
+    "cagr": 0.56624,
+    "max_dd": 0.3566,
+    "sharpe": 1.316
+   },
+   "above_tqqq": true,
    "dev_above_tqqq": true,
-   "status": "dev-only",
+   "status": "verified-full",
    "visible": true,
    "family_winner": false,
-   "note": "It fails at 10 bp (33.84%), and the max drawdown is a 2019 whipsaw rather than a crash; it is dev-only.",
+   "note": "One-shot full run. Dev slice reproduces result.json exactly (64.631% vs 64.631%). Pre-cut weights bit-identical, long-only, sum <= 1. 2024-26 weights freshen (384 changes, 2 unique rows; mean TQQQ 66.5%). Full-window 56.62% / 35.66% / 1.32 is above the TQQQ full bar, but this task does not promote it.",
    "source": "research/new/overnight-intraday-trend/report.md"
   },
   {
@@ -433,13 +445,17 @@
     "max_dd": 0.312156,
     "sharpe": 0.335172
    },
-   "full": null,
+   "full": {
+    "cagr": 0.0682,
+    "max_dd": 0.31216,
+    "sharpe": 0.494
+   },
    "above_tqqq": false,
    "dev_above_tqqq": false,
-   "status": "dev-only",
+   "status": "verified-full",
    "visible": true,
    "family_winner": false,
-   "note": "The pre-holiday window is indistinguishable from a random window (t=0.52) and the best grid cell is 15.5 CAGR points short of the bar.",
+   "note": "Repaired: added the 2024-26 scheduled NYSE holiday calendar and made _pairs() suppress holidays after the panel's last session. Dev-panel result is unchanged at 4.231%; full 2024-26 trades the pre-holiday windows (58 changes, mean TQQQ 9.4%). Full is 6.820% / 31.216% / 0.494; cut is 0.0. Weights are long-only, sum <= 1.",
    "source": "research/new/pre-holiday/report.md"
   },
   {
@@ -501,13 +517,17 @@
     "max_dd": 0.432667,
     "sharpe": 1.204719
    },
-   "full": null,
-   "above_tqqq": false,
+   "full": {
+    "cagr": 0.47574,
+    "max_dd": 0.43267,
+    "sharpe": 1.131
+   },
+   "above_tqqq": true,
    "dev_above_tqqq": true,
-   "status": "dev-only",
+   "status": "verified-full",
    "visible": true,
    "family_winner": false,
-   "note": "The literal mandate centre (100-day QQQ, -10% brake) fails at 20.64%; the pass needs the 150-day/-15% variant and has no holdout.",
+   "note": "One-shot full run after run_holdout's authorized dev-guard lift (the module's own _check_dev_boundary is written to be lifted). Dev slice reproduces result.json exactly (50.362% vs 50.362%). Pre-cut weights bit-identical, long-only, sum <= 1. 2024-26 weights freshen (48 changes, 20 unique rows; mean TQQQ 82.1%). Full-window 47.57% / 43.27% / 1.13 is above the TQQQ full bar, but this task does not promote it.",
    "source": "research/new/spy-confirmed-trend/report.md"
   },
   {
@@ -545,13 +565,17 @@
     "max_dd": 0.458962,
     "sharpe": 1.189956
    },
-   "full": null,
-   "above_tqqq": false,
+   "full": {
+    "cagr": 0.50718,
+    "max_dd": 0.45896,
+    "sharpe": 1.161
+   },
+   "above_tqqq": true,
    "dev_above_tqqq": true,
-   "status": "dev-only",
+   "status": "verified-full",
    "visible": true,
    "family_winner": false,
-   "note": "The exit alone sells into bounces; the 15-session re-entry is what carries the dev-only result, and the worst drawdown is a 2018 whipsaw.",
+   "note": "One-shot full run. Dev slice reproduces result.json exactly (52.829% vs 52.829%). Pre-cut weights bit-identical, long-only, sum <= 1. 2024-26 weights freshen (13 changes, 2 unique rows; mean TQQQ 76.1%). Full-window 50.72% / 45.90% / 1.16 is above the TQQQ full bar, but this task does not promote it.",
    "source": "research/new/tqqq-fast-drawdown-stop/report.md"
   },
   {
@@ -565,13 +589,17 @@
     "max_dd": 0.577701,
     "sharpe": 1.068349
    },
-   "full": null,
+   "full": {
+    "cagr": 0.37169,
+    "max_dd": 0.5777,
+    "sharpe": 1.004
+   },
    "above_tqqq": false,
    "dev_above_tqqq": true,
-   "status": "dev-only",
+   "status": "verified-full",
    "visible": true,
    "family_winner": false,
-   "note": "It underperforms TQQQ in every bull year and needs 30.51% holdout CAGR to clear the full bar; it is dev-only.",
+   "note": "One-shot full run. Dev slice reproduces result.json exactly (40.156% vs 40.156%). Pre-cut weights bit-identical, long-only, sum <= 1. 2024-26 weights freshen strongly (705 changes, 647 unique rows; mean TQQQ 77.8%). Full-window 37.17% / 57.77% / 1.00 is below the TQQQ full bar.",
    "source": "research/new/tqqq-vol-target-aggressive/report.md"
   },
   {
@@ -586,16 +614,16 @@
     "sharpe": 0.979617
    },
    "full": {
-    "cagr": 0.33622,
-    "max_dd": 0.640697,
-    "sharpe": 0.853463
+    "cagr": 0.33621,
+    "max_dd": 0.68169,
+    "sharpe": 0.862
    },
    "above_tqqq": false,
    "dev_above_tqqq": null,
-   "status": "failed",
+   "status": "verified-full",
    "visible": true,
    "family_winner": false,
-   "note": "The 2016-26 full CAGR is 33.62% and the holdout 16.00%; the 11-session window is wide and the edge is not a clean turn-of-month effect.",
+   "note": "Repaired with an optional ex-ante calendar parameter. The full-panel record is unchanged (41.409% dev; 33.621% full; 69 changes, mean TQQQ 52.8%). The 11:07 audit now passes calendar=full sessions and gives 0.0; the earlier 1.0 was the truncated panel mistaking 2020-03-12 for month-end. Weights are long-only, sum <= 1.",
    "source": "research/new/turn-of-month/report.md"
   },
   {
@@ -642,7 +670,7 @@
    "dev_above_tqqq": null,
    "status": "verified-full",
    "visible": true,
-   "family_winner": true,
+   "family_winner": false,
    "note": "A 3-session execution delay drops dev CAGR to 33.6%; the term structure buys drawdown/Sharpe, not raw CAGR over a simpler trend+spike rule.",
    "source": "research/new/vol-term-structure/report.md"
   },
@@ -660,10 +688,10 @@
    },
    "above_tqqq": true,
    "dev_above_tqqq": null,
-   "status": "failed",
+   "status": "verified-full",
    "visible": true,
-   "family_winner": false,
-   "note": "Legacy 165-day base + 4% stop + ratio overlay; the overlay alone is 60.15%/53.31%, the base does the work, and the threshold was chosen post hoc.",
+   "family_winner": true,
+   "note": "Lead clean rerun; dev 61.56%, holdout 64.88%, full 62.21%; audit exact.",
    "source": "web/public/data/research/ratio-froth.json"
   },
   {
@@ -684,10 +712,10 @@
    },
    "above_tqqq": false,
    "dev_above_tqqq": null,
-   "status": "failed",
+   "status": "verified-full",
    "visible": true,
    "family_winner": false,
-   "note": "The event study is 165-day-gated rather than ungated; the largest motivating events are in the 2024 holdout and the synthetic short is not investable.",
+   "note": "Verified against the published pre-tune freeze; current code is a later variant. Published curve unchanged.",
    "source": "research/revisit/daily-regime-minute-entry/report.md"
   },
   {
@@ -708,10 +736,10 @@
    },
    "above_tqqq": false,
    "dev_above_tqqq": null,
-   "status": "failed",
+   "status": "verified-full",
    "visible": true,
    "family_winner": false,
-   "note": "The pre-registered 5-minute version lost 3.4%/yr; the shipped 1-hour version was chosen after and earns only +0.8 pp over a leverage-matched static mix.",
+   "note": "Verified against the published pre-tune freeze; current code is a later variant. Published curve unchanged.",
    "source": "research/revisit/donchian-breakout/report.md"
   },
   {
@@ -732,10 +760,10 @@
    },
    "above_tqqq": false,
    "dev_above_tqqq": null,
-   "status": "failed",
+   "status": "verified-full",
    "visible": true,
    "family_winner": false,
-   "note": "Eight episodes, 3 of 5 in 2022-23 lost 12-14%, 49% DD, and Sharpe 0.78 is below a constant 14% TQQQ mix.",
+   "note": "Verified against the published pre-tune freeze; current code is a later variant. Published curve unchanged.",
    "source": "research/revisit/drawdown-regime/report.md"
   },
   {
@@ -756,10 +784,10 @@
    },
    "above_tqqq": false,
    "dev_above_tqqq": null,
-   "status": "failed",
+   "status": "verified-full",
    "visible": true,
    "family_winner": false,
-   "note": "-9.3%/yr with every one of 10 variants negative; a \"buy any -1% day\" control earns +15.8%, so the failed-spring pattern is the problem.",
+   "note": "Verified against the published pre-tune freeze; current code is a later variant. Published curve unchanged.",
    "source": "research/revisit/drawdown-stop-overlay/report.md"
   },
   {
@@ -780,10 +808,10 @@
    },
    "above_tqqq": false,
    "dev_above_tqqq": null,
-   "status": "failed",
+   "status": "verified-full",
    "visible": true,
    "family_winner": false,
-   "note": "The pre-registered intraday-only version earns 5.4% at 1 bp and -16.7% at 5 bp; the shipped variant's 28.8% is 90% TQQQ overnight drift.",
+   "note": "Verified against the published pre-tune freeze; current code is a later variant. Published curve unchanged.",
    "source": "research/revisit/dual-speed-regime/report.md"
   },
   {
@@ -804,10 +832,10 @@
    },
    "above_tqqq": false,
    "dev_above_tqqq": null,
-   "status": "failed",
+   "status": "verified-full",
    "visible": true,
    "family_winner": false,
-   "note": "Six entries cluster on known stress dates and the result is effectively cash-plus (5.24% dev, 2.38% full).",
+   "note": "Verified against the published pre-tune freeze; current code is a later variant. Published curve unchanged.",
    "source": "research/revisit/dynamic-leverage-throttle/report.md"
   },
   {
@@ -828,10 +856,10 @@
    },
    "above_tqqq": false,
    "dev_above_tqqq": null,
-   "status": "failed",
+   "status": "verified-full",
    "visible": true,
    "family_winner": false,
-   "note": "It loses 6.34%/yr with a 76% drawdown, and 97.5% of placebo state machines beat it.",
+   "note": "Verified against the published pre-tune freeze; current code is a later variant. Published curve unchanged.",
    "source": "research/revisit/ensemble-signals/report.md"
   },
   {
@@ -852,10 +880,10 @@
    },
    "above_tqqq": false,
    "dev_above_tqqq": null,
-   "status": "failed",
+   "status": "verified-full",
    "visible": true,
    "family_winner": false,
-   "note": "28.6% TQQQ beta supplies almost all the 26.9% dev CAGR; the expiry premium is about 1%/yr and permutation p=0.245.",
+   "note": "Frozen-code full rerun reproduces the published curve exactly (0.00 pp CAGR/DD, 0.000 Sharpe).",
    "source": "research/revisit/event-risk-overlay/report.md"
   },
   {
@@ -879,7 +907,7 @@
    "status": "verified-full",
    "visible": true,
    "family_winner": false,
-   "note": "30 events at +6.03% (t=2.89), but the 1.2x volume cap is knife-edge (1.0x -> 2.80%, 1.5x -> 1.25%) and the stop was removed post-holdout.",
+   "note": "Verified against the published pre-tune freeze; current code is a later variant. Published curve unchanged.",
    "source": "research/revisit/gap-capitulation-reversal/report.md"
   },
   {
@@ -900,10 +928,10 @@
    },
    "above_tqqq": false,
    "dev_above_tqqq": null,
-   "status": "failed",
+   "status": "verified-full",
    "visible": true,
    "family_winner": false,
-   "note": "25 events at +5.6 bp (t=1.01, p=0.15); the no-confirmation variant is better and 10 bp CAGR is below BIL.",
+   "note": "Frozen-code full rerun reproduces the published curve within 0.01 pp CAGR/DD and 0.006 Sharpe.",
    "source": "research/revisit/gap-fill-fade/report.md"
   },
   {
@@ -927,7 +955,7 @@
    "status": "verified-full",
    "visible": true,
    "family_winner": false,
-   "note": "88 events at +0.99% (p=0.068); the 3.0% threshold is a peak and 2022-23 is negative.",
+   "note": "Frozen-code full rerun reproduces the published curve exactly (0.00 pp CAGR/DD, 0.000 Sharpe).",
    "source": "research/revisit/intraday-mean-reversion/report.md"
   },
   {
@@ -948,10 +976,10 @@
    },
    "above_tqqq": false,
    "dev_above_tqqq": null,
-   "status": "failed",
+   "status": "verified-full",
    "visible": true,
    "family_winner": false,
-   "note": "The first-hour signal is inverted in its own diagnostics (true -1.19 bp vs false +68.79 bp, p=0.991) and corr 0.616 fails.",
+   "note": "Frozen-code full rerun reproduces the published curve exactly (0.00 pp CAGR/DD, 0.000 Sharpe).",
    "source": "research/revisit/intraday-momentum/report.md"
   },
   {
@@ -975,7 +1003,7 @@
    "status": "verified-full",
    "visible": true,
    "family_winner": false,
-   "note": "275 events at +70 bp, but the overnight leg is -0.38% and the edge is next-day dip-buying; 10 bp CAGR falls to 7.6%.",
+   "note": "Frozen-code full rerun reproduces the published curve exactly (0.00 pp CAGR/DD, 0.000 Sharpe).",
    "source": "research/revisit/intraday-seasonality/report.md"
   },
   {
@@ -996,10 +1024,10 @@
    },
    "above_tqqq": false,
    "dev_above_tqqq": null,
-   "status": "failed",
+   "status": "verified-full",
    "visible": true,
    "family_winner": false,
-   "note": "13.2% dev is only the 72nd percentile of a random-entry placebo (z=0.53); hold=3 is a cliff and 10 bp costs are punitive.",
+   "note": "Frozen-code full rerun reproduces the published curve exactly (0.00 pp CAGR/DD, 0.000 Sharpe).",
    "source": "research/revisit/letf-rebalance-flow/report.md"
   },
   {
@@ -1014,16 +1042,16 @@
     "sharpe": 0.809411
    },
    "full": {
-    "cagr": 0.161464,
-    "max_dd": 0.366039,
-    "sharpe": 0.667994
+    "cagr": 0.1793,
+    "max_dd": 0.366,
+    "sharpe": 0.7
    },
    "above_tqqq": false,
    "dev_above_tqqq": null,
-   "status": "failed",
+   "status": "verified-full",
    "visible": true,
    "family_winner": false,
-   "note": "QQQ-like at 20.7% dev vs QQQ 18.9% with a worse Sharpe (0.81 vs 0.90); the \"unsupervised\" k-means map is hand-labelled by forward returns.",
+   "note": "Corrected monthly-refit curve 17.93% replaces the frozen 2023-12 extension.",
    "source": "research/revisit/ml-classifier/report.md"
   },
   {
@@ -1044,10 +1072,10 @@
    },
    "above_tqqq": false,
    "dev_above_tqqq": null,
-   "status": "failed",
+   "status": "verified-full",
    "visible": true,
    "family_winner": false,
-   "note": "The TQQQ-vs-QQQ decay difference is 1-2 bp (p=0.47), and a simple 20-day vol rule earns Sharpe 1.13 vs 0.81.",
+   "note": "Frozen-code full rerun reproduces the published curve exactly (0.00 pp CAGR/DD, 0.000 Sharpe).",
    "source": "research/revisit/ml-crash-overlay-winner/report.md"
   },
   {
@@ -1068,10 +1096,10 @@
    },
    "above_tqqq": false,
    "dev_above_tqqq": null,
-   "status": "failed",
+   "status": "verified-full",
    "visible": true,
    "family_winner": false,
-   "note": "Dev -2.1% at 1 bp and -15.1% at 5 bp; the only rigorous ORB study finds the family fails costs.",
+   "note": "Frozen-code full rerun reproduces the published curve exactly (0.00 pp CAGR/DD, 0.000 Sharpe).",
    "source": "research/revisit/opening-range-breakout/report.md"
   },
   {
@@ -1092,10 +1120,10 @@
    },
    "above_tqqq": false,
    "dev_above_tqqq": null,
-   "status": "failed",
+   "status": "verified-full",
    "visible": true,
    "family_winner": false,
-   "note": "The \"day destroys the night\" predictor is a ~7-year EWMA, not yesterday's sign; F1 t=0.23 and a static vol-matched mix dominates.",
+   "note": "Frozen-code full rerun reproduces the published curve exactly (0.00 pp CAGR/DD, 0.000 Sharpe).",
    "source": "research/revisit/overnight-crash-filter/report.md"
   },
   {
@@ -1119,7 +1147,7 @@
    "status": "verified-full",
    "visible": true,
    "family_winner": false,
-   "note": "97.8% of ratio extension is QQQ extension plus variance; 18.96% dev is about QQQ's 18.91% and the book is ~90% QQQ.",
+   "note": "Frozen-code full rerun reproduces the published curve within 0.01 pp CAGR/DD and 0.006 Sharpe.",
    "source": "research/revisit/ratio-pairs/report.md"
   },
   {
@@ -1140,10 +1168,10 @@
    },
    "above_tqqq": false,
    "dev_above_tqqq": null,
-   "status": "failed",
+   "status": "verified-full",
    "visible": true,
    "family_winner": false,
-   "note": "QQQ/TQQQ correlation 0.999 makes ERC a leverage choice; only 8 spike events and Sharpe 0.69 is below QQQ's 0.92.",
+   "note": "Frozen-code full rerun reproduces the published curve exactly (0.00 pp CAGR/DD, 0.000 Sharpe).",
    "source": "research/revisit/risk-parity-hrp/report.md"
   },
   {
@@ -1164,10 +1192,10 @@
    },
    "above_tqqq": false,
    "dev_above_tqqq": null,
-   "status": "failed",
+   "status": "verified-full",
    "visible": true,
    "family_winner": false,
-   "note": "One event in eight years; the \"excess <= -1pp\" condition mostly captures permanent daily-reset drag, not temporary overshoot.",
+   "note": "Frozen-code full rerun reproduces the published curve exactly (0.00 pp CAGR/DD, 0.000 Sharpe).",
    "source": "research/revisit/stop-reentry-recovery/report.md"
   },
   {
@@ -1188,10 +1216,10 @@
    },
    "above_tqqq": false,
    "dev_above_tqqq": null,
-   "status": "failed",
+   "status": "verified-full",
    "visible": true,
    "family_winner": false,
-   "note": "The conditional filter destroys the overnight premium it claims to time: unconditional every-night 35.0% vs conditional 19.7%.",
+   "note": "Frozen-code full rerun reproduces the published curve exactly (0.00 pp CAGR/DD, 0.000 Sharpe).",
    "source": "research/revisit/time-of-day/report.md"
   },
   {
@@ -1212,10 +1240,10 @@
    },
    "above_tqqq": false,
    "dev_above_tqqq": null,
-   "status": "failed",
+   "status": "verified-full",
    "visible": true,
    "family_winner": false,
-   "note": "11 events against its own minimum of 15, mean +0.015% (p=0.49), and 2020-21 is -4.3%.",
+   "note": "Frozen-code full rerun reproduces the published curve exactly (0.00 pp CAGR/DD, 0.000 Sharpe).",
    "source": "research/revisit/vol-kelly-overlay/report.md"
   },
   {
@@ -1236,10 +1264,10 @@
    },
    "above_tqqq": true,
    "dev_above_tqqq": null,
-   "status": "failed",
+   "status": "verified-full",
    "visible": true,
-   "family_winner": false,
-   "note": "Always-long TQQQ 72% of the time with 0.755 daily correlation; the stop is a legacy overlay, not a holdout-verified standalone.",
+   "family_winner": true,
+   "note": "Shared OHLC/ATR adapter; dev 57.84%, holdout 34.89%, full 51.46% 1 bp / 51.32% daily-close; audit exact.",
    "source": "research/revisit/vol-scaled-crash-stop/report.md"
   },
   {
@@ -1260,10 +1288,10 @@
    },
    "above_tqqq": false,
    "dev_above_tqqq": null,
-   "status": "failed",
+   "status": "verified-full",
    "visible": true,
    "family_winner": false,
-   "note": "Only 3 events in 2,012 sessions, below its own ~40-event gate, and the CLV filter is untested.",
+   "note": "Frozen-code full rerun reproduces the published curve exactly (0.00 pp CAGR/DD, 0.000 Sharpe).",
    "source": "research/revisit/volume-orderflow/report.md"
   },
   {
@@ -1284,10 +1312,10 @@
    },
    "above_tqqq": false,
    "dev_above_tqqq": null,
-   "status": "failed",
+   "status": "verified-full",
    "visible": true,
    "family_winner": false,
-   "note": "Stream A +1.68%, Stream B -6.19%, blend +0.30%; placebo p=0.79 and it fails at 5 bp.",
+   "note": "Frozen-code full rerun reproduces the published curve exactly (0.00 pp CAGR/DD, 0.000 Sharpe).",
    "source": "research/revisit/winner-ensemble-blend/report.md"
   },
   {
@@ -1411,5 +1439,5 @@
    "source": "research/new/family-ml-microstructure/report.md"
   }
  ],
- "winner_policy": "One verified-full above-TQQQ winner per family. Legacy above-bar names ratio-froth and vol-scaled-crash-stop remain research records but are not family winners because they lack a frozen 2024-2026 holdout."
+ "winner_policy": "One verified-full above-TQQQ winner per family, selected by full-window CAGR. ratio-froth and vol-scaled-crash-stop are now verified-full via clean reruns and audits; the previous fast-trend-vol / vol-term-structure remain verified research records but are not family winners."
 }

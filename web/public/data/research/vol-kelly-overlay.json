@@ -8,6 +8,7 @@
   "dd": 0.1649614949799516,
   "sharpe": 0.16919266047267234
  },
+ "status": "verified-full",
  "assessment": {
   "verdict": "unsupported",
   "reason": "11 events (own minimum 15); mean +0.015%, p=0.49; 2020-21 −4.3%."

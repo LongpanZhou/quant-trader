@@ -8,6 +8,7 @@
   "dd": 0.10628488667021574,
   "sharpe": 0.8157515281102473
  },
+ "status": "verified-full",
  "assessment": {
   "verdict": "plausible-but-weak",
   "reason": "30 events, +6.03%, t=2.89; but 1.2× volume cap is knife-edge (1.0→2.80%, 1.5→1.25%); 20/24 trades are QQQ; stop removed post-holdout."

@@ -8,6 +8,7 @@
   "dd": 0.41417213608723935,
   "sharpe": 1.1636275786064603
  },
+ "status": "verified-full",
  "assessment": {
   "verdict": "Verified - session timing (cost-fragile)",
   "reason": "Full 46.26% / 41.42% DD / 1.16 Sharpe, holdout 23.39%; audit exact with final-session boundary. Cost-fragile: 5 bp dev 29.35%, 10 bp 2.10%; 1 bp headline only."

@@ -1,0 +1,21 @@
+{
+ "slug": "ratio-froth",
+ "family": "trend-vol",
+ "window": {"dev": ["2016-01-04", "2023-12-29"], "holdout": "not loaded"},
+ "windows": {
+  "dev": {
+   "1bp": {
+    "cagr": 0.6156,
+    "max_drawdown": 0.3665,
+    "sharpe": 1.4505
+   }
+  }
+ },
+ "rules": "QQQ close > 165-day SMA -> TQQQ, else BIL; 4% intraday stop; hold QQQ instead of TQQQ while the prior close's log(TQQQ/QQQ ratio / 200-day MA) > 0.18.",
+ "notes": {
+  "provenance": "Legacy ratio-pairs strategy, frozen wrapper in research/new/ratio-froth.",
+  "status": "reverified on the full 2016-2026 window with a clean 2024-2026 holdout."
+ },
+ "passed_dev_bar": true,
+ "status": "dev_pass"
+}

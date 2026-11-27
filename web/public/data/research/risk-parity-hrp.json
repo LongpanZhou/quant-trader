@@ -8,6 +8,7 @@
   "dd": 0.1789000564137989,
   "sharpe": 0.6922421795500426
  },
+ "status": "verified-full",
  "assessment": {
   "verdict": "overlay-only",
   "reason": "QQQ/TQQQ correlation 0.999 makes ERC a leverage choice; only 8 spike events; corr 0.78; Sharpe 0.69 < QQQ 0.92."

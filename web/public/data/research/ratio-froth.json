@@ -8,9 +8,10 @@
   "dd": 0.3665052096417841,
   "sharpe": 1.4293032127870318
  },
+ "status": "verified-full",
  "assessment": {
-  "verdict": "overlay-only",
-  "reason": "Old 165-day base + 4% stop + overlay. Overlay alone 60.15% / 53.31%; the base does the work. Threshold post-hoc; 584 days ≈ 67 episodes."
+  "verdict": "Verified - trend/ratio overlay",
+  "reason": "Clean 2016-2026 rerun: dev 61.56% / 39.11% / 1.47, holdout 64.88%, full 62.21% / 36.65% daily-close DD / 1.43. Frozen wrapper and holdout in research/new/ratio-froth."
  },
  "paths": {
   "report": "research/agents2/ratio-pairs/report.md",

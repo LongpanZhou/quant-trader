@@ -244,6 +244,24 @@
   "notes": []
  },
  {
+  "slug": "ratio-froth",
+  "full_cagr": 0.622138391674053,
+  "full_dd": 0.3665052096417841,
+  "tqqq_cagr": 0.3754250463382436,
+  "dev_diff": -4.840241537429346e-05,
+  "shape": [
+   1056144,
+   3
+  ],
+  "sum_max": 1.0,
+  "min_w": 0.0,
+  "holdout_changes": 150,
+  "holdout_unique": 3,
+  "cut_max": 0.0,
+  "status": "PASS",
+  "notes": []
+ },
+ {
   "slug": "relative-value-tqqq",
   "full_cagr": 0.4050250296214024,
   "full_dd": 0.5153813039431854,
@@ -293,6 +311,24 @@
   "min_w": 0.0,
   "holdout_changes": 277,
   "holdout_unique": 243,
+  "cut_max": 0.0,
+  "status": "PASS",
+  "notes": []
+ },
+ {
+  "slug": "vol-scaled-crash-stop",
+  "full_cagr": 0.513228000797648,
+  "full_dd": 0.37878038411882764,
+  "tqqq_cagr": 0.3754250463382436,
+  "dev_diff": 0.0019279260045910185,
+  "shape": [
+   1056144,
+   3
+  ],
+  "sum_max": 1.0,
+  "min_w": 0.0,
+  "holdout_changes": 618,
+  "holdout_unique": 378,
   "cut_max": 0.0,
   "status": "PASS",
   "notes": []

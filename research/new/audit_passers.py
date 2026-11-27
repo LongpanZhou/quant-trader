@@ -191,6 +191,7 @@ def main() -> None:
         "family-intraday-microstructure-c": "Opening-drive intraday: at 10:00 hold TQQQ to 15:59 when QQQ is above the session open and VWAP proxy; no daily trend/vol. Dev 43.65% / 60.91% DD / 1.10 Sharpe, but 5 bp 20.3% and 10 bp negative; 1 bp only. The 10:00 no-threshold cell is a local ridge, not a broad plateau.",
         "family-intraday-microstructure-day": "Day-only opening-drive + trailing stop, flat overnight. Dev 44.12% / 46.72% DD / 1.13 Sharpe; 5 bp 19.5%, 10 bp negative; 1 bp only. Family-pure intraday version of the combined opening-drive + overnight strategy.",
         "family-ml-microstructure": "Walk-forward weekly ridge on session-shape features (clv5, volr5); monthly refit, 0.25x mean hurdle. Dev 49.81% / 45.93% DD / 1.18 Sharpe; 5 bp 48.46%, 10 bp 46.79% — genuinely cost-robust. No daily vol/drawdown/trend features in the primary.",
+        "vol-scaled-crash-stop": "Legacy always-long TQQQ with inverse-ATR sizing and a 0.70x ATR intraday stop. Shared-runner adapter: full 51.46% / 39.29% DD / 1.29 Sharpe, holdout 34.89%; audit pending. No 165-day trend gate; the stop is the strategy.",
         "always-long-vol-target": "Always-long TQQQ with a causal vol target; no trend or crash stop. Marginal full-window pass (37.95% vs 37.54%); high beta.",
     }
     for r in rows:

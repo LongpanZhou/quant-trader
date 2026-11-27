@@ -8,6 +8,7 @@
   "dd": 0.6645687105826557,
   "sharpe": 0.9814703878245444
  },
+ "status": "verified-full",
  "assessment": {
   "verdict": "Verified - short reversal",
   "reason": "Full 49.54% / 66.46% DD / 0.99 Sharpe, holdout 62.12%; audit exact. The rolling exit chains dip clusters (mean 9.2 sessions), 2022 loses 62.8%, and the DD is high; stops/vol sizing did not improve it."

@@ -8,6 +8,7 @@
   "dd": 0.5091740340743235,
   "sharpe": 1.0567479892707654
  },
+ "status": "verified-full",
  "assessment": {
   "verdict": "Verified - rebalance flow",
   "reason": "Full 45.55% / 50.92% DD / 1.07 Sharpe, holdout 34.89%; audit exact. 5 bp dev 47.13%, 10 bp 42.88%; 8/8 grid cells and placebo p=0.02. Still a 3x flow beta, not independent alpha."

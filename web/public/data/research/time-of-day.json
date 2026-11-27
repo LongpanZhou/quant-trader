@@ -8,6 +8,7 @@
   "dd": 0.31778000954771257,
   "sharpe": 0.8901603484581297
  },
+ "status": "verified-full",
  "assessment": {
   "verdict": "overlay-only",
   "reason": "F1 t=1.35; unconditional every-night 35.0% vs conditional 19.7%. The filter destroys the overnight premium it claims to time."

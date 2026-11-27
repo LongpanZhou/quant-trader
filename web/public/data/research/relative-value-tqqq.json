@@ -8,6 +8,7 @@
   "dd": 0.5153813039431854,
   "sharpe": 0.9436170928461253
  },
+ "status": "verified-full",
  "assessment": {
   "verdict": "Verified - variance-adjusted beta timing",
   "reason": "Passes the full-window bar and causality audit. The ratio momentum is 99.7% explained by QQQ trend and variance, and 2022 is worse than QQQ; it is a leverage-cycle meter, not independent alpha."

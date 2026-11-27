@@ -8,6 +8,7 @@
   "dd": 0.3053226056365562,
   "sharpe": 0.33267255118809014
  },
+ "status": "verified-full",
  "assessment": {
   "verdict": "unsupported",
   "reason": "Stream A +1.68%, Stream B −6.19%, blend +0.30%; placebo p=0.79; fails 5 bp."

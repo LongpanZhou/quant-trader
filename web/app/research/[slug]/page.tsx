@@ -21,21 +21,11 @@ export const dynamicParams = false;
 
 export function generateStaticParams() {
   try {
-    const dir = path.join(process.cwd(), "public", "data", "research");
-    const main = JSON.parse(fs.readFileSync(path.join(dir, "rebuild.json"), "utf8")) as {
+    const file = path.join(process.cwd(), "public", "data", "research", "rebuild.json");
+    const data = JSON.parse(fs.readFileSync(file, "utf8")) as {
       strategies: { slug: string }[];
     };
-    let archive: { slug: string }[] = [];
-    try {
-      const payload = JSON.parse(fs.readFileSync(path.join(dir, "archive.json"), "utf8")) as {
-        strategies: { slug: string }[];
-      };
-      archive = payload.strategies;
-    } catch {
-      archive = [];
-    }
-    const slugs = new Set([...main.strategies, ...archive].map((s) => s.slug));
-    return [...slugs].map((slug) => ({ slug }));
+    return data.strategies.map((s) => ({ slug: s.slug }));
   } catch {
     return [];
   }

@@ -8,6 +8,7 @@
   "dd": 0.445130573442328,
   "sharpe": 1.0162395551379146
  },
+ "status": "verified-full",
  "assessment": {
   "verdict": "Verified - ML microstructure",
   "reason": "Full 41.03% / 44.51% DD / 1.02 Sharpe, holdout 20.45%; audit exact. Dev 49.81% at 1 bp, 48.46% at 5 bp, 46.79% at 10 bp - the most cost-robust of the six new families."

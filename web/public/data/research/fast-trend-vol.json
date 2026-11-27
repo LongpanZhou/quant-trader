@@ -8,6 +8,7 @@
   "dd": 0.4025879247706894,
   "sharpe": 1.058504873492197
  },
+ "status": "verified-full",
  "assessment": {
   "verdict": "Verified - trend/vol timing",
   "reason": "Passes the full-window CAGR and drawdown bar, 8/8 grid cells, zero pre-cut weight drift. The pass is carried by 2020 and 2023 and by avoiding 2022; 2019 lost to TQQQ on both return and drawdown."

@@ -8,6 +8,7 @@
   "dd": 0.47421582898762205,
   "sharpe": 1.0544340411353903
  },
+ "status": "verified-full",
  "assessment": {
   "verdict": "Verified - intraday microstructure (1 bp only)",
   "reason": "Full 40.97% / 47.42% DD / 1.05 Sharpe, holdout 32.55%; audit exact with final-session boundary. Cost-fragile: 5 bp dev 19.5%, 10 bp negative; 1 bp headline only."

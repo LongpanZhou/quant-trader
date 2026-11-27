@@ -71,8 +71,10 @@ P_GATE_WIN = 20
 P_GATE_LOOK = 252
 
 # ---------------------------------------------------------------------------
-# Scheduled NYSE closures, 2016-2023.  Hardcoded, knowable years in advance.
+# Scheduled NYSE closures, 2016-2026.  Hardcoded, knowable years in advance.
 # Unscheduled closures (2018-12-05 day of mourning) are deliberately excluded.
+# 2026-11-26 and 2026-12-25 fall after the 2026-10-23 panel end and are
+# suppressed by _pairs(max_holiday=sess[-1]).
 # ---------------------------------------------------------------------------
 HOLIDAYS_TXT = """
 2016-01-01 2016-01-18 2016-02-15 2016-03-25 2016-05-30 2016-07-04 2016-09-05 2016-11-24 2016-12-26
@@ -83,6 +85,9 @@ HOLIDAYS_TXT = """
 2021-01-01 2021-01-18 2021-02-15 2021-04-02 2021-05-31 2021-07-05 2021-09-06 2021-11-25 2021-12-24
 2022-01-17 2022-02-21 2022-04-15 2022-05-30 2022-06-20 2022-07-04 2022-09-05 2022-11-24 2022-12-26
 2023-01-02 2023-01-16 2023-02-20 2023-04-07 2023-05-29 2023-06-19 2023-07-04 2023-09-04 2023-11-23 2023-12-25
+2024-01-01 2024-01-15 2024-02-19 2024-03-29 2024-05-27 2024-06-19 2024-07-04 2024-09-02 2024-11-28 2024-12-25
+2025-01-01 2025-01-20 2025-02-17 2025-04-18 2025-05-26 2025-06-19 2025-07-04 2025-09-01 2025-11-27 2025-12-25
+2026-01-01 2026-01-19 2026-02-16 2026-04-03 2026-05-25 2026-06-19 2026-07-03 2026-09-07 2026-11-26 2026-12-25
 """
 HOLIDAYS = sorted({date.fromisoformat(tok) for tok in HOLIDAYS_TXT.split()})
 UNSCHEDULED = {date(2018, 12, 5)}
@@ -98,10 +103,19 @@ def _calendar(ts):
     return dates, first, last, dates[first]
 
 
-def _pairs(sess, back: int, extra=()):
-    """(anchor session index, holiday) for windows that start in the dev window."""
+def _pairs(sess, back: int, extra=(), max_holiday=None):
+    """(anchor session index, holiday) for windows that start in the panel.
+
+    `max_holiday` defaults to the panel's last session.  Holidays after that
+    date are future events: anchoring them at the truncated panel's last
+    session would create a spurious pre-holiday window at the cut.
+    """
+    if max_holiday is None:
+        max_holiday = sess[-1]
     out = []
     for h in sorted(set(HOLIDAYS) | set(extra)):
+        if h > max_holiday:
+            continue
         k = int(np.searchsorted(sess, h)) - 1
         a = k - back + 1
         if k < 0 or k >= len(sess) or a < 0 or sess[a] < START_DATE:

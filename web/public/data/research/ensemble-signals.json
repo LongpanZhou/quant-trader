@@ -8,6 +8,7 @@
   "dd": 0.759088031109904,
   "sharpe": 0.20253632512976474
  },
+ "status": "verified-full",
  "assessment": {
   "verdict": "unsupported",
   "reason": "−6.3%/yr, 76% DD; 97.5% of placebo state machines beat it; neighbourhood flips to +10.2% at `stress_pct=0.9`."

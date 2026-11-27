@@ -8,6 +8,7 @@
   "dd": 0.6281799590779985,
   "sharpe": 0.20029760061890226
  },
+ "status": "verified-full",
  "assessment": {
   "verdict": "unsupported",
   "reason": "Event study is 165-day-gated, not ungated; largest motivating events are 2024 holdout; ungated dev +8 bp/event (t=0.45); synthetic short is not investable."

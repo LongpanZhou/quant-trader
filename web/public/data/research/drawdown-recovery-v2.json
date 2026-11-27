@@ -8,6 +8,7 @@
   "dd": 0.41105436202354595,
   "sharpe": 1.1173632263794746
  },
+ "status": "verified-full",
  "assessment": {
   "verdict": "Verified - event-driven recovery",
   "reason": "Full-window CAGR and drawdown pass and the causality audit is exact. Only three major crash episodes drive the edge; 7/11 and 9/13 grid cells clear the bar, and the result is fragile to the next bear's shape."

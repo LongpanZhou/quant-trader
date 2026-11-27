@@ -8,6 +8,7 @@
   "dd": 0.36972926463260625,
   "sharpe": 0.962359908485912
  },
+ "status": "verified-full",
  "assessment": {
   "verdict": "overlay-only",
   "reason": "28.6% TQQQ beta supplies almost all 26.9% CAGR; event premium ~1%/yr; permutation p=0.245."

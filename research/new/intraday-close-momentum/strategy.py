@@ -72,10 +72,30 @@ def load_panel(start: str = DEV_START, end: str = DEV_END):
     return bt.panel(SYMBOLS, start, end, "1min", warmup_days=0)
 
 
+def _completed_session_count(ts) -> int:
+    """Number of sessions whose 15:29 decision bar is present.
+
+    A mid-day truncated panel ends inside a session; that partial session has
+    no completed decision bar, so it is excluded from the signal frame and its
+    bars carry the prior session's target.  A one-bar-per-session panel is
+    treated as all-complete.
+    """
+    ts = pd.DatetimeIndex(ts)
+    dates, first, last = bt.day_bounds(ts)
+    if len(ts) == len(first):
+        return len(first)
+    t = pd.Timestamp(ts[-1])
+    cutoff = (pd.Timestamp("12:59").time() if t.date() in bt.HALF_DAYS
+              else pd.Timestamp("15:59").time())
+    return len(first) if t.time() >= cutoff else len(first) - 1
+
+
 def _session_indices(ts, decision_min: int = DECISION_MIN):
     """First bar (09:30), decision bar (15:29) and last bar (15:59) per day."""
     tod = np.asarray(ts.hour * 60 + ts.minute)
     dates, first, last = bt.day_bounds(ts)
+    n = _completed_session_count(ts)
+    first, last = first[:n], last[:n]
     dec = np.array([
         s + int(np.searchsorted(tod[s:e], decision_min))
         for s, e in zip(first, last)
@@ -86,12 +106,13 @@ def _session_indices(ts, decision_min: int = DECISION_MIN):
 def _daily_vol(panel_dates, window: int, line: float | None = None):
     """Lagged annualised QQQ daily vol, aligned to the panel session dates.
 
-    The parquet is truncated at DEV_END *before* the rolling statistic, so no
-    2024+ observation can influence a 2016-2023 weight.
+    The daily read is truncated at the panel's actual last *completed* session
+    before the rolling statistic, so the vol window follows the panel end
+    without using a partial session.
     """
     daily = pd.read_parquet(bt.DATA_DIR / "QQQ-1d-yahoo.parquet")
     daily["date"] = pd.to_datetime(daily["date"]).dt.date
-    daily = daily[daily["date"] <= pd.Timestamp(DEV_END).date()]
+    daily = daily[daily["date"] <= pd.Timestamp(panel_dates[-1]).date()]
     daily = daily.drop_duplicates("date", keep="last").sort_values("date")
     logret = np.log(daily["adjclose"].to_numpy(dtype=float))
     logret = np.diff(logret, prepend=np.nan)

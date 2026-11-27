@@ -1,0 +1,1101 @@
+{
+ "generated": "2026-11-27",
+ "scope": "Original 27 revisit strategies: the 25 below the TQQQ bar plus the 2 above-bar legacy names.",
+ "bar": {
+  "cagr": 0.3754,
+  "max_dd": 0.8168,
+  "label": "TQQQ buy & hold, 2016-2026 daily-close"
+ },
+ "method": {
+  "engine": "research/bt.py, next-open fills, 2% band, 1 bp headline, long-only, weights >= 0, sum <= 1.",
+  "marks": "daily-close metrics computed from the simulated 1-minute equity path.",
+  "full_window": "2016-01-04 to 2026-10-23 (ml-classifier starts 2017-01-03).",
+  "isolation": "Each strategy was copied to a sandbox; no strategy code, result.json, curve, website file or exporter was modified. Date literals were extended in the sandbox copy only.",
+  "freeze": "Stale curves were rerun from _before_tune/strategy.py + _before_tune/result.json; verified curves from the current frozen strategy.py + result.json."
+ },
+ "summary": {
+  "total_reviewed": 27,
+  "below_bar": 25,
+  "above_bar": 2,
+  "verified_full": 17,
+  "verified_full_below_bar": 16,
+  "verified_full_above_bar": 1,
+  "stale": 9,
+  "curve_only": 1,
+  "overlay_only": 0,
+  "no_code": 0,
+  "stale_reproducible_from_before_tune": 8,
+  "stale_needs_corrected_curve": 1,
+  "below_bar_can_be_verified_full_today": 16,
+  "below_bar_can_be_verified_full_after_refreeze": 8,
+  "below_bar_can_be_verified_full_after_extension_fix": 1,
+  "below_bar_permanently_unverifiable": 0,
+  "above_bar_verified": 1,
+  "above_bar_curve_only_needs_adapter": 1
+ },
+ "strategies": [
+  {
+   "slug": "event-risk-overlay",
+   "family": "calendar",
+   "status": "verified-full",
+   "mode": "pre",
+   "dev": {
+    "cagr": 0.269433,
+    "max_dd": 0.390357,
+    "sharpe": 1.083653
+   },
+   "published_full": {
+    "cagr": 0.222042,
+    "max_dd": 0.369729,
+    "sharpe": 0.96236
+   },
+   "rerun_full": {
+    "cagr": 0.222042,
+    "max_dd": 0.369729,
+    "sharpe": 0.96236
+   },
+   "current_full": null,
+   "difference": {
+    "cagr_pp": 0.0,
+    "dd_pp": 0.0,
+    "sharpe": 0.0
+   },
+   "holdout": {
+    "cagr": 0.097515,
+    "max_dd": 0.18785,
+    "sharpe": 0.517748
+   },
+   "reason": "Frozen-code full rerun reproduces the published curve exactly (0.00 pp CAGR/DD, 0.000 Sharpe).",
+   "frozen_reproduces_published": true,
+   "current_vs_published_pp": null,
+   "current_reproduces_published": true,
+   "shared_runner_compatible": true,
+   "group": "below-bar"
+  },
+  {
+   "slug": "gap-fill-fade",
+   "family": "short-reversal",
+   "status": "verified-full",
+   "mode": "pre",
+   "dev": {
+    "cagr": 0.014235,
+    "max_dd": 0.004813,
+    "sharpe": 0.931514
+   },
+   "published_full": {
+    "cagr": 0.02206,
+    "max_dd": 0.003841,
+    "sharpe": 6.534809
+   },
+   "rerun_full": {
+    "cagr": 0.021997,
+    "max_dd": 0.003841,
+    "sharpe": 6.529058
+   },
+   "current_full": null,
+   "difference": {
+    "cagr_pp": -0.0063,
+    "dd_pp": 0.0,
+    "sharpe": -0.0058
+   },
+   "holdout": {
+    "cagr": 0.044493,
+    "max_dd": 0.001419,
+    "sharpe": 14.947585
+   },
+   "reason": "Frozen-code full rerun reproduces the published curve within 0.01 pp CAGR/DD and 0.006 Sharpe.",
+   "frozen_reproduces_published": true,
+   "current_vs_published_pp": null,
+   "current_reproduces_published": true,
+   "shared_runner_compatible": true,
+   "group": "below-bar"
+  },
+  {
+   "slug": "intraday-mean-reversion",
+   "family": "short-reversal",
+   "status": "verified-full",
+   "mode": "pre",
+   "dev": {
+    "cagr": 0.113114,
+    "max_dd": 0.314733,
+    "sharpe": 0.5764
+   },
+   "published_full": {
+    "cagr": 0.12406,
+    "max_dd": 0.214815,
+    "sharpe": 0.707305
+   },
+   "rerun_full": {
+    "cagr": 0.12406,
+    "max_dd": 0.214815,
+    "sharpe": 0.707305
+   },
+   "current_full": null,
+   "difference": {
+    "cagr_pp": 0.0,
+    "dd_pp": 0.0,
+    "sharpe": 0.0
+   },
+   "holdout": {
+    "cagr": 0.156273,
+    "max_dd": 0.14729,
+    "sharpe": 0.667527
+   },
+   "reason": "Frozen-code full rerun reproduces the published curve exactly (0.00 pp CAGR/DD, 0.000 Sharpe).",
+   "frozen_reproduces_published": true,
+   "current_vs_published_pp": null,
+   "current_reproduces_published": true,
+   "shared_runner_compatible": true,
+   "group": "below-bar"
+  },
+  {
+   "slug": "intraday-momentum",
+   "family": "session-timing",
+   "status": "verified-full",
+   "mode": "pre",
+   "dev": {
+    "cagr": 0.135098,
+    "max_dd": 0.63975,
+    "sharpe": 0.570982
+   },
+   "published_full": {
+    "cagr": 0.146548,
+    "max_dd": 0.635511,
+    "sharpe": 0.611912
+   },
+   "rerun_full": {
+    "cagr": 0.146548,
+    "max_dd": 0.635511,
+    "sharpe": 0.611912
+   },
+   "current_full": null,
+   "difference": {
+    "cagr_pp": 0.0,
+    "dd_pp": 0.0,
+    "sharpe": 0.0
+   },
+   "holdout": {
+    "cagr": 0.202565,
+    "max_dd": 0.25843,
+    "sharpe": 0.841896
+   },
+   "reason": "Frozen-code full rerun reproduces the published curve exactly (0.00 pp CAGR/DD, 0.000 Sharpe).",
+   "frozen_reproduces_published": true,
+   "current_vs_published_pp": null,
+   "current_reproduces_published": true,
+   "shared_runner_compatible": true,
+   "group": "below-bar"
+  },
+  {
+   "slug": "intraday-seasonality",
+   "family": "rebalance-flow",
+   "status": "verified-full",
+   "mode": "pre",
+   "dev": {
+    "cagr": 0.218449,
+    "max_dd": 0.437547,
+    "sharpe": 0.753947
+   },
+   "published_full": {
+    "cagr": 0.264134,
+    "max_dd": 0.392369,
+    "sharpe": 0.956909
+   },
+   "rerun_full": {
+    "cagr": 0.264134,
+    "max_dd": 0.392369,
+    "sharpe": 0.956909
+   },
+   "current_full": null,
+   "difference": {
+    "cagr_pp": 0.0,
+    "dd_pp": 0.0,
+    "sharpe": 0.0
+   },
+   "holdout": {
+    "cagr": 0.404903,
+    "max_dd": 0.195624,
+    "sharpe": 1.365941
+   },
+   "reason": "Frozen-code full rerun reproduces the published curve exactly (0.00 pp CAGR/DD, 0.000 Sharpe).",
+   "frozen_reproduces_published": true,
+   "current_vs_published_pp": null,
+   "current_reproduces_published": true,
+   "shared_runner_compatible": true,
+   "group": "below-bar"
+  },
+  {
+   "slug": "letf-rebalance-flow",
+   "family": "rebalance-flow",
+   "status": "verified-full",
+   "mode": "pre",
+   "dev": {
+    "cagr": 0.131986,
+    "max_dd": 0.418002,
+    "sharpe": 0.52412
+   },
+   "published_full": {
+    "cagr": 0.078047,
+    "max_dd": 0.429797,
+    "sharpe": 0.395085
+   },
+   "rerun_full": {
+    "cagr": 0.078047,
+    "max_dd": 0.429797,
+    "sharpe": 0.395085
+   },
+   "current_full": null,
+   "difference": {
+    "cagr_pp": 0.0,
+    "dd_pp": 0.0,
+    "sharpe": 0.0
+   },
+   "holdout": {
+    "cagr": -0.061508,
+    "max_dd": 0.429797,
+    "sharpe": -0.051104
+   },
+   "reason": "Frozen-code full rerun reproduces the published curve exactly (0.00 pp CAGR/DD, 0.000 Sharpe).",
+   "frozen_reproduces_published": true,
+   "current_vs_published_pp": null,
+   "current_reproduces_published": true,
+   "shared_runner_compatible": true,
+   "group": "below-bar"
+  },
+  {
+   "slug": "ml-crash-overlay-winner",
+   "family": "ml-microstructure",
+   "status": "verified-full",
+   "mode": "pre",
+   "dev": {
+    "cagr": 0.15798,
+    "max_dd": 0.224166,
+    "sharpe": 0.812911
+   },
+   "published_full": {
+    "cagr": 0.150692,
+    "max_dd": 0.233274,
+    "sharpe": 0.762121
+   },
+   "rerun_full": {
+    "cagr": 0.150692,
+    "max_dd": 0.233274,
+    "sharpe": 0.762121
+   },
+   "current_full": null,
+   "difference": {
+    "cagr_pp": 0.0,
+    "dd_pp": 0.0,
+    "sharpe": 0.0
+   },
+   "holdout": {
+    "cagr": 0.144659,
+    "max_dd": 0.233274,
+    "sharpe": 0.69573
+   },
+   "reason": "Frozen-code full rerun reproduces the published curve exactly (0.00 pp CAGR/DD, 0.000 Sharpe).",
+   "frozen_reproduces_published": true,
+   "current_vs_published_pp": null,
+   "current_reproduces_published": true,
+   "shared_runner_compatible": true,
+   "group": "below-bar"
+  },
+  {
+   "slug": "opening-range-breakout",
+   "family": "intraday-microstructure",
+   "status": "verified-full",
+   "mode": "pre",
+   "dev": {
+    "cagr": -0.020954,
+    "max_dd": 0.172169,
+    "sharpe": -0.531694
+   },
+   "published_full": {
+    "cagr": -0.013159,
+    "max_dd": 0.199874,
+    "sharpe": -0.327007
+   },
+   "rerun_full": {
+    "cagr": -0.013159,
+    "max_dd": 0.199874,
+    "sharpe": -0.327007
+   },
+   "current_full": null,
+   "difference": {
+    "cagr_pp": 0.0,
+    "dd_pp": 0.0,
+    "sharpe": 0.0
+   },
+   "holdout": {
+    "cagr": 0.007636,
+    "max_dd": 0.083089,
+    "sharpe": 0.242818
+   },
+   "reason": "Frozen-code full rerun reproduces the published curve exactly (0.00 pp CAGR/DD, 0.000 Sharpe).",
+   "frozen_reproduces_published": true,
+   "current_vs_published_pp": null,
+   "current_reproduces_published": true,
+   "shared_runner_compatible": true,
+   "group": "below-bar"
+  },
+  {
+   "slug": "overnight-crash-filter",
+   "family": "session-timing",
+   "status": "verified-full",
+   "mode": "pre",
+   "dev": {
+    "cagr": 0.103695,
+    "max_dd": 0.276174,
+    "sharpe": 0.762072
+   },
+   "published_full": {
+    "cagr": 0.113394,
+    "max_dd": 0.269777,
+    "sharpe": 0.808603
+   },
+   "rerun_full": {
+    "cagr": 0.113394,
+    "max_dd": 0.269777,
+    "sharpe": 0.808603
+   },
+   "current_full": null,
+   "difference": {
+    "cagr_pp": 0.0,
+    "dd_pp": 0.0,
+    "sharpe": 0.0
+   },
+   "holdout": {
+    "cagr": 0.143626,
+    "max_dd": 0.18877,
+    "sharpe": 0.969083
+   },
+   "reason": "Frozen-code full rerun reproduces the published curve exactly (0.00 pp CAGR/DD, 0.000 Sharpe).",
+   "frozen_reproduces_published": true,
+   "current_vs_published_pp": null,
+   "current_reproduces_published": true,
+   "shared_runner_compatible": true,
+   "group": "below-bar"
+  },
+  {
+   "slug": "ratio-pairs",
+   "family": "relative",
+   "status": "verified-full",
+   "mode": "pre",
+   "dev": {
+    "cagr": 0.189595,
+    "max_dd": 0.345927,
+    "sharpe": 1.106293
+   },
+   "published_full": {
+    "cagr": 0.204238,
+    "max_dd": 0.339425,
+    "sharpe": 1.134044
+   },
+   "rerun_full": {
+    "cagr": 0.204317,
+    "max_dd": 0.339425,
+    "sharpe": 1.134356
+   },
+   "current_full": null,
+   "difference": {
+    "cagr_pp": 0.0079,
+    "dd_pp": 0.0,
+    "sharpe": 0.0003
+   },
+   "holdout": {
+    "cagr": 0.251737,
+    "max_dd": 0.205364,
+    "sharpe": 1.414606
+   },
+   "reason": "Frozen-code full rerun reproduces the published curve within 0.01 pp CAGR/DD and 0.006 Sharpe.",
+   "frozen_reproduces_published": true,
+   "current_vs_published_pp": null,
+   "current_reproduces_published": true,
+   "shared_runner_compatible": true,
+   "group": "below-bar"
+  },
+  {
+   "slug": "risk-parity-hrp",
+   "family": "other",
+   "status": "verified-full",
+   "mode": "pre",
+   "dev": {
+    "cagr": 0.057042,
+    "max_dd": 0.184572,
+    "sharpe": 0.653112
+   },
+   "published_full": {
+    "cagr": 0.064932,
+    "max_dd": 0.1789,
+    "sharpe": 0.692242
+   },
+   "rerun_full": {
+    "cagr": 0.064932,
+    "max_dd": 0.1789,
+    "sharpe": 0.692242
+   },
+   "current_full": null,
+   "difference": {
+    "cagr_pp": 0.0,
+    "dd_pp": 0.0,
+    "sharpe": 0.0
+   },
+   "holdout": {
+    "cagr": 0.089768,
+    "max_dd": 0.156915,
+    "sharpe": 0.826678
+   },
+   "reason": "Frozen-code full rerun reproduces the published curve exactly (0.00 pp CAGR/DD, 0.000 Sharpe).",
+   "frozen_reproduces_published": true,
+   "current_vs_published_pp": null,
+   "current_reproduces_published": true,
+   "shared_runner_compatible": true,
+   "group": "below-bar"
+  },
+  {
+   "slug": "stop-reentry-recovery",
+   "family": "rebalance-flow",
+   "status": "verified-full",
+   "mode": "pre",
+   "dev": {
+    "cagr": 0.01255,
+    "max_dd": 0.01815,
+    "sharpe": 0.803922
+   },
+   "published_full": {
+    "cagr": 0.020542,
+    "max_dd": 0.012454,
+    "sharpe": 5.088872
+   },
+   "rerun_full": {
+    "cagr": 0.020542,
+    "max_dd": 0.012454,
+    "sharpe": 5.088872
+   },
+   "current_full": null,
+   "difference": {
+    "cagr_pp": 0.0,
+    "dd_pp": 0.0,
+    "sharpe": 0.0
+   },
+   "holdout": {
+    "cagr": 0.043705,
+    "max_dd": 0.000109,
+    "sharpe": 21.816196
+   },
+   "reason": "Frozen-code full rerun reproduces the published curve exactly (0.00 pp CAGR/DD, 0.000 Sharpe).",
+   "frozen_reproduces_published": true,
+   "current_vs_published_pp": null,
+   "current_reproduces_published": true,
+   "shared_runner_compatible": true,
+   "group": "below-bar"
+  },
+  {
+   "slug": "time-of-day",
+   "family": "session-timing",
+   "status": "verified-full",
+   "mode": "current",
+   "dev": {
+    "cagr": 0.197015,
+    "max_dd": 0.318051,
+    "sharpe": 0.972308
+   },
+   "published_full": {
+    "cagr": 0.172069,
+    "max_dd": 0.31778,
+    "sharpe": 0.89016
+   },
+   "rerun_full": {
+    "cagr": 0.172069,
+    "max_dd": 0.31778,
+    "sharpe": 0.89016
+   },
+   "current_full": null,
+   "difference": {
+    "cagr_pp": 0.0,
+    "dd_pp": 0.0,
+    "sharpe": 0.0
+   },
+   "holdout": {
+    "cagr": 0.121082,
+    "max_dd": 0.29287,
+    "sharpe": 0.660406
+   },
+   "reason": "Frozen-code full rerun reproduces the published curve exactly (0.00 pp CAGR/DD, 0.000 Sharpe).",
+   "frozen_reproduces_published": true,
+   "current_vs_published_pp": null,
+   "current_reproduces_published": true,
+   "shared_runner_compatible": true,
+   "group": "below-bar"
+  },
+  {
+   "slug": "vol-kelly-overlay",
+   "family": "event-recovery",
+   "status": "verified-full",
+   "mode": "current",
+   "dev": {
+    "cagr": 0.018078,
+    "max_dd": 0.192165,
+    "sharpe": 0.254129
+   },
+   "published_full": {
+    "cagr": 0.010341,
+    "max_dd": 0.164961,
+    "sharpe": 0.169193
+   },
+   "rerun_full": {
+    "cagr": 0.010341,
+    "max_dd": 0.164961,
+    "sharpe": 0.169193
+   },
+   "current_full": null,
+   "difference": {
+    "cagr_pp": 0.0,
+    "dd_pp": 0.0,
+    "sharpe": 0.0
+   },
+   "holdout": {
+    "cagr": -0.011314,
+    "max_dd": 0.137691,
+    "sharpe": -0.163897
+   },
+   "reason": "Frozen-code full rerun reproduces the published curve exactly (0.00 pp CAGR/DD, 0.000 Sharpe).",
+   "frozen_reproduces_published": true,
+   "current_vs_published_pp": null,
+   "current_reproduces_published": true,
+   "shared_runner_compatible": true,
+   "group": "below-bar"
+  },
+  {
+   "slug": "volume-orderflow",
+   "family": "intraday-microstructure",
+   "status": "verified-full",
+   "mode": "current",
+   "dev": {
+    "cagr": 0.008746,
+    "max_dd": 0.166637,
+    "sharpe": 0.154384
+   },
+   "published_full": {
+    "cagr": 0.024937,
+    "max_dd": 0.13109,
+    "sharpe": 0.358681
+   },
+   "rerun_full": {
+    "cagr": 0.024937,
+    "max_dd": 0.13109,
+    "sharpe": 0.358681
+   },
+   "current_full": null,
+   "difference": {
+    "cagr_pp": 0.0,
+    "dd_pp": 0.0,
+    "sharpe": 0.0
+   },
+   "holdout": {
+    "cagr": 0.072537,
+    "max_dd": 0.128692,
+    "sharpe": 0.66928
+   },
+   "reason": "Frozen-code full rerun reproduces the published curve exactly (0.00 pp CAGR/DD, 0.000 Sharpe).",
+   "frozen_reproduces_published": true,
+   "current_vs_published_pp": null,
+   "current_reproduces_published": true,
+   "shared_runner_compatible": true,
+   "group": "below-bar"
+  },
+  {
+   "slug": "winner-ensemble-blend",
+   "family": "other",
+   "status": "verified-full",
+   "mode": "current",
+   "dev": {
+    "cagr": 0.003028,
+    "max_dd": 0.326723,
+    "sharpe": 0.084379
+   },
+   "published_full": {
+    "cagr": 0.030391,
+    "max_dd": 0.305323,
+    "sharpe": 0.332673
+   },
+   "rerun_full": {
+    "cagr": 0.030391,
+    "max_dd": 0.305323,
+    "sharpe": 0.332673
+   },
+   "current_full": null,
+   "difference": {
+    "cagr_pp": 0.0,
+    "dd_pp": 0.0,
+    "sharpe": 0.0
+   },
+   "holdout": {
+    "cagr": 0.113504,
+    "max_dd": 0.072188,
+    "sharpe": 1.256519
+   },
+   "reason": "Frozen-code full rerun reproduces the published curve exactly (0.00 pp CAGR/DD, 0.000 Sharpe).",
+   "frozen_reproduces_published": true,
+   "current_vs_published_pp": null,
+   "current_reproduces_published": true,
+   "shared_runner_compatible": true,
+   "group": "below-bar"
+  },
+  {
+   "slug": "daily-regime-minute-entry",
+   "family": "intraday-microstructure",
+   "status": "stale",
+   "mode": "pre",
+   "dev": {
+    "cagr": -0.00045,
+    "max_dd": 0.641784,
+    "sharpe": 0.112743
+   },
+   "published_full": {
+    "cagr": 0.020427,
+    "max_dd": 0.62818,
+    "sharpe": 0.200298
+   },
+   "rerun_full": {
+    "cagr": 0.020427,
+    "max_dd": 0.62818,
+    "sharpe": 0.200298
+   },
+   "current_full": {
+    "cagr": 0.028433,
+    "max_dd": 0.602391,
+    "sharpe": 0.239914
+   },
+   "difference": {
+    "cagr_pp": 0.0,
+    "dd_pp": 0.0,
+    "sharpe": 0.0
+   },
+   "holdout": {
+    "cagr": 0.088939,
+    "max_dd": 0.141483,
+    "sharpe": 0.567461
+   },
+   "reason": "Published curve is the pre-tune freeze; the _before_tune rerun reproduces 2.04/62.82/0.20 exactly, but current code gives 2.84/60.24/0.24 (+0.80 pp CAGR).",
+   "frozen_reproduces_published": true,
+   "current_vs_published_pp": 0.8006,
+   "current_reproduces_published": false,
+   "shared_runner_compatible": true,
+   "group": "below-bar"
+  },
+  {
+   "slug": "donchian-breakout",
+   "family": "trend-vol",
+   "status": "stale",
+   "mode": "pre",
+   "dev": {
+    "cagr": -0.033825,
+    "max_dd": 0.370531,
+    "sharpe": -0.162469
+   },
+   "published_full": {
+    "cagr": -0.009425,
+    "max_dd": 0.357677,
+    "sharpe": 0.0131
+   },
+   "rerun_full": {
+    "cagr": -0.009425,
+    "max_dd": 0.357677,
+    "sharpe": 0.0131
+   },
+   "current_full": {
+    "cagr": 0.12498,
+    "max_dd": 0.145029,
+    "sharpe": 0.94458
+   },
+   "difference": {
+    "cagr_pp": 0.0,
+    "dd_pp": 0.0,
+    "sharpe": 0.0
+   },
+   "holdout": {
+    "cagr": 0.064383,
+    "max_dd": 0.177846,
+    "sharpe": 0.482066
+   },
+   "reason": "Published curve is the pre-tune freeze; the _before_tune rerun reproduces -0.94/35.77/0.01 exactly, but current code gives 12.50/14.50/0.94 (+13.44 pp CAGR).",
+   "frozen_reproduces_published": true,
+   "current_vs_published_pp": 13.4405,
+   "current_reproduces_published": false,
+   "shared_runner_compatible": true,
+   "group": "below-bar"
+  },
+  {
+   "slug": "drawdown-regime",
+   "family": "event-recovery",
+   "status": "stale",
+   "mode": "pre",
+   "dev": {
+    "cagr": -0.016406,
+    "max_dd": 0.488074,
+    "sharpe": -0.022752
+   },
+   "published_full": {
+    "cagr": -0.001114,
+    "max_dd": 0.475474,
+    "sharpe": 0.065613
+   },
+   "rerun_full": {
+    "cagr": -0.001114,
+    "max_dd": 0.475474,
+    "sharpe": 0.065613
+   },
+   "current_full": {
+    "cagr": 0.181901,
+    "max_dd": 0.4777,
+    "sharpe": 0.840574
+   },
+   "difference": {
+    "cagr_pp": 0.0,
+    "dd_pp": 0.0,
+    "sharpe": 0.0
+   },
+   "holdout": {
+    "cagr": 0.043705,
+    "max_dd": 0.000109,
+    "sharpe": 21.816196
+   },
+   "reason": "Published curve is the pre-tune freeze; the _before_tune rerun reproduces -0.11/47.55/0.07 exactly, but current code gives 18.19/47.77/0.84 (+18.30 pp CAGR).",
+   "frozen_reproduces_published": true,
+   "current_vs_published_pp": 18.3015,
+   "current_reproduces_published": false,
+   "shared_runner_compatible": true,
+   "group": "below-bar"
+  },
+  {
+   "slug": "drawdown-stop-overlay",
+   "family": "short-reversal",
+   "status": "stale",
+   "mode": "pre",
+   "dev": {
+    "cagr": -0.01744,
+    "max_dd": 0.454499,
+    "sharpe": 0.074006
+   },
+   "published_full": {
+    "cagr": -0.023678,
+    "max_dd": 0.553347,
+    "sharpe": 0.064549
+   },
+   "rerun_full": {
+    "cagr": -0.023678,
+    "max_dd": 0.553347,
+    "sharpe": 0.064549
+   },
+   "current_full": {
+    "cagr": -0.081655,
+    "max_dd": 0.717411,
+    "sharpe": -0.206386
+   },
+   "difference": {
+    "cagr_pp": 0.0,
+    "dd_pp": 0.0,
+    "sharpe": 0.0
+   },
+   "holdout": {
+    "cagr": -0.041292,
+    "max_dd": 0.532903,
+    "sharpe": 0.032249
+   },
+   "reason": "Published curve is the pre-tune freeze; the _before_tune rerun reproduces -2.37/55.33/0.06 exactly, but current code gives -8.17/71.74/-0.21 (-5.80 pp CAGR).",
+   "frozen_reproduces_published": true,
+   "current_vs_published_pp": -5.7977,
+   "current_reproduces_published": false,
+   "shared_runner_compatible": true,
+   "group": "below-bar"
+  },
+  {
+   "slug": "dual-speed-regime",
+   "family": "intraday-microstructure",
+   "status": "stale",
+   "mode": "pre",
+   "dev": {
+    "cagr": 0.053803,
+    "max_dd": 0.3802,
+    "sharpe": 0.355614
+   },
+   "published_full": {
+    "cagr": 0.051535,
+    "max_dd": 0.369273,
+    "sharpe": 0.347622
+   },
+   "rerun_full": {
+    "cagr": 0.051535,
+    "max_dd": 0.369273,
+    "sharpe": 0.347622
+   },
+   "current_full": {
+    "cagr": 0.251685,
+    "max_dd": 0.447851,
+    "sharpe": 0.957402
+   },
+   "difference": {
+    "cagr_pp": 0.0,
+    "dd_pp": 0.0,
+    "sharpe": 0.0
+   },
+   "holdout": {
+    "cagr": 0.031144,
+    "max_dd": 0.197286,
+    "sharpe": 0.262258
+   },
+   "reason": "Published curve reproduces only with the documented pre-tune variant overnight=False, idle=\"bil\" (5.15/36.93/0.35); the _before_tune default gives 4.51 and current code gives 25.17/44.79/0.96.",
+   "frozen_reproduces_published": true,
+   "current_vs_published_pp": 20.015,
+   "current_reproduces_published": false,
+   "shared_runner_compatible": true,
+   "group": "below-bar"
+  },
+  {
+   "slug": "dynamic-leverage-throttle",
+   "family": "event-recovery",
+   "status": "stale",
+   "mode": "pre",
+   "dev": {
+    "cagr": 0.026471,
+    "max_dd": 0.091618,
+    "sharpe": 0.691954
+   },
+   "published_full": {
+    "cagr": 0.02376,
+    "max_dd": 0.152967,
+    "sharpe": 0.538018
+   },
+   "rerun_full": {
+    "cagr": 0.02376,
+    "max_dd": 0.152967,
+    "sharpe": 0.538018
+   },
+   "current_full": {
+    "cagr": 0.04485,
+    "max_dd": 0.176551,
+    "sharpe": 0.72685
+   },
+   "difference": {
+    "cagr_pp": 0.0,
+    "dd_pp": 0.0,
+    "sharpe": 0.0
+   },
+   "holdout": {
+    "cagr": 0.016174,
+    "max_dd": 0.152967,
+    "sharpe": 0.303383
+   },
+   "reason": "Published curve is the pre-tune freeze; the _before_tune rerun reproduces 2.38/15.30/0.54 exactly, but current code gives 4.49/17.66/0.73 (+2.11 pp CAGR).",
+   "frozen_reproduces_published": true,
+   "current_vs_published_pp": 2.109,
+   "current_reproduces_published": false,
+   "shared_runner_compatible": true,
+   "group": "below-bar"
+  },
+  {
+   "slug": "ensemble-signals",
+   "family": "vol-crash",
+   "status": "stale",
+   "mode": "pre",
+   "dev": {
+    "cagr": -0.052123,
+    "max_dd": 0.760425,
+    "sharpe": -0.023478
+   },
+   "published_full": {
+    "cagr": 0.01338,
+    "max_dd": 0.759088,
+    "sharpe": 0.202536
+   },
+   "rerun_full": {
+    "cagr": 0.01338,
+    "max_dd": 0.759088,
+    "sharpe": 0.202536
+   },
+   "current_full": {
+    "cagr": 0.003544,
+    "max_dd": 0.759088,
+    "sharpe": 0.174962
+   },
+   "difference": {
+    "cagr_pp": 0.0,
+    "dd_pp": 0.0,
+    "sharpe": 0.0
+   },
+   "holdout": {
+    "cagr": 0.233114,
+    "max_dd": 0.37143,
+    "sharpe": 0.850843
+   },
+   "reason": "Published curve is the pre-tune freeze; the _before_tune rerun reproduces 1.34/75.91/0.20 exactly, but current code gives 0.35/75.91/0.17 (-0.98 pp CAGR).",
+   "frozen_reproduces_published": true,
+   "current_vs_published_pp": -0.9836,
+   "current_reproduces_published": false,
+   "shared_runner_compatible": true,
+   "group": "below-bar"
+  },
+  {
+   "slug": "gap-capitulation-reversal",
+   "family": "event-recovery",
+   "status": "stale",
+   "mode": "pre",
+   "dev": {
+    "cagr": 0.041806,
+    "max_dd": 0.124858,
+    "sharpe": 0.576115
+   },
+   "published_full": {
+    "cagr": 0.04643,
+    "max_dd": 0.106285,
+    "sharpe": 0.815752
+   },
+   "rerun_full": {
+    "cagr": 0.04643,
+    "max_dd": 0.106285,
+    "sharpe": 0.815752
+   },
+   "current_full": {
+    "cagr": 0.088964,
+    "max_dd": 0.083402,
+    "sharpe": 1.048884
+   },
+   "difference": {
+    "cagr_pp": 0.0,
+    "dd_pp": 0.0,
+    "sharpe": 0.0
+   },
+   "holdout": {
+    "cagr": 0.059877,
+    "max_dd": 0.020537,
+    "sharpe": 2.324393
+   },
+   "reason": "Published curve is the pre-tune freeze; the _before_tune rerun reproduces 4.64/10.63/0.82 exactly, but current code gives 8.90/8.34/1.05 (+4.25 pp CAGR).",
+   "frozen_reproduces_published": true,
+   "current_vs_published_pp": 4.2534,
+   "current_reproduces_published": false,
+   "shared_runner_compatible": true,
+   "group": "below-bar"
+  },
+  {
+   "slug": "ml-classifier",
+   "family": "ml-microstructure",
+   "status": "stale",
+   "mode": "pre",
+   "dev": {
+    "cagr": 0.206851,
+    "max_dd": 0.360357,
+    "sharpe": 0.809411
+   },
+   "published_full": {
+    "cagr": 0.161464,
+    "max_dd": 0.366039,
+    "sharpe": 0.667994
+   },
+   "rerun_full": {
+    "cagr": 0.179324,
+    "max_dd": 0.366039,
+    "sharpe": 0.701372
+   },
+   "current_full": {
+    "cagr": 0.179324,
+    "max_dd": 0.366039,
+    "sharpe": 0.701372
+   },
+   "difference": {
+    "cagr_pp": 1.786,
+    "dd_pp": 0.0,
+    "sharpe": 0.0334
+   },
+   "holdout": {
+    "cagr": 0.135146,
+    "max_dd": 0.366039,
+    "sharpe": 0.556912
+   },
+   "reason": "Published 2024-26 extension freezes the 2023-12 model; the clean monthly-refit rerun gives 17.93/36.60/0.70 vs published 16.15/36.60/0.67 (+1.79 pp CAGR).",
+   "frozen_reproduces_published": false,
+   "current_vs_published_pp": 1.786,
+   "current_reproduces_published": false,
+   "shared_runner_compatible": true,
+   "group": "below-bar"
+  },
+  {
+   "slug": "ratio-froth",
+   "family": "trend-vol",
+   "status": "verified-full",
+   "mode": "lead",
+   "dev": {
+    "cagr": 0.615552,
+    "max_dd": 0.391095,
+    "sharpe": 1.468589
+   },
+   "published_full": {
+    "cagr": 0.622138,
+    "max_dd": 0.366505,
+    "sharpe": 1.429303
+   },
+   "rerun_full": {
+    "cagr": 0.622138,
+    "max_dd": 0.366505,
+    "sharpe": 1.429303
+   },
+   "current_full": null,
+   "difference": {
+    "cagr_pp": 0.0,
+    "dd_pp": 0.0,
+    "sharpe": 0.0
+   },
+   "holdout": {
+    "cagr": 0.648779,
+    "max_dd": 0.268475,
+    "sharpe": 1.389106
+   },
+   "reason": "Lead clean rerun in research/new/ratio-froth/holdout.json (no strategy.py/result.json in the revisit tree): dev 61.56/39.11/1.47, holdout 64.88%, full 62.21/36.65/1.43, matching the published full curve.",
+   "frozen_reproduces_published": true,
+   "current_vs_published_pp": null,
+   "current_reproduces_published": null,
+   "shared_runner_compatible": true,
+   "group": "above-bar"
+  },
+  {
+   "slug": "vol-scaled-crash-stop",
+   "family": "vol-crash",
+   "status": "curve-only",
+   "mode": "current",
+   "dev": {
+    "cagr": 0.5765,
+    "max_dd": 0.3788,
+    "sharpe": 1.39
+   },
+   "published_full": {
+    "cagr": 0.513228,
+    "max_dd": 0.37878,
+    "sharpe": 1.264927
+   },
+   "rerun_full": {
+    "cagr": 0.513228,
+    "max_dd": 0.37878,
+    "sharpe": 1.264927
+   },
+   "current_full": null,
+   "difference": {
+    "cagr_pp": 0.0,
+    "dd_pp": 0.0,
+    "sharpe": 0.0
+   },
+   "holdout": {
+    "cagr": 0.361903,
+    "max_dd": 0.317425,
+    "sharpe": 0.965816
+   },
+   "status_detail": "needs-adapter (OHLC/ATR)",
+   "shared_runner_compatible": false,
+   "reason": "Own-main rerun reproduces the lead (dev 57.65/37.88/1.39, holdout 36.19/31.74/0.97, full 51.32/37.88/1.26) and cut tests are 0.0; but build_weights needs first/last/ATR and cannot be driven by the shared 3-array runner, so curve-only/needs-adapter.",
+   "frozen_reproduces_published": true,
+   "current_vs_published_pp": null,
+   "current_reproduces_published": true,
+   "group": "above-bar"
+  }
+ ]
+}

@@ -8,6 +8,7 @@
   "dd": 0.19987404968910905,
   "sharpe": -0.32700726935796953
  },
+ "status": "verified-full",
  "assessment": {
   "verdict": "unsupported",
   "reason": "The only rigorous cited ORB study finds the family fails costs; dev −2.1%/1 bp, **−15.1%/5 bp**; reclaim is practitioner-only."

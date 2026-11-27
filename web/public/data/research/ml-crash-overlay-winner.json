@@ -8,6 +8,7 @@
   "dd": 0.23327381019605842,
   "sharpe": 0.7621205520867631
  },
+ "status": "verified-full",
  "assessment": {
   "verdict": "overlay-only",
   "reason": "Decay difference between TQQQ and QQQ states is 1–2 bp, p=0.47; a simple 20-day vol rule earns Sharpe 1.13 vs 0.81."

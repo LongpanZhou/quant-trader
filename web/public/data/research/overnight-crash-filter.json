@@ -8,6 +8,7 @@
   "dd": 0.2697769077466272,
   "sharpe": 0.8086034236537867
  },
+ "status": "verified-full",
  "assessment": {
   "verdict": "unsupported",
   "reason": "“Day Destroys the Night” predictor is a ~7-year EWMA, not yesterday’s sign; F1 t=0.23, F2 t=−0.51; static vol-matched mix dominates."

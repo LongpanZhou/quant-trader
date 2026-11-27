@@ -8,6 +8,7 @@
   "dd": 0.0038409121758838927,
   "sharpe": 6.534809415819199
  },
+ "status": "verified-full",
  "assessment": {
   "verdict": "unsupported",
   "reason": "25 events, +5.6 bp, t=1.01, p=0.15; CI includes zero; no-confirmation variant is better; 10 bp CAGR 0.79% below BIL."

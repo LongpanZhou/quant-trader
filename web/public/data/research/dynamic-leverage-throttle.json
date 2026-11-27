@@ -8,6 +8,7 @@
   "dd": 0.15296708932399972,
   "sharpe": 0.5380182361377437
  },
+ "status": "verified-full",
  "assessment": {
   "verdict": "plausible-but-weak",
   "reason": "6 entries (own gate ≥12); 5.2%/yr; all six cluster on known stress dates; effectively cash-plus."

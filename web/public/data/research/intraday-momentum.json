@@ -8,6 +8,7 @@
   "dd": 0.6355113529285439,
   "sharpe": 0.6119122198650161
  },
+ "status": "verified-full",
  "assessment": {
   "verdict": "unsupported",
   "reason": "First-hour signal is inverted in its own diagnostics: True −1.19 bp vs False +68.79 bp (p=0.991); TQQQ state +5.0 bp vs QQQ +36.5 bp; corr 0.616 fails."

@@ -17,6 +17,24 @@ INDEX = WEB / "public" / "data" / "research" / "rebuild.json"
 AUDIT = REVISIT / "WHY_UNDERPERFORM.md"
 OUT = WEB / "public" / "data" / "research"
 META = {s["slug"]: s for s in json.loads((NEW / "META.json").read_text(encoding="utf-8"))["strategies"]}
+LIBRARY_STATUS = {
+    s["slug"]: s.get("status", "verified-full")
+    for s in json.loads((NEW / "LIBRARY.json").read_text(encoding="utf-8"))["strategies"]
+}
+VERIFIED_OVERRIDES = {
+    "ratio-froth": {
+        "verdict": "Verified - trend/ratio overlay",
+        "reason": "Clean 2016-2026 rerun: dev 61.56% / 39.11% / 1.47, "
+                  "holdout 64.88%, full 62.21% / 36.65% daily-close DD / 1.43. "
+                  "Frozen wrapper and holdout in research/new/ratio-froth.",
+    },
+    "vol-scaled-crash-stop": {
+        "verdict": "Verified - vol crash stop",
+        "reason": "Shared-runner OHLC/ATR adapter: dev 57.84% / 39.29% / 1.42, "
+                  "holdout 34.89%, full 51.46% / 39.29% / 1.29. Own-main cut "
+                  "tests at 2020-03-12 and 2022-09-13 are exact.",
+    },
+}
 
 URL_RE = re.compile(r"<?(https?://[^\s>)]+)>?")
 
@@ -375,7 +393,8 @@ def main() -> None:
         )
         assessment = (
             {"verdict": META[slug]["verdict"], "reason": META[slug]["reason"]}
-            if slug in META else assessments.get(slug, {})
+            if slug in META
+            else VERIFIED_OVERRIDES.get(slug) or assessments.get(slug, {})
         )
 
         code = read(code_path)
@@ -392,6 +411,7 @@ def main() -> None:
                 "dd": row.get("dd"),
                 "sharpe": row.get("sharpe"),
             },
+            "status": LIBRARY_STATUS.get(slug, "verified-full"),
             "assessment": assessment,
             "paths": {
                 "report": rel(report_path),

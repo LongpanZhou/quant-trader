@@ -8,6 +8,7 @@
   "dd": 0.012453516091380235,
   "sharpe": 5.088872180648806
  },
+ "status": "verified-full",
  "assessment": {
   "verdict": "unsupported",
   "reason": "1 event in 8 years; the “excess ≤ −1 pp” condition mostly captures permanent daily-reset drag, not temporary overshoot; untestable."

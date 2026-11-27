@@ -8,6 +8,7 @@
   "dd": 0.3576770825793282,
   "sharpe": 0.013099925260041313
  },
+ "status": "verified-full",
  "assessment": {
   "verdict": "plausible-but-weak",
   "reason": "Pre-registered 5-min version lost 3.4%/yr; the shipped 1-hour version was chosen after; only +0.8 pp over a leverage-matched static mix."

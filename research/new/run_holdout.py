@@ -89,7 +89,13 @@ def build_full(mod, ts, o, c):
     Several agents hard-code a guard that raises if the panel extends past
     2023-12-29.  The lead's holdout run is the authorization to lift it; the
     strategy's signal, parameters and weight logic are unchanged.
+
+    A strategy may provide `build_holdout_weights(ts, o, c)` when its public
+    `build_weights` needs an explicit data-window adapter (e.g. full-panel
+    bars).  The hook is optional and leaves every other strategy untouched.
     """
+    if hasattr(mod, "build_holdout_weights"):
+        return mod.build_holdout_weights(ts, o, c)
     try:
         return mod.build_weights(ts, o, c)
     except (ValueError, RuntimeError, AssertionError) as exc:

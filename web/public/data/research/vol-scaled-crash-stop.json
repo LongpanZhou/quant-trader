@@ -8,9 +8,10 @@
   "dd": 0.37878038411882764,
   "sharpe": 1.2649272669012215
  },
+ "status": "verified-full",
  "assessment": {
-  "verdict": "overlay-only",
-  "reason": "Always-long TQQQ, 72% of time; corr 0.755 > 0.60; event mean −0.27% (p=0.073); 3,950 dev fills."
+  "verdict": "Verified - vol crash stop",
+  "reason": "Shared-runner OHLC/ATR adapter: dev 57.84% / 39.29% / 1.42, holdout 34.89%, full 51.46% / 39.29% / 1.29. Own-main cut tests at 2020-03-12 and 2022-09-13 are exact."
  },
  "paths": {
   "report": "research/revisit/vol-scaled-crash-stop/report.md",

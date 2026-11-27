@@ -20,9 +20,11 @@ agent's frozen `result.json`. Weights: shape, long-only, sum ≤1.
 | `fomc-opex-window` | 52.77% | 40.64% | +0.00 pp | 0.00e+00 | 78 | PASS |
 | `ml-regime-v2` | 41.74% | 35.98% | -0.29 pp | 0.00e+00 | 1 | PASS |
 | `qqq-spy-relative` | 38.98% | 53.64% | +0.00 pp | 0.00e+00 | 134 | PASS |
+| `ratio-froth` | 62.21% | 36.65% | -0.00 pp | 0.00e+00 | 150 | PASS |
 | `relative-value-tqqq` | 40.50% | 51.54% | +0.00 pp | 0.00e+00 | 35 | PASS |
 | `tqqq-52week-high` | 38.64% | 39.43% | +0.09 pp | 0.00e+00 | 47 | PASS |
 | `vol-of-vol-timing` | 42.17% | 51.64% | +0.00 pp | 0.00e+00 | 277 | PASS |
+| `vol-scaled-crash-stop` | 51.32% | 37.88% | +0.19 pp | 0.00e+00 | 618 | PASS |
 | `vol-term-structure` | 42.48% | 35.80% | +0.00 pp | 0.00e+00 | 66 | PASS |
 
 ## Research notes
@@ -42,4 +44,5 @@ agent's frozen `result.json`. Weights: shape, long-only, sum ≤1.
 - **`relative-value-tqqq`** — Ratio momentum + vol scale; ratio momentum is 99.7% explained by QQQ trend and variance. Variance-adjusted TQQQ beta timing.
 - **`tqqq-52week-high`** — QQQ within 8% of its 252d high and above SMA20 -> TQQQ; exit on the 20d closing low or -10% from the high; 85% vol target. 6/8 grid cells; the 8-11% entry band is a ridge and the base is the highest-CAGR cell; removing the 52-week gate drops dev CAGR to 32.41%; 2023 +63.8% vs TQQQ +204.9%. v2 fixed v1's intraday lookahead.
 - **`vol-of-vol-timing`** — Parkinson range vol + vol-of-vol risk state; 2022-dependent; de-risk cuts weak; vov-spike rule has event evidence. Plausible risk-state timing.
+- **`vol-scaled-crash-stop`** — Legacy always-long TQQQ with inverse-ATR sizing and a 0.70x ATR intraday stop. Shared-runner adapter: full 51.46% / 39.29% DD / 1.29 Sharpe, holdout 34.89%; audit pending. No 165-day trend gate; the stop is the strategy.
 - **`vol-term-structure`** — 50% QQQ>165d SMA trend + 50% RV20/RV60<0.95 term-structure sleeve + RV5/RV60 acute-spike kill. All 8 grid cells pass; 3-session delay drops to 33.6%; term structure buys 10.4 pp DD and +0.17 Sharpe over trend+spike, not raw CAGR; 2020 crash-avoidance concentrated.

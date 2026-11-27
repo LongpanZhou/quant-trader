@@ -109009,7 +109009,7 @@
    "sharpe": 1.4293032127870318,
    "benchmark": false,
    "family": "trend-vol",
-   "family_winner": false
+   "family_winner": true
   },
   {
    "id": "fomc-opex-window",
@@ -109029,7 +109029,7 @@
    "sharpe": 1.2649272669012215,
    "benchmark": false,
    "family": "vol-crash",
-   "family_winner": false
+   "family_winner": true
   },
   {
    "id": "drawdown-recovery-v2",
@@ -109079,7 +109079,7 @@
    "sharpe": 1.058504873492197,
    "benchmark": false,
    "family": "trend-vol",
-   "family_winner": true
+   "family_winner": false
   },
   {
    "id": "vol-term-structure",
@@ -109089,7 +109089,7 @@
    "sharpe": 1.1509971557524818,
    "benchmark": false,
    "family": "vol-crash",
-   "family_winner": true
+   "family_winner": false
   },
   {
    "id": "family-ml-microstructure",

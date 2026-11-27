@@ -202,10 +202,28 @@ def _daily_panel_weights(ts, w_daily: pd.Series) -> np.ndarray:
     return W
 
 
+def _last_completed_session(ts) -> pd.Timestamp:
+    """Last session in `ts` whose daily close is known.
+
+    A mid-day truncated panel ends inside a session; that partial session is
+    not a completed daily bar, so the daily signal must stop at the prior
+    session.  A one-bar-per-session panel is treated as all-complete.
+    """
+    ts = pd.DatetimeIndex(ts)
+    dates, first, last = bt.day_bounds(ts)
+    if len(ts) == len(first):
+        return pd.Timestamp(dates[last][-1])
+    t = pd.Timestamp(ts[-1])
+    cutoff = (pd.Timestamp("12:59").time() if t.date() in bt.HALF_DAYS
+              else pd.Timestamp("15:59").time())
+    if t.time() < cutoff and len(dates[last]) > 1:
+        return pd.Timestamp(dates[last][-2])
+    return pd.Timestamp(dates[last][-1])
+
+
 def build_weights(ts, o, c, params: dict | None = None) -> np.ndarray:
     """Required entry point: panel -> (n, 3) TQQQ/BIL weights."""
-    end_date = str(pd.Timestamp(ts[-1]).tz_localize(None).date()) \
-        if pd.Timestamp(ts[-1]).tz is not None else str(pd.Timestamp(ts[-1]).date())
+    end_date = str(_last_completed_session(ts).date())
     w_daily, _ = daily_weight_series(params, end_date=end_date)
     return _daily_to_minutes(ts, w_daily)
 

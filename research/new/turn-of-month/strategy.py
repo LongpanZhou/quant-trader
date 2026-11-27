@@ -112,12 +112,28 @@ def _targets(pe, ps, sigma, last_sessions, first_sessions, vol_target):
 
 def build_weights(ts, o, c, last_sessions: int = LAST_SESSIONS,
                   first_sessions: int = FIRST_SESSIONS,
-                  vol_target=VOL_TARGET, vol_window: int = VOL_WINDOW) -> np.ndarray:
-    """Return the (n, 3) weight matrix for 1-minute bars (col 1 = TQQQ)."""
+                  vol_target=VOL_TARGET, vol_window: int = VOL_WINDOW,
+                  calendar=None) -> np.ndarray:
+    """Return the (n, 3) weight matrix for 1-minute bars (col 1 = TQQQ).
+
+    `calendar` is an optional ex-ante exchange calendar (all session dates).
+    When supplied, the month-end offsets are computed on that full calendar
+    and mapped onto the panel's sessions, so a truncated panel cannot mistake
+    its last session for a month-end.  The default (None) uses the panel's own
+    sessions, which is the correct full-panel behaviour.
+    """
     dates, first, last = bt.day_bounds(ts)
     nd = len(first)
     session_dates = dates[first]
-    pe, ps = session_offsets(session_dates)
+    if calendar is None:
+        pe, ps = session_offsets(session_dates)
+    else:
+        cal = pd.DatetimeIndex(pd.to_datetime(calendar)).normalize().unique().sort_values()
+        pe_cal, ps_cal = session_offsets(cal)
+        pos = cal.get_indexer(pd.DatetimeIndex(pd.to_datetime(session_dates)))
+        if (pos < 0).any():
+            raise ValueError("panel session missing from the ex-ante calendar")
+        pe, ps = pe_cal[pos], ps_cal[pos]
 
     dclose = np.asarray(c, dtype=float)[last, COL_T]
     warm = _warm_tqqq_closes(session_dates[0])

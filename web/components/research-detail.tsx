@@ -41,6 +41,7 @@ export type Detail = {
   window?: string;
   archive?: boolean;
   has_curve?: boolean;
+  status?: string;
   assessment: { verdict?: string; reason?: string };
   paths: {
     report?: string | null;
@@ -538,6 +539,7 @@ export function ResearchDetail({ detail }: { detail: Detail }) {
       <section className="panel-soft p-5 sm:p-6">
         <div className="flex flex-wrap items-center gap-2">
           <Pill>{detail.archive ? "Research archive" : "Research record"}</Pill>
+          {detail.status ? <Pill>{detail.status}</Pill> : null}
           {detail.assessment.verdict ? <Pill>{detail.assessment.verdict}</Pill> : null}
           <span className="text-[11px] text-zinc-500">
             {(detail.papers ?? []).length} cited sources

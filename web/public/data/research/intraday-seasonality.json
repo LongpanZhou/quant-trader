@@ -8,6 +8,7 @@
   "dd": 0.39236922880122205,
   "sharpe": 0.9569086320487205
  },
+ "status": "verified-full",
  "assessment": {
   "verdict": "plausible-but-weak",
   "reason": "275 events, +70 bp, t=2.39; but the overnight leg earns −0.38%; the edge is next-day intraday dip-buying; −1.0% is the grid peak; 10 bp CAGR 7.6%."
