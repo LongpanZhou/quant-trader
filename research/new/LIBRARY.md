@@ -6,15 +6,20 @@
 > research records but are not family winners. See `FAMILY_POLICY.md` and
 > `SIX_FAMILIES.md` for the final selection.
 
-**Inventory:** 54 strategies at the time of this audit - the 27 original revisit strategies and the 27 new-programme strategies. Every entry is visible in the research library, including the failures. Full-window bar: TQQQ **37.54% CAGR / 81.68% max DD / 0.82 Sharpe** on 2016-01-04 to 2026-10-23 daily-close marks.
+**Current inventory:** **59 records**, **23 above the TQQQ bar**, **10 family
+winners**, and **59 `verified-full`**.  Full-window bar: TQQQ **37.54% CAGR /
+81.68% max DD / 0.82 Sharpe** on 2016-01-04 to 2026-10-23 daily-close marks.
 
-**Counts:** 54 inventoried, **12 above TQQQ**, 14 verified-full, 8 dev-only, 32 failed, **3 duplicate above-TQQQ families**, 4 family winners.
+**Repair follow-up:** the eight names flagged in `HEALTH_AUDIT.md` are resolved
+in `REPAIRS.md`.  Four have full-holdout re-specifications (all below the bar),
+three are retired (`vol-kelly-overlay`, `volume-orderflow`,
+`drawdown-stop-overlay`), and one remains development-only
+(`gap-fill-fade`).  No published curve, metric, family or winner changed.
 
-`dev` is the frozen 2016-2023 result from `result.json` (1 bp headline). `full` is the 2016-2026 daily-close result: `holdout.json -> windows.full.daily` for the new programme and `web/public/data/compare/all.json` for the original 27. A dash means the metric is unavailable.
-
-**Status.** `verified-full` means the full-window record passed its vintage verification: the ten new holdout+audit passers, or an original-27 revisit audit status of `passed`. It does **not** mean the strategy beats TQQQ. `failed` means a full record exists but the strategy is below the bar, rejected, stale, or an overlay without a frozen holdout. `dev-only` means no 2024-2026 holdout was run.
-
-Two legacy names - `ratio-froth` and `vol-scaled-crash-stop` - are above the bar and are the family winners in `trend-vol` and `vol-crash`, but they are `failed` under the strict holdout protocol because they have no frozen 2024-2026 holdout. The duplicate section names the verified alternative where the keeper is a legacy overlay.
+The family tables below preserve the **pre-final audit snapshot** and are kept
+for provenance; `LIBRARY.json` is authoritative for current status, metrics and
+repair fields.  `dev` there is the frozen 2016-2023 result (1 bp headline);
+`full` is the 2016-2026 daily-close result.
 
 ## trend-vol (8)
 

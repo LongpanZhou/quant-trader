@@ -43,9 +43,9 @@
    "name": "Short-term reversal",
    "tagline": "Buys TQQQ after a two-session down streak or a 3-session drop of at least 1.5%, then holds for a rolling five-session rebound.",
    "summary": "A short-horizon mean-reversion strategy: QQQ down two sessions or down 1.5% over three sessions at the close triggers a TQQQ entry at the next open; the exit rolls forward if another dip signal fires. No trend, stop or vol target in the primary.",
-   "cagr": 0.49543084150945216,
+   "cagr": 0.4964753614991819,
    "dd": 0.6645687105826557,
-   "sharpe": 0.9814703878245444
+   "sharpe": 0.9826642885844419
   },
   {
    "slug": "family-session-timing",

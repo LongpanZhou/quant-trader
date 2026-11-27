@@ -1,0 +1,484 @@
+{
+  "agent": "drawdown-regime-v2",
+  "original": "research/revisit/drawdown-regime",
+  "status": "repaired_diversifier",
+  "idea": "After a >=10% QQQ drawdown from its 52-week high, own TQQQ inside a confirmed 60-session recovery window, with a 15-session low failure exit and a 3pp re-arm.",
+  "hypothesis": "The post-correction recovery is a distinct, time-limited return state; a confirmed 20-session turn after a deep correction captures it with low exposure and low correlation to slow trend-following.",
+  "universe": [
+    "QQQ (signal)",
+    "TQQQ (risk)",
+    "BIL (cash)"
+  ],
+  "frozen_commit": null,
+  "variants_tried": 8,
+  "corr_vs_165d_baseline": 0.43979313063847586,
+  "max_corr_vs_other_rebuilds": null,
+  "windows": {
+    "dev": {
+      "1bp": {
+        "cagr": 0.267890492434782,
+        "max_drawdown": 0.3982579607464435,
+        "sharpe": 0.967807695085083,
+        "sortino": 1.397371549874471,
+        "volatility": 0.28929916011499135,
+        "fills": 77,
+        "turnover": 218.0730242909586,
+        "ending_equity": 665329.6320388156,
+        "tqqq_exposure": 0.28792909397861566
+      },
+      "5bp": {
+        "cagr": 0.2630089631258645,
+        "max_drawdown": 0.40113940184161545,
+        "sharpe": 0.9545021960649002,
+        "sortino": 1.3773434378136336,
+        "volatility": 0.28926779928070245,
+        "fills": 77,
+        "turnover": 213.84639106293517,
+        "ending_equity": 645149.918736531
+      },
+      "10bp": {
+        "cagr": 0.25693350523716374,
+        "max_drawdown": 0.40472180954995585,
+        "sharpe": 0.9378325878902329,
+        "sortino": 1.352279637018002,
+        "volatility": 0.2892436329421094,
+        "fills": 77,
+        "turnover": 208.6966400128071,
+        "ending_equity": 620783.924970904
+      }
+    },
+    "holdout": null,
+    "10y": null,
+    "5y": null
+  },
+  "marks": "1m",
+  "benchmarks": {
+    "165d": {
+      "cagr": 0.45455330484765577,
+      "max_drawdown": 0.5876387357729532,
+      "sharpe": 1.0272095942674446,
+      "fills": 81
+    },
+    "tqqq": {
+      "cagr": 0.3615406632934588,
+      "total_return": 10.752826498520793,
+      "max_drawdown": 0.8229021592363336,
+      "volatility": 0.6654592718640882,
+      "sharpe": 0.8011699599655372,
+      "ending_equity": 1175282.6498520793,
+      "years": 7.984312495246787
+    },
+    "qqq": {
+      "cagr": 0.18912874422247206,
+      "total_return": 2.9870424941803697,
+      "max_drawdown": 0.3730047872557426,
+      "volatility": 0.2201773147609827,
+      "sharpe": 0.8999556826271142,
+      "ending_equity": 398704.249418037,
+      "years": 7.984312495246787
+    }
+  },
+  "episodes": [
+    {
+      "entry_i": 40,
+      "entry_date": "2016-03-02",
+      "dd": -0.07855955509472923,
+      "trough": -0.1610443063542769,
+      "exit_i": 79,
+      "exit_date": "2016-04-27",
+      "exit_reason": "low",
+      "days": 39,
+      "ret": 0.04935041339892976
+    },
+    {
+      "entry_i": 99,
+      "entry_date": "2016-05-25",
+      "dd": -0.05250136265645278,
+      "trough": -0.1610443063542769,
+      "exit_i": 114,
+      "exit_date": "2016-06-16",
+      "exit_reason": "low",
+      "days": 15,
+      "ret": -0.04871063424782052
+    },
+    {
+      "entry_i": 130,
+      "entry_date": "2016-07-11",
+      "dd": -0.03386048046804124,
+      "trough": -0.1610443063542769,
+      "exit_i": 167,
+      "exit_date": "2016-08-31",
+      "exit_reason": "low",
+      "days": 37,
+      "ret": 0.15697953056060743
+    },
+    {
+      "entry_i": 592,
+      "entry_date": "2018-05-10",
+      "dd": -0.03405156171485857,
+      "trough": -0.10522597521800692,
+      "exit_i": 624,
+      "exit_date": "2018-06-26",
+      "exit_reason": "low",
+      "days": 32,
+      "ret": 0.05915166571010988
+    },
+    {
+      "entry_i": 764,
+      "entry_date": "2019-01-16",
+      "dd": -0.12639149044800446,
+      "trough": -0.2279663232135254,
+      "exit_i": 800,
+      "exit_date": "2019-03-11",
+      "exit_reason": "low",
+      "days": 36,
+      "ret": 0.1573261651294302
+    },
+    {
+      "entry_i": 803,
+      "entry_date": "2019-03-14",
+      "dd": -0.047681869889806494,
+      "trough": -0.2279663232135254,
+      "exit_i": 842,
+      "exit_date": "2019-05-09",
+      "exit_reason": "low",
+      "days": 39,
+      "ret": 0.10407385210924236
+    },
+    {
+      "entry_i": 869,
+      "entry_date": "2019-06-18",
+      "dd": -0.03856387501099834,
+      "trough": -0.1098320918921859,
+      "exit_i": 901,
+      "exit_date": "2019-08-02",
+      "exit_reason": "low",
+      "days": 32,
+      "ret": 0.04070623728016565
+    },
+    {
+      "entry_i": 1074,
+      "entry_date": "2020-04-09",
+      "dd": -0.15183804609520746,
+      "trough": -0.2855936507842982,
+      "exit_i": 1134,
+      "exit_date": "2020-07-07",
+      "exit_reason": "time",
+      "days": 60,
+      "ret": 0.9771098115066075
+    },
+    {
+      "entry_i": 1202,
+      "entry_date": "2020-10-12",
+      "dd": -0.056315032485245275,
+      "trough": -0.12749350686640715,
+      "exit_i": 1215,
+      "exit_date": "2020-10-29",
+      "exit_reason": "low",
+      "days": 13,
+      "ret": -0.17843650839823966
+    },
+    {
+      "entry_i": 1222,
+      "entry_date": "2020-11-09",
+      "dd": -0.026919030950385947,
+      "trough": -0.12749350686640715,
+      "exit_i": 1282,
+      "exit_date": "2021-02-05",
+      "exit_reason": "time",
+      "days": 60,
+      "ret": 0.35097619047356465
+    },
+    {
+      "entry_i": 1321,
+      "entry_date": "2021-04-05",
+      "dd": -0.0340915762575571,
+      "trough": -0.1085154098614034,
+      "exit_i": 1343,
+      "exit_date": "2021-05-05",
+      "exit_reason": "low",
+      "days": 22,
+      "ret": 0.03910394753381974
+    },
+    {
+      "entry_i": 1564,
+      "entry_date": "2022-03-21",
+      "dd": -0.12885406718860304,
+      "trough": -0.21143566741462494,
+      "exit_i": 1579,
+      "exit_date": "2022-04-11",
+      "exit_reason": "low",
+      "days": 15,
+      "ret": -0.05732118307664935
+    },
+    {
+      "entry_i": 1647,
+      "entry_date": "2022-07-20",
+      "dd": -0.2583451831408178,
+      "trough": -0.32654543671502323,
+      "exit_i": 1672,
+      "exit_date": "2022-08-24",
+      "exit_reason": "low",
+      "days": 25,
+      "ret": 0.12700625584230507
+    },
+    {
+      "entry_i": 1716,
+      "entry_date": "2022-10-26",
+      "dd": -0.2921068996622902,
+      "trough": -0.35056466570311584,
+      "exit_i": 1723,
+      "exit_date": "2022-11-04",
+      "exit_reason": "low",
+      "days": 7,
+      "ret": -0.1440036970091405
+    },
+    {
+      "entry_i": 1729,
+      "entry_date": "2022-11-14",
+      "dd": -0.28276676076464535,
+      "trough": -0.3511871989390044,
+      "exit_i": 1746,
+      "exit_date": "2022-12-08",
+      "exit_reason": "low",
+      "days": 17,
+      "ret": -0.05863786832229401
+    },
+    {
+      "entry_i": 1772,
+      "entry_date": "2023-01-18",
+      "dd": -0.25366461351953384,
+      "trough": -0.3511871989390044,
+      "exit_i": 1799,
+      "exit_date": "2023-02-27",
+      "exit_reason": "low",
+      "days": 27,
+      "ret": 0.09258822020741775
+    },
+    {
+      "entry_i": 1816,
+      "entry_date": "2023-03-22",
+      "dd": -0.1575083614385714,
+      "trough": -0.3511871989390044,
+      "exit_i": 1840,
+      "exit_date": "2023-04-26",
+      "exit_reason": "low",
+      "days": 24,
+      "ret": 0.012057565529282721
+    },
+    {
+      "entry_i": 1843,
+      "entry_date": "2023-05-01",
+      "dd": -0.025957016173003056,
+      "trough": -0.3511871989390044,
+      "exit_i": 1903,
+      "exit_date": "2023-07-27",
+      "exit_reason": "time",
+      "days": 60,
+      "ret": 0.6081262197005102
+    },
+    {
+      "entry_i": 1976,
+      "entry_date": "2023-11-08",
+      "dd": -0.0324064766378237,
+      "trough": -0.10779953813355447,
+      "exit_i": 1996,
+      "exit_date": "2023-12-07",
+      "exit_reason": "low",
+      "days": 20,
+      "ret": 0.10918366662340939
+    }
+  ],
+  "params": {
+    "window": 252,
+    "deep_dd": 0.1,
+    "entry_break": 20,
+    "hold": 60,
+    "exit_low": 15,
+    "rearm": 0.03
+  },
+  "exposure": 0.28792909397861566,
+  "episode_stats": {
+    "n": 19,
+    "mean": 0.12613841318690835,
+    "median": 0.05915166571010988,
+    "hit": 0.7368421052631579,
+    "t": 2.035590682377073,
+    "best": 0.9771098115066075,
+    "worst": -0.17843650839823966
+  },
+  "previous": {
+    "n_episodes": 8,
+    "exposure": 0.1429260244538804,
+    "dev": {
+      "1bp": {
+        "cagr": 0.17198446387486577,
+        "max_drawdown": 0.49024606451698594,
+        "sharpe": 0.7759165670600479
+      }
+    }
+  },
+  "note": "Repair: arm -20% -> -10%, failure exit 20 -> 15 sessions, re-arm 5pp -> 3pp; hold stays 60.  Development window only; 2024+ never loaded.",
+  "subperiods": {
+    "2016-19": {
+      "cagr": 0.13837326816844397,
+      "dd": 0.14967647734361478
+    },
+    "2020-21": {
+      "cagr": 0.5122143676118498,
+      "dd": 0.3567764764953787
+    },
+    "2022-23": {
+      "cagr": 0.3206940329834884,
+      "dd": 0.3982579607464435
+    }
+  },
+  "per_year": {
+    "2016": 0.1540606416379533,
+    "2017": 0.00711139539183181,
+    "2018": 0.07458203949053654,
+    "2019": 0.34266768195470565,
+    "2020": 0.8985942995701404,
+    "2021": 0.2027237915490836,
+    "2022": -0.13813966012478784,
+    "2023": 1.015755753004128
+  },
+  "grid": [
+    {
+      "name": "primary 10%",
+      "params": {
+        "window": 252,
+        "deep_dd": 0.1,
+        "entry_break": 20,
+        "hold": 60,
+        "exit_low": 15,
+        "rearm": 0.03
+      },
+      "n_episodes": 19,
+      "exposure": 0.28792909397861566,
+      "cagr": 0.267890492434782,
+      "max_drawdown": 0.3982579607464435,
+      "sharpe": 0.967807695085083,
+      "fills": 77
+    },
+    {
+      "name": "deep 12%",
+      "params": {
+        "window": 252,
+        "deep_dd": 0.12,
+        "entry_break": 20,
+        "hold": 60,
+        "exit_low": 15,
+        "rearm": 0.03
+      },
+      "n_episodes": 15,
+      "exposure": 0.2355144011868829,
+      "cagr": 0.23209899738657813,
+      "max_drawdown": 0.3982579607464436,
+      "sharpe": 0.9026490767472309,
+      "fills": 61
+    },
+    {
+      "name": "deep 15%",
+      "params": {
+        "window": 252,
+        "deep_dd": 0.15,
+        "entry_break": 20,
+        "hold": 60,
+        "exit_low": 15,
+        "rearm": 0.03
+      },
+      "n_episodes": 13,
+      "exposure": 0.199560034787947,
+      "cagr": 0.21622165386474457,
+      "max_drawdown": 0.3982579607464436,
+      "sharpe": 0.903854565604751,
+      "fills": 53
+    },
+    {
+      "name": "deep 18%",
+      "params": {
+        "window": 252,
+        "deep_dd": 0.18,
+        "entry_break": 20,
+        "hold": 60,
+        "exit_low": 15,
+        "rearm": 0.03
+      },
+      "n_episodes": 10,
+      "exposure": 0.154169437765386,
+      "cagr": 0.19472129596887733,
+      "max_drawdown": 0.3982579607464434,
+      "sharpe": 0.86003914766921,
+      "fills": 41
+    },
+    {
+      "name": "exit 10",
+      "params": {
+        "window": 252,
+        "deep_dd": 0.1,
+        "entry_break": 20,
+        "hold": 60,
+        "exit_low": 10,
+        "rearm": 0.03
+      },
+      "n_episodes": 20,
+      "exposure": 0.26997237427738274,
+      "cagr": 0.23565310919255444,
+      "max_drawdown": 0.4826211040752123,
+      "sharpe": 0.9048018224669732,
+      "fills": 81
+    },
+    {
+      "name": "exit 20",
+      "params": {
+        "window": 252,
+        "deep_dd": 0.1,
+        "entry_break": 20,
+        "hold": 60,
+        "exit_low": 20,
+        "rearm": 0.03
+      },
+      "n_episodes": 17,
+      "exposure": 0.30588709264848823,
+      "cagr": 0.2454758205470382,
+      "max_drawdown": 0.49024606451698616,
+      "sharpe": 0.8793672123440177,
+      "fills": 67
+    },
+    {
+      "name": "hold 45",
+      "params": {
+        "window": 252,
+        "deep_dd": 0.1,
+        "entry_break": 20,
+        "hold": 45,
+        "exit_low": 15,
+        "rearm": 0.03
+      },
+      "n_episodes": 19,
+      "exposure": 0.2654831943520745,
+      "cagr": 0.182866661043823,
+      "max_drawdown": 0.4378794843171252,
+      "sharpe": 0.7483763074548686,
+      "fills": 77
+    },
+    {
+      "name": "rearm 5pp",
+      "params": {
+        "window": 252,
+        "deep_dd": 0.1,
+        "entry_break": 20,
+        "hold": 60,
+        "exit_low": 15,
+        "rearm": 0.05
+      },
+      "n_episodes": 18,
+      "exposure": 0.27496035197216967,
+      "cagr": 0.24883068862080715,
+      "max_drawdown": 0.3982579607464437,
+      "sharpe": 0.9198751657599321,
+      "fills": 73
+    }
+  ]
+}

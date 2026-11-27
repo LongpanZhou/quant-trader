@@ -1,0 +1,366 @@
+{
+  "agent": "vol-kelly-overlay-v2",
+  "original": "research/revisit/vol-kelly-overlay",
+  "status": "retired",
+  "idea": "Buy a volatility-scaled TQQQ position after a 1-minute realized-vol spike and an oversold QQQ drawdown; exit on vol normalization, a short time stop or a price stop.",
+  "hypothesis": "Post-spike volatility mean reversion plus TQQQ convexity gives a positive 1-3 session rebound. The original's up-close filter is a late-entry artefact; removing it and shortening the hold should repair the event count.",
+  "universe": [
+    "QQQ",
+    "TQQQ",
+    "BIL"
+  ],
+  "dev_window": [
+    "2016-01-04",
+    "2023-12-29"
+  ],
+  "marks": "1m",
+  "params": {
+    "spike": 1.4,
+    "dd_x": 0.05,
+    "dd_window": 10,
+    "hold": 1,
+    "up_filter": false,
+    "target_vol": 0.35,
+    "w_min": 0.25,
+    "w_max": 0.75,
+    "stop_x": 0.04,
+    "exit_ratio": 1.0
+  },
+  "diagnosis": {
+    "sessions": 2012,
+    "spike_days": 51,
+    "drawdown_days": 219,
+    "up_days": 1129,
+    "spike_and_drawdown_days": 33,
+    "spike_drawdown_and_up_days": 15,
+    "fwd3_all_n": 33,
+    "fwd3_all_mean": 0.005590845433350005,
+    "fwd3_all_hit": 0.6363636363636364,
+    "fwd3_up_n": 15,
+    "fwd3_up_mean": -0.0011763590098781511,
+    "fwd3_up_hit": 0.6,
+    "fwd3_down_n": 18,
+    "fwd3_down_mean": 0.011230182469373469,
+    "fwd3_down_hit": 0.6666666666666666
+  },
+  "windows": {
+    "dev": {
+      "1bp": {
+        "cagr": 0.031791917029607264,
+        "max_drawdown": 0.12611098139458599,
+        "sharpe": 0.3785460518496103,
+        "sortino": 0.5395969641089022,
+        "calmar": 0.252094755571953,
+        "fills": 149,
+        "turnover": 68.78184013793759,
+        "tq_exposure": 0.007728760256601313,
+        "tq_time": 0.013948431984447741
+      },
+      "5bp": {
+        "cagr": 0.028501901112768957,
+        "max_drawdown": 0.13031586666245998,
+        "sharpe": 0.3448699408694812,
+        "sortino": 0.4911752365832788,
+        "calmar": 0.2187139743051679,
+        "fills": 149,
+        "turnover": 67.88557216480274
+      },
+      "10bp": {
+        "cagr": 0.024296386564433448,
+        "max_drawdown": 0.1359839071786011,
+        "sharpe": 0.30158441587197676,
+        "sortino": 0.4289571220093645,
+        "calmar": 0.17867104327663275,
+        "fills": 147,
+        "turnover": 66.74803646859294
+      }
+    }
+  },
+  "events": {
+    "entries": 28,
+    "signal_days": 49,
+    "mean_event_return": 0.0059046810282505,
+    "median_event_return": 0.005003428428559942,
+    "hit_rate": 0.5357142857142857,
+    "bootstrap_p": 0.2227,
+    "best_event": 0.1002333275413434,
+    "worst_event": -0.06392074952539317,
+    "episode_returns": [
+      0.1002333275413434,
+      -0.06392074952539317,
+      -0.0019617851500878247,
+      0.0047471885374019696,
+      -0.028950264523040392,
+      0.03531803926252097,
+      0.005259668319717914,
+      -0.0036121702901582564,
+      -0.017374055760843166,
+      0.024541995227994384,
+      -0.0593719603663353,
+      0.08816419292533118,
+      -0.017191307653530274,
+      -0.04413125223368941,
+      0.04086868522984233,
+      -0.056659836988973034,
+      -0.017971347400523863,
+      0.025750569759153796,
+      0.02141935475544665,
+      -0.03109356112861439,
+      0.021238761018117724,
+      0.02485087201003844,
+      -0.018524478367963226,
+      0.03856630869055899,
+      0.05307788414497905,
+      0.028114873511997818,
+      -0.02133220857258089,
+      0.03527432581830259
+    ]
+  },
+  "subperiods": {
+    "2016_2019": {
+      "cagr": 0.022799785477208845,
+      "max_drawdown": 0.12611098139458599,
+      "sharpe": 0.33656256293547876,
+      "sortino": 0.515102767058691,
+      "calmar": 0.18079143644018658,
+      "fills": 45,
+      "turnover": 29.410728094939323
+    },
+    "2020_2021": {
+      "cagr": 0.028762812257753456,
+      "max_drawdown": 0.12546340772984577,
+      "sharpe": 0.2655630586184647,
+      "sortino": 0.3612206845403848,
+      "calmar": 0.22925259865160857,
+      "fills": 91,
+      "turnover": 30.913282709892336
+    },
+    "2022_2023": {
+      "cagr": 0.05328844766295693,
+      "max_drawdown": 0.040747000418031365,
+      "sharpe": 1.11637311034411,
+      "sortino": 1.8988581270551868,
+      "calmar": 1.3077882326615562,
+      "fills": 15,
+      "turnover": 6.733413369226189
+    }
+  },
+  "yearly": {
+    "2016": {
+      "strategy": 0.0009926094981309586,
+      "benchmark": 0.19864262661415033
+    },
+    "2017": {
+      "strategy": 0.006891020532241887,
+      "benchmark": 1.1454004749279192
+    },
+    "2018": {
+      "strategy": 0.06073402819956786,
+      "benchmark": -0.20761930070677803
+    },
+    "2019": {
+      "strategy": 0.02309644485765938,
+      "benchmark": 1.4822913617582225
+    },
+    "2020": {
+      "strategy": -0.03707583774861223,
+      "benchmark": 1.041403713646452
+    },
+    "2021": {
+      "strategy": 0.09920406410325366,
+      "benchmark": 0.8105368933493498
+    },
+    "2022": {
+      "strategy": 0.05630628365426538,
+      "benchmark": -0.7938942799960799
+    },
+    "2023": {
+      "strategy": 0.049449105225991774,
+      "benchmark": 1.9204706377461225
+    }
+  },
+  "correlation": {
+    "vs_165d_baseline": 0.20591792669073458,
+    "baseline_cagr": 0.44764720668821134,
+    "baseline_dd": 0.5876387357729533
+  },
+  "grid": {
+    "cells": [
+      {
+        "spike": 1.5,
+        "dd_x": 0.05,
+        "hold": 3,
+        "up_filter": true,
+        "entries": 11,
+        "tq_exposure": 0.009087869026370581,
+        "tq_time": 0.015925717501406866,
+        "cagr": 0.014705539652952515,
+        "max_drawdown": 0.19519210975411994,
+        "sharpe": 0.21548445268691696,
+        "event_mean": 0.0020802138540046877,
+        "event_hit": 0.5454545454545454,
+        "event_p": 0.438
+      },
+      {
+        "spike": 1.5,
+        "dd_x": 0.05,
+        "hold": 3,
+        "up_filter": false,
+        "entries": 12,
+        "tq_exposure": 0.010469838305875435,
+        "tq_time": 0.01793881414027728,
+        "cagr": 0.026011561757738333,
+        "max_drawdown": 0.22566011655422158,
+        "sharpe": 0.3130957081461721,
+        "event_mean": 0.009634990168623922,
+        "event_hit": 0.75,
+        "event_p": 0.2505
+      },
+      {
+        "spike": 1.5,
+        "dd_x": 0.05,
+        "hold": 1,
+        "up_filter": false,
+        "entries": 19,
+        "tq_exposure": 0.005337249366406706,
+        "tq_time": 0.009477157620095156,
+        "cagr": 0.006275863046812269,
+        "max_drawdown": 0.18821654742174787,
+        "sharpe": 0.11998465007644607,
+        "event_mean": -0.0019648203819162898,
+        "event_hit": 0.47368421052631576,
+        "event_p": 0.5666
+      },
+      {
+        "spike": 1.4,
+        "dd_x": 0.05,
+        "hold": 3,
+        "up_filter": false,
+        "entries": 18,
+        "tq_exposure": 0.014341311809516907,
+        "tq_time": 0.025384969560546377,
+        "cagr": 0.002846036793845208,
+        "max_drawdown": 0.31031430960023465,
+        "sharpe": 0.08248709225007547,
+        "event_mean": -0.0029212692999430376,
+        "event_hit": 0.5555555555555556,
+        "event_p": 0.5711
+      },
+      {
+        "spike": 1.4,
+        "dd_x": 0.05,
+        "hold": 1,
+        "up_filter": false,
+        "entries": 28,
+        "tq_exposure": 0.007728760256601313,
+        "tq_time": 0.013948431984447741,
+        "cagr": 0.031791917029607264,
+        "max_drawdown": 0.12611098139458599,
+        "sharpe": 0.3785460518496103,
+        "event_mean": 0.0059046810282505,
+        "event_hit": 0.5357142857142857,
+        "event_p": 0.2227
+      },
+      {
+        "spike": 1.3,
+        "dd_x": 0.05,
+        "hold": 3,
+        "up_filter": false,
+        "entries": 28,
+        "tq_exposure": 0.0227776673890484,
+        "tq_time": 0.03912237171944544,
+        "cagr": 0.025172848043692797,
+        "max_drawdown": 0.35393620115498914,
+        "sharpe": 0.24899987446358685,
+        "event_mean": 0.005047379689808479,
+        "event_hit": 0.5714285714285714,
+        "event_p": 0.3072
+      },
+      {
+        "spike": 1.4,
+        "dd_x": 0.04,
+        "hold": 3,
+        "up_filter": false,
+        "entries": 20,
+        "tq_exposure": 0.016095915536681018,
+        "tq_time": 0.02837775617741853,
+        "cagr": -0.0073021787923923664,
+        "max_drawdown": 0.3103143096002343,
+        "sharpe": -0.0033590958958213805,
+        "event_mean": -0.00670386443112368,
+        "event_hit": 0.5,
+        "event_p": 0.6993
+      },
+      {
+        "spike": 1.4,
+        "dd_x": 0.06,
+        "hold": 3,
+        "up_filter": false,
+        "entries": 17,
+        "tq_exposure": 0.01325660296573778,
+        "tq_time": 0.0238885762521103,
+        "cagr": -0.0070895241433435174,
+        "max_drawdown": 0.31031430960023465,
+        "sharpe": -0.006789431736927822,
+        "event_mean": -0.007960364149031967,
+        "event_hit": 0.5294117647058824,
+        "event_p": 0.7186
+      }
+    ],
+    "n": 8,
+    "entries_range": [
+      11,
+      28
+    ],
+    "frac_positive_cagr": 0.75,
+    "frac_p_le_010": 0.0,
+    "median_event_mean": 5.769673604419899e-05
+  },
+  "falsifiers": {
+    "1_entries_ge_15": true,
+    "2_net_positive_10bp": true,
+    "3_bootstrap_p_le_010": false,
+    "4_not_single_event": true,
+    "5_corr_lt_060": true,
+    "7_2022_23_positive": true,
+    "8_up_filter_adds_nothing": true,
+    "9_standalone_positive": true
+  },
+  "benchmarks": {
+    "tqqq": {
+      "cagr": 0.3615406632934588,
+      "total_return": 10.752826498520793,
+      "max_drawdown": 0.8229021592363336,
+      "volatility": 0.6654592718640882,
+      "sharpe": 0.8011699599655372,
+      "ending_equity": 1175282.6498520793,
+      "years": 7.984312495246787
+    },
+    "qqq": {
+      "cagr": 0.18912874422247206,
+      "total_return": 2.9870424941803697,
+      "max_drawdown": 0.3730047872557426,
+      "volatility": 0.2201773147609827,
+      "sharpe": 0.8999556826271142,
+      "ending_equity": 398704.249418037,
+      "years": 7.984312495246787
+    },
+    "bil": {
+      "cagr": 0.013922937868313001,
+      "total_return": 0.11672279866184021,
+      "max_drawdown": 0.0024388417668437246,
+      "volatility": 0.015157668091977439,
+      "sharpe": 0.9230732630692111,
+      "ending_equity": 111672.27986618404,
+      "years": 7.984312495246787
+    },
+    "note": "buy-and-hold, 1m marks"
+  },
+  "concentration": {
+    "best_event": 0.1002333275413434,
+    "product_without_best": 0.0482063155399004,
+    "product_with_2020": 0.15327152249631593,
+    "product_without_2020": 0.19979916655244256
+  },
+  "verdict": "retired: the count repair works (11 -> 28 entries) and the 2022-23 sub-period is positive, but the event mean is 0.59% with p=0.223; no cell in the 8-cell grid reaches p<=0.10 (best 0.223). The original 11-entry version is p=0.438. Dropping the up-close filter raises the mean but the sample is still not significant. The core post-spike reflation edge is absent; forcing 28 trades would be count-chasing, not a repair."
+}

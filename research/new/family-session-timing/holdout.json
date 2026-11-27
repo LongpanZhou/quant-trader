@@ -1,6 +1,6 @@
 {
  "slug": "family-session-timing",
- "generated": "2026-11-27T20:14:37.211760+00:00",
+ "generated": "2026-11-27T23:51:37.984312+00:00",
  "windows": {
   "dev": {
    "1bp": {
@@ -9,10 +9,13 @@
     "sharpe": 1.3350277285962562,
     "sortino": 1.8874368897639928,
     "volatility": 0.3941478991877811,
-    "fills": 5465.0,
-    "turnover": 106998.78882237663,
+    "fills": 4048,
+    "turnover": 41691.68141866364,
     "exposure": 0.19072800591413985,
-    "ending_equity": 3538673.6471729735
+    "ending_equity": 3538673.6471729735,
+    "traded_notional": 4169168141.866364,
+    "turnover_start_equity": 100000.0,
+    "turnover_denominator": "window_start_equity"
    },
    "daily": {
     "cagr": 0.5623009936710388,
@@ -30,10 +33,13 @@
     "sharpe": 0.6957258240922094,
     "sortino": 0.975129561678744,
     "volatility": 0.42387824203369556,
-    "fills": 5465.0,
-    "turnover": 106998.78882237663,
+    "fills": 1417,
+    "turnover": 1894.656448105071,
     "exposure": 0.19155974999180547,
-    "ending_equity": 6100572.752298552
+    "ending_equity": 6100572.752298552,
+    "traded_notional": 6530710740.371307,
+    "turnover_start_equity": 3446910.254839582,
+    "turnover_denominator": "window_start_equity"
    },
    "daily": {
     "cagr": 0.23389036122501206,
@@ -51,10 +57,13 @@
     "sharpe": 1.1530834648415422,
     "sortino": 1.6258061375660107,
     "volatility": 0.4021575286391545,
-    "fills": 5465.0,
-    "turnover": 106998.78882237663,
+    "fills": 5465,
+    "turnover": 106998.78882237671,
     "exposure": 0.19094399678064752,
-    "ending_equity": 6100572.752298552
+    "ending_equity": 6100572.752298552,
+    "traded_notional": 10699878882.23767,
+    "turnover_start_equity": 100000.0,
+    "turnover_denominator": "window_start_equity"
    },
    "daily": {
     "cagr": 0.4625915827166389,
@@ -72,10 +81,13 @@
     "sharpe": 1.1691869713945726,
     "sortino": 1.6572026900011079,
     "volatility": 0.40763253450859654,
-    "fills": 5465.0,
-    "turnover": 106998.78882237663,
+    "fills": 4962,
+    "turnover": 80720.32335486756,
     "exposure": 0.19118356258182,
-    "ending_equity": 6100572.752298552
+    "ending_equity": 6100572.752298552,
+    "traded_notional": 10649580035.055706,
+    "turnover_start_equity": 131931.83070188382,
+    "turnover_denominator": "window_start_equity"
    },
    "daily": {
     "cagr": 0.4777060523181329,
@@ -93,10 +105,13 @@
     "sharpe": 0.6804795183433497,
     "sortino": 0.9668324987583843,
     "volatility": 0.43393582129504266,
-    "fills": 5465.0,
-    "turnover": 106998.78882237663,
+    "fills": 2523,
+    "turnover": 4021.792681635443,
     "exposure": 0.18741425207271153,
-    "ending_equity": 6100572.752298552
+    "ending_equity": 6100572.752298552,
+    "traded_notional": 9051145026.020935,
+    "turnover_start_equity": 2250525.0127264964,
+    "turnover_denominator": "window_start_equity"
    },
    "daily": {
     "cagr": 0.22278349026246813,

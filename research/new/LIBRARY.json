@@ -764,7 +764,21 @@
    "visible": true,
    "family_winner": false,
    "note": "Verified against the published pre-tune freeze; current code is a later variant. Published curve unchanged.",
-   "source": "research/revisit/drawdown-regime/report.md"
+   "source": "research/revisit/drawdown-regime/report.md",
+   "repair_status": "repaired-diversifier",
+   "repair_source": "research/new/drawdown-regime-v2/report.md",
+   "repair_note": "19 entries, 28.8% exposure; 2024-26 holdout has 0 entries and stays in BIL. Broader recovery sleeve, below the bar.",
+   "repair_dev": {
+    "cagr": 0.26790018478573296,
+    "max_dd": 0.3834474641810347,
+    "sharpe": 0.9546739467735778
+   },
+   "repair_full": {
+    "cagr": 0.20511372988539822,
+    "max_dd": 0.3834474641810347,
+    "sharpe": 0.8650920022680764,
+    "fills": 77
+   }
   },
   {
    "slug": "drawdown-stop-overlay",
@@ -788,7 +802,18 @@
    "visible": true,
    "family_winner": false,
    "note": "Verified against the published pre-tune freeze; current code is a later variant. Published curve unchanged.",
-   "source": "research/revisit/drawdown-stop-overlay/report.md"
+   "source": "research/revisit/drawdown-stop-overlay/report.md",
+   "repair_status": "retired",
+   "repair_source": "research/new/drawdown-stop-overlay-v2/report.md",
+   "repair_note": "Primary 1-day trend/vol variant: 3.36% dev CAGR, 23.37% DD, 0.54 Sharpe, 1.14% TQQQ time. A static mix at the same exposure earns 1.96%/2.11%/1.13, so retire as a standalone; overlay-only.",
+   "repair_dev": {
+    "cagr": 0.033593987796908475,
+    "max_dd": 0.2336803692122872,
+    "sharpe": 0.5423852594287144,
+    "fills": 93.0
+   },
+   "repair_full": null,
+   "retired": true
   },
   {
    "slug": "dual-speed-regime",
@@ -836,7 +861,21 @@
    "visible": true,
    "family_winner": false,
    "note": "Verified against the published pre-tune freeze; current code is a later variant. Published curve unchanged.",
-   "source": "research/revisit/dynamic-leverage-throttle/report.md"
+   "source": "research/revisit/dynamic-leverage-throttle/report.md",
+   "repair_status": "repaired-diversifier",
+   "repair_source": "research/new/dynamic-leverage-throttle-v2/report.md",
+   "repair_note": "18 entries, 3.41% average TQQQ weight; event mean +2.37% (p=0.019). Low-exposure diversifier, below the bar.",
+   "repair_dev": {
+    "cagr": 0.07040124728924102,
+    "max_dd": 0.1151694207943792,
+    "sharpe": 0.8050823209766749
+   },
+   "repair_full": {
+    "cagr": 0.0707290343240996,
+    "max_dd": 0.17163546175341127,
+    "sharpe": 0.7842542196676787,
+    "fills": 283
+   }
   },
   {
    "slug": "ensemble-signals",
@@ -908,7 +947,21 @@
    "visible": true,
    "family_winner": false,
    "note": "Verified against the published pre-tune freeze; current code is a later variant. Published curve unchanged.",
-   "source": "research/revisit/gap-capitulation-reversal/report.md"
+   "source": "research/revisit/gap-capitulation-reversal/report.md",
+   "repair_status": "repaired-diversifier",
+   "repair_source": "research/new/gap-capitulation-reversal-v2/report.md",
+   "repair_note": "39 events / 26 starts, 7.3% average exposure; 5-session event mean +7.40% (t=3.27). Below the bar.",
+   "repair_dev": {
+    "cagr": 0.2054577419963921,
+    "max_dd": 0.21941356633196085,
+    "sharpe": 0.9675063534930978
+   },
+   "repair_full": {
+    "cagr": 0.17054770943095443,
+    "max_dd": 0.25535758719828194,
+    "sharpe": 0.8619853176092065,
+    "fills": 137
+   }
   },
   {
    "slug": "gap-fill-fade",
@@ -932,7 +985,17 @@
    "visible": true,
    "family_winner": false,
    "note": "Frozen-code full rerun reproduces the published curve within 0.01 pp CAGR/DD and 0.006 Sharpe.",
-   "source": "research/revisit/gap-fill-fade/report.md"
+   "source": "research/revisit/gap-fill-fade/report.md",
+   "repair_status": "development-only",
+   "repair_source": "research/new/gap-fill-fade-v2/report.md",
+   "repair_note": "Small-gap/2x inverse variant: 3.21% dev CAGR, 4.69% DD, 1.09 Sharpe, 0.46% average short notional. Development-only satellite; t=2.73, 2018+2022 drive 80% of P&L.",
+   "repair_dev": {
+    "cagr": 0.03213464814966249,
+    "max_dd": 0.046940439791586575,
+    "sharpe": 1.0918887712895513,
+    "fills": 145.0
+   },
+   "repair_full": null
   },
   {
    "slug": "intraday-mean-reversion",
@@ -1196,7 +1259,21 @@
    "visible": true,
    "family_winner": false,
    "note": "Frozen-code full rerun reproduces the published curve exactly (0.00 pp CAGR/DD, 0.000 Sharpe).",
-   "source": "research/revisit/stop-reentry-recovery/report.md"
+   "source": "research/revisit/stop-reentry-recovery/report.md",
+   "repair_status": "repaired-diversifier",
+   "repair_source": "research/new/stop-reentry-recovery-v2/report.md",
+   "repair_note": "56 events, one-session hold, 313 full fills; mostly QQQ beta. Below the bar.",
+   "repair_dev": {
+    "cagr": 0.14501222067517472,
+    "max_dd": 0.08327770516707378,
+    "sharpe": 1.0972286867747434
+   },
+   "repair_full": {
+    "cagr": 0.16259348564009435,
+    "max_dd": 0.08327770516707378,
+    "sharpe": 0.9939877089055511,
+    "fills": 313
+   }
   },
   {
    "slug": "time-of-day",
@@ -1244,7 +1321,18 @@
    "visible": true,
    "family_winner": false,
    "note": "Frozen-code full rerun reproduces the published curve exactly (0.00 pp CAGR/DD, 0.000 Sharpe).",
-   "source": "research/revisit/vol-kelly-overlay/report.md"
+   "source": "research/revisit/vol-kelly-overlay/report.md",
+   "repair_status": "retired",
+   "repair_source": "research/new/vol-kelly-overlay-v2/report.md",
+   "repair_note": "Count repair reaches 28 entries but the best grid p=0.223; no edge. Retired.",
+   "repair_dev": {
+    "cagr": 0.031791917029607264,
+    "max_dd": 0.12611098139458599,
+    "sharpe": 0.3785460518496103,
+    "fills": 149
+   },
+   "repair_full": null,
+   "retired": true
   },
   {
    "slug": "vol-scaled-crash-stop",
@@ -1292,7 +1380,18 @@
    "visible": true,
    "family_winner": false,
    "note": "Frozen-code full rerun reproduces the published curve exactly (0.00 pp CAGR/DD, 0.000 Sharpe).",
-   "source": "research/revisit/volume-orderflow/report.md"
+   "source": "research/revisit/volume-orderflow/report.md",
+   "repair_status": "retired",
+   "repair_source": "research/new/volume-orderflow-v2/report.md",
+   "repair_note": "44 events but volume is not additive (p=0.36) and the close-location sign is backwards. Retired.",
+   "repair_dev": {
+    "cagr": 0.1553608791517347,
+    "max_dd": 0.29401157966136127,
+    "sharpe": 0.7233639300033575,
+    "fills": 145
+   },
+   "repair_full": null,
+   "retired": true
   },
   {
    "slug": "winner-ensemble-blend",

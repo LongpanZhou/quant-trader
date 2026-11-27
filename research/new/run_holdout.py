@@ -147,17 +147,39 @@ def build_daily(mod, tsd, od, cd, ts1, end: str = END) -> np.ndarray:
 
 
 def minute_stats(r: dict, lo: str, hi: str) -> dict:
+    """Window metrics from the full-run result and its per-fill log.
+
+    Fills and turnover are sliced from ``r["fills_log"]`` (requires
+    ``bt.run(..., fill_log=True)``).  ``turnover`` is the sum of the fill
+    notionals in ``[lo, hi + 1 day)`` divided by the window's starting equity
+    (the first marked equity in the window), not by the full-run start
+    equity.  The keys ``traded_notional`` and ``turnover_start_equity`` expose
+    the numerator and denominator used.
+    """
     ts = pd.DatetimeIndex(r["ts"])
     a = pd.Timestamp(lo, tz="America/New_York")
     b = pd.Timestamp(hi, tz="America/New_York") + pd.Timedelta(days=1)
     mask = (ts >= a) & (ts <= b)
-    rr = {k: (np.asarray(v)[mask] if isinstance(v, (list, np.ndarray)) else v)
+    rr = {k: (np.asarray(v)[mask]
+              if isinstance(v, (list, np.ndarray)) and k != "fills_log" else v)
           for k, v in r.items()}
     rr["ts"] = ts[mask]
     s = bt.stats(rr, 252 * 390)
-    return {k: float(s[k]) for k in ("cagr", "max_drawdown", "sharpe", "sortino",
-                                     "volatility", "fills", "turnover", "exposure",
-                                     "ending_equity") if k in s}
+    out = {k: float(s[k]) for k in ("cagr", "max_drawdown", "sharpe", "sortino",
+                                    "volatility", "fills", "turnover", "exposure",
+                                    "ending_equity") if k in s}
+    if "fills_log" not in r:
+        raise ValueError("minute_stats requires a fill log: "
+                         "call bt.run(..., fill_log=True)")
+    fills = [x for x in r["fills_log"] if a <= pd.Timestamp(x["ts"]) < b]
+    traded = float(sum(float(x["notional"]) for x in fills))
+    start_eq = float(rr["equity"][0])
+    out["fills"] = int(len(fills))
+    out["turnover"] = traded / start_eq if start_eq > 0 else 0.0
+    out["traded_notional"] = traded
+    out["turnover_start_equity"] = start_eq
+    out["turnover_denominator"] = "window_start_equity"
+    return out
 
 
 def daily_stats(daily: pd.Series, lo: str, hi: str) -> dict:
@@ -223,7 +245,7 @@ def main() -> None:
     if w.shape != (len(ts), 3):
         raise SystemExit(f"{slug}: build_weights returned {w.shape}, expected {(len(ts), 3)}")
 
-    r = bt.run(ts, o, c, w, START, band=0.02, slippage_bps=1.0)
+    r = bt.run(ts, o, c, w, START, band=0.02, slippage_bps=1.0, fill_log=True)
     eq = pd.Series(r["equity"], index=pd.DatetimeIndex(r["ts"]))
     daily = daily_curve(r["equity"], pd.DatetimeIndex(r["ts"]))
 
@@ -280,11 +302,14 @@ def main() -> None:
     full = result["windows"]["full"]["1bp"]
     print(f"{slug}")
     print(f"  dev     {dev['cagr']*100:6.2f}% CAGR {dev['max_drawdown']*100:6.2f}% DD "
-          f"{dev['sharpe']:5.2f} Sharpe")
+          f"{dev['sharpe']:5.2f} Sharpe  fills {dev['fills']}  "
+          f"turnover {dev['turnover']:.2f}x")
     print(f"  holdout {hold['cagr']*100:6.2f}% CAGR {hold['max_drawdown']*100:6.2f}% DD "
-          f"{hold['sharpe']:5.2f} Sharpe")
+          f"{hold['sharpe']:5.2f} Sharpe  fills {hold['fills']}  "
+          f"turnover {hold['turnover']:.2f}x")
     print(f"  full    {full['cagr']*100:6.2f}% CAGR {full['max_drawdown']*100:6.2f}% DD "
-          f"{full['sharpe']:5.2f} Sharpe")
+          f"{full['sharpe']:5.2f} Sharpe  fills {full['fills']}  "
+          f"turnover {full['turnover']:.2f}x")
     print(f"  wrote {path}")
 
 

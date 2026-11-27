@@ -272,8 +272,14 @@ def run(
     band: float = 0.02,
     slippage_bps: float = 1.0,
     start_equity: float = START_EQUITY,
+    fill_log: bool = False,
 ) -> dict:
-    """Slice a warmed-up panel to the test start and simulate it."""
+    """Slice a warmed-up panel to the test start and simulate it.
+
+    `fill_log=True` also returns a per-fill log (see `simulate`).  The
+    performance metrics still come from the compiled simulator when it is
+    available; the Python pass is used only to produce the log.
+    """
     i = start_index(ts, start)
     return simulate(
         ts[i:],
@@ -283,6 +289,7 @@ def run(
         band=band,
         slippage_bps=slippage_bps,
         start_equity=start_equity,
+        fill_log=fill_log,
     )
 
 
@@ -338,14 +345,23 @@ def simulate(
     band: float = 0.02,
     slippage_bps: float = 1.0,
     start_equity: float = START_EQUITY,
+    fill_log: bool = False,
 ) -> dict:
     """Long-only next-open simulator.
 
     `weights[i]` is the target set from the close of bar i and is executed at
     the open of bar i+1. Weights are fractions of current equity.
+
+    With `fill_log=True`, the returned dict also has ``fills_log``: a list of
+    ``{"ts", "notional", "symbol", "side"}`` dicts, one per trade, where
+    ``symbol`` is the panel column index (0=QQQ, 1=TQQQ, 2=BIL) and
+    ``notional`` is the post-slippage traded notional.  The metrics come from
+    the compiled simulator when it is available; a Python pass is then used
+    only for the log.  Without simcore, the Python result is used directly.
     """
     if _SIMCORE is None:
-        return simulate_python(ts, opens, closes, weights, band, slippage_bps, start_equity)
+        return simulate_python(ts, opens, closes, weights, band, slippage_bps,
+                               start_equity, fill_log=fill_log)
     weights, n, k = _check_inputs(opens, closes, weights)
     o = np.ascontiguousarray(opens, dtype=np.float64)
     c = np.ascontiguousarray(closes, dtype=np.float64)
@@ -358,8 +374,13 @@ def simulate(
                                    _ptr(cash), _ptr(fills, ctypes.c_int64), _ptr(traded))
     if rc != 0:
         raise RuntimeError(f"simcore_simulate failed ({rc})")
-    return {"ts": ts, "equity": equity, "cash": cash, "fills": int(fills[0]),
-            "turnover": float(traded[0]) / start_equity}
+    out = {"ts": ts, "equity": equity, "cash": cash, "fills": int(fills[0]),
+           "turnover": float(traded[0]) / start_equity}
+    if fill_log:
+        out["fills_log"] = simulate_python(
+            ts, opens, closes, weights, band, slippage_bps, start_equity,
+            fill_log=True)["fills_log"]
+    return out
 
 
 def simulate_many(
@@ -415,8 +436,15 @@ def simulate_python(
     band: float = 0.02,
     slippage_bps: float = 1.0,
     start_equity: float = START_EQUITY,
+    fill_log: bool = False,
 ) -> dict:
-    """Reference pure-Python simulator (the original implementation)."""
+    """Reference pure-Python simulator (the original implementation).
+
+    With `fill_log=True`, the result also contains ``fills_log``: one dict per
+    trade with ``ts`` (the fill bar), ``notional`` (post-slippage), ``symbol``
+    (panel column index) and ``side`` ("buy"/"sell").  The log is additive;
+    the aggregate totals are this reference path's totals.
+    """
     weights = np.asarray(weights, dtype=float)
     n, k = weights.shape
     if opens.shape != (n, k) or closes.shape != (n, k):
@@ -433,11 +461,17 @@ def simulate_python(
     cash_curve = np.full(n, np.nan)
     fills = 0
     traded = 0.0
+    fills_log: list[dict] = []
 
     def trade(i: int, target: np.ndarray) -> None:
         nonlocal cash, fills, traded
         px = opens[i]
-        book = cash + float(np.dot(shares, px))
+        # Match the Rust simulator's sequential summation order.  Using
+        # np.dot here can differ in the last bit and flip a borderline band
+        # rebalance, which made the fill log disagree with the compiled count.
+        book = cash
+        for s in range(k):
+            book += shares[s] * px[s]
         if not (book > 0):
             return
         # Sell side / exits first.
@@ -459,6 +493,9 @@ def simulate_python(
             cash += notional
             traded += notional
             fills += 1
+            if fill_log:
+                fills_log.append({"ts": ts[i], "notional": float(notional),
+                                  "symbol": int(s), "side": "sell"})
             shares[s] -= qty
             if shares[s] < 1e-10:
                 shares[s] = 0.0
@@ -481,6 +518,9 @@ def simulate_python(
             cash -= notional
             traded += notional
             fills += 1
+            if fill_log:
+                fills_log.append({"ts": ts[i], "notional": float(notional),
+                                  "symbol": int(s), "side": "buy"})
             shares[s] += qty
 
     equity[0] = start_equity
@@ -490,13 +530,16 @@ def simulate_python(
         equity[i + 1] = cash + float(np.dot(shares, closes[i + 1]))
         cash_curve[i + 1] = cash
 
-    return {
+    out = {
         "ts": ts,
         "equity": equity,
         "cash": cash_curve,
         "fills": fills,
         "turnover": traded / start_equity,
     }
+    if fill_log:
+        out["fills_log"] = fills_log
+    return out
 
 
 def stats(result: dict, bars_per_year: float) -> dict:
