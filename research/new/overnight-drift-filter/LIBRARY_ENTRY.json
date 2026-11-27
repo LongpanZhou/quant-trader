@@ -1,0 +1,22 @@
+{
+  "slug": "overnight-drift-filter",
+  "name": "Overnight drift filter",
+  "family": "session-timing",
+  "tagline": "Holds TQQQ through the overnight block and the next session, sized by 10-day volatility and halved below the 20-day average.",
+  "summary": "A close-anchored TQQQ position: at 15:58 it sets exposure to min(1, 0.20/vol10) and halves it when QQQ is below its 20-day SMA, then holds through the night and the following session. Dev earns 44.29% CAGR / 59.71% DD / 1.12 Sharpe, but the frozen full 2016-2026 record reaches 37.07% CAGR / 58.35% DD / 0.97 Sharpe, 0.47 pp short of the bar.",
+  "dev": {
+    "cagr": 0.4429140387016206,
+    "max_drawdown": 0.597065130284238,
+    "sharpe": 1.119853416942246
+  },
+  "full": {
+    "cagr": 0.3706959476035321,
+    "max_drawdown": 0.5834752359838782,
+    "sharpe": 0.9744032291445954
+  },
+  "above_tqqq": false,
+  "status": "failed",
+  "caveat": "The full record misses the bar by 0.47 pp because the 2024-2026 holdout earned only about 20.9% CAGR, and the development pass leans on COVID and 2022 crash avoidance; ex-2020 dev CAGR falls to 35.2%, below the bar.",
+  "source": "research/new/overnight-drift-filter/report.md",
+  "visible": true
+}

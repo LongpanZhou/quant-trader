@@ -27,6 +27,8 @@ type Metric = {
   dd: number;
   sharpe: number;
   benchmark: boolean;
+  family?: string;
+  family_winner?: boolean;
 };
 
 type Payload = {
@@ -413,12 +415,13 @@ export function AllStrategiesChart() {
     const bench = data.metrics.find((m) => m.id === key && m.benchmark);
     if (!bench) return;
     const keep = new Set(
-      data.series
-        .filter((curve) => {
-          const metric = data.metrics.find((m) => m.id === curve.id);
-          return !metric || metric.benchmark || metric.cagr > bench.cagr;
+      data.metrics
+        .filter((metric) => {
+          if (metric.benchmark) return true;
+          if (key === "tqqq") return Boolean(metric.family_winner);
+          return metric.cagr > bench.cagr;
         })
-        .map((curve) => curve.id),
+        .map((metric) => metric.id),
     );
     setHidden(new Set(data.series.filter((curve) => !keep.has(curve.id)).map((curve) => curve.id)));
   };
@@ -450,7 +453,7 @@ export function AllStrategiesChart() {
               Growth of $100  -  normalized  -  1 bp costs
             </h2>
             <p className="mt-1 text-[11px] text-zinc-500">
-              {data.start} to {data.end} - {data.series.length} curves - 31 strategies + TQQQ/QQQ
+              {data.start} to {data.end} - {data.series.length} curves - 37 strategies + TQQQ/QQQ
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-2">
@@ -479,6 +482,9 @@ export function AllStrategiesChart() {
             >
               Above TQQQ
             </button>
+            <span className="text-[10px] text-zinc-500">
+              one verified winner per family
+            </span>
             <button
               onClick={() => filterAbove("qqq")}
               className={`rounded-full border px-3 py-1 text-[10px] uppercase tracking-[0.14em] transition ${

@@ -1,0 +1,18 @@
+{
+  "slug": "dual-momentum-tqqq",
+  "name": "Dual-Momentum TQQQ",
+  "family": "trend-vol",
+  "tagline": "A 12-month QQQ/SPY dual-momentum gate that holds a volatility-sized TQQQ sleeve only when Nasdaq trend and relative strength agree.",
+  "summary": "Holds TQQQ at min(1, 0.85 / rv10) when QQQ's 12-month return is positive and QQQ is beating SPY, rotates to QQQ when only absolute momentum is positive, and holds BIL otherwise; a 20-session confirmation filters state whipsaws. On 2016-2023 it returns 41.15% CAGR with a 57.95% max drawdown, but the edge is concentrated in 2019-2020 and in avoiding 2022.",
+  "dev": {
+    "cagr": 0.4114921142848986,
+    "max_drawdown": 0.5795367525504149,
+    "sharpe": 0.9769207163541381
+  },
+  "full": null,
+  "above_tqqq": false,
+  "status": "dev-only",
+  "caveat": "Dev-only and not counted: the 58% max drawdown is essentially TQQQ's Q4-2018 drawdown, the 252-session lookback is load-bearing (126/189 fail), and 10.5% of placebo reorderings match or beat it.",
+  "source": "research/new/dual-momentum-tqqq/report.md",
+  "visible": true
+}

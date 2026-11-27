@@ -57,6 +57,32 @@ def to_three(w, n: int) -> np.ndarray:
     raise ValueError(f"build_weights returned {w.shape}, expected {(n, 3)} or {(n, 2)}")
 
 
+TWO_COL_TQQQ_BIL = {"family-intraday-microstructure", "family-intraday-microstructure-day"}
+ONE_COL_TQQQ = {"family-ml-microstructure"}
+
+
+def one_col_to_three(w, n: int) -> np.ndarray:
+    """Map a 1-D TQQQ weight vector to the shared QQQ/TQQQ/BIL columns."""
+    w = np.asarray(w, dtype=float).reshape(-1)
+    if len(w) != n:
+        raise ValueError(f"expected {n} TQQQ weights, got {len(w)}")
+    out = np.zeros((n, 3))
+    out[:, 1] = np.clip(w, 0.0, 1.0)
+    out[:, 2] = 1.0 - out[:, 1]
+    return out
+
+
+def tqqq_bil_to_three(w, n: int) -> np.ndarray:
+    """Map a (TQQQ, BIL) weight matrix to the shared QQQ/TQQQ/BIL columns."""
+    w = np.asarray(w, dtype=float)
+    if w.shape != (n, 2):
+        raise ValueError(f"expected {(n, 2)} TQQQ/BIL weights, got {w.shape}")
+    out = np.zeros((n, 3))
+    out[:, 1] = w[:, 0]
+    out[:, 2] = w[:, 1]
+    return out
+
+
 def build_full(mod, ts, o, c):
     """Call build_weights, lifting a dev-only panel guard for the holdout.
 
@@ -170,7 +196,19 @@ def main() -> None:
         mod.DEV_END = pd.Timestamp(END)
     if args.daily:
         tsd, od, cd = bt.panel(("QQQ", "TQQQ", "BIL"), START, END, "1D", warmup_days=0)
-        w = build_daily(mod, tsd, od, cd, ts)
+        if slug == "family-ml-microstructure":
+            feats = mod.build_feature_panel(end=END)
+            out = mod.build_weights(tsd, od, cd, features=feats)
+            states = out[0] if isinstance(out, tuple) else out
+            w = mod.minute_weights(states, ts)
+            if slug in ONE_COL_TQQQ:
+                w = one_col_to_three(w, len(ts))
+        else:
+            w = build_daily(mod, tsd, od, cd, ts)
+    elif slug in TWO_COL_TQQQ_BIL:
+        out = build_full(mod, ts, o[:, [1, 2]], c[:, [1, 2]])
+        raw = out[0] if isinstance(out, tuple) else out
+        w = tqqq_bil_to_three(raw, len(ts))
     else:
         out = build_full(mod, ts, o, c)
         w = out[0] if isinstance(out, tuple) else out

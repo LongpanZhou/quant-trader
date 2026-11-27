@@ -3,7 +3,9 @@
 **Development window:** 2016-01-04 -> 2023-12-29. 1-minute marks, next-open
 fills, 2% band, long-only, weights >= 0 and sum <= 1. **No 2024+ bar was
 loaded by this study**; the volatility warmup reads only 2015 daily rows via a
-parquet row filter.
+parquet row filter. The hardcoded FOMC/OpEx calendar now covers the 2026-10-23
+holdout end; the 2024-2026 dates are not used by the development backtest
+(section 2).
 
 **Verdict:** the strategy **passes the literal development gate** at 1, 5 and
 10 bp: **58.26% CAGR / 42.60% max DD / 1.36 Sharpe** vs the TQQQ bar of
@@ -42,13 +44,29 @@ calm-bull replacement.
 
 Hardcoded calendars, no network access at run time:
 
-* 63 **scheduled** FOMC decision days, 2016-2023, from the Fed's published
-  meeting calendars. The unscheduled emergency meetings (2020-03-03,
-  2020-03-15) are excluded because they were not knowable in advance. The
-  scheduled 2020-03-18 meeting was cancelled and is excluded from the centre;
-  a sensitivity adds it.
-* 96 monthly OpEx dates: the third Friday, rolled back to Thursday when the
-  Friday is a market holiday (2019-04-18 and 2022-04-14 are Good Friday rolls).
+* **85 scheduled FOMC decision days**, from 2016-01-27 through 2026-09-16
+  (the last scheduled decision before the 2026-10-23 holdout end), hardcoded
+  from the Fed's published meeting calendars. The 2016-2023 development panel
+  contains 63 of them; the 22 dates from 2024-01-31 through 2026-09-16 are
+  ex-ante schedule entries for the holdout. The unscheduled emergency meetings
+  (2020-03-03, 2020-03-15) are excluded because they were not knowable in
+  advance. The scheduled 2020-03-18 meeting was cancelled and is excluded from
+  the centre; a sensitivity adds it.
+* **130 monthly OpEx dates, 2016 through 2026-10-16**, hardcoded from the
+  third-Friday rule with holiday rolls. The development panel contains 96; the
+  34 dates from 2024-01-19 through 2026-10-16 are ex-ante schedule entries for
+  the holdout. The only holiday roll in the extension is 2025-04-17 (Good
+  Friday 2025-04-18); the development rolls are 2019-04-18 and 2022-04-14.
+
+**Holdout readiness.** The 2024-2026 entries are calendar dates only. No 2024+
+price or return row is read by `strategy.py`; the panel remains
+2016-01-04..2023-12-29. `event_windows()` skips any event outside the loaded
+panel, so the extended list leaves every development weight and metric
+unchanged. Re-running the 2016-2023 backtest after the extension reproduces
+the frozen **58.26% / 42.60% / 1.36** exactly; the only `result.json` change is
+the event-count metadata (85 FOMC / 130 OpEx hardcoded, 63 / 96 in the dev
+panel). Running the same `build_weights()` on a 2016-2026 panel will use the 22
+added FOMC dates and 34 added OpEx dates without a code change.
 
 For an event at session `k`:
 
@@ -384,6 +402,10 @@ Sharpe (1.36 vs 1.28), which is the intended risk-management trade.
   concentrated in the 2020-2023 regimes.
 * **Risk-adjusted: genuine improvement.** Calmar 1.37 vs 0.44; Sortino 1.95 vs
   --; correlation 0.663 and beta 0.387 to TQQQ.
+* **Holdout readiness: PASS.** The ex-ante calendar covers the 2026-10-23
+  holdout end (85 FOMC / 130 OpEx dates; 63 / 96 in the development panel).
+  Extending the list leaves the development result byte-identical, and no
+  2024+ price or return data is read.
 
 **Full-window chance.** At 1 bp the development multiple is **39.06x**. The
 full 2016-2026 bar of 37.54% CAGR over 10.8 years requires **31.26x**, so the
@@ -413,6 +435,8 @@ python research/new/fomc-opex-window/strategy.py
 `strategy.py` loads `bt.panel(("QQQ","TQQQ","BIL"), "2016-01-04", "2023-12-29",
 "1min", warmup_days=0)`. The last bar is 2023-12-29 15:59. The volatility
 warmup reads only 2015 daily rows via a parquet row filter, so no 2024+ row is
-read into memory. `result.json` contains the full grid, all neighbours, the
-four placebo distributions, the shift curves, the leave-one-year-out cuts, the
-event study and the causality test.
+read into memory. The hardcoded FOMC and OpEx lists extend through 2026-10-23;
+events outside the loaded panel are skipped by `event_windows()`, which is why
+the development result is unchanged. `result.json` contains the full grid, all
+neighbours, the four placebo distributions, the shift curves, the
+leave-one-year-out cuts, the event study and the causality test.

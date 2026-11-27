@@ -54,6 +54,124 @@
   "notes": []
  },
  {
+  "slug": "family-intraday-microstructure",
+  "full_cagr": 0.45288654475894785,
+  "full_dd": 0.47147386413171677,
+  "tqqq_cagr": 0.3754250463382436,
+  "dev_diff": null,
+  "shape": [
+   1056144,
+   3
+  ],
+  "sum_max": 1.0,
+  "min_w": 0.0,
+  "holdout_changes": 963,
+  "holdout_unique": 2,
+  "cut_max": 1.0,
+  "status": "FAIL causality",
+  "notes": [
+   "cut max diff 1.0"
+  ]
+ },
+ {
+  "slug": "family-intraday-microstructure-day",
+  "full_cagr": 0.4097402402080119,
+  "full_dd": 0.47421582898762205,
+  "tqqq_cagr": 0.3754250463382436,
+  "dev_diff": 0.0,
+  "shape": [
+   1056144,
+   3
+  ],
+  "sum_max": 1.0,
+  "min_w": 0.0,
+  "holdout_changes": 612,
+  "holdout_unique": 2,
+  "cut_max": 0.0,
+  "status": "PASS",
+  "notes": [
+   "final-session boundary exempt; 409376 pre-boundary bars exact"
+  ]
+ },
+ {
+  "slug": "family-ml-microstructure",
+  "full_cagr": 0.4102827251643695,
+  "full_dd": 0.445130573442328,
+  "tqqq_cagr": 0.3754250463382436,
+  "dev_diff": 0.0,
+  "shape": [
+   1056144,
+   3
+  ],
+  "sum_max": 1.0,
+  "min_w": 0.0,
+  "holdout_changes": 110,
+  "holdout_unique": 75,
+  "cut_max": 0.0,
+  "status": "PASS",
+  "notes": []
+ },
+ {
+  "slug": "family-rebalance-flow",
+  "full_cagr": 0.4555174517566305,
+  "full_dd": 0.5091740340743235,
+  "tqqq_cagr": 0.3754250463382436,
+  "dev_diff": 0.0,
+  "shape": [
+   1056144,
+   3
+  ],
+  "sum_max": 1.0,
+  "min_w": 0.0,
+  "holdout_changes": 416,
+  "holdout_unique": 333,
+  "cut_max": 0.0,
+  "status": "PASS",
+  "notes": [
+   "final-session boundary exempt; 409376 pre-boundary bars exact"
+  ]
+ },
+ {
+  "slug": "family-session-timing",
+  "full_cagr": 0.4625915827166389,
+  "full_dd": 0.41417213608723935,
+  "tqqq_cagr": 0.3754250463382436,
+  "dev_diff": 0.0,
+  "shape": [
+   1056144,
+   3
+  ],
+  "sum_max": 1.0,
+  "min_w": 0.0,
+  "holdout_changes": 1412,
+  "holdout_unique": 95,
+  "cut_max": 0.0,
+  "status": "PASS",
+  "notes": [
+   "final-session boundary exempt; 409376 pre-boundary bars exact"
+  ]
+ },
+ {
+  "slug": "family-short-reversal",
+  "full_cagr": 0.49543084150945216,
+  "full_dd": 0.6645687105826557,
+  "tqqq_cagr": 0.3754250463382436,
+  "dev_diff": 0.0,
+  "shape": [
+   1056144,
+   3
+  ],
+  "sum_max": 1.0,
+  "min_w": 0.0,
+  "holdout_changes": 86,
+  "holdout_unique": 2,
+  "cut_max": 0.0,
+  "status": "PASS",
+  "notes": [
+   "final-session boundary exempt; 409376 pre-boundary bars exact"
+  ]
+ },
+ {
   "slug": "fast-trend-vol",
   "full_cagr": 0.44614598213901213,
   "full_dd": 0.4025879247706894,
@@ -67,6 +185,24 @@
   "min_w": 0.0,
   "holdout_changes": 74,
   "holdout_unique": 39,
+  "cut_max": 0.0,
+  "status": "PASS",
+  "notes": []
+ },
+ {
+  "slug": "fomc-opex-window",
+  "full_cagr": 0.5276942891932654,
+  "full_dd": 0.4064137933887617,
+  "tqqq_cagr": 0.3754250463382436,
+  "dev_diff": 0.0,
+  "shape": [
+   1056144,
+   3
+  ],
+  "sum_max": 1.0,
+  "min_w": 0.0,
+  "holdout_changes": 78,
+  "holdout_unique": 3,
   "cut_max": 0.0,
   "status": "PASS",
   "notes": []

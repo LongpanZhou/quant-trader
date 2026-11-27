@@ -1,0 +1,22 @@
+{
+  "slug": "always-long-vol-target",
+  "name": "Always-long vol target",
+  "family": "vol-crash",
+  "tagline": "Holds TQQQ permanently and scales the position only by its own realised volatility.",
+  "summary": "A pure volatility-target test with no trend, drawdown or crash gate: TQQQ weight is min(1, target/RV20). The 45% target clears the development bar but the frozen full run reaches 37.25% CAGR, 0.29 pp below TQQQ; the 50% variant that hit 37.95% failed the pre-cut weight test.",
+  "dev": {
+    "cagr": 0.3920421598795605,
+    "max_drawdown": 0.5893978166494158,
+    "sharpe": 0.9947849585827248
+  },
+  "full": {
+    "cagr": 0.3725420182188266,
+    "max_drawdown": 0.5747670355773729,
+    "sharpe": 0.942631333123348
+  },
+  "above_tqqq": false,
+  "status": "failed",
+  "caveat": "The frozen RV20/45 rerun reaches only 37.25% full CAGR, 0.29 pp below the bar, and the earlier 50% variant that reached 37.95% failed the pre-cut weight test, so the near-miss is fragile rather than a verified full-window pass.",
+  "source": "research/new/always-long-vol-target/report.md",
+  "visible": true
+}

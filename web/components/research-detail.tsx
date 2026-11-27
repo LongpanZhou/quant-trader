@@ -38,6 +38,9 @@ export type Detail = {
   tagline: string;
   summary: string;
   metrics: { cagr: number | null; dd: number | null; sharpe: number | null };
+  window?: string;
+  archive?: boolean;
+  has_curve?: boolean;
   assessment: { verdict?: string; reason?: string };
   paths: {
     report?: string | null;
@@ -524,7 +527,9 @@ export function ResearchDetail({ detail }: { detail: Detail }) {
         </a>
         <a
           href="/compare"
-          className="rounded-full border border-white/10 px-3 py-1.5 text-[10px] uppercase tracking-[0.12em] text-zinc-400 transition hover:border-white/20 hover:text-zinc-100"
+          className={`rounded-full border border-white/10 px-3 py-1.5 text-[10px] uppercase tracking-[0.12em] text-zinc-400 transition hover:border-white/20 hover:text-zinc-100 ${
+            detail.archive ? "hidden" : ""
+          }`}
         >
           Open in all-strategies view
         </a>
@@ -532,12 +537,14 @@ export function ResearchDetail({ detail }: { detail: Detail }) {
 
       <section className="panel-soft p-5 sm:p-6">
         <div className="flex flex-wrap items-center gap-2">
-          <Pill>Research record</Pill>
+          <Pill>{detail.archive ? "Research archive" : "Research record"}</Pill>
           {detail.assessment.verdict ? <Pill>{detail.assessment.verdict}</Pill> : null}
           <span className="text-[11px] text-zinc-500">
             {(detail.papers ?? []).length} cited sources
           </span>
-          <span className="text-[11px] text-zinc-500">2016-2026 · 1 bp</span>
+          <span className="text-[11px] text-zinc-500">
+            {detail.window ?? "2016-2026"} · 1 bp
+          </span>
         </div>
         <h1 className="display mt-4 text-[2.2rem] font-semibold text-zinc-50 sm:text-[3rem]">
           {detail.name}
@@ -554,10 +561,17 @@ export function ResearchDetail({ detail }: { detail: Detail }) {
           value={detail.metrics.sharpe == null ? "—" : detail.metrics.sharpe.toFixed(2)}
           tone="text-zinc-200"
         />
-        <Metric label="Window" value="2016-26" tone="text-zinc-200" />
+        <Metric label="Window" value={detail.window === "2016-2023" ? "2016-23" : "2016-26"} tone="text-zinc-200" />
       </section>
 
-      <CurveChart slug={detail.slug} />
+      {detail.archive ? (
+        <div className="panel-soft p-4 text-[12px] leading-relaxed text-zinc-400">
+          This is a development-only or below-bar research record. It is kept in the
+          archive for completeness and is not part of the 2016-2026 above-TQQQ ranking.
+        </div>
+      ) : null}
+
+      {detail.has_curve === false ? null : <CurveChart slug={detail.slug} />}
 
       <section className="grid items-start gap-5 lg:grid-cols-[1.05fr_0.95fr]">
         <DecisionPanel detail={detail} />

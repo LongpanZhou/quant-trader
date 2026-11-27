@@ -1,0 +1,18 @@
+{
+  "slug": "tqqq-fast-drawdown-stop",
+  "name": "Fast-drawdown brake",
+  "family": "vol-crash",
+  "tagline": "Defaults to TQQQ, exits on a 14% five-session loss, and re-enters on a 15-session high.",
+  "summary": "A fast crash exit paired with a deliberately slow re-entry: the 15-session high is what avoids bear-market rallies and catches the durable leg of a V recovery. Development 2016-2023 is 52.83% CAGR / 45.90% max DD / 1.19 Sharpe at 1 bp, with 8/8 official grid cells and 7/8 strict DD<60% cells. The exit alone sells into bounces, most spells are whipsaws, and the worst drawdown is a 2018 bull-market correction.",
+  "dev": {
+    "cagr": 0.528287468012193,
+    "max_drawdown": 0.45896174697240555,
+    "sharpe": 1.1899561921472985
+  },
+  "full": null,
+  "above_tqqq": false,
+  "status": "dev-only",
+  "caveat": "Not counted above TQQQ without a holdout: the exit alone sells into bounces, the slow 15-session re-entry carries the result, the edge is concentrated in 2020 and 2022 crash avoidance, and the 45.9% max drawdown is a 2018 bull-market whipsaw rather than a crash avoided.",
+  "source": "research/new/tqqq-fast-drawdown-stop/report.md",
+  "visible": true
+}

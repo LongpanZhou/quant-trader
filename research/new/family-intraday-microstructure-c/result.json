@@ -1,0 +1,122 @@
+{
+ "slug": "family-intraday-microstructure-c",
+ "family": "intraday-microstructure",
+ "window": {
+  "dev": [
+   "2016-01-04",
+   "2023-12-29"
+  ],
+  "holdout": "not loaded"
+ },
+ "primary": {
+  "cell": "dec30_thr0_primary",
+  "params": {
+   "dec_min": 30,
+   "thr": 0.0
+  },
+  "1bp": {
+   "cagr": 0.4365271485350861,
+   "max_drawdown": 0.6091473763505691,
+   "sharpe": 1.097710275114564,
+   "fills": 3537,
+   "turnover": 22934.82488677945
+  }
+ },
+ "grid": [
+  {
+   "cell": "dec25_thr0",
+   "params": {
+    "dec_min": 25,
+    "thr": 0.0
+   },
+   "cagr": 0.4122069047733983,
+   "max_drawdown": 0.4778701424958991,
+   "sharpe": 1.0968106058618372,
+   "fills": 3451,
+   "turnover": 20213.900165175048
+  },
+  {
+   "cell": "dec30_thr-0.1",
+   "params": {
+    "dec_min": 30,
+    "thr": -0.001
+   },
+   "cagr": 0.4556910441188051,
+   "max_drawdown": 0.6091473763505694,
+   "sharpe": 1.1046049144180465,
+   "fills": 3905,
+   "turnover": 24315.93960635631
+  },
+  {
+   "cell": "dec30_thr0_primary",
+   "params": {
+    "dec_min": 30,
+    "thr": 0.0
+   },
+   "cagr": 0.4365271485350861,
+   "max_drawdown": 0.6091473763505691,
+   "sharpe": 1.097710275114564,
+   "fills": 3537,
+   "turnover": 22934.82488677945
+  },
+  {
+   "cell": "dec30_thr0.1",
+   "params": {
+    "dec_min": 30,
+    "thr": 0.001
+   },
+   "cagr": 0.3590075336301384,
+   "max_drawdown": 0.6061622184494305,
+   "sharpe": 0.994316312594242,
+   "fills": 2973,
+   "turnover": 13900.559145274501
+  },
+  {
+   "cell": "dec35_thr0",
+   "params": {
+    "dec_min": 35,
+    "thr": 0.0
+   },
+   "cagr": 0.2680916152876369,
+   "max_drawdown": 0.6354599228320166,
+   "sharpe": 0.7956495572113899,
+   "fills": 3511,
+   "turnover": 11968.882887571499
+  }
+ ],
+ "costs": {
+  "1bp": {
+   "cagr": 0.4365271485350861,
+   "max_drawdown": 0.6091473763505691,
+   "sharpe": 1.097710275114564
+  },
+  "5bp": {
+   "cagr": 0.20325576669260115,
+   "max_drawdown": 0.6153512555872607,
+   "sharpe": 0.6602703866258675
+  },
+  "10bp": {
+   "cagr": -0.03580902972585065,
+   "max_drawdown": 0.6651946275084382,
+   "sharpe": 0.1145561673377844
+  }
+ },
+ "yearly": {
+  "2016": 0.20091374818408747,
+  "2017": 0.5194523124544215,
+  "2018": 0.27915541856132964,
+  "2019": 0.491092224530832,
+  "2020": 1.4514222983077114,
+  "2021": 0.5272250809888808,
+  "2022": -0.18460564257331247,
+  "2023": 0.505575229978271
+ },
+ "rules": "At 10:00 ET hold TQQQ through 15:59 when QQQ is above the session open and above the session VWAP proxy (mean close 09:30-10:00); otherwise BIL. No daily trend, no vol/drawdown regime, flat overnight.",
+ "notes": {
+  "family_purity": "Intraday price action only; no daily trend or vol state.",
+  "cost_fragility": "The edge is 1 bp only; 5 bp is far below the bar.",
+  "grid": "The 10:00 no-threshold cell is the centre; neighbours are weaker."
+ },
+ "passed_dev_bar": true,
+ "status": "dev_pass"
+}

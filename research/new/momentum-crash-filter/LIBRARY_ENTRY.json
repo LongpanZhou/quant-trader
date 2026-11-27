@@ -1,0 +1,22 @@
+{
+  "slug": "momentum-crash-filter",
+  "name": "Momentum + crash brake",
+  "family": "trend-vol",
+  "tagline": "A loose 20/60-session momentum gate with an explicit fast-drawdown crash brake and a 5-day-high re-entry.",
+  "summary": "Holds TQQQ while either momentum horizon is positive, overrides to cash on a fast 20-day drawdown plus a vol-spike or 3-day-loss confirmation, and re-enters on a 5-day high with positive 20-day momentum. It wins 2020 and 2022 and loses every other year; the full 35.61% misses the bar.",
+  "dev": {
+    "cagr": 0.426953,
+    "max_drawdown": 0.475746,
+    "sharpe": 1.005005
+  },
+  "full": {
+    "cagr": 0.356136,
+    "max_drawdown": 0.50059,
+    "sharpe": 0.878521
+  },
+  "above_tqqq": false,
+  "status": "failed",
+  "caveat": "The edge is crash avoidance (wins 2020 and 2022, loses every other year); the 2024-26 holdout earns 20.10% and the full 35.61% misses the 37.54% bar.",
+  "source": "research/new/momentum-crash-filter/report.md",
+  "visible": true
+}

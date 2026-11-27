@@ -7,11 +7,17 @@ Rules
 Universe: QQQ (event study only), TQQQ (position), BIL (idle).
 
 Hardcoded calendars:
-  * 63 scheduled FOMC decision days, 2016-2023.  Unscheduled emergency
-    meetings are excluded; the cancelled 2020-03-18 meeting is excluded from
-    the centre (a sensitivity adds it).
-  * 96 monthly OpEx dates: third Friday, rolled back to Thursday when the
-    Friday is a market holiday.
+  * 85 scheduled FOMC decision days, 2016 through 2026-10-23.  The 2016-2023
+    development panel uses 63 of them.  Unscheduled emergency meetings are
+    excluded; the cancelled 2020-03-18 meeting is excluded from the centre (a
+    sensitivity adds it).
+  * 130 monthly OpEx dates, 2016 through 2026-10-23 (96 in the development
+    panel): third Friday, rolled back to Thursday when the Friday is a market
+    holiday.
+
+The 2024-2026 calendar dates are ex-ante schedule entries only: they are not
+used by the development backtest and no 2024+ price or return data is read.
+They make the same build_weights() call holdout-ready without a code change.
 
 For an event at session k:
 
@@ -73,6 +79,9 @@ FOMC = """
 2021-01-27 2021-03-17 2021-04-28 2021-06-16 2021-07-28 2021-09-22 2021-11-03 2021-12-15
 2022-01-26 2022-03-16 2022-05-04 2022-06-15 2022-07-27 2022-09-21 2022-11-02 2022-12-14
 2023-02-01 2023-03-22 2023-05-03 2023-06-14 2023-07-26 2023-09-20 2023-11-01 2023-12-13
+2024-01-31 2024-03-20 2024-05-01 2024-06-12 2024-07-31 2024-09-18 2024-11-07 2024-12-18
+2025-01-29 2025-03-19 2025-05-07 2025-06-18 2025-07-30 2025-09-17 2025-10-29 2025-12-10
+2026-01-28 2026-03-18 2026-04-29 2026-06-17 2026-07-29 2026-09-16
 """
 
 OPEX = """
@@ -84,6 +93,9 @@ OPEX = """
 2021-01-15 2021-02-19 2021-03-19 2021-04-16 2021-05-21 2021-06-18 2021-07-16 2021-08-20 2021-09-17 2021-10-15 2021-11-19 2021-12-17
 2022-01-21 2022-02-18 2022-03-18 2022-04-14 2022-05-20 2022-06-17 2022-07-15 2022-08-19 2022-09-16 2022-10-21 2022-11-18 2022-12-16
 2023-01-20 2023-02-17 2023-03-17 2023-04-21 2023-05-19 2023-06-16 2023-07-21 2023-08-18 2023-09-15 2023-10-20 2023-11-17 2023-12-15
+2024-01-19 2024-02-16 2024-03-15 2024-04-19 2024-05-17 2024-06-21 2024-07-19 2024-08-16 2024-09-20 2024-10-18 2024-11-15 2024-12-20
+2025-01-17 2025-02-21 2025-03-21 2025-04-17 2025-05-16 2025-06-20 2025-07-18 2025-08-15 2025-09-19 2025-10-17 2025-11-21 2025-12-19
+2026-01-16 2026-02-20 2026-03-20 2026-04-17 2026-05-15 2026-06-19 2026-07-17 2026-08-21 2026-09-18 2026-10-16
 """
 
 
@@ -93,6 +105,11 @@ def _dates(block: str) -> list[date]:
 
 FOMC_DATES = _dates(FOMC)
 OPEX_DATES = _dates(OPEX)
+CALENDAR_END = date(2026, 10, 23)
+assert max(FOMC_DATES) <= CALENDAR_END, "FOMC date beyond the holdout end"
+assert max(OPEX_DATES) <= CALENDAR_END, "OpEx date beyond the holdout end"
+assert FOMC_DATES == sorted(FOMC_DATES), "FOMC dates not sorted"
+assert OPEX_DATES == sorted(OPEX_DATES), "OpEx dates not sorted"
 
 
 # --------------------------------------------------------------------------- #
@@ -433,12 +450,19 @@ def main():
             "bar": BAR,
         },
         "event_count": {
+            "calendar_through": CALENDAR_END.isoformat(),
             "scheduled_fomc": len(FOMC_DATES),
+            "scheduled_fomc_in_dev": len(event_windows(
+                sess, day_of, FOMC_DATES, FOMC_ENTRY, FOMC_EXIT)),
             "fomc_windows": len(event_windows(sess, day_of, FOMC_DATES,
                                               FOMC_ENTRY, FOMC_EXIT)),
             "opex": len(OPEX_DATES),
+            "opex_in_dev": len(event_windows(
+                sess, day_of, OPEX_DATES, OPEX_ENTRY, OPEX_EXIT)),
             "opex_windows": len(event_windows(sess, day_of, OPEX_DATES,
                                               OPEX_ENTRY, OPEX_EXIT)),
+            "note": "totals include the 2024-2026 ex-ante calendar; the "
+                    "development panel uses only the 2016-2023 events",
             "excluded": ["unscheduled emergency FOMC 2020-03-03, 2020-03-15",
                          "scheduled 2020-03-18 meeting (cancelled) in the centre"],
         },

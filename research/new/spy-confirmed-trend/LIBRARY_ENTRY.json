@@ -1,0 +1,18 @@
+{
+  "slug": "spy-confirmed-trend",
+  "name": "SPY-Confirmed TQQQ Trend Ladder",
+  "family": "trend-vol",
+  "tagline": "A SPY-confirmed QQQ trend ladder that uses 3x TQQQ only when the broad market is also above trend, with a vol target and a five-session drawdown brake.",
+  "summary": "Hold TQQQ only when QQQ is above its 150-day SMA and SPY is above its 200-day SMA; hold QQQ when only QQQ is above trend, and BIL otherwise. The TQQQ sleeve is scaled to an 85% 20-day vol target and a -15% from-20-day-high brake forces five sessions in BIL. On the 2016-2023 development window it earned 50.36% CAGR / 43.27% DD / 1.20 Sharpe, with the lift coming mainly from stepping out of 2018-Q4 and 2022.",
+  "dev": {
+    "cagr": 0.503624,
+    "max_drawdown": 0.432667,
+    "sharpe": 1.204719
+  },
+  "full": null,
+  "above_tqqq": false,
+  "status": "dev-only",
+  "caveat": "The literal 100-day/10% mandate centre fails at 20.64%, the delivered 150-day/15% cell is close to the old 165-day trend base, and the edge is concentrated in 2018-Q4 and 2022 crash avoidance, so it is dev-only until a holdout exists.",
+  "source": "research/new/spy-confirmed-trend/report.md",
+  "visible": true
+}

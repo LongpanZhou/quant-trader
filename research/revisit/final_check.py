@@ -1,8 +1,8 @@
 """Final consistency check for the uniform All-strategies data.
 
 Checks:
-- 31 full 2016-2026 curves exist and are well formed;
-- all.json has the same dates, 33 series and 33 metrics;
+- 37 full 2016-2026 curves exist and are well formed;
+- all.json has the same dates, 39 series and 39 metrics;
 - every series covers the full window with no nulls;
 - every metric is reproducible from its own daily-close series;
 - no editorial fields (group/status/holdout/corr) leaked into the metrics;
@@ -75,8 +75,8 @@ for p in sorted(NEW_CURVES.glob("*.json")):
         errors.append(f"{slug}: empty full curve")
     curves[slug] = d
 print(f"full curves: {len(curves)}")
-if len(curves) != 31:
-    errors.append(f"expected 31 full curves, got {len(curves)}")
+if len(curves) != 37:
+    errors.append(f"expected 37 full curves, got {len(curves)}")
 
 # --- all.json -------------------------------------------------------------- #
 all_data = json.loads((COMPARE / "all.json").read_text(encoding="utf-8"))
@@ -113,8 +113,8 @@ for m in metrics:
 strategy_metrics = [m for m in metrics if not m.get("benchmark")]
 bench_metrics = [m for m in metrics if m.get("benchmark")]
 print(f"strategies: {len(strategy_metrics)}  benchmarks: {len(bench_metrics)}")
-if len(strategy_metrics) != 31:
-    errors.append(f"expected 31 strategies, got {len(strategy_metrics)}")
+if len(strategy_metrics) != 37:
+    errors.append(f"expected 37 strategies, got {len(strategy_metrics)}")
 if len(bench_metrics) != 2:
     errors.append(f"expected 2 benchmarks, got {len(bench_metrics)}")
 

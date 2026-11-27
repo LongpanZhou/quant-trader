@@ -1,0 +1,22 @@
+{
+  "slug": "turn-of-month",
+  "name": "Turn-of-month",
+  "family": "calendar",
+  "tagline": "Holds TQQQ in the last five and first six sessions of each month.",
+  "summary": "A pure calendar tilt around the month boundary, with no trend or price signal and BIL outside the window. Dev CAGR is 41.41% but full is 33.62%, below TQQQ's 37.54%, and the holdout earns only 16.00%; the 11-session window is wide and the edge is not a clean turn-of-month effect.",
+  "dev": {
+    "cagr": 0.41408644303585906,
+    "max_drawdown": 0.49213383430876423,
+    "sharpe": 0.9796172447943413
+  },
+  "full": {
+    "cagr": 0.33621958354881065,
+    "max_drawdown": 0.6406970242283205,
+    "sharpe": 0.8534629565738537
+  },
+  "above_tqqq": false,
+  "status": "failed",
+  "caveat": "The full 2016-2026 CAGR is 33.62% versus TQQQ's 37.54% and the holdout earns only 16.00%; the dev pass is concentrated in 2020/2023 and depends on excluding one mid-month session, so the calendar edge is fragile rather than robust.",
+  "source": "research/new/turn-of-month/report.md",
+  "visible": true
+}

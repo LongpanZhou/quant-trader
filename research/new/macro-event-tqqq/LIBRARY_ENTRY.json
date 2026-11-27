@@ -1,0 +1,22 @@
+{
+  "slug": "macro-event-tqqq",
+  "name": "FOMC Intermeeting Drift",
+  "family": "calendar",
+  "tagline": "Owns TQQQ only in the middle of the FOMC intermeeting cycle and holds BIL through the post-decision unwind and late pre-meeting de-risking.",
+  "summary": "For each of the 63 scheduled FOMC decisions from 2016 to 2023, buys TQQQ at the open of session F+3 and holds through the close of F+20 (18 sessions), with BIL otherwise. Dev 2016-2023 earns 51.06% CAGR / 48.83% max drawdown / 1.17 Sharpe at 1 bp, but the edge is concentrated in 2020 and 2022 and the ex-2020 CAGR falls to 33.4%, below the TQQQ bar.",
+  "dev": {
+    "cagr": 0.5106054853788027,
+    "max_drawdown": 0.4883140819695452,
+    "sharpe": 1.1725441962778909
+  },
+  "full": {
+    "cagr": 0.3709186640975668,
+    "max_drawdown": 0.4883140819695452,
+    "sharpe": 1.0358793084666627
+  },
+  "above_tqqq": false,
+  "status": "failed",
+  "caveat": "The holdout is not a real test: the FOMC calendar is hardcoded only through 2023, so 2024-2026 sits in BIL at roughly 5-6% a year, and even the dev pass depends on 2020 (ex-2020 CAGR 33.4%, below the bar).",
+  "source": "research/new/macro-event-tqqq/report.md",
+  "visible": true
+}

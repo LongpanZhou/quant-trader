@@ -19,6 +19,17 @@ on disk, and it must clear the causality/freshness/weight audit in `AUDIT.md`.
 | 10 | `tqqq-52week-high` | 43.39% | 28.49% | **38.64%** | 40.59% | 1.04 |
 | - | TQQQ buy & hold | 36.72% | - | 37.54% | 81.68% | 0.82 |
 
+## Six new family winners (one per family)
+
+| Family | Strategy | Dev CAGR | 2024-26 CAGR | Full CAGR | Full DD | Full Sharpe |
+|---|---|---:|---:|---:|---:|---:|
+| Calendar | `fomc-opex-window` | 58.26% | 40.99% | **52.77%** | 40.64% | 1.28 |
+| Short reversal | `family-short-reversal` | 45.90% | 62.12% | **49.54%** | 66.46% | 0.98 |
+| Session timing | `family-session-timing` | 56.23% | 23.39% | **46.26%** | 41.42% | 1.16 |
+| Rebalance flow | `family-rebalance-flow` | 50.55% | 34.89% | **45.55%** | 50.92% | 1.06 |
+| ML microstructure | `family-ml-microstructure` | 49.81% | 20.45% | **41.03%** | 44.51% | 1.02 |
+| Intraday microstructure | `family-intraday-microstructure-day` | 44.12% | 32.55% | **40.97%** | 47.42% | 1.05 |
+
 All ten have **0.0 pre-cut weight difference** at 2020-03-12 11:07, fresh
 2024-2026 weights, valid long-only weights and a reproduced development slice
 (`ml-regime-v2` dev difference -0.29 pp is the only non-zero, from its

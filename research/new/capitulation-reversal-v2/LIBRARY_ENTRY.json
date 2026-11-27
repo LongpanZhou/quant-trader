@@ -1,0 +1,22 @@
+{
+  "slug": "capitulation-reversal-v2",
+  "name": "Quiet capitulation reversal",
+  "family": "event-recovery",
+  "tagline": "Buys TQQQ after a quiet multi-horizon QQQ decline and holds one session.",
+  "summary": "Triggers on a -3% 3-session, -5% 10-session or -8% 15-session QQQ decline on volume at most 1.2x its 20-day average, then buys TQQQ at the event close and holds one session. The 1 bp development result is 39.75% CAGR, but it fails at 5 bp (34.67%) and the 2024-26 holdout earns only 13.02%, leaving the full record at 32.21%.",
+  "dev": {
+    "cagr": 0.397548,
+    "max_drawdown": 0.264367,
+    "sharpe": 1.463606
+  },
+  "full": {
+    "cagr": 0.322115,
+    "max_drawdown": 0.208572,
+    "sharpe": 1.296931
+  },
+  "above_tqqq": false,
+  "status": "failed",
+  "caveat": "The 1 bp pass is fragile - the 1.2x volume cap is a cliff, P&L is concentrated in a few 2020-22 events, and the 2024-26 holdout earns only 13.02%, so the full CAGR misses the 37.54% bar by 5.3 pp.",
+  "source": "research/new/capitulation-reversal-v2/report.md",
+  "visible": true
+}

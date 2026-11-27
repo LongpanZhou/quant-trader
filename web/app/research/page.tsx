@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ResearchArchive } from "@/components/research-archive";
 import { ResearchLibrary } from "@/components/research-library";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
 import { Pill } from "@/components/ui";
@@ -19,7 +20,8 @@ export default function ResearchPage() {
           <div className="max-w-3xl">
             <div className="mb-4 flex flex-wrap gap-2">
               <Pill tone="green">Research library</Pill>
-              <Pill>31 strategies</Pill>
+              <Pill>37 strategies</Pill>
+              <Pill>16 archive</Pill>
               <Pill>Same rules</Pill>
             </div>
             <h1 className="display text-[2.7rem] font-semibold text-zinc-50 sm:text-[3.6rem]">
@@ -28,14 +30,19 @@ export default function ResearchPage() {
               <span className="text-emerald-200">Same standard.</span>
             </h1>
             <p className="mt-5 max-w-2xl text-[15px] leading-relaxed text-zinc-400">
-              31 strategies on the same 2016-2026 window, with the same costs and metrics. No
-              groups, no pass/fail labels - just the ranking.
+              37 full-window strategies on the same 2016-2026 window, plus a 16-study
+              development archive. The main ranking uses the same costs and metrics; the
+              archive keeps the failures and dev-only studies for completeness.
             </p>
           </div>
         </section>
 
         <section className="pt-10">
           <ResearchLibrary />
+        </section>
+
+        <section className="pt-16">
+          <ResearchArchive />
         </section>
       </main>
       <SiteFooter />

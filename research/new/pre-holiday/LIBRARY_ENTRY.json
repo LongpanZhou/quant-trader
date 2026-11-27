@@ -1,0 +1,18 @@
+{
+  "slug": "pre-holiday",
+  "name": "Pre-holiday window",
+  "family": "calendar",
+  "tagline": "Own TQQQ for the three sessions before every scheduled NYSE holiday, halved when 20-day volatility is high, and sit in BIL otherwise.",
+  "summary": "Tests the classic pre-holiday drift at 3x: 72 scheduled-holiday windows, 10.7% of sessions in TQQQ, with a trailing realised-vol gate. The average three-session window returns +0.49% but is indistinguishable from a random window of the same length, and five of the 72 windows contribute more log return than the whole sample.",
+  "dev": {
+    "cagr": 0.04231209919597223,
+    "max_drawdown": 0.3121557463226269,
+    "sharpe": 0.3351723710529311
+  },
+  "full": null,
+  "above_tqqq": false,
+  "status": "failed",
+  "caveat": "Dev CAGR is 31.9 points below TQQQ and the per-window return sits at the 43.5th percentile of a 4,000-draw random-window null, so any real pre-holiday premium is an order of magnitude too small to pay for owning only 10.7% of sessions.",
+  "source": "research/new/pre-holiday/report.md",
+  "visible": true
+}

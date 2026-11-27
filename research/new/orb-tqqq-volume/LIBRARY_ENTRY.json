@@ -1,0 +1,18 @@
+{
+  "slug": "orb-tqqq-volume",
+  "name": "Opening-range breakout",
+  "family": "intraday-microstructure",
+  "tagline": "A TQQQ 30-minute opening-range breakout confirmed by gap, opening volume and ATR, with an ATR stop and a flat-every-night exit.",
+  "summary": "Buys the first 1-minute close above the 09:30-09:59 range after 10:00, but only on gap-up sessions where opening volume is in a 0.7-1.6x band and the range is at most 0.6 ATR, then exits on a 0.55 ATR stop or at the close. Dev earns 17.89% CAGR / 21.38% DD / 1.02 Sharpe at 1 bp, less than half the 36.72% bar and only slightly below QQQ's 18.91%; the report calls it a negative result.",
+  "dev": {
+    "cagr": 0.17894866474988702,
+    "max_drawdown": 0.2137575883422944,
+    "sharpe": 1.0201436262112726
+  },
+  "full": null,
+  "above_tqqq": false,
+  "status": "failed",
+  "caveat": "It fails because a long-only, flat-overnight TQQQ strategy forfeits the roughly 64% of TQQQ's log return earned overnight, and waiting for the 30-minute range leaves only about 0.23 pp of the average 1.29 pp up-day; at 5 bp CAGR drops to 11.33%.",
+  "source": "research/new/orb-tqqq-volume/report.md",
+  "visible": true
+}

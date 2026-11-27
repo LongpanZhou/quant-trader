@@ -1,0 +1,22 @@
+{
+  "slug": "intraday-close-momentum",
+  "name": "Intraday-Close Momentum TQQQ",
+  "family": "vol-crash",
+  "tagline": "A volatility-targeted TQQQ core that steps to cash for 24 hours after a negative full-day QQQ close in an already-elevated volatility regime.",
+  "summary": "Holds TQQQ at min(1, 0.20 / 10-day realised vol), and when QQQ's full 09:30-to-15:29 return is negative with vol at or above 20% it exits to cash for the next 24 hours. Dev 2016-2023 earns 46.21% CAGR / 53.87% max drawdown / 1.08 Sharpe at 1 bp and still clears the bar at 10 bp, but a vol-only control earns 44.09% and the close overlay adds only 2.1 pp of CAGR.",
+  "dev": {
+    "cagr": 0.4620794290978072,
+    "max_drawdown": 0.538676425821718,
+    "sharpe": 1.0824659192457196
+  },
+  "full": {
+    "cagr": 0.3160906525238527,
+    "max_drawdown": 0.538676425821718,
+    "sharpe": 0.9150415347493982
+  },
+  "above_tqqq": false,
+  "status": "failed",
+  "caveat": "The holdout is effectively flat cash after 2023, and in dev the close overlay is statistically indistinguishable from random high-vol exits (placebo p = 0.22) and whipsawed -30% in January 2016, so the vol-targeted TQQQ core rather than the close signal is doing the work.",
+  "source": "research/new/intraday-close-momentum/report.md",
+  "visible": true
+}

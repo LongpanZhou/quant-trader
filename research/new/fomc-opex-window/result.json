@@ -43,10 +43,14 @@
     }
   },
   "event_count": {
-    "scheduled_fomc": 63,
+    "calendar_through": "2026-10-23",
+    "scheduled_fomc": 85,
+    "scheduled_fomc_in_dev": 63,
     "fomc_windows": 63,
-    "opex": 96,
+    "opex": 130,
+    "opex_in_dev": 96,
     "opex_windows": 96,
+    "note": "totals include the 2024-2026 ex-ante calendar; the development panel uses only the 2016-2023 events",
     "excluded": [
       "unscheduled emergency FOMC 2020-03-03, 2020-03-15",
       "scheduled 2020-03-18 meeting (cancelled) in the centre"

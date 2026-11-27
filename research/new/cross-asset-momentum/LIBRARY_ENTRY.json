@@ -1,0 +1,22 @@
+{
+  "slug": "cross-asset-momentum",
+  "name": "Cross-asset dual momentum",
+  "family": "relative",
+  "tagline": "Rotates TQQQ, QQQ and BIL on multi-horizon QQQ-vs-cash and QQQ-vs-SPY momentum.",
+  "summary": "Uses a 21/42-session absolute-momentum OR gate, an 84/105/126-session majority gate and a 126-session QQQ-vs-SPY relative gate, with a volatility-targeted TQQQ sleeve. Revision 1 failed and Revision 2 was built after that failure; the full record earns 30.58% CAGR while the 2024-26 holdout earns only 9.23%, making the edge a fragile 2018/2022 crash-avoidance bet.",
+  "dev": {
+    "cagr": 0.399992,
+    "max_drawdown": 0.428908,
+    "sharpe": 1.081705
+  },
+  "full": {
+    "cagr": 0.305801,
+    "max_drawdown": 0.40692,
+    "sharpe": 0.888723
+  },
+  "above_tqqq": false,
+  "status": "failed",
+  "caveat": "Revision 2 was selected after Revision 1 failed on the same window, 10% of placebo shifts still beat it, and the 2024-26 holdout earns only 9.23%, so the 2018/2022 crash-avoidance edge does not generalize.",
+  "source": "research/new/cross-asset-momentum/report.md",
+  "visible": true
+}

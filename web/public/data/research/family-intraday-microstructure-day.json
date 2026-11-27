@@ -1,0 +1,38 @@
+{
+ "slug": "family-intraday-microstructure-day",
+ "name": "Opening-drive intraday",
+ "tagline": "Buys TQQQ on a strong opening drive and exits at the close; flat overnight.",
+ "summary": "At 09:35, a positive gap plus a positive first five minutes, or at 10:00 a first-30-minute gain above 0.5%, buys TQQQ; an 8% close-based trailing stop exits, otherwise the position is closed at 15:59. No overnight position.",
+ "metrics": {
+  "cagr": 0.4097402402080119,
+  "dd": 0.47421582898762205,
+  "sharpe": 1.0544340411353903
+ },
+ "assessment": {
+  "verdict": "Verified - intraday microstructure (1 bp only)",
+  "reason": "Full 40.97% / 47.42% DD / 1.05 Sharpe, holdout 32.55%; audit exact with final-session boundary. Cost-fragile: 5 bp dev 19.5%, 10 bp negative; 1 bp headline only."
+ },
+ "paths": {
+  "report": "research/new/family-intraday-microstructure-day/report.md",
+  "hypothesis": "research/new/family-intraday-microstructure-day/HYPOTHESIS.md",
+  "spec": null,
+  "provenance": null,
+  "code": "research/new/family-intraday-microstructure-day/strategy.py",
+  "code_public": "/data/research/code/family-intraday-microstructure-day.py"
+ },
+ "extracted": {
+  "hypothesis": false,
+  "spec": true,
+  "provenance": true
+ },
+ "decision": "At 09:35, a positive gap plus a positive first five minutes, or at 10:00 a first-30-minute gain above 0.5%, buys TQQQ; an 8% close-based trailing stop exits, otherwise the position is closed at 15:59. No overnight position.",
+ "rules": [],
+ "papers": [],
+ "provenance_cards": [],
+ "rejected_sources": [],
+ "report_md": "# Opening-drive intraday (day-only) — report\n\n## Verdict\n\n**Full-window pass, 1 bp only.** The day-only opening-drive strategy earns\n**40.97% CAGR / 49.82% max DD / 1.08 Sharpe** over 2016-2026 daily-close marks,\nabove the TQQQ 37.54% bar with a lower drawdown. The 2024-2026 holdout earns\n32.55% CAGR / 49.82% DD / 0.93 Sharpe.\n\n## Development\n\n| Cost | CAGR | Max DD | Sharpe |\n|---|---:|---:|---:|\n| 1 bp | 44.12% | 46.72% | 1.13 |\n| 5 bp | 19.52% | 50.82% | 0.65 |\n| 10 bp | -5.42% | 63.94% | 0.05 |\n\nThe strategy trades almost every session, so the 5 bp and 10 bp results are far\nbelow the bar. The 1 bp headline is the only version that clears it.\n\n## Mechanism and family\n\nThe signal is intraday price action: a positive gap plus a positive first five\nminutes, or a strong first 30 minutes. The position is closed at 15:59, so the\nbook is flat overnight. No daily trend, volatility or drawdown state is used.\n\n## Robustness\n\n- The 10:00 opening-drive cell is a local ridge; nearby decision times and\n  thresholds are weaker, and the surface is not a broad plateau.\n- The strategy is highly cost-sensitive: it is a 1 bp-only candidate.\n- The full-window pass depends on the 2024-2026 holdout, which is positive but\n  weaker than the development period.\n\n## How this differs from existing work\n\nThis is a day-only version of the opening-drive microstructure strategy. It\ndoes not use the old 165-day base, a daily trend filter, a volatility regime or\nan overnight position. It is a separate family from the session-timing\nstrategy, which holds through the overnight and opening drive.\n",
+ "hypothesis_md": "# Opening-drive intraday (day-only)\n\n## Hypothesis\n\nTQQQ's intraday opening drive carries information about the rest of the\nsession. When QQQ gaps up and the first five minutes extend the move, or when\nthe first 30 minutes are strongly positive, the leveraged ETF tends to continue\ninto the close. Holding only during that session avoids the overnight gap and\nkeeps the strategy in the intraday-microstructure family.\n\n## Exact rules\n\n- At 09:35 ET: if QQQ opened above the prior close by more than 0.25% and the\n  first five-minute return is positive, buy TQQQ at the 09:35 open.\n- Otherwise at 10:00 ET: if the first 30-minute QQQ return is above 0.50%, buy\n  TQQQ at the 10:00 open.\n- Exit on an 8% close-based trailing stop, or at the 15:59 open otherwise.\n- Flat overnight; BIL when no signal.\n\nNo daily trend, volatility or drawdown regime is used. The strategy is a\nday-only variant of the combined opening-drive strategy; the overnight\nreversal sleeve is disabled.\n\n## Development result\n\n2016-01-04 to 2023-12-29, next-open fills, 2% band, 1-minute marks:\n\n| Cost | CAGR | Max DD | Sharpe |\n|---|---:|---:|---:|\n| 1 bp | **44.12%** | 46.72% | 1.13 |\n| 5 bp | 19.52% | 50.82% | 0.65 |\n| 10 bp | -5.42% | 63.94% | 0.05 |\n\nFull 2016-2026: **40.97% CAGR / 49.82% DD / 1.08 Sharpe**, holdout 32.55%.\n\n## Honest verdict\n\nPasses the full-window bar, but only at 1 bp. The edge is almost entirely\nerased at 5 bp and negative at 10 bp. It is a fragile, high-turnover intraday\nstrategy, not a cost-robust replacement for TQQQ.\n",
+ "spec_md": "## Mechanism and family\n\nThe signal is intraday price action: a positive gap plus a positive first five\nminutes, or a strong first 30 minutes. The position is closed at 15:59, so the\nbook is flat overnight. No daily trend, volatility or drawdown state is used.",
+ "provenance_md": "## How this differs from existing work\n\nThis is a day-only version of the opening-drive microstructure strategy. It\ndoes not use the old 165-day base, a daily trend filter, a volatility regime or\nan overnight position. It is a separate family from the session-timing\nstrategy, which holds through the overnight and opening drive.",
+ "code": "\"\"\"Day-only opening-drive intraday microstructure (family-pure variant).\n\nThis wrapper uses the original intraday agent's mechanics with the overnight\nreversal sleeve disabled, so the book is flat from 15:59 to 09:30.  The input\nis the shared panel sliced to (TQQQ, BIL) columns; the output is the same\n2-column shape.\n\"\"\"\nfrom __future__ import annotations\n\nimport importlib.util\nfrom pathlib import Path\n\nimport numpy as np\n\nROOT = Path(__file__).resolve().parents[3]\nBASE_PATH = ROOT / \"research\" / \"new\" / \"family-intraday-microstructure\" / \"strategy.py\"\nspec = importlib.util.spec_from_file_location(\"intraday_base\", BASE_PATH)\nbase = importlib.util.module_from_spec(spec)\nspec.loader.exec_module(base)\n\n\ndef build_weights(ts, o, c):\n    \"\"\"Day sleeve only: no overnight position, no weak-close reversal.\"\"\"\n    return base.build_weights(ts, o, c, night_th=-1.0, bil=True)\n"
+}

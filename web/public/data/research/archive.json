@@ -1,0 +1,246 @@
+{
+ "generated": "2026-11-27",
+ "note": "Development-only and below-TQQQ research, kept for completeness. These are not part of the one-winner-per-family above-TQQQ set.",
+ "strategies": [
+  {
+   "slug": "overnight-intraday-trend",
+   "name": "Overnight + intraday trend",
+   "family": "session-timing",
+   "tagline": "A 20/50-session trend holds the overnight, while a 0.6% intraday stop cuts the session's left tail.",
+   "summary": "Starts each session long TQQQ when the 20/50 trend or a 50-day reclaim is intact, exits intraday on a 0.6% QQQ decline, re-enters on a reclaim, and skips the night if stopped and not reclaimed. Dev CAGR is 64.63%, but it fails at 10 bp (33.84%) and it is dev-only.",
+   "metrics": {
+    "cagr": 0.646308,
+    "dd": 0.356596,
+    "sharpe": 1.423674
+   },
+   "window": "2016-2023",
+   "status": "dev-only",
+   "note": "It fails at 10 bp (33.84%), and the max drawdown is a 2019 whipsaw rather than a crash; it is dev-only."
+  },
+  {
+   "slug": "tqqq-fast-drawdown-stop",
+   "name": "Fast-drawdown brake",
+   "family": "vol-crash",
+   "tagline": "Defaults to TQQQ, exits on a 14% five-session loss, and re-enters on a 15-session high.",
+   "summary": "A fast crash exit paired with a deliberately slow re-entry: the 15-day high is what avoids bear-market rallies and catches the durable leg of a V recovery. Dev CAGR is 52.83%, but the exit alone sells into bounces and the worst drawdown is a 2018 whipsaw.",
+   "metrics": {
+    "cagr": 0.528287,
+    "dd": 0.458962,
+    "sharpe": 1.189956
+   },
+   "window": "2016-2023",
+   "status": "dev-only",
+   "note": "The exit alone sells into bounces; the 15-session re-entry is what carries the dev-only result, and the worst drawdown is a 2018 whipsaw."
+  },
+  {
+   "slug": "spy-confirmed-trend",
+   "name": "SPY-confirmed trend",
+   "family": "trend-vol",
+   "tagline": "A QQQ 150-day trend ladder that requires SPY above its 200-day SMA before using 3x leverage.",
+   "summary": "Holds TQQQ only when both QQQ and SPY are above trend, QQQ when only QQQ is, and BIL otherwise, with an 85% vol target and a -15% from-20-day-high brake. Dev CAGR is 50.36%, but the literal mandate centre (100-day QQQ, -10% brake) fails at 20.64%, and it is dev-only.",
+   "metrics": {
+    "cagr": 0.503624,
+    "dd": 0.432667,
+    "sharpe": 1.204719
+   },
+   "window": "2016-2023",
+   "status": "dev-only",
+   "note": "The literal mandate centre (100-day QQQ, -10% brake) fails at 20.64%; the pass needs the 150-day/-15% variant and has no holdout."
+  },
+  {
+   "slug": "dual-momentum-tqqq",
+   "name": "Dual-momentum TQQQ",
+   "family": "relative",
+   "tagline": "A 12-month QQQ-vs-cash and QQQ-vs-SPY gate on a volatility-targeted TQQQ sleeve.",
+   "summary": "Holds TQQQ when absolute and relative momentum agree, QQQ when only absolute momentum is positive, and BIL otherwise. It clears development at 41.15%, but the 252-session lookback is load-bearing, the placebo misses its threshold, and 2018 is a full TQQQ drawdown.",
+   "metrics": {
+    "cagr": 0.411492,
+    "dd": 0.579537,
+    "sharpe": 0.976921
+   },
+   "window": "2016-2023",
+   "status": "dev-only",
+   "note": "The 252-session lookback is load-bearing (126/189 fail), the placebo misses its 10% threshold, and the 2018 drawdown is a full TQQQ drawdown."
+  },
+  {
+   "slug": "tqqq-vol-target-aggressive",
+   "name": "Aggressive vol target",
+   "family": "vol-crash",
+   "tagline": "Always-long TQQQ at an 80-100% vol target with a linear 6-12% drawdown brake.",
+   "summary": "Holds TQQQ permanently, scaling by min(1, target/RV20) and cutting to a 25% floor as the 15-day drawdown widens from 6% to 12%. Dev CAGR is 40.16%, but it underperforms TQQQ in every bull year and needs 30.51% holdout CAGR to clear the full bar.",
+   "metrics": {
+    "cagr": 0.401559,
+    "dd": 0.577701,
+    "sharpe": 1.068349
+   },
+   "window": "2016-2023",
+   "status": "dev-only",
+   "note": "It underperforms TQQQ in every bull year and needs 30.51% holdout CAGR to clear the full bar; it is dev-only."
+  },
+  {
+   "slug": "always-long-vol-target",
+   "name": "Always-long vol target",
+   "family": "vol-crash",
+   "tagline": "Holds TQQQ permanently and scales the position only by its own realised volatility.",
+   "summary": "A pure volatility-target test with no trend, drawdown or crash gate: TQQQ weight is min(1, target/RV20). The 45% target clears the development bar but the frozen full run reaches 37.25% CAGR, 0.29 pp below TQQQ; the 50% variant that hit 37.95% failed the pre-cut weight test.",
+   "metrics": {
+    "cagr": 0.372542,
+    "dd": 0.574767,
+    "sharpe": 0.942631
+   },
+   "window": "2016-2026",
+   "status": "failed",
+   "note": "The frozen RV20/45 rerun reaches only 37.25% full CAGR, 0.29 pp below the bar; the 50% variant that reached 37.95% failed the pre-cut weight test."
+  },
+  {
+   "slug": "macro-event-tqqq",
+   "name": "FOMC intermeeting drift",
+   "family": "calendar",
+   "tagline": "Holds TQQQ only from the third to the twentieth session after each scheduled FOMC decision.",
+   "summary": "The claim is that the equity premium is earned in the middle of the FOMC cycle, after the two-day post-decision unwind and before the next meeting's de-risking. It passes development at 51.06%, but the full 37.09% misses the bar by 0.45 pp and ex-2020 CAGR is about 33.4%.",
+   "metrics": {
+    "cagr": 0.370929,
+    "dd": 0.446301,
+    "sharpe": 1.019955
+   },
+   "window": "2016-2026",
+   "status": "failed",
+   "note": "Ex-2020 CAGR is about 33.4%, below the bar, and the full 37.09% misses 37.54% by 0.45 pp."
+  },
+  {
+   "slug": "overnight-drift-filter",
+   "name": "Overnight drift filter",
+   "family": "session-timing",
+   "tagline": "A close-anchored TQQQ position sized by 10-day vol and halved below the 20-day SMA.",
+   "summary": "Holds TQQQ through the overnight block and the next session, scaling to min(1, 0.20/vol) and halving exposure when QQQ is below its 20-day average. The full 37.07% CAGR misses the bar by 0.47 pp, and the 2022 drawdown is 58.35%.",
+   "metrics": {
+    "cagr": 0.370696,
+    "dd": 0.583475,
+    "sharpe": 0.974403
+   },
+   "window": "2016-2026",
+   "status": "failed",
+   "note": "Full CAGR is 37.07%, 0.47 pp short of the bar; the 2022 drawdown is 58.35% and the holdout earns 20.90%."
+  },
+  {
+   "slug": "momentum-crash-filter",
+   "name": "Momentum + crash brake",
+   "family": "trend-vol",
+   "tagline": "A loose 20/60-session momentum gate with an explicit fast-drawdown crash brake and a 5-day-high re-entry.",
+   "summary": "Holds TQQQ while either momentum horizon is positive, overrides to cash on a fast 20-day drawdown plus a vol-spike or 3-day-loss confirmation, and re-enters on a 5-day high with positive 20-day momentum. It wins 2020 and 2022 and loses every other year; the full 35.61% misses the bar.",
+   "metrics": {
+    "cagr": 0.356136,
+    "dd": 0.50059,
+    "sharpe": 0.878521
+   },
+   "window": "2016-2026",
+   "status": "failed",
+   "note": "The edge is crash avoidance (wins 2020 and 2022, loses every other year); the holdout earns 20.10% and the full 35.61% misses the bar."
+  },
+  {
+   "slug": "donchian-trend",
+   "name": "Donchian two-sleeve trend",
+   "family": "trend-vol",
+   "tagline": "A fast 20/10 TQQQ Donchian sleeve plus a slow 100/50 QQQ regime sleeve, sized to an 85% vol target.",
+   "summary": "The fast sleeve re-enters quickly after shakeouts while the slow QQQ regime keeps the book invested through multi-month trends. It passes development at 49.14% CAGR, but the 50-session slow exit is load-bearing and the 2024-26 holdout earns only 3.19%.",
+   "metrics": {
+    "cagr": 0.351291,
+    "dd": 0.542683,
+    "sharpe": 0.881446
+   },
+   "window": "2016-2026",
+   "status": "failed",
+   "note": "The slow 50-session exit is load-bearing and the 2024-26 holdout earns only 3.19% CAGR."
+  },
+  {
+   "slug": "turn-of-month",
+   "name": "Turn-of-month",
+   "family": "calendar",
+   "tagline": "Holds TQQQ in the last five and first six sessions of each month.",
+   "summary": "A pure calendar tilt around the month boundary, with no trend or price signal and BIL outside the window. Dev CAGR is 41.41% and full is 33.62%; the 11-session window is wide and the holdout earns only 16.00%.",
+   "metrics": {
+    "cagr": 0.33622,
+    "dd": 0.640697,
+    "sharpe": 0.853463
+   },
+   "window": "2016-2026",
+   "status": "failed",
+   "note": "The 2016-26 full CAGR is 33.62% and the holdout 16.00%; the 11-session window is wide and the edge is not a clean turn-of-month effect."
+  },
+  {
+   "slug": "capitulation-reversal-v2",
+   "name": "Quiet capitulation reversal",
+   "family": "event-recovery",
+   "tagline": "Buys TQQQ after a quiet multi-horizon QQQ decline and holds one session.",
+   "summary": "Triggers on a -3% 3-session, -5% 10-session or -8% 15-session QQQ decline on below-average volume, then buys TQQQ at the event close for one session. The 1 bp development result is 39.75% CAGR, but it fails at 5 bp and the 2024-26 holdout earns only 13.02%.",
+   "metrics": {
+    "cagr": 0.322115,
+    "dd": 0.208572,
+    "sharpe": 1.296931
+   },
+   "window": "2016-2026",
+   "status": "failed",
+   "note": "The 1 bp pass does not survive 5 bp (34.67%), and the holdout collapses to 13.02% CAGR."
+  },
+  {
+   "slug": "intraday-close-momentum",
+   "name": "Close-momentum weakness exit",
+   "family": "vol-crash",
+   "tagline": "A vol-targeted TQQQ core that goes to cash for 24 hours after a negative full intraday return in an elevated-vol tape.",
+   "summary": "The return engine is continuous vol-targeted TQQQ; a negative QQQ open-to-close return while 10-day vol is at least 20% triggers a one-day cash exit. Dev CAGR is 46.21%, but the holdout is flat at 0.00% daily and the full 31.21% is entirely a 2016-2023 phenomenon.",
+   "metrics": {
+    "cagr": 0.31208,
+    "dd": 0.520569,
+    "sharpe": 0.890656
+   },
+   "window": "2016-2026",
+   "status": "failed",
+   "note": "The holdout is flat at 0.00% daily (1 bp -1.41%), so the 31.21% full CAGR is entirely a 2016-2023 phenomenon."
+  },
+  {
+   "slug": "cross-asset-momentum",
+   "name": "Cross-asset dual momentum",
+   "family": "relative",
+   "tagline": "Rotates TQQQ, QQQ and BIL on multi-horizon QQQ-vs-cash and QQQ-vs-SPY momentum.",
+   "summary": "Uses a 21/42-session absolute-momentum OR gate and a 42-session QQQ/SPY relative gate, with a volatility-targeted TQQQ sleeve. Revision 1 failed and Revision 2 was built after that failure; the full 30.58% CAGR and 9.23% holdout make it a fragile 2018/2022 avoidance bet.",
+   "metrics": {
+    "cagr": 0.305801,
+    "dd": 0.40692,
+    "sharpe": 0.888723
+   },
+   "window": "2016-2026",
+   "status": "failed",
+   "note": "Revision 2 was built after Revision 1 failed, and the holdout earns only 9.23% CAGR; the edge is a fragile 2018/2022 avoidance bet."
+  },
+  {
+   "slug": "orb-tqqq-volume",
+   "name": "Opening-range breakout",
+   "family": "intraday-microstructure",
+   "tagline": "A TQQQ opening-range breakout confirmed by volume and ATR, flat every night.",
+   "summary": "Buys a gap-up opening-range breakout when opening volume is in a normal-to-expanded band and the range is a small fraction of ATR, with an ATR-scaled stop and a close exit. Dev CAGR is only 17.89% at 1 bp (11.33% at 5 bp), far below the bar, so the idea is retained as a negative result.",
+   "metrics": {
+    "cagr": 0.178949,
+    "dd": 0.213758,
+    "sharpe": 1.020144
+   },
+   "window": "2016-2023",
+   "status": "dev-only",
+   "note": "Dev-only and far below the bar at 17.89% CAGR; the edge also decays to 11.33% at 5 bp."
+  },
+  {
+   "slug": "pre-holiday",
+   "name": "Pre-holiday drift",
+   "family": "calendar",
+   "tagline": "Holds TQQQ for the three sessions before every scheduled NYSE holiday.",
+   "summary": "Tests the classic pre-holiday effect in a 3x fund, with a vol throttle that halves TQQQ above the trailing 75th percentile. The window is statistically indistinguishable from random (t=0.52), the best grid cell is 15.5 CAGR points short, and the result is 4.23% dev.",
+   "metrics": {
+    "cagr": 0.042312,
+    "dd": 0.312156,
+    "sharpe": 0.335172
+   },
+   "window": "2016-2023",
+   "status": "dev-only",
+   "note": "The pre-holiday window is indistinguishable from a random window (t=0.52) and the best grid cell is 15.5 CAGR points short of the bar."
+  }
+ ]
+}

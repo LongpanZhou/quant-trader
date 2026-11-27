@@ -1,0 +1,18 @@
+{
+ "slug": "tqqq-vol-target-aggressive",
+ "name": "Aggressive TQQQ volatility target",
+ "family": "vol-crash",
+ "tagline": "Always-long TQQQ at a high 0.80 volatility target, with a fast 15-session drawdown brake instead of a trend gate.",
+ "summary": "TQQQ is held at all times, scaled inversely to 20-day realised volatility around a high 0.80 annualised target, with a causal 15-session drawdown brake that cuts to a 0.25 floor and a 3-session EMA to control turnover. On the 2016-2023 development window it made 40.16% CAGR / 57.77% max drawdown / 1.068 Sharpe at 1 bp, versus TQQQ's 36.72% / 82.29% / 0.82, and it still passes at 5 and 10 bp. The edge is crash avoidance rather than broad alpha: it underperforms TQQQ in every bull year and wins in 2018 and 2022.",
+ "dev": {
+  "cagr": 0.4015591417983124,
+  "max_drawdown": 0.5777009201122518,
+  "sharpe": 1.0683493052587985
+ },
+ "full": null,
+ "above_tqqq": false,
+ "status": "dev-only",
+ "caveat": "The 40.16% dev CAGR is fragile: excluding the best year (2023) it falls to 24.57%, the edge is mostly 2022 crash avoidance, and without a 2024-2026 holdout it is not counted as above TQQQ.",
+ "source": "research/new/tqqq-vol-target-aggressive/report.md",
+ "visible": true
+}

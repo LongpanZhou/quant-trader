@@ -1,0 +1,544 @@
+{
+  "agent": "family-intraday-microstructure-b",
+  "family": "intraday-microstructure",
+  "status": "dev_1bp_pass_cost_fragile",
+  "strategy": "Opening-drive continuation with close-strength persistence",
+  "window": {
+    "start": "2016-01-04",
+    "end": "2023-12-29"
+  },
+  "frozen_center": {
+    "decision_time": "09:45 ET",
+    "confirmation_threshold_bps": 0.0,
+    "min_hold_sessions": 5,
+    "close_check": "15:00 ET QQQ above session open and session VWAP",
+    "close_exit_fill": "15:01 open (next bar)",
+    "failed_signal_exit": "09:46 open after a false 09:45 signal once the minimum hold has elapsed",
+    "min_hold_refresh": "extended to 5 sessions from today while the 09:45 signal is true",
+    "flat_asset": "BIL",
+    "hard_stop": null,
+    "vol_target": null,
+    "band": 0.02,
+    "slippage_bps": [
+      1.0,
+      5.0,
+      10.0
+    ]
+  },
+  "rules": {
+    "signal": "QQQ close(09:45) > QQQ open(09:30) and > VWAP(09:30..09:45, typical price x volume)",
+    "entry": "100% TQQQ at the 09:45 bar close; fill at 09:46 open",
+    "close_strength": "at 15:00, hold overnight only if QQQ is above both the session open and the session VWAP (09:30..15:00); otherwise BIL at the 15:00 close, fill at 15:01 open",
+    "minimum_hold": "5 sessions; refreshed while the 09:45 signal is true",
+    "failed_signal": "once the minimum hold has elapsed, a false 09:45 signal exits at 09:46 open",
+    "half_days": "close-strength check falls back to the penultimate session bar and fills at the last open",
+    "costs": "1 bp headline; 5 bp and 10 bp reported; 2% band; next-open fills",
+    "overlays": "entry-day-VWAP stop, hard stop and trailing stop tested and rejected (report)"
+  },
+  "bar": {
+    "cagr": 0.3672,
+    "max_drawdown": 0.8229,
+    "sharpe": 0.82,
+    "source": "task brief; harness-computed dev benchmark also below"
+  },
+  "benchmarks": {
+    "tqqq": {
+      "cagr": 0.3615406632934588,
+      "max_drawdown": 0.8229021592363336,
+      "sharpe": 0.8011699599655372,
+      "volatility": 0.6654592718640882
+    },
+    "qqq": {
+      "cagr": 0.18912874422247206,
+      "max_drawdown": 0.3730047872557426,
+      "sharpe": 0.8999556826271142,
+      "volatility": 0.2201773147609827
+    },
+    "bil": {
+      "cagr": 0.013922937868313001,
+      "max_drawdown": 0.0024388417668437246,
+      "sharpe": 0.9230732630692111,
+      "volatility": 0.015157668091977439
+    }
+  },
+  "headline": {
+    "1bp": {
+      "cagr": 0.37823396964868405,
+      "max_drawdown": 0.5853879495340385,
+      "max_drawdown_daily": 0.5644835757268403,
+      "sharpe": 0.9233639291328493,
+      "sharpe_daily": 0.9095846970244973,
+      "sortino": 1.333875263139634,
+      "volatility": 0.4660233684715946,
+      "total_return": 11.95382332507189,
+      "ending_equity": 1295382.332507189,
+      "years": 7.984312495246787,
+      "fills": 1959,
+      "turnover": 8381.601011600644,
+      "exposure_total": 0.9999987210313603,
+      "tqqq_exposure": 0.6461976262342047,
+      "tqqq_avg_weight": 0.6461976262342047,
+      "bil_exposure": 0.35380237376579526,
+      "corr_to_tqqq_daily": 0.7221195819696872,
+      "yearly": {
+        "2016": {
+          "strategy": -0.03684968128384669,
+          "benchmark": 0.19864262661415033
+        },
+        "2017": {
+          "strategy": 0.3078360695168614,
+          "benchmark": 1.1454004749279192
+        },
+        "2018": {
+          "strategy": -0.06511106659106758,
+          "benchmark": -0.20761930070677803
+        },
+        "2019": {
+          "strategy": 0.30563920040150316,
+          "benchmark": 1.4822913617582225
+        },
+        "2020": {
+          "strategy": 3.0982418843437225,
+          "benchmark": 1.041403713646452
+        },
+        "2021": {
+          "strategy": 0.5045299870501345,
+          "benchmark": 0.8105368933493498
+        },
+        "2022": {
+          "strategy": -0.25677070417943304,
+          "benchmark": -0.7938942799960799
+        },
+        "2023": {
+          "strategy": 0.7710138948613374,
+          "benchmark": 1.9204706377461225
+        }
+      },
+      "benchmark": {
+        "cagr": 0.3615406632934588,
+        "max_drawdown": 0.8229021592363336,
+        "sharpe": 0.8011699599655372,
+        "volatility": 0.6654592718640882
+      }
+    },
+    "5bp": {
+      "cagr": 0.24939633303316766,
+      "max_drawdown": 0.5958673109757125,
+      "max_drawdown_daily": 0.5754912973273456,
+      "sharpe": 0.7119354137812726,
+      "sharpe_daily": 0.703691089261745,
+      "sortino": 1.0278819510880577,
+      "volatility": 0.4661625388498729,
+      "total_return": 4.916771947608059,
+      "ending_equity": 591677.1947608059,
+      "years": 7.984312495246787,
+      "fills": 1959,
+      "turnover": 4846.640147152376,
+      "exposure_total": 0.9999987210313603,
+      "tqqq_exposure": 0.6461976262342047,
+      "tqqq_avg_weight": 0.6461976262342047,
+      "bil_exposure": 0.35380237376579526,
+      "corr_to_tqqq_daily": 0.7210202090287631,
+      "yearly": {
+        "2016": {
+          "strategy": -0.12536242211028703,
+          "benchmark": 0.19864262661415033
+        },
+        "2017": {
+          "strategy": 0.1938386915521284,
+          "benchmark": 1.1454004749279192
+        },
+        "2018": {
+          "strategy": -0.1574544519872908,
+          "benchmark": -0.20761930070677803
+        },
+        "2019": {
+          "strategy": 0.17950247604444258,
+          "benchmark": 1.4822913617582225
+        },
+        "2020": {
+          "strategy": 2.705277158759438,
+          "benchmark": 1.041403713646452
+        },
+        "2021": {
+          "strategy": 0.36571832885010935,
+          "benchmark": 0.8105368933493498
+        },
+        "2022": {
+          "strategy": -0.3215541987816426,
+          "benchmark": -0.7938942799960799
+        },
+        "2023": {
+          "strategy": 0.5999177057916798,
+          "benchmark": 1.9204706377461225
+        }
+      },
+      "benchmark": {
+        "cagr": 0.3615406632934588,
+        "max_drawdown": 0.8229021592363336,
+        "sharpe": 0.8011699599655372,
+        "volatility": 0.6654592718640882
+      }
+    },
+    "10bp": {
+      "cagr": 0.10515148094966964,
+      "max_drawdown": 0.608594837952847,
+      "max_drawdown_daily": 0.5888605349862419,
+      "sharpe": 0.44783748823853026,
+      "sharpe_daily": 0.4486467547210583,
+      "sortino": 0.6458645986398791,
+      "volatility": 0.4665728408127405,
+      "total_return": 1.2217403377309743,
+      "ending_equity": 222174.03377309744,
+      "years": 7.984312495246787,
+      "fills": 1959,
+      "turnover": 2587.7937285758535,
+      "exposure_total": 0.9999987210313603,
+      "tqqq_exposure": 0.6461976262342047,
+      "tqqq_avg_weight": 0.6461976262342047,
+      "bil_exposure": 0.35380237376579526,
+      "corr_to_tqqq_daily": 0.7195015057680528,
+      "yearly": {
+        "2016": {
+          "strategy": -0.22465359121488948,
+          "benchmark": 0.19864262661415033
+        },
+        "2017": {
+          "strategy": 0.06521199974098302,
+          "benchmark": 1.1454004749279192
+        },
+        "2018": {
+          "strategy": -0.2601646600517987,
+          "benchmark": -0.20761930070677803
+        },
+        "2019": {
+          "strategy": 0.038827470604203995,
+          "benchmark": 1.4822913617582225
+        },
+        "2020": {
+          "strategy": 2.2666271145125307,
+          "benchmark": 1.041403713646452
+        },
+        "2021": {
+          "strategy": 0.21007273318859898,
+          "benchmark": 0.8105368933493498
+        },
+        "2022": {
+          "strategy": -0.39465137648361814,
+          "benchmark": -0.7938942799960799
+        },
+        "2023": {
+          "strategy": 0.40910129248412996,
+          "benchmark": 1.9204706377461225
+        }
+      },
+      "benchmark": {
+        "cagr": 0.3615406632934588,
+        "max_drawdown": 0.8229021592363336,
+        "sharpe": 0.8011699599655372,
+        "volatility": 0.6654592718640882
+      }
+    }
+  },
+  "grid": {
+    "center_0945_thr0_N5_close15": {
+      "overrides": {},
+      "cagr": 0.37823396964868405,
+      "max_drawdown": 0.5853879495340385,
+      "sharpe": 0.9233639291328493,
+      "tqqq_exposure": 0.6461976262342047,
+      "fills": 1959,
+      "turnover": 8381.601011600644,
+      "corr_to_tqqq_daily": 0.7221195819696872,
+      "entries": 490
+    },
+    "decision_1000": {
+      "overrides": {
+        "decision": "i10"
+      },
+      "cagr": 0.26507740162955806,
+      "max_drawdown": 0.6109380548413885,
+      "sharpe": 0.7302452847577062,
+      "tqqq_exposure": 0.6515999897682508,
+      "fills": 2021,
+      "turnover": 5422.459647213475,
+      "corr_to_tqqq_daily": 0.7485394396561711,
+      "entries": 505
+    },
+    "decision_1030": {
+      "overrides": {
+        "decision": "i1030"
+      },
+      "cagr": 0.1303855952230344,
+      "max_drawdown": 0.665377876256208,
+      "sharpe": 0.49747558947452253,
+      "tqqq_exposure": 0.6339323169795876,
+      "fills": 2029,
+      "turnover": 2853.5674393772547,
+      "corr_to_tqqq_daily": 0.7524050550084037,
+      "entries": 507
+    },
+    "threshold_20bp": {
+      "overrides": {
+        "threshold_bps": 20.0
+      },
+      "cagr": 0.2503327195018241,
+      "max_drawdown": 0.4108758060799763,
+      "sharpe": 0.810438874347183,
+      "tqqq_exposure": 0.2536821507136645,
+      "fills": 749,
+      "turnover": 1655.292661944049,
+      "corr_to_tqqq_daily": 0.5634514944843328,
+      "entries": 187
+    },
+    "threshold_50bp": {
+      "overrides": {
+        "threshold_bps": 50.0
+      },
+      "cagr": -0.04038251031613349,
+      "max_drawdown": 0.4355755866074539,
+      "sharpe": -0.3070026439880889,
+      "tqqq_exposure": 0.013812861308640713,
+      "fills": 49,
+      "turnover": 42.596325792454955,
+      "corr_to_tqqq_daily": 0.18135167711236605,
+      "entries": 12
+    },
+    "min_hold_3": {
+      "overrides": {
+        "min_hold": 3
+      },
+      "cagr": 0.21890994170422728,
+      "max_drawdown": 0.5696337397704314,
+      "sharpe": 0.6628126856492663,
+      "tqqq_exposure": 0.6135519517061442,
+      "fills": 2039,
+      "turnover": 4631.615543953514,
+      "corr_to_tqqq_daily": 0.6980402699148824,
+      "entries": 510
+    },
+    "min_hold_2": {
+      "overrides": {
+        "min_hold": 2
+      },
+      "cagr": -0.24331778249914893,
+      "max_drawdown": 0.9134691353096831,
+      "sharpe": -0.4606894840915119,
+      "tqqq_exposure": 0.5419348237581214,
+      "fills": 2243,
+      "turnover": 1414.113771368149,
+      "corr_to_tqqq_daily": 0.6343947017653082,
+      "entries": 561
+    },
+    "fixed_5_session_exit": {
+      "overrides": {
+        "close_check": null,
+        "refresh": false
+      },
+      "cagr": 0.4658613017536788,
+      "max_drawdown": 0.5969925814395158,
+      "sharpe": 0.9744663333657193,
+      "tqqq_exposure": 0.7957218499002404,
+      "fills": 1293,
+      "turnover": 8789.214572097404,
+      "corr_to_tqqq_daily": 0.8207602924613697,
+      "entries": 323
+    }
+  },
+  "sensitivity": {
+    "entry_day_vwap_stop": {
+      "overrides": {
+        "close_check": null,
+        "refresh": true
+      },
+      "cagr": 0.14779098051141992,
+      "max_drawdown": 0.701837433604003,
+      "sharpe": 0.5259748266175943,
+      "tqqq_exposure": 0.73622550775055,
+      "fills": 1307,
+      "entries": 327
+    },
+    "hard_stop_15pct": {
+      "overrides": {
+        "hard_stop": 0.15
+      },
+      "cagr": 0.3556986754885969,
+      "max_drawdown": 0.5980910402694632,
+      "sharpe": 0.8874805686758974,
+      "tqqq_exposure": 0.6465685271397146,
+      "fills": 1959,
+      "entries": 490
+    },
+    "trailing_stop_20pct": {
+      "overrides": {
+        "trail": 0.2
+      },
+      "cagr": 0.37823396964868405,
+      "max_drawdown": 0.5853879495340385,
+      "sharpe": 0.9233639291328493,
+      "tqqq_exposure": 0.6461976262342047,
+      "fills": 1959,
+      "entries": 490
+    },
+    "hard_cap_5_no_close": {
+      "overrides": {
+        "close_check": null,
+        "refresh": false
+      },
+      "cagr": 0.4658613017536788,
+      "max_drawdown": 0.5969925814395158,
+      "sharpe": 0.9744663333657193,
+      "tqqq_exposure": 0.7957218499002404,
+      "fills": 1293,
+      "entries": 323
+    },
+    "decision_0940": {
+      "overrides": {
+        "decision": "i940"
+      },
+      "cagr": 0.25029606931255377,
+      "max_drawdown": 0.5600718362664348,
+      "sharpe": 0.7204407762038689,
+      "tqqq_exposure": 0.6533163656827135,
+      "fills": 1981,
+      "entries": 495
+    },
+    "decision_0950": {
+      "overrides": {
+        "decision": "i950"
+      },
+      "cagr": 0.23629476770805002,
+      "max_drawdown": 0.664378258108447,
+      "sharpe": 0.6970220998650327,
+      "tqqq_exposure": 0.6371949659794341,
+      "fills": 1967,
+      "entries": 492
+    },
+    "min_hold_4": {
+      "overrides": {
+        "min_hold": 4
+      },
+      "cagr": 0.22768514148085672,
+      "max_drawdown": 0.5939840941820766,
+      "sharpe": 0.6760224971201618,
+      "tqqq_exposure": 0.6358955338415102,
+      "fills": 1995,
+      "entries": 499
+    },
+    "min_hold_6": {
+      "overrides": {
+        "min_hold": 6
+      },
+      "cagr": 0.4146736884213833,
+      "max_drawdown": 0.5853879495340389,
+      "sharpe": 0.9781863134528327,
+      "tqqq_exposure": 0.6513966337545404,
+      "fills": 1947,
+      "entries": 487
+    },
+    "threshold_10bp": {
+      "overrides": {
+        "threshold_bps": 10.0
+      },
+      "cagr": 0.3391952296252312,
+      "max_drawdown": 0.42433456457151164,
+      "sharpe": 0.916592384622503,
+      "tqqq_exposure": 0.4536476185603929,
+      "fills": 1381,
+      "entries": 345
+    }
+  },
+  "placebo": {
+    "draws": 300,
+    "signal_days": 903,
+    "observed_1bp_cagr": 0.37823396964868405,
+    "observed_5bp_cagr": 0.24939633303316766,
+    "placebo_1bp_mean": 0.21623782339215855,
+    "placebo_1bp_median": 0.20178147985698214,
+    "placebo_1bp_p95": 0.41292006667695025,
+    "p_1bp": 0.10666666666666667,
+    "placebo_5bp_mean": 0.10225752838857496,
+    "placebo_5bp_median": 0.08856555012676504,
+    "placebo_5bp_p95": 0.28044509617047403,
+    "p_5bp": 0.10333333333333333,
+    "placebo_5bp_dd_mean": 0.7312556700372642,
+    "placebo_5bp_dd_median": 0.7413716460900082
+  },
+  "cuts": {
+    "2016-2019": {
+      "cagr": 0.11382721169018928,
+      "max_drawdown": 0.4647415516231038,
+      "sessions": 1006
+    },
+    "2020-2023": {
+      "cagr": 0.685076462583792,
+      "max_drawdown": 0.5644835757268403,
+      "sessions": 1006
+    },
+    "odd_years": {
+      "cagr": 0.4661912081176114,
+      "max_drawdown": 0.371396471525666
+    },
+    "even_years": {
+      "cagr": 0.29602835775629033,
+      "max_drawdown": 0.5644835757268405
+    }
+  },
+  "trades": {
+    "entries": 490,
+    "avg_hold_sessions": 2.863265306122449,
+    "median_hold_sessions": 2.0,
+    "reasons": {
+      "close_weak": 478,
+      "fail": 11,
+      "eod": 1
+    },
+    "first_entry": "2",
+    "last_entry": "2011",
+    "sessions": 2012,
+    "calendar": [
+      "2016-01-04",
+      "2023-12-29"
+    ]
+  },
+  "reconciliation_10am_daily": {
+    "1bp": {
+      "cagr": 0.0660115741032401,
+      "max_drawdown": 0.5483919470170864,
+      "sharpe": 0.36144912031339227,
+      "turnover": 4743.540629167749,
+      "tqqq_exposure": 0.4184120325369622
+    },
+    "5bp": {
+      "cagr": -0.11333411515198821,
+      "max_drawdown": 0.7142111893691752,
+      "sharpe": -0.22858203975786232,
+      "turnover": 2406.7926513377265,
+      "tqqq_exposure": 0.4184120325369622
+    },
+    "10bp": {
+      "cagr": -0.2957002051366143,
+      "max_drawdown": 0.9443069758299414,
+      "sharpe": -0.9615932079155435,
+      "turnover": 1279.3709347631445,
+      "tqqq_exposure": 0.4184120325369622
+    },
+    "signal_day_tqqq": {
+      "n_signal_days": 919,
+      "mean_10am_to_close_pct": 0.12295215241046582,
+      "mean_close_to_close_pct": 1.393676199792287,
+      "note": "close-to-close includes the overnight and the 09:30-10:00 move and is not tradable from a 10:00 signal; the causal 10:00->close mean is the post figure."
+    }
+  },
+  "pass": {
+    "cagr_above_bar_1bp": true,
+    "drawdown_below_60_1bp": true,
+    "sharpe_above_bar_1bp": true,
+    "cagr_above_bar_5bp": false,
+    "drawdown_below_60_5bp": true,
+    "calmar_1bp": 0.6461253087798503,
+    "benchmark_calmar": 0.43934829825817245,
+    "note": "1 bp dev pass; 5 bp fails the CAGR bar.  The result is cost-fragile and is not a robust above-TQQQ strategy."
+  },
+  "verdict": "Frozen 09:45 center passes the 1 bp dev bar (CAGR 38.20% > 36.72%, DD 58.54% < 60%) but fails at 5 bp (CAGR 25.4%) and 10 bp (CAGR 11.0%). The lead's 10:00 center fails even at 1 bp (CAGR 27.3%).  The 43.65% prototype is not reproducible with a causal 10:00->15:59 hold; the causal version is 6.60% at 1 bp.  Best honest result: a fragile, 1-bp-only near-pass, not a cost-robust family winner."
+}

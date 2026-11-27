@@ -1,0 +1,18 @@
+{
+  "slug": "overnight-intraday-trend",
+  "name": "Overnight + intraday trend",
+  "family": "session-timing",
+  "tagline": "A 20/50-session trend holds the overnight, while a 0.6% intraday stop cuts the session's left tail.",
+  "summary": "Starts each session long TQQQ when the 20/50 trend or a 50-day reclaim is intact, exits intraday on a 0.6% QQQ decline, re-enters on a reclaim, and skips the night if stopped and not reclaimed. Dev CAGR is 64.63% with 35.66% max drawdown and 1.42 Sharpe, but it fails at 10 bp (33.84%) and has no holdout.",
+  "dev": {
+    "cagr": 0.6463083060191472,
+    "max_drawdown": 0.35659591263170387,
+    "sharpe": 1.4236739670273322
+  },
+  "full": null,
+  "above_tqqq": false,
+  "status": "dev-only",
+  "caveat": "Dev-only and not counted: the edge is a high-turnover intraday stop (1,837 fills, ~57 round trips a year) that falls to 33.84% at 10 bp, the worst held overnight gap was -20.5%, and 2020 alone contributes +308.5% (ex-2020 CAGR 44.06%), so a one-shot holdout is required before any above-TQQQ claim.",
+  "source": "research/new/overnight-intraday-trend/report.md",
+  "visible": true
+}

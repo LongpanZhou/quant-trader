@@ -1,0 +1,33 @@
+{
+ "slug": "family-intraday-microstructure-day",
+ "family": "intraday-microstructure",
+ "window": {"dev": ["2016-01-04", "2023-12-29"], "holdout": "not loaded"},
+ "windows": {
+  "dev": {
+   "1bp": {
+    "cagr": 0.44122804103959434,
+    "max_drawdown": 0.467171084501513,
+    "sharpe": 1.134394628406869,
+    "fills": 3737
+   },
+   "5bp": {
+    "cagr": 0.19515804388014635,
+    "max_drawdown": 0.5081932934248865,
+    "sharpe": 0.6543745075371474
+   },
+   "10bp": {
+    "cagr": -0.05421788615963774,
+    "max_drawdown": 0.6394417480569335,
+    "sharpe": 0.05432479603625568
+   }
+  }
+ },
+ "rules": "Day-only opening-drive: gap > +0.25% and first-5-min > 0 -> TQQQ at 09:35; or first-30-min > +0.50% -> TQQQ at 10:00; 8% close-based trailing stop; flat 15:59-09:30. No overnight sleeve.",
+ "notes": {
+  "family_purity": "Flat overnight; entry gate is intraday opening drive/range only.",
+  "cost_fragility": "1 bp only: 5 bp 19.5%, 10 bp negative. Headline 1 bp.",
+  "relationship": "Day-only variant of family-intraday-microstructure; overnight reversal removed."
+ },
+ "passed_dev_bar": true,
+ "status": "dev_pass"
+}

@@ -1,0 +1,22 @@
+{
+  "slug": "donchian-trend",
+  "name": "Donchian two-sleeve trend",
+  "family": "trend-vol",
+  "tagline": "A fast 20/10 TQQQ Donchian sleeve plus a slow 100/50 QQQ regime sleeve, sized to an 85% vol target.",
+  "summary": "The fast sleeve re-enters quickly after shakeouts while the slow QQQ regime keeps the book invested through multi-month trends. It clears development at 49.14% CAGR and 43.95% max DD, but the slow 50-session exit is load-bearing and the frozen 2024-26 holdout earns only 3.19% CAGR, leaving the full window below TQQQ.",
+  "dev": {
+    "cagr": 0.491363,
+    "max_drawdown": 0.439478,
+    "sharpe": 1.096284
+  },
+  "full": {
+    "cagr": 0.351291,
+    "max_drawdown": 0.542683,
+    "sharpe": 0.881446
+  },
+  "above_tqqq": false,
+  "status": "failed",
+  "caveat": "The 2024-26 holdout earns only 3.19% CAGR, so the full-window 35.13% finishes 2.41 pp below TQQQ's 37.54%, and the development pass depends on a load-bearing 50-session slow exit.",
+  "source": "research/new/donchian-trend/report.md",
+  "visible": true
+}
