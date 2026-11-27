@@ -1,4 +1,4 @@
-﻿"""Build the 27 uniform Research-library cards from the All-strategies data."""
+﻿"""Build the uniform Research-library cards from the All-strategies data."""
 from __future__ import annotations
 
 import json
@@ -6,8 +6,10 @@ from pathlib import Path
 
 ROOT = Path(r"C:\Users\27175\Desktop\quant-trader-research")
 HERE = ROOT / "research" / "revisit"
+NEW = ROOT / "research" / "new"
 ALL = ROOT / "web" / "public" / "data" / "compare" / "all.json"
 OUT = ROOT / "web" / "public" / "data" / "research" / "rebuild.json"
+META = {s["slug"]: s for s in json.loads((NEW / "META.json").read_text(encoding="utf-8"))["strategies"]}
 
 
 def main():
@@ -17,7 +19,10 @@ def main():
         if m.get("benchmark"):
             continue
         slug = m["id"]
-        if slug == "ratio-froth":
+        if slug in META:
+            tagline = META[slug]["tagline"]
+            summary = META[slug]["summary"]
+        elif slug == "ratio-froth":
             tagline = (
                 "The original 165-day shared-base leader, included as a strategy "
                 "for the same-window comparison."

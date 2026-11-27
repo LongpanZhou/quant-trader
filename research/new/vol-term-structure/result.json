@@ -1,0 +1,1002 @@
+{
+  "meta": {
+    "slug": "vol-term-structure",
+    "window": {
+      "start": "2016-01-04",
+      "end": "2023-12-29"
+    },
+    "bar": {
+      "cagr": 0.3672,
+      "max_drawdown": 0.8229,
+      "sharpe": 0.82,
+      "source": "lead-provided TQQQ 1-minute-mark development bar"
+    },
+    "harness_benchmark": {
+      "cagr": 0.361541,
+      "max_drawdown": 0.822902,
+      "sharpe": 0.80117,
+      "sortino": null,
+      "volatility": 0.665459,
+      "exposure": null,
+      "corr_tqqq": null,
+      "fills": null,
+      "turnover": null,
+      "years": 7.984312,
+      "ending_equity": 1175282.649852
+    },
+    "primary_params": {
+      "trend_n": 165,
+      "rv_short": 20,
+      "rv_long": 60,
+      "theta": 0.95,
+      "spike": 1.8,
+      "trend_w": 0.5,
+      "signal_symbol": "QQQ"
+    },
+    "band": 0.02,
+    "headline_cost_bp": 1.0,
+    "costs_bp": [
+      1.0,
+      5.0,
+      10.0
+    ],
+    "bars_per_year": 98280,
+    "grid": [
+      "primary",
+      "theta_092",
+      "theta_098",
+      "sma150",
+      "sma180",
+      "spike_1.6",
+      "spike_2.0",
+      "blend_40_60"
+    ],
+    "notes": "Development window only; no 2024+ data loaded. Signals use QQQ adjusted daily closes through the prior session close; fills at the next session open."
+  },
+  "benchmark": {
+    "cagr": 0.361541,
+    "max_drawdown": 0.822902,
+    "sharpe": 0.80117,
+    "sortino": null,
+    "volatility": 0.665459,
+    "exposure": null,
+    "corr_tqqq": null,
+    "fills": null,
+    "turnover": null,
+    "years": 7.984312,
+    "ending_equity": 1175282.649852
+  },
+  "headline": {
+    "1bp": {
+      "cagr": 0.515739,
+      "max_drawdown": 0.378972,
+      "sharpe": 1.368826,
+      "sortino": 1.966816,
+      "volatility": 0.349518,
+      "exposure": 0.611978,
+      "corr_tqqq": 0.675734,
+      "fills": 293,
+      "turnover": 564.593482,
+      "years": 7.984312,
+      "ending_equity": 2767974.837622
+    },
+    "5bp": {
+      "cagr": 0.509387,
+      "max_drawdown": 0.38102,
+      "sharpe": 1.356808,
+      "sortino": 1.948892,
+      "volatility": 0.349505,
+      "exposure": 0.611964,
+      "corr_tqqq": 0.675722,
+      "fills": 294,
+      "turnover": 550.53855,
+      "years": 7.984312,
+      "ending_equity": 2676698.729277
+    },
+    "10bp": {
+      "cagr": 0.501221,
+      "max_drawdown": 0.383552,
+      "sharpe": 1.341247,
+      "sortino": 1.925727,
+      "volatility": 0.3495,
+      "exposure": 0.611974,
+      "corr_tqqq": 0.67571,
+      "fills": 294,
+      "turnover": 532.6686,
+      "years": 7.984312,
+      "ending_equity": 2563239.070274
+    }
+  },
+  "yearly": {
+    "2016": {
+      "strategy": 0.026002,
+      "benchmark": 0.198643
+    },
+    "2017": {
+      "strategy": 0.654677,
+      "benchmark": 1.1454
+    },
+    "2018": {
+      "strategy": 0.086274,
+      "benchmark": -0.207619
+    },
+    "2019": {
+      "strategy": 0.571402,
+      "benchmark": 1.482291
+    },
+    "2020": {
+      "strategy": 1.888671,
+      "benchmark": 1.041404
+    },
+    "2021": {
+      "strategy": 0.799493,
+      "benchmark": 0.810537
+    },
+    "2022": {
+      "strategy": -0.308318,
+      "benchmark": -0.793894
+    },
+    "2023": {
+      "strategy": 1.433124,
+      "benchmark": 1.920471
+    }
+  },
+  "yearly_exposure": {
+    "2016": 0.595443,
+    "2017": 0.707116,
+    "2018": 0.56738,
+    "2019": 0.739551,
+    "2020": 0.634583,
+    "2021": 0.746576,
+    "2022": 0.181261,
+    "2023": 0.72393
+  },
+  "grid": [
+    {
+      "cell": "primary",
+      "params": {
+        "trend_n": 165,
+        "rv_short": 20,
+        "rv_long": 60,
+        "theta": 0.95,
+        "spike": 1.8,
+        "trend_w": 0.5,
+        "signal_symbol": "QQQ"
+      },
+      "cagr": 0.515739,
+      "max_drawdown": 0.378972,
+      "sharpe": 1.368826,
+      "sortino": 1.966816,
+      "volatility": 0.349518,
+      "exposure": 0.611978,
+      "corr_tqqq": 0.675734,
+      "fills": 293,
+      "turnover": 564.593482,
+      "years": 7.984312,
+      "ending_equity": 2767974.837622
+    },
+    {
+      "cell": "theta_092",
+      "params": {
+        "trend_n": 165,
+        "rv_short": 20,
+        "rv_long": 60,
+        "theta": 0.92,
+        "spike": 1.8,
+        "trend_w": 0.5,
+        "signal_symbol": "QQQ"
+      },
+      "cagr": 0.493201,
+      "max_drawdown": 0.309062,
+      "sharpe": 1.353899,
+      "sortino": 1.941232,
+      "volatility": 0.339806,
+      "exposure": 0.592081,
+      "corr_tqqq": 0.67012,
+      "fills": 284,
+      "turnover": 543.111222,
+      "years": 7.984312,
+      "ending_equity": 2455921.477739
+    },
+    {
+      "cell": "theta_098",
+      "params": {
+        "trend_n": 165,
+        "rv_short": 20,
+        "rv_long": 60,
+        "theta": 0.98,
+        "spike": 1.8,
+        "trend_w": 0.5,
+        "signal_symbol": "QQQ"
+      },
+      "cagr": 0.498675,
+      "max_drawdown": 0.392929,
+      "sharpe": 1.30604,
+      "sortino": 1.876404,
+      "volatility": 0.36064,
+      "exposure": 0.633733,
+      "corr_tqqq": 0.689669,
+      "fills": 291,
+      "turnover": 587.101531,
+      "years": 7.984312,
+      "ending_equity": 2528732.207966
+    },
+    {
+      "cell": "sma150",
+      "params": {
+        "trend_n": 150,
+        "rv_short": 20,
+        "rv_long": 60,
+        "theta": 0.95,
+        "spike": 1.8,
+        "trend_w": 0.5,
+        "signal_symbol": "QQQ"
+      },
+      "cagr": 0.519182,
+      "max_drawdown": 0.426448,
+      "sharpe": 1.367286,
+      "sortino": 1.95471,
+      "volatility": 0.352341,
+      "exposure": 0.613468,
+      "corr_tqqq": 0.670294,
+      "fills": 287,
+      "turnover": 618.396291,
+      "years": 7.984312,
+      "ending_equity": 2818571.602337
+    },
+    {
+      "cell": "sma180",
+      "params": {
+        "trend_n": 180,
+        "rv_short": 20,
+        "rv_long": 60,
+        "theta": 0.95,
+        "spike": 1.8,
+        "trend_w": 0.5,
+        "signal_symbol": "QQQ"
+      },
+      "cagr": 0.516514,
+      "max_drawdown": 0.373707,
+      "sharpe": 1.369507,
+      "sortino": 1.968332,
+      "volatility": 0.349787,
+      "exposure": 0.612725,
+      "corr_tqqq": 0.677311,
+      "fills": 301,
+      "turnover": 539.374157,
+      "years": 7.984312,
+      "ending_equity": 2779287.099173
+    },
+    {
+      "cell": "spike_1.6",
+      "params": {
+        "trend_n": 165,
+        "rv_short": 20,
+        "rv_long": 60,
+        "theta": 0.95,
+        "spike": 1.6,
+        "trend_w": 0.5,
+        "signal_symbol": "QQQ"
+      },
+      "cagr": 0.487331,
+      "max_drawdown": 0.373772,
+      "sharpe": 1.330599,
+      "sortino": 1.912053,
+      "volatility": 0.343799,
+      "exposure": 0.596381,
+      "corr_tqqq": 0.654461,
+      "fills": 302,
+      "turnover": 537.40502,
+      "years": 7.984312,
+      "ending_equity": 2379891.871117
+    },
+    {
+      "cell": "spike_2.0",
+      "params": {
+        "trend_n": 165,
+        "rv_short": 20,
+        "rv_long": 60,
+        "theta": 0.95,
+        "spike": 2.0,
+        "trend_w": 0.5,
+        "signal_symbol": "QQQ"
+      },
+      "cagr": 0.518762,
+      "max_drawdown": 0.378972,
+      "sharpe": 1.368927,
+      "sortino": 1.967948,
+      "volatility": 0.351446,
+      "exposure": 0.617286,
+      "corr_tqqq": 0.682609,
+      "fills": 291,
+      "turnover": 527.811323,
+      "years": 7.984312,
+      "ending_equity": 2812356.76011
+    },
+    {
+      "cell": "blend_40_60",
+      "params": {
+        "trend_n": 165,
+        "rv_short": 20,
+        "rv_long": 60,
+        "theta": 0.95,
+        "spike": 1.8,
+        "trend_w": 0.4,
+        "signal_symbol": "QQQ"
+      },
+      "cagr": 0.506567,
+      "max_drawdown": 0.400266,
+      "sharpe": 1.37455,
+      "sortino": 1.979113,
+      "volatility": 0.341645,
+      "exposure": 0.582936,
+      "corr_tqqq": 0.661348,
+      "fills": 288,
+      "turnover": 590.763393,
+      "years": 7.984312,
+      "ending_equity": 2637027.063281
+    }
+  ],
+  "ablations": {
+    "primary": {
+      "params": {
+        "trend_n": 165,
+        "rv_short": 20,
+        "rv_long": 60,
+        "theta": 0.95,
+        "spike": 1.8,
+        "trend_w": 0.5,
+        "signal_symbol": "QQQ"
+      },
+      "cagr": 0.515739,
+      "max_drawdown": 0.378972,
+      "sharpe": 1.368826,
+      "sortino": 1.966816,
+      "volatility": 0.349518,
+      "exposure": 0.611978,
+      "corr_tqqq": 0.675734,
+      "fills": 293,
+      "turnover": 564.593482,
+      "years": 7.984312,
+      "ending_equity": 2767974.837622
+    },
+    "no_spike": {
+      "params": {
+        "trend_n": 165,
+        "rv_short": 20,
+        "rv_long": 60,
+        "theta": 0.95,
+        "spike": 1000000000.0,
+        "trend_w": 0.5,
+        "signal_symbol": "QQQ"
+      },
+      "cagr": 0.472155,
+      "max_drawdown": 0.386661,
+      "sharpe": 1.250341,
+      "sortino": 1.779156,
+      "volatility": 0.363196,
+      "exposure": 0.625574,
+      "corr_tqqq": 0.730033,
+      "fills": 311,
+      "turnover": 423.865851,
+      "years": 7.984312,
+      "ending_equity": 2192772.940361
+    },
+    "no_trend": {
+      "params": {
+        "trend_n": 165,
+        "rv_short": 20,
+        "rv_long": 60,
+        "theta": 0.95,
+        "spike": 1.8,
+        "trend_w": 0.0,
+        "signal_symbol": "QQQ"
+      },
+      "cagr": 0.445887,
+      "max_drawdown": 0.534344,
+      "sharpe": 1.234107,
+      "sortino": 1.777762,
+      "volatility": 0.349232,
+      "exposure": 0.464773,
+      "corr_tqqq": 0.530176,
+      "fills": 107,
+      "turnover": 595.903072,
+      "years": 7.984312,
+      "ending_equity": 1899169.062661
+    },
+    "trend_only": {
+      "params": {
+        "trend_n": 165,
+        "rv_short": 20,
+        "rv_long": 60,
+        "theta": 0.95,
+        "spike": 1000000000.0,
+        "trend_w": 1.0,
+        "signal_symbol": "QQQ"
+      },
+      "cagr": 0.432649,
+      "max_drawdown": 0.596197,
+      "sharpe": 0.995164,
+      "sortino": 1.385293,
+      "volatility": 0.47856,
+      "exposure": 0.784338,
+      "corr_tqqq": 0.721564,
+      "fills": 41,
+      "turnover": 140.790895,
+      "years": 7.984312,
+      "ending_equity": 1764697.056459
+    },
+    "ts_only": {
+      "params": {
+        "trend_n": 165,
+        "rv_short": 20,
+        "rv_long": 60,
+        "theta": 0.95,
+        "spike": 1000000000.0,
+        "trend_w": 0.0,
+        "signal_symbol": "QQQ"
+      },
+      "cagr": 0.445887,
+      "max_drawdown": 0.534344,
+      "sharpe": 1.234107,
+      "sortino": 1.777762,
+      "volatility": 0.349232,
+      "exposure": 0.464773,
+      "corr_tqqq": 0.530176,
+      "fills": 107,
+      "turnover": 595.903072,
+      "years": 7.984312,
+      "ending_equity": 1899169.062661
+    },
+    "trend_plus_spike": {
+      "params": {
+        "trend_n": 165,
+        "rv_short": 20,
+        "rv_long": 60,
+        "theta": 0.95,
+        "spike": 1.8,
+        "trend_w": 1.0,
+        "signal_symbol": "QQQ"
+      },
+      "cagr": 0.534576,
+      "max_drawdown": 0.482452,
+      "sharpe": 1.203177,
+      "sortino": 1.706491,
+      "volatility": 0.436499,
+      "exposure": 0.757421,
+      "corr_tqqq": 0.655231,
+      "fills": 63,
+      "turnover": 325.144636,
+      "years": 7.984312,
+      "ending_equity": 3054844.519036
+    },
+    "ts_plus_spike": {
+      "params": {
+        "trend_n": 165,
+        "rv_short": 20,
+        "rv_long": 60,
+        "theta": 0.95,
+        "spike": 1.8,
+        "trend_w": 0.0,
+        "signal_symbol": "QQQ"
+      },
+      "cagr": 0.445887,
+      "max_drawdown": 0.534344,
+      "sharpe": 1.234107,
+      "sortino": 1.777762,
+      "volatility": 0.349232,
+      "exposure": 0.464773,
+      "corr_tqqq": 0.530176,
+      "fills": 107,
+      "turnover": 595.903072,
+      "years": 7.984312,
+      "ending_equity": 1899169.062661
+    },
+    "blend_60_40": {
+      "params": {
+        "trend_n": 165,
+        "rv_short": 20,
+        "rv_long": 60,
+        "theta": 0.95,
+        "spike": 1.8,
+        "trend_w": 0.6,
+        "signal_symbol": "QQQ"
+      },
+      "cagr": 0.524522,
+      "max_drawdown": 0.360401,
+      "sharpe": 1.352347,
+      "sortino": 1.938316,
+      "volatility": 0.361127,
+      "exposure": 0.641508,
+      "corr_tqqq": 0.682369,
+      "fills": 288,
+      "turnover": 533.906541,
+      "years": 7.984312,
+      "ending_equity": 2898653.629235
+    },
+    "sma120": {
+      "params": {
+        "trend_n": 120,
+        "rv_short": 20,
+        "rv_long": 60,
+        "theta": 0.95,
+        "spike": 1.8,
+        "trend_w": 0.5,
+        "signal_symbol": "QQQ"
+      },
+      "cagr": 0.432018,
+      "max_drawdown": 0.462367,
+      "sharpe": 1.199628,
+      "sortino": 1.712848,
+      "volatility": 0.352066,
+      "exposure": 0.609584,
+      "corr_tqqq": 0.662505,
+      "fills": 302,
+      "turnover": 441.626295,
+      "years": 7.984312,
+      "ending_equity": 1758494.609623
+    },
+    "sma200": {
+      "params": {
+        "trend_n": 200,
+        "rv_short": 20,
+        "rv_long": 60,
+        "theta": 0.95,
+        "spike": 1.8,
+        "trend_w": 0.5,
+        "signal_symbol": "QQQ"
+      },
+      "cagr": 0.447379,
+      "max_drawdown": 0.468595,
+      "sharpe": 1.2305,
+      "sortino": 1.757391,
+      "volatility": 0.351889,
+      "exposure": 0.614945,
+      "corr_tqqq": 0.684023,
+      "fills": 314,
+      "turnover": 455.769447,
+      "years": 7.984312,
+      "ending_equity": 1914873.10891
+    },
+    "rv_10_60": {
+      "params": {
+        "trend_n": 165,
+        "rv_short": 10,
+        "rv_long": 60,
+        "theta": 0.95,
+        "spike": 1.8,
+        "trend_w": 0.5,
+        "signal_symbol": "QQQ"
+      },
+      "cagr": 0.377853,
+      "max_drawdown": 0.497768,
+      "sharpe": 1.060601,
+      "sortino": 1.504864,
+      "volatility": 0.366741,
+      "exposure": 0.658832,
+      "corr_tqqq": 0.70252,
+      "fills": 335,
+      "turnover": 551.529614,
+      "years": 7.984312,
+      "ending_equity": 1292525.067478
+    },
+    "rv_20_90": {
+      "params": {
+        "trend_n": 165,
+        "rv_short": 20,
+        "rv_long": 90,
+        "theta": 0.95,
+        "spike": 1.8,
+        "trend_w": 0.5,
+        "signal_symbol": "QQQ"
+      },
+      "cagr": 0.508855,
+      "max_drawdown": 0.365156,
+      "sharpe": 1.331312,
+      "sortino": 1.887018,
+      "volatility": 0.358358,
+      "exposure": 0.637814,
+      "corr_tqqq": 0.671658,
+      "fills": 273,
+      "turnover": 537.150638,
+      "years": 7.984312,
+      "ending_equity": 2669181.174941
+    },
+    "rv_30_60": {
+      "params": {
+        "trend_n": 165,
+        "rv_short": 30,
+        "rv_long": 60,
+        "theta": 0.95,
+        "spike": 1.8,
+        "trend_w": 0.5,
+        "signal_symbol": "QQQ"
+      },
+      "cagr": 0.484743,
+      "max_drawdown": 0.327769,
+      "sharpe": 1.365365,
+      "sortino": 1.943189,
+      "volatility": 0.330544,
+      "exposure": 0.5801,
+      "corr_tqqq": 0.666539,
+      "fills": 272,
+      "turnover": 470.747379,
+      "years": 7.984312,
+      "ending_equity": 2347018.411583
+    },
+    "tqqq_signal": {
+      "params": {
+        "trend_n": 165,
+        "rv_short": 20,
+        "rv_long": 60,
+        "theta": 0.95,
+        "spike": 1.8,
+        "trend_w": 0.5,
+        "signal_symbol": "TQQQ"
+      },
+      "cagr": 0.458094,
+      "max_drawdown": 0.345985,
+      "sharpe": 1.315827,
+      "sortino": 1.885104,
+      "volatility": 0.328667,
+      "exposure": 0.581383,
+      "corr_tqqq": 0.654094,
+      "fills": 309,
+      "turnover": 513.906708,
+      "years": 7.984312,
+      "ending_equity": 2031024.841682
+    }
+  },
+  "simple_rules": {
+    "vol_target_12": {
+      "cagr": 0.339871,
+      "max_drawdown": 0.519047,
+      "sharpe": 0.991428,
+      "sortino": 1.384749,
+      "volatility": 0.362658,
+      "exposure": 0.698501,
+      "corr_tqqq": 0.897924,
+      "fills": 802,
+      "turnover": 149.458401,
+      "years": 7.984312,
+      "ending_equity": 1033975.559845
+    },
+    "vol_target_14": {
+      "cagr": 0.371826,
+      "max_drawdown": 0.574333,
+      "sharpe": 0.987414,
+      "sortino": 1.383243,
+      "volatility": 0.404272,
+      "exposure": 0.76501,
+      "corr_tqqq": 0.913007,
+      "fills": 721,
+      "turnover": 163.736765,
+      "years": 7.984312,
+      "ending_equity": 1248066.485599
+    },
+    "vol_target_16": {
+      "cagr": 0.390635,
+      "max_drawdown": 0.625533,
+      "sharpe": 0.972105,
+      "sortino": 1.364812,
+      "volatility": 0.440433,
+      "exposure": 0.81613,
+      "corr_tqqq": 0.925936,
+      "fills": 641,
+      "turnover": 155.267078,
+      "years": 7.984312,
+      "ending_equity": 1391417.210922
+    },
+    "vol_level_rv20_lt_20": {
+      "cagr": 0.34508,
+      "max_drawdown": 0.363329,
+      "sharpe": 1.04213,
+      "sortino": 1.450572,
+      "volatility": 0.341698,
+      "exposure": 0.60402,
+      "corr_tqqq": 0.508474,
+      "fills": 43,
+      "turnover": 181.173779,
+      "years": 7.984312,
+      "ending_equity": 1066508.112725
+    },
+    "vol_level_rv20_lt_22": {
+      "cagr": 0.409106,
+      "max_drawdown": 0.437697,
+      "sharpe": 1.111649,
+      "sortino": 1.559905,
+      "volatility": 0.372018,
+      "exposure": 0.661382,
+      "corr_tqqq": 0.557015,
+      "fills": 47,
+      "turnover": 192.588928,
+      "years": 7.984312,
+      "ending_equity": 1546011.579955
+    },
+    "vol_level_rv60_lt_25": {
+      "cagr": 0.413356,
+      "max_drawdown": 0.473359,
+      "sharpe": 0.995145,
+      "sortino": 1.395779,
+      "volatility": 0.451746,
+      "exposure": 0.746102,
+      "corr_tqqq": 0.669878,
+      "fills": 21,
+      "turnover": 84.514758,
+      "years": 7.984312,
+      "ending_equity": 1583637.613666
+    },
+    "trend165": {
+      "cagr": 0.432649,
+      "max_drawdown": 0.596197,
+      "sharpe": 0.995164,
+      "sortino": 1.385293,
+      "volatility": 0.47856,
+      "exposure": 0.784338,
+      "corr_tqqq": 0.721564,
+      "fills": 41,
+      "turnover": 140.790895,
+      "years": 7.984312,
+      "ending_equity": 1764697.056459
+    },
+    "ts_gate_only": {
+      "cagr": 0.445887,
+      "max_drawdown": 0.534344,
+      "sharpe": 1.234107,
+      "sortino": 1.777762,
+      "volatility": 0.349232,
+      "exposure": 0.464773,
+      "corr_tqqq": 0.530176,
+      "fills": 107,
+      "turnover": 595.903072,
+      "years": 7.984312,
+      "ending_equity": 1899169.062661
+    },
+    "blend_with_vol_level": {
+      "cagr": 0.441274,
+      "max_drawdown": 0.407158,
+      "sharpe": 1.12833,
+      "sortino": 1.57764,
+      "volatility": 0.39417,
+      "exposure": 0.723234,
+      "corr_tqqq": 0.698843,
+      "fills": 182,
+      "turnover": 184.050715,
+      "years": 7.984312,
+      "ending_equity": 1851326.089128
+    },
+    "blend_with_vol_level_spike": {
+      "cagr": 0.471932,
+      "max_drawdown": 0.398035,
+      "sharpe": 1.222213,
+      "sortino": 1.717785,
+      "volatility": 0.375097,
+      "exposure": 0.701261,
+      "corr_tqqq": 0.63961,
+      "fills": 170,
+      "turnover": 270.261984,
+      "years": 7.984312,
+      "ending_equity": 2190117.673495
+    }
+  },
+  "bil_idle": {
+    "cagr": 0.522292,
+    "max_drawdown": 0.372798,
+    "sharpe": 1.380944,
+    "sortino": 1.984375,
+    "volatility": 0.349609,
+    "exposure": 0.999999,
+    "corr_tqqq": 0.675526,
+    "fills": 585,
+    "turnover": 1150.013076,
+    "years": 7.984312,
+    "ending_equity": 2864973.677698
+  },
+  "subperiods": {
+    "2016_2019": {
+      "cagr": 0.314664,
+      "max_drawdown": 0.297755,
+      "sharpe": 1.085294,
+      "sortino": 1.538984,
+      "volatility": 0.292546,
+      "exposure": 0.652037,
+      "corr_tqqq": 0.744123,
+      "fills": 129,
+      "turnover": 74.272098,
+      "years": 3.98705,
+      "ending_equity": 297660.358627
+    },
+    "2020_2023": {
+      "cagr": 0.74112,
+      "max_drawdown": 0.378972,
+      "sharpe": 1.595008,
+      "sortino": 2.307359,
+      "volatility": 0.398203,
+      "exposure": 0.571198,
+      "corr_tqqq": 0.647452,
+      "fills": 165,
+      "turnover": 160.519799,
+      "years": 3.98705,
+      "ending_equity": 912423.385856
+    },
+    "2016_2020": {
+      "cagr": 0.547175,
+      "max_drawdown": 0.332189,
+      "sharpe": 1.437426,
+      "sortino": 2.075536,
+      "volatility": 0.346425,
+      "exposure": 0.648527,
+      "corr_tqqq": 0.665105,
+      "fills": 176,
+      "turnover": 147.063855,
+      "years": 4.989104,
+      "ending_equity": 882331.483476
+    },
+    "2021_2023": {
+      "cagr": 0.465917,
+      "max_drawdown": 0.378972,
+      "sharpe": 1.256396,
+      "sortino": 1.791215,
+      "volatility": 0.354782,
+      "exposure": 0.549911,
+      "corr_tqqq": 0.692418,
+      "fills": 118,
+      "turnover": 47.531972,
+      "years": 2.979521,
+      "ending_equity": 312555.256992
+    }
+  },
+  "cuts": {
+    "drop_2016": {
+      "strategy": 0.602858,
+      "benchmark": 0.386622,
+      "days": 1760
+    },
+    "drop_2017": {
+      "strategy": 0.493076,
+      "benchmark": 0.270637,
+      "days": 1760
+    },
+    "drop_2018": {
+      "strategy": 0.586455,
+      "benchmark": 0.466001,
+      "days": 1760
+    },
+    "drop_2019": {
+      "strategy": 0.508301,
+      "benchmark": 0.258958,
+      "days": 1759
+    },
+    "drop_2020": {
+      "strategy": 0.37734,
+      "benchmark": 0.278443,
+      "days": 1758
+    },
+    "drop_2021": {
+      "strategy": 0.477067,
+      "benchmark": 0.303403,
+      "days": 1759
+    },
+    "drop_2022": {
+      "strategy": 0.694058,
+      "benchmark": 0.777546,
+      "days": 1760
+    },
+    "drop_2023": {
+      "strategy": 0.413993,
+      "benchmark": 0.214948,
+      "days": 1761
+    },
+    "drop_best_10_days": {
+      "strategy": 0.352911,
+      "benchmark": 0.213634,
+      "n_days": 10
+    },
+    "drop_best_20_days": {
+      "strategy": 0.245957,
+      "benchmark": 0.116504,
+      "n_days": 20
+    }
+  },
+  "placebo": {
+    "block_shuffle_20d": {
+      "draws": 200,
+      "actual_cagr": 0.518396,
+      "actual_dd": 0.357884,
+      "actual_sharpe": 1.34872,
+      "actual_exposure": 0.612189,
+      "cagr_pct_rank": 1.0,
+      "cagr_mean": 0.233738,
+      "cagr_p05": 0.066316,
+      "cagr_p50": 0.231571,
+      "cagr_p95": 0.432139,
+      "dd_median": 0.685695,
+      "sharpe_median": 0.6792,
+      "exposure_mean": 0.612981
+    },
+    "ts_component_shift": {
+      "draws": 200,
+      "actual_cagr": 0.518396,
+      "cagr_pct_rank": 0.995,
+      "cagr_mean": 0.302532,
+      "cagr_p05": 0.177232,
+      "cagr_p50": 0.302158,
+      "cagr_p95": 0.417428,
+      "dd_median": 0.551475,
+      "sharpe_median": 0.861656
+    }
+  },
+  "lag_diagnostic": {
+    "lag_0": {
+      "cagr": 0.518396,
+      "max_drawdown": 0.357884,
+      "sharpe": 1.34872,
+      "sortino": 1.945184,
+      "volatility": 0.357844,
+      "exposure": 0.612189,
+      "corr_tqqq": 0.67543,
+      "fills": 244,
+      "turnover": 564.775268,
+      "years": 7.983573,
+      "ending_equity": 2806090.021972
+    },
+    "lag_1": {
+      "cagr": 0.47799,
+      "max_drawdown": 0.339817,
+      "sharpe": 1.259069,
+      "sortino": 1.804416,
+      "volatility": 0.36357,
+      "exposure": 0.611477,
+      "corr_tqqq": 0.680593,
+      "fills": 248,
+      "turnover": 469.894419,
+      "years": 7.983573,
+      "ending_equity": 2262484.656935
+    },
+    "lag_2": {
+      "cagr": 0.432961,
+      "max_drawdown": 0.457189,
+      "sharpe": 1.173419,
+      "sortino": 1.66995,
+      "volatility": 0.363803,
+      "exposure": 0.610793,
+      "corr_tqqq": 0.680576,
+      "fills": 243,
+      "turnover": 493.686646,
+      "years": 7.983573,
+      "ending_equity": 1767293.64879
+    },
+    "lag_3": {
+      "cagr": 0.336213,
+      "max_drawdown": 0.465508,
+      "sharpe": 0.973744,
+      "sortino": 1.361414,
+      "volatility": 0.368347,
+      "exposure": 0.610703,
+      "corr_tqqq": 0.680273,
+      "fills": 244,
+      "turnover": 307.269727,
+      "years": 7.983573,
+      "ending_equity": 1011433.92846
+    },
+    "lag_5": {
+      "cagr": 0.530366,
+      "max_drawdown": 0.391171,
+      "sharpe": 1.330217,
+      "sortino": 1.9156,
+      "volatility": 0.372946,
+      "exposure": 0.609487,
+      "corr_tqqq": 0.698138,
+      "fills": 254,
+      "turnover": 590.381031,
+      "years": 7.983573,
+      "ending_equity": 2987624.852678
+    }
+  },
+  "concentration": {
+    "top10_log_share_of_total": 0.273625,
+    "best_day": 0.132686,
+    "worst_day": -0.153987,
+    "positive_day_fraction": 0.477872
+  }
+}

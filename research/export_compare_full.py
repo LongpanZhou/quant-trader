@@ -1,4 +1,4 @@
-"""Uniform 2016-2026 All-strategies data: 27 strategies + 2 benchmarks."""
+"""Uniform 2016-2026 All-strategies data: existing + verified new strategies."""
 from __future__ import annotations
 
 import json
@@ -11,6 +11,10 @@ import pandas as pd
 ROOT = Path(r"C:\Users\27175\Desktop\quant-trader-research")
 HERE = ROOT / "research" / "revisit"
 CURVES = HERE / "curves_full"
+NEW = ROOT / "research" / "new"
+NEW_CURVES = NEW / "curves"
+META = json.loads((NEW / "META.json").read_text(encoding="utf-8"))
+VISIBLE = [s for s in META["strategies"] if s.get("visible", True)]
 OUT = ROOT / "web" / "public" / "data" / "compare" / "all.json"
 START, END = "2016-01-04", "2026-10-23"
 
@@ -48,8 +52,12 @@ PALETTE = [
     "#f87171", "#fb923c", "#facc15", "#a3e635", "#34d399", "#22d3ee",
     "#818cf8", "#c084fc", "#f59e0b", "#84cc16", "#14b8a6", "#38bdf8",
     "#a78bfa", "#e879f9", "#fca5a5", "#fdba74", "#fde047", "#bef264",
-    "#6ee7b7", "#d8b4fe", "#fda4af",
+    "#6ee7b7", "#d8b4fe", "#fda4af", "#7dd3fc", "#f9a8d4", "#fcd34d",
+    "#86efac", "#c7d2fe", "#fca5a5", "#f0abfc", "#a5b4fc", "#fde68a",
+    "#99f6e4", "#fecaca", "#ddd6fe", "#bbf7d0",
 ]
+for _s in VISIBLE:
+    NAMES[_s["slug"]] = _s["name"]
 
 
 def stats(values: pd.Series) -> dict:
@@ -68,6 +76,14 @@ def stats(values: pd.Series) -> dict:
 def main():
     curves = {}
     for path in sorted(CURVES.glob("*.json")):
+        payload = json.loads(path.read_text())
+        curves[payload["slug"]] = pd.Series(
+            payload["values"], index=pd.to_datetime(payload["dates"])
+        )
+    for s in VISIBLE:
+        path = NEW_CURVES / f"{s['slug']}.json"
+        if not path.exists():
+            raise SystemExit(f"missing verified new curve: {path}")
         payload = json.loads(path.read_text())
         curves[payload["slug"]] = pd.Series(
             payload["values"], index=pd.to_datetime(payload["dates"])

@@ -1,0 +1,107 @@
+{
+ "generated": "2026-11-27",
+ "window": "2016-2026",
+ "strategies": [
+  {
+   "slug": "fast-trend-vol",
+   "name": "Fast trend + vol target",
+   "tagline": "A 20/50-session QQQ trend gate on TQQQ, sized to an 85% volatility budget with a fast crash brake.",
+   "summary": "Holds TQQQ while the fast trend is up, scales the sleeve inversely to realised TQQQ volatility, and exits on a 2.5% intraday stop with a five-session cooldown. The full-window edge is trend and crash timing; the 2019 range-bound bull was a severe whipsaw.",
+   "verdict": "Verified - trend/vol timing",
+   "reason": "Passes the full-window CAGR and drawdown bar, 8/8 grid cells, zero pre-cut weight drift. The pass is carried by 2020 and 2023 and by avoiding 2022; 2019 lost to TQQQ on both return and drawdown.",
+   "family": "trend-vol",
+   "visible": true
+  },
+  {
+   "slug": "vol-of-vol-timing",
+   "name": "Vol-of-vol risk timing",
+   "tagline": "Uses the volatility of volatility to decide when 3x exposure is being repriced, with a slow vol ladder and a V-recovery add.",
+   "summary": "Combines Parkinson range volatility, a vol-of-vol risk state and a 20-day level ladder to cut TQQQ before sustained high-vol regimes and add back on stabilisation. The CAGR edge is essentially a 2022 crash-avoidance bet, not a broad timing premium.",
+   "verdict": "Verified - risk-state timing",
+   "reason": "Passes the full-window bar and the causality audit, but 2022 contributes about 200% of net log excess; excluding it the strategy trails TQQQ. A risk-managed beta, not a tail hedge.",
+   "family": "vol-crash",
+   "visible": false
+  },
+  {
+   "slug": "crash-early-warning",
+   "name": "Crash early-warning",
+   "tagline": "A composite of volatility, drawdown and gap signals that de-risks before a large TQQQ drawdown and re-enters on a 10-day high.",
+   "summary": "Moves to cash when a vol/drawdown/gap composite turns defensive, then re-enters after a 10-session high. It avoids a large part of the 2020 crash; the return edge is concentrated there, while choppy bears such as 2018 produce false alarms.",
+   "verdict": "Verified - crash avoidance",
+   "reason": "Full-window CAGR and drawdown pass with zero pre-cut drift. Ex-2020 the strategy has a similar Sharpe to TQQQ with about 29 pp less drawdown, so the CAGR edge is a crash-hedge payoff rather than broad alpha.",
+   "family": "vol-crash",
+   "visible": false
+  },
+  {
+   "slug": "ml-regime-v2",
+   "name": "Walk-forward ML regime",
+   "tagline": "A quarterly walk-forward logistic model of TQQQ path-drawdown risk, gated by momentum.",
+   "summary": "Refits a logistic classifier every quarter on past data to estimate the probability of a >15% TQQQ drawdown, then holds TQQQ only when momentum is positive and model risk is low. The ML adds little over a simple 5-day volatility rule; the result is trend and vol timing.",
+   "verdict": "Verified - trend/vol timing",
+   "reason": "Passes the full-window bar and causality audit. A simple rv5<0.60 rule matches its decisions 91% of the time, 2016 is spent in cash during warm-up, and the holdout is largely risk-off; do not present it as an ML edge.",
+   "family": "vol-crash",
+   "visible": false
+  },
+  {
+   "slug": "relative-value-tqqq",
+   "name": "TQQQ/QQQ relative value",
+   "tagline": "Holds TQQQ while the TQQQ/QQQ ratio momentum is intact, and falls back to QQQ when leverage is being repriced.",
+   "summary": "Uses ratio momentum and QQQ realised volatility to decide whether 3x compounding is being paid for, holding TQQQ in strong regimes and unlevered QQQ otherwise. The ratio signal is almost entirely explained by QQQ trend and variance.",
+   "verdict": "Verified - variance-adjusted beta timing",
+   "reason": "Passes the full-window bar and causality audit. The ratio momentum is 99.7% explained by QQQ trend and variance, and 2022 is worse than QQQ; it is a leverage-cycle meter, not independent alpha.",
+   "family": "relative",
+   "visible": true
+  },
+  {
+   "slug": "ema-ribbon-trend",
+   "name": "EMA ribbon trend",
+   "tagline": "A 20/50/100 EMA ribbon with a 0.5% hysteresis band, holding TQQQ in confirmed uptrends and QQQ in ordinary pullbacks.",
+   "summary": "Enters TQQQ when the EMA stack is aligned, exits only after a 0.5% cross to avoid whipsaw, holds QQQ when the stack is off but QQQ is above its 100-day EMA, and sizes to an 85% vol target. The hysteresis is worth about 10 pp of CAGR; without it the strategy is below the bar.",
+   "verdict": "Verified - trend/vol timing",
+   "reason": "Passes the full-window bar and causality audit with all 8 grid cells. The raw ribbon earns 36.40% dev, below the bar, so the result depends on the 0.5% buffer; 2022-2023 is weak and 2/30 shuffled placebos beat its CAGR.",
+   "family": "trend-vol",
+   "visible": false
+  },
+  {
+   "slug": "drawdown-recovery-v2",
+   "name": "Deep-drawdown recovery",
+   "tagline": "Buys TQQQ after deep capitulation drawdowns with a two-speed re-entry, and holds cash between episodes.",
+   "summary": "Waits for a deep TQQQ drawdown, enters on a stabilisation signal, adds on a faster recovery trigger, and exits back to cash when the rebound matures. The pass rests on three macro episodes - 2018Q4, 2020Q1 and 2022 - not a large sample.",
+   "verdict": "Verified - event-driven recovery",
+   "reason": "Full-window CAGR and drawdown pass and the causality audit is exact. Only three major crash episodes drive the edge; 7/11 and 9/13 grid cells clear the bar, and the result is fragile to the next bear's shape.",
+   "family": "event",
+   "visible": true
+  },
+  {
+   "slug": "vol-term-structure",
+   "name": "Volatility term structure",
+   "tagline": "Splits TQQQ exposure between a 165-day trend sleeve and a RV20/RV60 term-structure sleeve, with an acute-spike kill switch.",
+   "summary": "Holds half the book on the QQQ trend and half on a calm term structure (short vol below long vol), drops to cash when short/long vol spikes, and sizes the remainder to the regime. The term structure buys drawdown and Sharpe, not raw CAGR over a simpler trend+spike rule.",
+   "verdict": "Verified - trend/vol timing",
+   "reason": "Passes the full-window bar and causality audit. All 8 grid cells pass, but a 3-session execution delay drops dev CAGR to 33.6%; the edge is crash avoidance concentrated in 2020, and a simpler trend+spike sibling earns more raw CAGR.",
+   "family": "vol-crash",
+   "visible": true
+  },
+  {
+   "slug": "qqq-spy-relative",
+   "name": "QQQ/SPY relative ladder",
+   "tagline": "A four-state leverage ladder driven by QQQ/SPY relative momentum and the QQQ 150-day trend.",
+   "summary": "Moves between 3x TQQQ, a 2x TQQQ/QQQ blend, 1x QQQ and cash as Nasdaq leadership and trend change, capping the TQQQ sleeve by realised vol. The relative gate adds only 0.019 Sharpe over the absolute-only ladder; the pass is a 2022 crash-avoidance bet.",
+   "verdict": "Verified - relative-beta ladder",
+   "reason": "Passes the full-window bar and causality audit, with 7/8 grid cells and a placebo p=0.045. Replacing 2022 with TQQQ drops CAGR to 22.8%, so the edge is one bear market, not a steady relative-value premium.",
+   "family": "relative",
+   "visible": false
+  },
+  {
+   "slug": "tqqq-52week-high",
+   "name": "52-week-high trend",
+   "tagline": "Holds TQQQ while QQQ is within 8% of its 52-week high and above its 20-day average, exiting on a 20-day low or a 10% drawdown.",
+   "summary": "A 52-week-high proximity gate with a 20-day trend confirmation, a 20-day closing-low exit, a -10% drawdown stop and an 85% vol target. The high-proximity gate is the largest contributor; 6/8 grid cells pass, but the 8-11% entry band is a ridge and 2023 lags badly.",
+   "verdict": "Verified - 52-week-high trend",
+   "reason": "Full-window CAGR and drawdown pass the audit, with exact pre-cut weights. 6/8 grid cells pass, the base is the highest-CAGR cell, and removing the 52-week gate drops dev CAGR to 32.41%; 2023 is +63.8% vs TQQQ +204.9%.",
+   "family": "trend-vol",
+   "visible": false
+  }
+ ],
+ "visibility_note": "Website shows the best full-window CAGR per family. The other verified strategies remain on disk and can be restored by setting visible=true."
+}

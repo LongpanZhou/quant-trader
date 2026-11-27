@@ -5,5 +5,7 @@ config.local.toml
 __pycache__/
 *.pyc
 *.npz
+*.log
+*.pkl
 
 /research/simcore/target/

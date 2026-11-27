@@ -11,10 +11,12 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 REVISIT = ROOT / "research" / "revisit"
+NEW = ROOT / "research" / "new"
 WEB = ROOT / "web"
 INDEX = WEB / "public" / "data" / "research" / "rebuild.json"
 AUDIT = REVISIT / "WHY_UNDERPERFORM.md"
 OUT = WEB / "public" / "data" / "research"
+META = {s["slug"]: s for s in json.loads((NEW / "META.json").read_text(encoding="utf-8"))["strategies"]}
 
 URL_RE = re.compile(r"<?(https?://[^\s>)]+)>?")
 
@@ -296,7 +298,12 @@ def main() -> None:
 
     for row in index["strategies"]:
         slug = row["slug"]
-        base = (ROOT / "research" / "agents2" / "ratio-pairs") if slug == "ratio-froth" else (REVISIT / slug)
+        if slug in META:
+            base = NEW / slug
+        elif slug == "ratio-froth":
+            base = ROOT / "research" / "agents2" / "ratio-pairs"
+        else:
+            base = REVISIT / slug
 
         report_path = first(base / "report.md")
         hyp_path = first(base / "HYPOTHESIS.md", base / "hypothesis.md")
@@ -320,13 +327,27 @@ def main() -> None:
             hypothesis_md = extract_section(report_md, ("hypothesis", "idea"))
             extracted["hypothesis"] = bool(hypothesis_md)
         if not spec_md:
-            spec_md = extract_section(report_md, ("spec", "rules", "signal", "universe"))
+            spec_md = extract_section(report_md, ("spec", "rules", "signal", "universe",
+                                                  "what the strategy does", "what it trades",
+                                                  "what the strategy is", "mechanism",
+                                                  "exact rules"))
+            if not spec_md and slug in META:
+                spec_md = extract_section(hypothesis_md, ("exact rules", "rules", "mechanism",
+                                                           "exact primary rule", "primary rule"))
             extracted["spec"] = bool(spec_md)
         if not provenance_md:
             provenance_md = extract_section(
                 report_md,
-                ("provenance", "sources", "evidence", "papers", "literature"),
+                ("provenance", "sources", "evidence", "papers", "literature",
+                 "relationship", "differs", "existing work"),
             )
+            if not provenance_md and slug in META:
+                provenance_md = (
+                    "## Own test\n\n"
+                    "- **quant-trader research program** - Pre-registered development test "
+                    "on 2016-2023 and a one-shot 2024-2026 holdout; implementation and "
+                    "results are in `report.md` and `strategy.py`."
+                )
             extracted["provenance"] = bool(provenance_md)
 
         cards, rejected = parse_bullets(provenance_md)
@@ -348,8 +369,13 @@ def main() -> None:
 
         rules = parse_rules(spec_md)
         decision = (
+            META[slug]["summary"] if slug in META else
             first_paragraph(extract_section(report_md, ("idea", "hypothesis")))
             or row.get("summary", "")
+        )
+        assessment = (
+            {"verdict": META[slug]["verdict"], "reason": META[slug]["reason"]}
+            if slug in META else assessments.get(slug, {})
         )
 
         code = read(code_path)
@@ -366,7 +392,7 @@ def main() -> None:
                 "dd": row.get("dd"),
                 "sharpe": row.get("sharpe"),
             },
-            "assessment": assessments.get(slug, {}),
+            "assessment": assessment,
             "paths": {
                 "report": rel(report_path),
                 "hypothesis": rel(hyp_path),

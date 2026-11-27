@@ -21,7 +21,7 @@ export default function Page() {
                 <span className="text-emerald-200">library.</span>
               </h1>
               <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-zinc-400">
-                One catalog: three editable Rust presets and 27 strategies on the same
+                One catalog: three editable Rust presets and 31 strategies on the same
                 2016-2026 window. Open a preset to run and edit it, or open the all-strategies
                 view to compare every strategy.
               </p>
@@ -29,12 +29,12 @@ export default function Page() {
             <div className="flex flex-col gap-3 lg:items-end">
               <div className="flex items-center gap-2 text-[11px] text-zinc-500">
                 <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-300" />
-                Research data through Nov 26, 2026
+                Research data through Nov 27, 2026
               </div>
               <div className="flex flex-wrap gap-2 lg:justify-end">
-                <Pill>30 strategies</Pill>
+                <Pill>34 strategies</Pill>
                 <Pill>3 runnable</Pill>
-                <Pill>27 research</Pill>
+                <Pill>31 research</Pill>
                 <Pill>1 bp costs</Pill>
               </div>
               <div className="flex flex-wrap gap-2 lg:justify-end">

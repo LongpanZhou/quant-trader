@@ -127,7 +127,7 @@ export function ResearchLabBrowser({
               <h2 className="mt-1 text-lg font-semibold text-zinc-100">{selected.name}</h2>
             </div>
             <a href="/research" className="text-[10px] text-zinc-500 transition hover:text-zinc-200">
-              Browse all 29 →
+              Browse all 31 →
             </a>
           </div>
           <p className="mt-2 text-[13px] leading-relaxed text-zinc-300">{selected.tagline}</p>

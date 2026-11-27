@@ -42,7 +42,7 @@ export function ResearchHighlights() {
         <div>
           <div className="eyebrow">Research library</div>
           <h2 className="display text-2xl font-semibold text-zinc-100 sm:text-[1.7rem]">
-            All 29 research strategies
+            All 31 research strategies
           </h2>
           <p className="mt-1 max-w-2xl text-[12px] text-zinc-500">
             Every agent result, not just the three runnable portals. Each card opens its rules,
@@ -53,7 +53,7 @@ export function ResearchHighlights() {
           href="/research"
           className="rounded-full border border-white/10 px-3 py-1.5 text-[10px] uppercase tracking-[0.12em] text-zinc-400 transition hover:border-white/20 hover:text-zinc-100"
         >
-          Browse all 29 →
+          Browse all 31 →
         </a>
       </div>
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">

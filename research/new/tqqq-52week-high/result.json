@@ -1,0 +1,1383 @@
+{
+  "agent": "tqqq-52week-high",
+  "status": "dev_pass",
+  "window": {
+    "start": "2016-01-04",
+    "end": "2023-12-29",
+    "sessions": 2012,
+    "marks": "1-minute-derived daily",
+    "fills": "next-open",
+    "band": 0.02
+  },
+  "verdict": {
+    "bar_cagr": 0.3672,
+    "bar_max_drawdown": 0.8229,
+    "bar_sharpe": 0.82,
+    "passes_bar": true,
+    "meets_dd_target_60": true,
+    "cagr_minus_bar_pp": 6.579041867262009
+  },
+  "params": {
+    "entry_dist": 0.08,
+    "entry_confirm": 1,
+    "exit_dd": 0.1,
+    "dd_confirm": 2,
+    "low_n": 20,
+    "low_source": "close",
+    "low_buf": 0.0,
+    "low_confirm": 1,
+    "trend_n": 20,
+    "high_n": 252,
+    "high_source": "high",
+    "target_vol": 0.85,
+    "vol_window": 20,
+    "signal_base": "QQQ",
+    "use_trend": true
+  },
+  "event_counts": {
+    "entries": 25,
+    "exits_dd": 2,
+    "exits_low": 22
+  },
+  "primary": {
+    "1bp": {
+      "cagr": 0.4329904186726201,
+      "total_return": 16.675823976719883,
+      "max_drawdown": 0.3742362319700786,
+      "volatility": 0.36257408695473115,
+      "sharpe": 1.1772484173949875,
+      "sortino": 1.6330190412883905,
+      "years": 7.983572895277208,
+      "exposure": 0.9995029821073559,
+      "tqqq_exposure": 0.6495236218028352,
+      "time_in_tqqq": 0.6530815109343936,
+      "fills": 151,
+      "turnover": 625.3679493881785,
+      "corr_tqqq": 0.5373816992792446,
+      "ending_equity": 1767582.3976719885,
+      "yearly": {
+        "2016": 0.1459399584583445,
+        "2017": 1.0622675006841127,
+        "2018": 0.027674062109953157,
+        "2019": 0.5196170666106246,
+        "2020": 1.0363980699853959,
+        "2021": 0.5672682224726158,
+        "2022": -0.1807000753630411,
+        "2023": 0.6378090830064931
+      },
+      "max_dd_peak": "2020-09-02 00:00:00-04:00",
+      "max_dd_trough": "2020-11-10 00:00:00-05:00",
+      "worst_days": {
+        "2020-09-03": -0.15398703942694011,
+        "2020-06-11": -0.14790454083614166,
+        "2020-09-08": -0.14213176029702318,
+        "2016-06-24": -0.1217184520920249,
+        "2018-02-05": -0.11702915434487574
+      }
+    },
+    "5bp": {
+      "cagr": 0.425885625404403,
+      "total_return": 15.988160731584333,
+      "max_drawdown": 0.3762791747422759,
+      "volatility": 0.36256661210650465,
+      "sharpe": 1.163534379418989,
+      "sortino": 1.6130700137310565,
+      "years": 7.983572895277208,
+      "exposure": 0.9995029821073559,
+      "tqqq_exposure": 0.6495236218028352,
+      "time_in_tqqq": 0.6530815109343936,
+      "fills": 151,
+      "turnover": 607.9006059841759,
+      "corr_tqqq": 0.5373399578961277,
+      "ending_equity": 1698816.0731584334,
+      "yearly": {
+        "2016": 0.1372639614176463,
+        "2017": 1.058970510637725,
+        "2018": 0.02214425095326633,
+        "2019": 0.5111309933427906,
+        "2020": 1.0262051881891807,
+        "2021": 0.5546744882538115,
+        "2022": -0.18135525326434887,
+        "2023": 0.6286629841750835
+      },
+      "max_dd_peak": "2020-09-02 00:00:00-04:00",
+      "max_dd_trough": "2020-11-10 00:00:00-05:00",
+      "worst_days": {
+        "2020-09-03": -0.15398703942694011,
+        "2020-06-11": -0.14790454083614166,
+        "2020-09-08": -0.14213176029702318,
+        "2016-06-24": -0.12171845209202481,
+        "2018-02-05": -0.11702915434487571
+      }
+    },
+    "10bp": {
+      "cagr": 0.41705443440203016,
+      "total_return": 15.166106115349358,
+      "max_drawdown": 0.3794608186001154,
+      "volatility": 0.3625715364678751,
+      "sharpe": 1.1463611119594777,
+      "sortino": 1.588132379488337,
+      "years": 7.983572895277208,
+      "exposure": 0.9995029821073559,
+      "tqqq_exposure": 0.6495236218028352,
+      "time_in_tqqq": 0.6530815109343936,
+      "fills": 151,
+      "turnover": 586.8156512569063,
+      "corr_tqqq": 0.5372667251990627,
+      "ending_equity": 1616610.6115349357,
+      "yearly": {
+        "2016": 0.1265115268946404,
+        "2017": 1.0548566824162142,
+        "2018": 0.01527408944963149,
+        "2019": 0.5005900067359577,
+        "2020": 1.0135371009434424,
+        "2021": 0.5390752622209942,
+        "2022": -0.1821734893021838,
+        "2023": 0.6173021459824541
+      },
+      "max_dd_peak": "2021-11-19 00:00:00-05:00",
+      "max_dd_trough": "2023-04-25 00:00:00-04:00",
+      "worst_days": {
+        "2020-09-03": -0.15398703942694006,
+        "2020-06-11": -0.14790454083614166,
+        "2020-09-08": -0.14213176029702307,
+        "2016-06-24": -0.12171845209202498,
+        "2018-02-05": -0.11702915434487568
+      }
+    }
+  },
+  "grid": {
+    "base": {
+      "params": {
+        "entry_dist": 0.08,
+        "entry_confirm": 1,
+        "exit_dd": 0.1,
+        "dd_confirm": 2,
+        "low_n": 20,
+        "low_source": "close",
+        "low_buf": 0.0,
+        "low_confirm": 1,
+        "trend_n": 20,
+        "high_n": 252,
+        "high_source": "high",
+        "target_vol": 0.85,
+        "vol_window": 20,
+        "signal_base": "QQQ",
+        "use_trend": true
+      },
+      "cagr": 0.4329904186726201,
+      "max_drawdown": 0.3742362319700786,
+      "sharpe": 1.1772484173949875,
+      "tqqq_exposure": 0.6495236218028352,
+      "time_in_tqqq": 0.6530815109343936,
+      "fills": 151,
+      "yearly": {
+        "2016": 0.1459399584583445,
+        "2017": 1.0622675006841127,
+        "2018": 0.027674062109953157,
+        "2019": 0.5196170666106246,
+        "2020": 1.0363980699853959,
+        "2021": 0.5672682224726158,
+        "2022": -0.1807000753630411,
+        "2023": 0.6378090830064931
+      }
+    },
+    "entry_5": {
+      "params": {
+        "entry_dist": 0.05,
+        "entry_confirm": 1,
+        "exit_dd": 0.1,
+        "dd_confirm": 2,
+        "low_n": 20,
+        "low_source": "close",
+        "low_buf": 0.0,
+        "low_confirm": 1,
+        "trend_n": 20,
+        "high_n": 252,
+        "high_source": "high",
+        "target_vol": 0.85,
+        "vol_window": 20,
+        "signal_base": "QQQ",
+        "use_trend": true
+      },
+      "cagr": 0.3112654098973999,
+      "max_drawdown": 0.4860902509024829,
+      "sharpe": 0.953922654906225,
+      "tqqq_exposure": 0.6119238874511174,
+      "time_in_tqqq": 0.6138170974155069,
+      "fills": 130,
+      "yearly": {
+        "2016": -0.11904941979815509,
+        "2017": 1.0622675006841131,
+        "2018": 0.09281958057504025,
+        "2019": 0.3243155154138355,
+        "2020": 0.5280862853941926,
+        "2021": 0.6265295536728244,
+        "2022": -0.18070007536304133,
+        "2023": 0.45321957720282224
+      }
+    },
+    "entry_10": {
+      "params": {
+        "entry_dist": 0.1,
+        "entry_confirm": 1,
+        "exit_dd": 0.1,
+        "dd_confirm": 2,
+        "low_n": 20,
+        "low_source": "close",
+        "low_buf": 0.0,
+        "low_confirm": 1,
+        "trend_n": 20,
+        "high_n": 252,
+        "high_source": "high",
+        "target_vol": 0.85,
+        "vol_window": 20,
+        "signal_base": "QQQ",
+        "use_trend": true
+      },
+      "cagr": 0.3700360151358957,
+      "max_drawdown": 0.48061212905515827,
+      "sharpe": 1.034564159519033,
+      "tqqq_exposure": 0.6677646467991141,
+      "time_in_tqqq": 0.672962226640159,
+      "fills": 185,
+      "yearly": {
+        "2016": 0.07566732595138714,
+        "2017": 1.0622675006841127,
+        "2018": -0.10197208750699571,
+        "2019": 0.5834075095577016,
+        "2020": 1.010256452905966,
+        "2021": 0.5672682224726158,
+        "2022": -0.31787796547529634,
+        "2023": 0.6288321182515244
+      }
+    },
+    "exit_dd_8": {
+      "params": {
+        "entry_dist": 0.08,
+        "entry_confirm": 1,
+        "exit_dd": 0.08,
+        "dd_confirm": 2,
+        "low_n": 20,
+        "low_source": "close",
+        "low_buf": 0.0,
+        "low_confirm": 1,
+        "trend_n": 20,
+        "high_n": 252,
+        "high_source": "high",
+        "target_vol": 0.85,
+        "vol_window": 20,
+        "signal_base": "QQQ",
+        "use_trend": true
+      },
+      "cagr": 0.41904370652456735,
+      "max_drawdown": 0.36445563439980055,
+      "sharpe": 1.1601353105418009,
+      "tqqq_exposure": 0.6434932017820542,
+      "time_in_tqqq": 0.6466202783300199,
+      "fills": 161,
+      "yearly": {
+        "2016": 0.1459399584583445,
+        "2017": 1.0622675006841127,
+        "2018": -0.05055157023183332,
+        "2019": 0.43535415074923467,
+        "2020": 1.063701367707354,
+        "2021": 0.5672682224726155,
+        "2022": -0.1807000753630411,
+        "2023": 0.7128836528269598
+      }
+    },
+    "exit_dd_12": {
+      "params": {
+        "entry_dist": 0.08,
+        "entry_confirm": 1,
+        "exit_dd": 0.12,
+        "dd_confirm": 2,
+        "low_n": 20,
+        "low_source": "close",
+        "low_buf": 0.0,
+        "low_confirm": 1,
+        "trend_n": 20,
+        "high_n": 252,
+        "high_source": "high",
+        "target_vol": 0.85,
+        "vol_window": 20,
+        "signal_base": "QQQ",
+        "use_trend": true
+      },
+      "cagr": 0.3860210462169986,
+      "max_drawdown": 0.43791452153340094,
+      "sharpe": 1.0782101185086181,
+      "tqqq_exposure": 0.6532911064974815,
+      "time_in_tqqq": 0.6575546719681908,
+      "fills": 153,
+      "yearly": {
+        "2016": 0.1459399584583445,
+        "2017": 1.0622675006841127,
+        "2018": -0.12317382219104911,
+        "2019": 0.519617066610625,
+        "2020": 0.8291723522437433,
+        "2021": 0.5672682224726149,
+        "2022": -0.1807000753630411,
+        "2023": 0.6378090830064926
+      }
+    },
+    "dd_confirm_3": {
+      "params": {
+        "entry_dist": 0.08,
+        "entry_confirm": 1,
+        "exit_dd": 0.1,
+        "dd_confirm": 3,
+        "low_n": 20,
+        "low_source": "close",
+        "low_buf": 0.0,
+        "low_confirm": 1,
+        "trend_n": 20,
+        "high_n": 252,
+        "high_source": "high",
+        "target_vol": 0.85,
+        "vol_window": 20,
+        "signal_base": "QQQ",
+        "use_trend": true
+      },
+      "cagr": 0.40484018372305686,
+      "max_drawdown": 0.4379145215334008,
+      "sharpe": 1.119637631686015,
+      "tqqq_exposure": 0.6520023613151623,
+      "time_in_tqqq": 0.6560636182902585,
+      "fills": 153,
+      "yearly": {
+        "2016": 0.1459399584583445,
+        "2017": 1.0622675006841127,
+        "2018": -0.023495919706356116,
+        "2019": 0.5196170666106248,
+        "2020": 0.8291723522437437,
+        "2021": 0.5672682224726158,
+        "2022": -0.18070007536304122,
+        "2023": 0.6378090830064926
+      }
+    },
+    "low_buf_2": {
+      "params": {
+        "entry_dist": 0.08,
+        "entry_confirm": 1,
+        "exit_dd": 0.1,
+        "dd_confirm": 2,
+        "low_n": 20,
+        "low_source": "close",
+        "low_buf": 0.02,
+        "low_confirm": 1,
+        "trend_n": 20,
+        "high_n": 252,
+        "high_source": "high",
+        "target_vol": 0.85,
+        "vol_window": 20,
+        "signal_base": "QQQ",
+        "use_trend": true
+      },
+      "cagr": 0.36187792410111697,
+      "max_drawdown": 0.46114767993355454,
+      "sharpe": 0.966358192879156,
+      "tqqq_exposure": 0.7149850012554124,
+      "time_in_tqqq": 0.7186878727634195,
+      "fills": 111,
+      "yearly": {
+        "2016": 0.21762858857737744,
+        "2017": 1.1296022387355187,
+        "2018": -0.13372492311827466,
+        "2019": 0.5222525927281043,
+        "2020": 0.5345620981683492,
+        "2021": 0.681882055661637,
+        "2022": -0.2820243485814694,
+        "2023": 0.6614424041130442
+      }
+    },
+    "tv_0.65": {
+      "params": {
+        "entry_dist": 0.08,
+        "entry_confirm": 1,
+        "exit_dd": 0.1,
+        "dd_confirm": 2,
+        "low_n": 20,
+        "low_source": "close",
+        "low_buf": 0.0,
+        "low_confirm": 1,
+        "trend_n": 20,
+        "high_n": 252,
+        "high_source": "high",
+        "target_vol": 0.65,
+        "vol_window": 20,
+        "signal_base": "QQQ",
+        "use_trend": true
+      },
+      "cagr": 0.417760495455449,
+      "max_drawdown": 0.36735525318727436,
+      "sharpe": 1.179961963190447,
+      "tqqq_exposure": 0.6347947124797506,
+      "time_in_tqqq": 0.6530815109343936,
+      "fills": 277,
+      "yearly": {
+        "2016": 0.13850945726709551,
+        "2017": 1.0622675006841131,
+        "2018": 0.051374167245914704,
+        "2019": 0.5106943691952488,
+        "2020": 0.8844541519448534,
+        "2021": 0.524436738508921,
+        "2022": -0.1711606968627667,
+        "2023": 0.6378090830064924
+      }
+    }
+  },
+  "ablations": {
+    "no_vol_target": {
+      "params": {
+        "entry_dist": 0.08,
+        "entry_confirm": 1,
+        "exit_dd": 0.1,
+        "dd_confirm": 2,
+        "low_n": 20,
+        "low_source": "close",
+        "low_buf": 0.0,
+        "low_confirm": 1,
+        "trend_n": 20,
+        "high_n": 252,
+        "high_source": "high",
+        "target_vol": 99.0,
+        "vol_window": 20,
+        "signal_base": "QQQ",
+        "use_trend": true
+      },
+      "cagr": 0.4291686718230412,
+      "max_drawdown": 0.37887948649630243,
+      "sharpe": 1.1605375153055473,
+      "tqqq_exposure": 0.6530815109343936,
+      "fills": 99,
+      "event_counts": {
+        "entries": 25,
+        "exits_dd": 2,
+        "exits_low": 22
+      }
+    },
+    "no_low_exit": {
+      "params": {
+        "entry_dist": 0.08,
+        "entry_confirm": 1,
+        "exit_dd": 0.1,
+        "dd_confirm": 2,
+        "low_n": 20,
+        "low_source": "close",
+        "low_buf": 0.0,
+        "low_confirm": 10000,
+        "trend_n": 20,
+        "high_n": 252,
+        "high_source": "high",
+        "target_vol": 0.85,
+        "vol_window": 20,
+        "signal_base": "QQQ",
+        "use_trend": true
+      },
+      "cagr": 0.4221089568708485,
+      "max_drawdown": 0.4540133750721894,
+      "sharpe": 1.0297376175560051,
+      "tqqq_exposure": 0.7500333699569645,
+      "fills": 103,
+      "event_counts": {
+        "entries": 9,
+        "exits_dd": 8,
+        "exits_low": 0
+      }
+    },
+    "no_dd_exit": {
+      "params": {
+        "entry_dist": 0.08,
+        "entry_confirm": 1,
+        "exit_dd": 0.1,
+        "dd_confirm": 10000,
+        "low_n": 20,
+        "low_source": "close",
+        "low_buf": 0.0,
+        "low_confirm": 1,
+        "trend_n": 20,
+        "high_n": 252,
+        "high_source": "high",
+        "target_vol": 0.85,
+        "vol_window": 20,
+        "signal_base": "QQQ",
+        "use_trend": true
+      },
+      "cagr": 0.3860210462169986,
+      "max_drawdown": 0.43791452153340094,
+      "sharpe": 1.0782101185086181,
+      "tqqq_exposure": 0.6532911064974815,
+      "fills": 153,
+      "event_counts": {
+        "entries": 25,
+        "exits_dd": 0,
+        "exits_low": 24
+      }
+    },
+    "no_52w_gate": {
+      "params": {
+        "entry_dist": 9.99,
+        "entry_confirm": 1,
+        "exit_dd": 9.99,
+        "dd_confirm": 2,
+        "low_n": 20,
+        "low_source": "close",
+        "low_buf": 0.0,
+        "low_confirm": 1,
+        "trend_n": 20,
+        "high_n": 252,
+        "high_source": "high",
+        "target_vol": 0.85,
+        "vol_window": 20,
+        "signal_base": "QQQ",
+        "use_trend": true
+      },
+      "cagr": 0.3240630969380367,
+      "max_drawdown": 0.6407165801827348,
+      "sharpe": 0.8568079406841947,
+      "tqqq_exposure": 0.7705632039064433,
+      "fills": 312,
+      "event_counts": {
+        "entries": 35,
+        "exits_dd": 0,
+        "exits_low": 34
+      }
+    },
+    "no_trend_gate": {
+      "params": {
+        "entry_dist": 0.08,
+        "entry_confirm": 1,
+        "exit_dd": 0.1,
+        "dd_confirm": 2,
+        "low_n": 20,
+        "low_source": "close",
+        "low_buf": 0.0,
+        "low_confirm": 1,
+        "trend_n": 20,
+        "high_n": 252,
+        "high_source": "high",
+        "target_vol": 0.85,
+        "vol_window": 20,
+        "signal_base": "QQQ",
+        "use_trend": false
+      },
+      "cagr": 0.3773610167452588,
+      "max_drawdown": 0.4372376929041658,
+      "sharpe": 0.9947034519352256,
+      "tqqq_exposure": 0.7163860996002522,
+      "fills": 267,
+      "event_counts": {
+        "entries": 52,
+        "exits_dd": 2,
+        "exits_low": 49
+      }
+    },
+    "close_52w_high": {
+      "params": {
+        "entry_dist": 0.08,
+        "entry_confirm": 1,
+        "exit_dd": 0.1,
+        "dd_confirm": 2,
+        "low_n": 20,
+        "low_source": "close",
+        "low_buf": 0.0,
+        "low_confirm": 1,
+        "trend_n": 20,
+        "high_n": 252,
+        "high_source": "close",
+        "target_vol": 0.85,
+        "vol_window": 20,
+        "signal_base": "QQQ",
+        "use_trend": true
+      },
+      "cagr": 0.41094971396680346,
+      "max_drawdown": 0.40166431545661696,
+      "sharpe": 1.1273638143110287,
+      "tqqq_exposure": 0.6601956220359589,
+      "fills": 161,
+      "event_counts": {
+        "entries": 27,
+        "exits_dd": 4,
+        "exits_low": 22
+      }
+    },
+    "tqqq_basis": {
+      "params": {
+        "entry_dist": 0.2,
+        "entry_confirm": 1,
+        "exit_dd": 0.25,
+        "dd_confirm": 2,
+        "low_n": 20,
+        "low_source": "close",
+        "low_buf": 0.05,
+        "low_confirm": 1,
+        "trend_n": 20,
+        "high_n": 252,
+        "high_source": "high",
+        "target_vol": 0.85,
+        "vol_window": 20,
+        "signal_base": "TQQQ",
+        "use_trend": true
+      },
+      "cagr": 0.19504514280237162,
+      "max_drawdown": 0.4660194851274049,
+      "sharpe": 0.6724293286361532,
+      "tqqq_exposure": 0.6268935670733543,
+      "fills": 105,
+      "event_counts": {
+        "entries": 19,
+        "exits_dd": 9,
+        "exits_low": 9
+      }
+    },
+    "v1_intraday_low_2pct": {
+      "params": {
+        "entry_dist": 0.08,
+        "entry_confirm": 1,
+        "exit_dd": 0.1,
+        "dd_confirm": 2,
+        "low_n": 20,
+        "low_source": "low",
+        "low_buf": 0.02,
+        "low_confirm": 2,
+        "trend_n": 20,
+        "high_n": 252,
+        "high_source": "high",
+        "target_vol": 0.85,
+        "vol_window": 20,
+        "signal_base": "QQQ",
+        "use_trend": true
+      },
+      "cagr": 0.4221089568708485,
+      "max_drawdown": 0.4540133750721894,
+      "sharpe": 1.0297376175560051,
+      "tqqq_exposure": 0.7500333699569645,
+      "fills": 103,
+      "event_counts": {
+        "entries": 9,
+        "exits_dd": 8,
+        "exits_low": 0
+      }
+    },
+    "always_long": {
+      "params": {
+        "entry_dist": 0.08,
+        "entry_confirm": 1,
+        "exit_dd": 0.1,
+        "dd_confirm": 2,
+        "low_n": 20,
+        "low_source": "close",
+        "low_buf": 0.0,
+        "low_confirm": 1,
+        "trend_n": 20,
+        "high_n": 252,
+        "high_source": "high",
+        "target_vol": 0.85,
+        "vol_window": 20,
+        "signal_base": "QQQ",
+        "use_trend": true
+      },
+      "cagr": 0.38022732638570966,
+      "max_drawdown": 0.7865747012311414,
+      "sharpe": 0.8416632951005083,
+      "tqqq_exposure": 0.9649848888880005,
+      "fills": 347,
+      "event_counts": {
+        "entries": 25,
+        "exits_dd": 2,
+        "exits_low": 22
+      }
+    }
+  },
+  "neighbourhood": {
+    "entry_6": {
+      "params": {
+        "entry_dist": 0.06,
+        "entry_confirm": 1,
+        "exit_dd": 0.1,
+        "dd_confirm": 2,
+        "low_n": 20,
+        "low_source": "close",
+        "low_buf": 0.0,
+        "low_confirm": 1,
+        "trend_n": 20,
+        "high_n": 252,
+        "high_source": "high",
+        "target_vol": 0.85,
+        "vol_window": 20,
+        "signal_base": "QQQ",
+        "use_trend": true
+      },
+      "cagr": 0.36070706856879076,
+      "max_drawdown": 0.45759165367908783,
+      "sharpe": 1.0554039253277894,
+      "tqqq_exposure": 0.6211490319212771,
+      "fills": 131
+    },
+    "entry_7": {
+      "params": {
+        "entry_dist": 0.07,
+        "entry_confirm": 1,
+        "exit_dd": 0.1,
+        "dd_confirm": 2,
+        "low_n": 20,
+        "low_source": "close",
+        "low_buf": 0.0,
+        "low_confirm": 1,
+        "trend_n": 20,
+        "high_n": 252,
+        "high_source": "high",
+        "target_vol": 0.85,
+        "vol_window": 20,
+        "signal_base": "QQQ",
+        "use_trend": true
+      },
+      "cagr": 0.36398207605996613,
+      "max_drawdown": 0.45759165367908794,
+      "sharpe": 1.056029487022491,
+      "tqqq_exposure": 0.6316984720614796,
+      "fills": 139
+    },
+    "entry_9": {
+      "params": {
+        "entry_dist": 0.09,
+        "entry_confirm": 1,
+        "exit_dd": 0.1,
+        "dd_confirm": 2,
+        "low_n": 20,
+        "low_source": "close",
+        "low_buf": 0.0,
+        "low_confirm": 1,
+        "trend_n": 20,
+        "high_n": 252,
+        "high_source": "high",
+        "target_vol": 0.85,
+        "vol_window": 20,
+        "signal_base": "QQQ",
+        "use_trend": true
+      },
+      "cagr": 0.4096147096605842,
+      "max_drawdown": 0.4016643154566173,
+      "sharpe": 1.1228972327784814,
+      "tqqq_exposure": 0.6613258648043686,
+      "fills": 161
+    },
+    "entry_11": {
+      "params": {
+        "entry_dist": 0.11,
+        "entry_confirm": 1,
+        "exit_dd": 0.1,
+        "dd_confirm": 2,
+        "low_n": 20,
+        "low_source": "close",
+        "low_buf": 0.0,
+        "low_confirm": 1,
+        "trend_n": 20,
+        "high_n": 252,
+        "high_source": "high",
+        "target_vol": 0.85,
+        "vol_window": 20,
+        "signal_base": "QQQ",
+        "use_trend": true
+      },
+      "cagr": 0.3920690839140206,
+      "max_drawdown": 0.5175609080817358,
+      "sharpe": 1.071797080082667,
+      "tqqq_exposure": 0.6751615854742384,
+      "fills": 205
+    },
+    "exit_dd_9": {
+      "params": {
+        "entry_dist": 0.08,
+        "entry_confirm": 1,
+        "exit_dd": 0.09,
+        "dd_confirm": 2,
+        "low_n": 20,
+        "low_source": "close",
+        "low_buf": 0.0,
+        "low_confirm": 1,
+        "trend_n": 20,
+        "high_n": 252,
+        "high_source": "high",
+        "target_vol": 0.85,
+        "vol_window": 20,
+        "signal_base": "QQQ",
+        "use_trend": true
+      },
+      "cagr": 0.41259702873134807,
+      "max_drawdown": 0.37423623197007827,
+      "sharpe": 1.1383622615652755,
+      "tqqq_exposure": 0.6482155778847221,
+      "fills": 157
+    },
+    "exit_dd_11": {
+      "params": {
+        "entry_dist": 0.08,
+        "entry_confirm": 1,
+        "exit_dd": 0.11,
+        "dd_confirm": 2,
+        "low_n": 20,
+        "low_source": "close",
+        "low_buf": 0.0,
+        "low_confirm": 1,
+        "trend_n": 20,
+        "high_n": 252,
+        "high_source": "high",
+        "target_vol": 0.85,
+        "vol_window": 20,
+        "signal_base": "QQQ",
+        "use_trend": true
+      },
+      "cagr": 0.4138563701573823,
+      "max_drawdown": 0.43791452153340116,
+      "sharpe": 1.137314354082981,
+      "tqqq_exposure": 0.6515731748852172,
+      "fills": 151
+    },
+    "low_buf_0.5": {
+      "params": {
+        "entry_dist": 0.08,
+        "entry_confirm": 1,
+        "exit_dd": 0.1,
+        "dd_confirm": 2,
+        "low_n": 20,
+        "low_source": "close",
+        "low_buf": 0.005,
+        "low_confirm": 1,
+        "trend_n": 20,
+        "high_n": 252,
+        "high_source": "high",
+        "target_vol": 0.85,
+        "vol_window": 20,
+        "signal_base": "QQQ",
+        "use_trend": true
+      },
+      "cagr": 0.37775115576692797,
+      "max_drawdown": 0.3850497693512177,
+      "sharpe": 1.0540602288705456,
+      "tqqq_exposure": 0.6614520512262945,
+      "fills": 151
+    },
+    "low_buf_1": {
+      "params": {
+        "entry_dist": 0.08,
+        "entry_confirm": 1,
+        "exit_dd": 0.1,
+        "dd_confirm": 2,
+        "low_n": 20,
+        "low_source": "close",
+        "low_buf": 0.01,
+        "low_confirm": 1,
+        "trend_n": 20,
+        "high_n": 252,
+        "high_source": "high",
+        "target_vol": 0.85,
+        "vol_window": 20,
+        "signal_base": "QQQ",
+        "use_trend": true
+      },
+      "cagr": 0.3274982196896381,
+      "max_drawdown": 0.3845015151710447,
+      "sharpe": 0.9350682519392294,
+      "tqqq_exposure": 0.6738774985423979,
+      "fills": 143
+    },
+    "low_buf_2": {
+      "params": {
+        "entry_dist": 0.08,
+        "entry_confirm": 1,
+        "exit_dd": 0.1,
+        "dd_confirm": 2,
+        "low_n": 20,
+        "low_source": "close",
+        "low_buf": 0.02,
+        "low_confirm": 1,
+        "trend_n": 20,
+        "high_n": 252,
+        "high_source": "high",
+        "target_vol": 0.85,
+        "vol_window": 20,
+        "signal_base": "QQQ",
+        "use_trend": true
+      },
+      "cagr": 0.36187792410111697,
+      "max_drawdown": 0.46114767993355454,
+      "sharpe": 0.966358192879156,
+      "tqqq_exposure": 0.7149850012554124,
+      "fills": 111
+    },
+    "low_n_15": {
+      "params": {
+        "entry_dist": 0.08,
+        "entry_confirm": 1,
+        "exit_dd": 0.1,
+        "dd_confirm": 2,
+        "low_n": 15,
+        "low_source": "close",
+        "low_buf": 0.0,
+        "low_confirm": 1,
+        "trend_n": 20,
+        "high_n": 252,
+        "high_source": "high",
+        "target_vol": 0.85,
+        "vol_window": 20,
+        "signal_base": "QQQ",
+        "use_trend": true
+      },
+      "cagr": 0.3989753123329218,
+      "max_drawdown": 0.3770590849440483,
+      "sharpe": 1.1466926593335773,
+      "tqqq_exposure": 0.6189385217331397,
+      "fills": 195
+    },
+    "low_n_25": {
+      "params": {
+        "entry_dist": 0.08,
+        "entry_confirm": 1,
+        "exit_dd": 0.1,
+        "dd_confirm": 2,
+        "low_n": 25,
+        "low_source": "close",
+        "low_buf": 0.0,
+        "low_confirm": 1,
+        "trend_n": 20,
+        "high_n": 252,
+        "high_source": "high",
+        "target_vol": 0.85,
+        "vol_window": 20,
+        "signal_base": "QQQ",
+        "use_trend": true
+      },
+      "cagr": 0.3494527884220566,
+      "max_drawdown": 0.3853226065522303,
+      "sharpe": 0.9861479733029948,
+      "tqqq_exposure": 0.6649311764748034,
+      "fills": 151
+    },
+    "trend_n_15": {
+      "params": {
+        "entry_dist": 0.08,
+        "entry_confirm": 1,
+        "exit_dd": 0.1,
+        "dd_confirm": 2,
+        "low_n": 20,
+        "low_source": "close",
+        "low_buf": 0.0,
+        "low_confirm": 1,
+        "trend_n": 15,
+        "high_n": 252,
+        "high_source": "high",
+        "target_vol": 0.85,
+        "vol_window": 20,
+        "signal_base": "QQQ",
+        "use_trend": true
+      },
+      "cagr": 0.45445570364166565,
+      "max_drawdown": 0.3742362319700787,
+      "sharpe": 1.2078503025306195,
+      "tqqq_exposure": 0.6607879100351233,
+      "fills": 157
+    },
+    "trend_n_30": {
+      "params": {
+        "entry_dist": 0.08,
+        "entry_confirm": 1,
+        "exit_dd": 0.1,
+        "dd_confirm": 2,
+        "low_n": 20,
+        "low_source": "close",
+        "low_buf": 0.0,
+        "low_confirm": 1,
+        "trend_n": 30,
+        "high_n": 252,
+        "high_source": "high",
+        "target_vol": 0.85,
+        "vol_window": 20,
+        "signal_base": "QQQ",
+        "use_trend": true
+      },
+      "cagr": 0.36160518438925826,
+      "max_drawdown": 0.3802853939019514,
+      "sharpe": 1.0467340325670105,
+      "tqqq_exposure": 0.6368712764430476,
+      "fills": 149
+    },
+    "vol_window_15": {
+      "params": {
+        "entry_dist": 0.08,
+        "entry_confirm": 1,
+        "exit_dd": 0.1,
+        "dd_confirm": 2,
+        "low_n": 20,
+        "low_source": "close",
+        "low_buf": 0.0,
+        "low_confirm": 1,
+        "trend_n": 20,
+        "high_n": 252,
+        "high_source": "high",
+        "target_vol": 0.85,
+        "vol_window": 15,
+        "signal_base": "QQQ",
+        "use_trend": true
+      },
+      "cagr": 0.4329904186726201,
+      "max_drawdown": 0.3742362319700786,
+      "sharpe": 1.1772484173949875,
+      "tqqq_exposure": 0.6495236218028352,
+      "fills": 151
+    },
+    "vol_window_30": {
+      "params": {
+        "entry_dist": 0.08,
+        "entry_confirm": 1,
+        "exit_dd": 0.1,
+        "dd_confirm": 2,
+        "low_n": 20,
+        "low_source": "close",
+        "low_buf": 0.0,
+        "low_confirm": 1,
+        "trend_n": 20,
+        "high_n": 252,
+        "high_source": "high",
+        "target_vol": 0.85,
+        "vol_window": 30,
+        "signal_base": "QQQ",
+        "use_trend": true
+      },
+      "cagr": 0.4329904186726201,
+      "max_drawdown": 0.3742362319700786,
+      "sharpe": 1.1772484173949875,
+      "tqqq_exposure": 0.6495236218028352,
+      "fills": 151
+    },
+    "tv_0.75": {
+      "params": {
+        "entry_dist": 0.08,
+        "entry_confirm": 1,
+        "exit_dd": 0.1,
+        "dd_confirm": 2,
+        "low_n": 20,
+        "low_source": "close",
+        "low_buf": 0.0,
+        "low_confirm": 1,
+        "trend_n": 20,
+        "high_n": 252,
+        "high_source": "high",
+        "target_vol": 0.75,
+        "vol_window": 20,
+        "signal_base": "QQQ",
+        "use_trend": true
+      },
+      "cagr": 0.42793116315756974,
+      "max_drawdown": 0.37385679195123067,
+      "sharpe": 1.18022542609551,
+      "tqqq_exposure": 0.6442125531113645,
+      "fills": 191
+    },
+    "tv_0.95": {
+      "params": {
+        "entry_dist": 0.08,
+        "entry_confirm": 1,
+        "exit_dd": 0.1,
+        "dd_confirm": 2,
+        "low_n": 20,
+        "low_source": "close",
+        "low_buf": 0.0,
+        "low_confirm": 1,
+        "trend_n": 20,
+        "high_n": 252,
+        "high_source": "high",
+        "target_vol": 0.95,
+        "vol_window": 20,
+        "signal_base": "QQQ",
+        "use_trend": true
+      },
+      "cagr": 0.43091341047499965,
+      "max_drawdown": 0.3781487594557065,
+      "sharpe": 1.167417675945066,
+      "tqqq_exposure": 0.6522452876521306,
+      "fills": 122
+    }
+  },
+  "lag_placebo": {
+    "lag_1": {
+      "cagr": 0.4287894532235661,
+      "max_drawdown": 0.42171455298615856,
+      "sharpe": 1.1549391179506916,
+      "tqqq_exposure": 0.649026603910191
+    },
+    "lag_5": {
+      "cagr": 0.34502874418820806,
+      "max_drawdown": 0.45205939394318284,
+      "sharpe": 0.944728757588503,
+      "tqqq_exposure": 0.6470385323396144
+    },
+    "lag_10": {
+      "cagr": 0.33961359622764853,
+      "max_drawdown": 0.48136856662549365,
+      "sharpe": 0.9007634131749654,
+      "tqqq_exposure": 0.6445534428763937
+    },
+    "lag_20": {
+      "cagr": 0.31966330958512823,
+      "max_drawdown": 0.6989160359593212,
+      "sharpe": 0.8176957211637179,
+      "tqqq_exposure": 0.6395832639499526
+    }
+  },
+  "circular_shift_placebo": {
+    "draws": 200,
+    "cagr_median": 0.21865831678772196,
+    "cagr_p90": 0.40675598824490133,
+    "cagr_p95": 0.45759652985185206,
+    "cagr_max": 0.7513347138887885,
+    "dd_median": 0.7412934035245606,
+    "dd_min": 0.3330003728760744,
+    "sharpe_median": 0.6395823098185989,
+    "sharpe_max": 1.4400952347466038,
+    "base_cagr_percentile": 0.925,
+    "base_sharpe_percentile": 0.97
+  },
+  "bernoulli_placebo": {
+    "draws": 200,
+    "cagr_median": 0.25382186529132633,
+    "cagr_p90": 0.3635319131854971,
+    "cagr_p95": 0.4101021512798528,
+    "cagr_max": 0.50058273902077,
+    "dd_median": 0.37108398996626324,
+    "dd_min": 0.24990522644176683,
+    "sharpe_median": 0.9147260499889305,
+    "sharpe_max": 1.5524302298656558,
+    "base_cagr_percentile": 0.975,
+    "base_sharpe_percentile": 0.875
+  },
+  "cut_tests": {
+    "2017-01-03": {
+      "cagr": 0.4733884940948425,
+      "total_return": 13.982047161916723,
+      "max_drawdown": 0.3742362319700784,
+      "volatility": 0.37059690252288496,
+      "sharpe": 1.235129178082247,
+      "sortino": 1.7162564811544303,
+      "years": 6.98425735797399,
+      "tqqq_exposure": 0.6442281403791501
+    },
+    "2018-01-02": {
+      "cagr": 0.381198583953668,
+      "total_return": 5.91526368875955,
+      "max_drawdown": 0.3742362319700786,
+      "volatility": 0.38180497672297103,
+      "sharpe": 1.0406510100641788,
+      "sortino": 1.436482363488263,
+      "years": 5.987679671457905,
+      "tqqq_exposure": 0.5910149284740254
+    },
+    "2019-01-02": {
+      "cagr": 0.46632216459546516,
+      "total_return": 5.748585797320779,
+      "max_drawdown": 0.3742362319700784,
+      "volatility": 0.383245089267472,
+      "sharpe": 1.194055707548945,
+      "sortino": 1.661516764606579,
+      "years": 4.988364134154689,
+      "tqqq_exposure": 0.5722340427152592
+    },
+    "2020-01-02": {
+      "cagr": 0.45018749415950965,
+      "total_return": 3.4048264458736437,
+      "max_drawdown": 0.3742362319700785,
+      "volatility": 0.398196439878021,
+      "sharpe": 1.1367164411521762,
+      "sortino": 1.5738702536616478,
+      "years": 3.9890485968514717,
+      "tqqq_exposure": 0.536650522600195
+    },
+    "2021-01-04": {
+      "cagr": 0.30057027470519304,
+      "total_return": 1.1892341891831473,
+      "max_drawdown": 0.3727226724533672,
+      "volatility": 0.32979156859260195,
+      "sharpe": 0.9622158057127056,
+      "sortino": 1.3915537645489522,
+      "years": 2.9815195071868583,
+      "tqqq_exposure": 0.47107913562431153
+    },
+    "2022-01-03": {
+      "cagr": 0.1575437425354942,
+      "total_return": 0.3369589271331461,
+      "max_drawdown": 0.3185231659621932,
+      "volatility": 0.26951629409962335,
+      "sharpe": 0.6780400687801938,
+      "sortino": 0.9948456735274522,
+      "years": 1.9849418206707734,
+      "tqqq_exposure": 0.3073852295409182
+    }
+  },
+  "subperiods": {
+    "2016_2019": {
+      "cagr": 0.4137225013396344,
+      "total_return": 2.979330248294432,
+      "max_drawdown": 0.3493739283281172,
+      "volatility": 0.3221118893339083,
+      "sharpe": 1.2387165906351805,
+      "sortino": 1.7198824302017308,
+      "years": 3.9890485968514717
+    },
+    "2020_2021": {
+      "cagr": 0.7510995837976644,
+      "total_return": 2.0593028157865363,
+      "max_drawdown": 0.3742362319700786,
+      "volatility": 0.49362193148735617,
+      "sharpe": 1.386076370219466,
+      "sortino": 1.8835613186832239,
+      "years": 1.995893223819302
+    },
+    "2022_2023": {
+      "cagr": 0.1596779880259287,
+      "total_return": 0.34185634280477295,
+      "max_drawdown": 0.3185231659621932,
+      "volatility": 0.2692417941489513,
+      "sharpe": 0.6852944297771527,
+      "sortino": 1.0066354027484086,
+      "years": 1.9849418206707734
+    }
+  },
+  "leave_one_year_out": {
+    "annual_factors": {
+      "2016": 1.1459399584583445,
+      "2017": 2.0622675006841127,
+      "2018": 1.0276740621099532,
+      "2019": 1.5196170666106246,
+      "2020": 2.036398069985396,
+      "2021": 1.5672682224726158,
+      "2022": 0.8192999246369589,
+      "2023": 1.637809083006493
+    },
+    "cagr_without_year": {
+      "2016": 0.47824153476576114,
+      "2017": 0.3592228509338282,
+      "2018": 0.5014243934967726,
+      "2019": 0.41982582827894666,
+      "2020": 0.3616762287327604,
+      "2021": 0.4135770224406321,
+      "2022": 0.5508235712346528,
+      "2023": 0.40471446993301274
+    },
+    "min_cagr_without_year": 0.3592228509338282,
+    "year_of_min": "2017"
+  },
+  "episodes": {
+    "2018_q4_bear": {
+      "start": "2018-09-20",
+      "end": "2018-12-24",
+      "strategy": -0.16823726327293886,
+      "tqqq": -0.5623204440312752
+    },
+    "2020_covid": {
+      "start": "2020-02-19",
+      "end": "2020-03-23",
+      "strategy": -0.24234247215256677,
+      "tqqq": -0.6977642335348262
+    },
+    "2022_bear": {
+      "start": "2022-01-03",
+      "end": "2022-10-14",
+      "strategy": -0.18693578416978907,
+      "tqqq": -0.7947669565419733
+    },
+    "2019_recovery": {
+      "start": "2019-01-02",
+      "end": "2019-12-31",
+      "strategy": 0.5196170666106246,
+      "tqqq": 1.3047583908023346
+    },
+    "2023_recovery": {
+      "start": "2023-01-03",
+      "end": "2023-12-29",
+      "strategy": 0.6378090830064931,
+      "tqqq": 2.048926455333064
+    }
+  },
+  "causality": {
+    "truncation_date": "2021-12-31",
+    "bars_before_cut": 1510,
+    "weight_prefix_equal": true,
+    "max_abs_diff": 0.0
+  },
+  "benchmarks": {
+    "tqqq_buy_hold": {
+      "cagr": 0.35981497741031854,
+      "total_return": 10.63177185926151,
+      "max_drawdown": 0.8167775208998822,
+      "volatility": 0.6766854452889252,
+      "sharpe": 0.7990068659930886,
+      "ending_equity": 1163177.185926151,
+      "years": 7.983572895277208
+    },
+    "qqq_buy_hold": {
+      "cagr": 0.18864415062519613,
+      "total_return": 2.9735801313144568,
+      "max_drawdown": 0.3511213723088823,
+      "volatility": 0.22748114489315505,
+      "sharpe": 0.8744780521611336,
+      "ending_equity": 397358.0131314457,
+      "years": 7.983572895277208
+    },
+    "bil_buy_hold": {
+      "cagr": 0.013924514594274795,
+      "total_return": 0.11672524279675556,
+      "max_drawdown": 0.001921327481275159,
+      "volatility": 0.0020235427164843893,
+      "sharpe": 6.8379096682965885,
+      "ending_equity": 111672.52427967555,
+      "years": 7.983572895277208
+    }
+  },
+  "sma165_base_benchmark_only": {
+    "cagr": 0.4362776744433652,
+    "total_return": 17.002147131715702,
+    "max_drawdown": 0.5870748176143445,
+    "volatility": 0.4739120380323608,
+    "sharpe": 1.006072165952945,
+    "sortino": 1.3843339395307486,
+    "years": 7.983572895277208,
+    "exposure": 0.9995029821073559,
+    "tqqq_exposure": 0.7400596421471173,
+    "time_in_tqqq": 0.7400596421471173,
+    "fills": 59,
+    "turnover": 265.05011349160105,
+    "corr_tqqq": 0.7129455082839072,
+    "ending_equity": 1800214.71317157,
+    "yearly": {
+      "2016": 0.03698185332255366,
+      "2017": 1.1296022387355191,
+      "2018": -0.07641081123051696,
+      "2019": 0.47077622970916444,
+      "2020": 0.6995270401915212,
+      "2021": 0.9088089050398849,
+      "2022": -0.24311202300353485,
+      "2023": 1.1854255737208739
+    },
+    "max_dd_peak": "2020-02-19 00:00:00-05:00",
+    "max_dd_trough": "2020-04-21 00:00:00-04:00",
+    "worst_days": {
+      "2020-03-09": -0.2031020404914442,
+      "2020-03-12": -0.19596450609578783,
+      "2020-09-03": -0.15398703942694014,
+      "2020-02-27": -0.15094348034866087,
+      "2020-06-11": -0.14790454083614157
+    }
+  },
+  "corr_to_sma165_base": 0.7241217625052719,
+  "notes": {
+    "signal": "official adjusted daily OHLC through the session close",
+    "execution": "bt.panel daily bars from the 1-minute archive; next-open fills",
+    "state": "QQQ within 8% of 252d high and above SMA20; exit 20d closing low (1 close) or -10% from high (2 closes)",
+    "vol_target": "w = state * min(1, 0.85 / annualised 20-session TQQQ vol)",
+    "holdout": "2024-2026 never loaded",
+    "grid": "pre-registered 8 cells; base is the mandate design point and also the highest-CAGR cell in this grid (disclosed)",
+    "spec_revision": "v2 uses the 20-day closing low; v1 (intraday low + 2% buffer) never triggered the low exit and is reported as an ablation (42.21% CAGR / 45.4% DD / 1.03 Sharpe)"
+  }
+}

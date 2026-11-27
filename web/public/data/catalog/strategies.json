@@ -142,6 +142,118 @@
    "provenanceCount": 0
   },
   {
+   "id": "research:drawdown-recovery-v2",
+   "slug": "drawdown-recovery-v2",
+   "kind": "research",
+   "name": "Deep-drawdown recovery",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "Buys TQQQ after deep capitulation drawdowns with a two-speed re-entry, and holds cash between episodes.",
+   "summary": "Waits for a deep TQQQ drawdown, enters on a stabilisation signal, adds on a faster recovery trigger, and exits back to cash when the rebound matures. The pass rests on three macro episodes - 2018Q4, 2020Q1 and 2022 - not a large sample.",
+   "window": "2016-2026",
+   "cagr": 0.4999043484172039,
+   "dd": 0.41105436202354595,
+   "sharpe": 1.1173632263794746,
+   "metrics": {
+    "cagr10": 0.4999043484172039,
+    "dd10": 0.41105436202354595,
+    "cagr5": 0.4999043484172039,
+    "dd5": 0.41105436202354595
+   },
+   "href": "/research/drawdown-recovery-v2",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
+   "id": "research:fast-trend-vol",
+   "slug": "fast-trend-vol",
+   "kind": "research",
+   "name": "Fast trend + vol target",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "A 20/50-session QQQ trend gate on TQQQ, sized to an 85% volatility budget with a fast crash brake.",
+   "summary": "Holds TQQQ while the fast trend is up, scales the sleeve inversely to realised TQQQ volatility, and exits on a 2.5% intraday stop with a five-session cooldown. The full-window edge is trend and crash timing; the 2019 range-bound bull was a severe whipsaw.",
+   "window": "2016-2026",
+   "cagr": 0.44614598213901213,
+   "dd": 0.4025879247706894,
+   "sharpe": 1.058504873492197,
+   "metrics": {
+    "cagr10": 0.44614598213901213,
+    "dd10": 0.4025879247706894,
+    "cagr5": 0.44614598213901213,
+    "dd5": 0.4025879247706894
+   },
+   "href": "/research/fast-trend-vol",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
+   "id": "research:vol-term-structure",
+   "slug": "vol-term-structure",
+   "kind": "research",
+   "name": "Volatility term structure",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "Splits TQQQ exposure between a 165-day trend sleeve and a RV20/RV60 term-structure sleeve, with an acute-spike kill switch.",
+   "summary": "Holds half the book on the QQQ trend and half on a calm term structure (short vol below long vol), drops to cash when short/long vol spikes, and sizes the remainder to the regime. The term structure buys drawdown and Sharpe, not raw CAGR over a simpler trend+spike rule.",
+   "window": "2016-2026",
+   "cagr": 0.4248092715440892,
+   "dd": 0.35795913584596806,
+   "sharpe": 1.1509971557524818,
+   "metrics": {
+    "cagr10": 0.4248092715440892,
+    "dd10": 0.35795913584596806,
+    "cagr5": 0.4248092715440892,
+    "dd5": 0.35795913584596806
+   },
+   "href": "/research/vol-term-structure",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
+   "id": "research:relative-value-tqqq",
+   "slug": "relative-value-tqqq",
+   "kind": "research",
+   "name": "TQQQ/QQQ relative value",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "Holds TQQQ while the TQQQ/QQQ ratio momentum is intact, and falls back to QQQ when leverage is being repriced.",
+   "summary": "Uses ratio momentum and QQQ realised volatility to decide whether 3x compounding is being paid for, holding TQQQ in strong regimes and unlevered QQQ otherwise. The ratio signal is almost entirely explained by QQQ trend and variance.",
+   "window": "2016-2026",
+   "cagr": 0.4050250296214024,
+   "dd": 0.5153813039431854,
+   "sharpe": 0.9436170928461253,
+   "metrics": {
+    "cagr10": 0.4050250296214024,
+    "dd10": 0.5153813039431854,
+    "cagr5": 0.4050250296214024,
+    "dd5": 0.5153813039431854
+   },
+   "href": "/research/relative-value-tqqq",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
    "id": "research:intraday-seasonality",
    "slug": "intraday-seasonality",
    "kind": "research",

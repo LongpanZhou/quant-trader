@@ -19,7 +19,7 @@ export default function ResearchPage() {
           <div className="max-w-3xl">
             <div className="mb-4 flex flex-wrap gap-2">
               <Pill tone="green">Research library</Pill>
-              <Pill>27 strategies</Pill>
+              <Pill>31 strategies</Pill>
               <Pill>Same rules</Pill>
             </div>
             <h1 className="display text-[2.7rem] font-semibold text-zinc-50 sm:text-[3.6rem]">
@@ -28,7 +28,7 @@ export default function ResearchPage() {
               <span className="text-emerald-200">Same standard.</span>
             </h1>
             <p className="mt-5 max-w-2xl text-[15px] leading-relaxed text-zinc-400">
-              27 strategies on the same 2016-2026 window, with the same costs and metrics. No
+              31 strategies on the same 2016-2026 window, with the same costs and metrics. No
               groups, no pass/fail labels - just the ranking.
             </p>
           </div>

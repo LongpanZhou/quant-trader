@@ -1,0 +1,182 @@
+[
+ {
+  "slug": "crash-early-warning",
+  "full_cagr": 0.42060042505831996,
+  "full_dd": 0.5295572535723759,
+  "tqqq_cagr": 0.3754250463382436,
+  "dev_diff": 0.0,
+  "shape": [
+   1056144,
+   3
+  ],
+  "sum_max": 1.0,
+  "min_w": 0.0,
+  "holdout_changes": 15,
+  "holdout_unique": 2,
+  "cut_max": 0.0,
+  "status": "PASS",
+  "notes": []
+ },
+ {
+  "slug": "drawdown-recovery-v2",
+  "full_cagr": 0.4999043484172039,
+  "full_dd": 0.41105436202354595,
+  "tqqq_cagr": 0.3754250463382436,
+  "dev_diff": 0.0,
+  "shape": [
+   1056144,
+   3
+  ],
+  "sum_max": 1.0,
+  "min_w": 0.0,
+  "holdout_changes": 8,
+  "holdout_unique": 2,
+  "cut_max": 0.0,
+  "status": "PASS",
+  "notes": []
+ },
+ {
+  "slug": "ema-ribbon-trend",
+  "full_cagr": 0.4008665130492435,
+  "full_dd": 0.4657930366616806,
+  "tqqq_cagr": 0.3754250463382436,
+  "dev_diff": 0.0,
+  "shape": [
+   1056144,
+   3
+  ],
+  "sum_max": 1.0,
+  "min_w": 0.0,
+  "holdout_changes": 37,
+  "holdout_unique": 21,
+  "cut_max": 0.0,
+  "status": "PASS",
+  "notes": []
+ },
+ {
+  "slug": "fast-trend-vol",
+  "full_cagr": 0.44614598213901213,
+  "full_dd": 0.4025879247706894,
+  "tqqq_cagr": 0.3754250463382436,
+  "dev_diff": 0.0,
+  "shape": [
+   1056144,
+   3
+  ],
+  "sum_max": 1.0,
+  "min_w": 0.0,
+  "holdout_changes": 74,
+  "holdout_unique": 39,
+  "cut_max": 0.0,
+  "status": "PASS",
+  "notes": []
+ },
+ {
+  "slug": "ml-regime-v2",
+  "full_cagr": 0.41737954211975303,
+  "full_dd": 0.35975612883302754,
+  "tqqq_cagr": 0.3754250463382436,
+  "dev_diff": -0.002877270898426154,
+  "shape": [
+   1056144,
+   3
+  ],
+  "sum_max": 1.0,
+  "min_w": 0.0,
+  "holdout_changes": 1,
+  "holdout_unique": 2,
+  "cut_max": 0.0,
+  "status": "PASS",
+  "notes": []
+ },
+ {
+  "slug": "qqq-spy-relative",
+  "full_cagr": 0.38984387808055065,
+  "full_dd": 0.5364471796771553,
+  "tqqq_cagr": 0.3754250463382436,
+  "dev_diff": 0.0,
+  "shape": [
+   1056144,
+   3
+  ],
+  "sum_max": 1.0,
+  "min_w": 0.0,
+  "holdout_changes": 134,
+  "holdout_unique": 78,
+  "cut_max": 0.0,
+  "status": "PASS",
+  "notes": []
+ },
+ {
+  "slug": "relative-value-tqqq",
+  "full_cagr": 0.4050250296214024,
+  "full_dd": 0.5153813039431854,
+  "tqqq_cagr": 0.3754250463382436,
+  "dev_diff": 0.0,
+  "shape": [
+   1056144,
+   3
+  ],
+  "sum_max": 1.0,
+  "min_w": 0.0,
+  "holdout_changes": 35,
+  "holdout_unique": 18,
+  "cut_max": 0.0,
+  "status": "PASS",
+  "notes": []
+ },
+ {
+  "slug": "tqqq-52week-high",
+  "full_cagr": 0.386374451674258,
+  "full_dd": 0.39429995932985407,
+  "tqqq_cagr": 0.3754250463382436,
+  "dev_diff": 0.0008720717756192098,
+  "shape": [
+   1056144,
+   3
+  ],
+  "sum_max": 1.0,
+  "min_w": 0.0,
+  "holdout_changes": 47,
+  "holdout_unique": 23,
+  "cut_max": 0.0,
+  "status": "PASS",
+  "notes": []
+ },
+ {
+  "slug": "vol-of-vol-timing",
+  "full_cagr": 0.4216977606357246,
+  "full_dd": 0.5164139224117645,
+  "tqqq_cagr": 0.3754250463382436,
+  "dev_diff": 0.0,
+  "shape": [
+   1056144,
+   3
+  ],
+  "sum_max": 1.0,
+  "min_w": 0.0,
+  "holdout_changes": 277,
+  "holdout_unique": 243,
+  "cut_max": 0.0,
+  "status": "PASS",
+  "notes": []
+ },
+ {
+  "slug": "vol-term-structure",
+  "full_cagr": 0.4248092715440892,
+  "full_dd": 0.35795913584596806,
+  "tqqq_cagr": 0.3754250463382436,
+  "dev_diff": 1.237318856261993e-07,
+  "shape": [
+   1056144,
+   3
+  ],
+  "sum_max": 1.0,
+  "min_w": 0.0,
+  "holdout_changes": 66,
+  "holdout_unique": 3,
+  "cut_max": 0.0,
+  "status": "PASS",
+  "notes": []
+ }
+]
