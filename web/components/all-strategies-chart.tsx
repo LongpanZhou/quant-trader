@@ -42,14 +42,6 @@ type Payload = {
   note?: string;
 };
 
-function lastValue(curve: Curve) {
-  for (let i = curve.values.length - 1; i >= 0; i -= 1) {
-    const value = curve.values[i];
-    if (value != null) return value;
-  }
-  return 0;
-}
-
 function CompareTooltip({ active, payload, label }: any) {
   if (!active || !payload?.length) return null;
   const rows = [...payload]
@@ -76,7 +68,17 @@ function CompareTooltip({ active, payload, label }: any) {
   );
 }
 
-function ScatterPlot({ metrics }: { metrics: Metric[] }) {
+function ScatterPlot({
+  metrics,
+  colors,
+  hoveredId,
+  onHoverId,
+}: {
+  metrics: Metric[];
+  colors: Record<string, string>;
+  hoveredId: string | null;
+  onHoverId: (id: string | null) => void;
+}) {
   const xField = "dd";
   const yField = "cagr";
   const width = 620;
@@ -110,14 +112,19 @@ function ScatterPlot({ metrics }: { metrics: Metric[] }) {
     height - bottom - ((value - view.y0) / (view.y1 - view.y0)) * (height - top - bottom);
   const xTicks = Array.from({ length: 5 }, (_, i) => view.x0 + (i / 4) * (view.x1 - view.x0));
   const yTicks = Array.from({ length: 5 }, (_, i) => view.y0 + (i / 4) * (view.y1 - view.y0));
-  const color = (benchmark: boolean) => benchmark ? "#71717a" : "#9ae6a5";
+  const color = (metric: Metric) =>
+    colors[metric.id] ?? (metric.benchmark ? "#71717a" : "#9ae6a5");
 
   const track = (metric: Metric, event: MouseEvent<SVGCircleElement>) => {
     const rect = boxRef.current?.getBoundingClientRect();
     if (!rect) return;
+    onHoverId(metric.id);
     setHover({ metric, x: event.clientX - rect.left, y: event.clientY - rect.top });
   };
-  const clear = () => setHover(null);
+  const clear = () => {
+    setHover(null);
+    onHoverId(null);
+  };
 
   const zoom = (factor: number) => {
     const cx = (view.x0 + view.x1) / 2;
@@ -243,20 +250,22 @@ function ScatterPlot({ metrics }: { metrics: Metric[] }) {
           ))}
           <g clipPath={`url(#${clipId})`}>
             {metrics.map((metric) => {
-              const active = hover?.metric.id === metric.id;
+              const active = hoveredId === metric.id;
+              const dimmed = hoveredId !== null && !active;
               return (
                 <g key={metric.id}>
                   <circle
                     cx={sx(metric[xField])}
                     cy={sy(metric[yField])}
                     r={active ? 6 : 4.5}
-                    fill={color(metric.benchmark)}
-                    fillOpacity={active ? 1 : 0.92}
+                    fill={color(metric)}
+                    fillOpacity={dimmed ? 0.16 : active ? 1 : 0.9}
                     stroke={active ? "#f4f4f5" : "#08090b"}
                     strokeWidth={active ? 1.8 : 1.2}
                     onMouseDown={(event) => event.stopPropagation()}
                     onMouseEnter={(event) => track(metric, event)}
                     onMouseMove={(event) => track(metric, event)}
+                    onMouseLeave={clear}
                     aria-label={`${metric.name}: ${pct(metric[yField])} CAGR, ${pct(metric[xField])} drawdown`}
                   >
                     <title>
@@ -343,6 +352,8 @@ export function AllStrategiesChart() {
   const [hidden, setHidden] = useState<Set<string>>(new Set());
   const [scale, setScale] = useState<"linear" | "log">("log");
   const [above, setAbove] = useState<"all" | "tqqq" | "qqq">("all");
+  const [family, setFamily] = useState<string>("all");
+  const [hovered, setHovered] = useState<string | null>(null);
 
   useEffect(() => {
     fetch("/data/compare/all.json?v=2026-11-27-full")
@@ -379,7 +390,43 @@ export function AllStrategiesChart() {
     return out;
   }, [data]);
 
-  const visible = data?.series.filter((curve) => !hidden.has(curve.id)) ?? [];
+  const metricById = useMemo(() => {
+    const map = new Map<string, Metric>();
+    (data?.metrics ?? []).forEach((metric) => map.set(metric.id, metric));
+    return map;
+  }, [data]);
+
+  const colorById = useMemo(() => {
+    const map: Record<string, string> = {};
+    (data?.series ?? []).forEach((curve) => {
+      map[curve.id] = curve.color;
+    });
+    return map;
+  }, [data]);
+
+  const families = useMemo(() => {
+    const set = new Set<string>();
+    (data?.metrics ?? []).forEach((metric) => {
+      if (!metric.benchmark) set.add(metric.family ?? "other");
+    });
+    return [...set].sort();
+  }, [data]);
+
+  const inFamily = (id: string) =>
+    family === "all" || (metricById.get(id)?.family ?? "other") === family;
+
+  const legendSeries = useMemo(() => {
+    if (!data) return [];
+    return data.series.filter(
+      (curve) => curve.id === "tqqq" || curve.id === "qqq" || inFamily(curve.id),
+    );
+  }, [data, family, metricById]);
+
+  const visible =
+    data?.series.filter(
+      (curve) =>
+        curve.id === "tqqq" || curve.id === "qqq" || (inFamily(curve.id) && !hidden.has(curve.id)),
+    ) ?? [];
 
   const toggle = (id: string) => {
     setHidden((current) => {
@@ -392,44 +439,72 @@ export function AllStrategiesChart() {
 
   const showAll = () => {
     setAbove("all");
+    setFamily("all");
     setHidden(new Set());
+    setHovered(null);
   };
+
   const showTop = () => {
     if (!data) return;
     setAbove("all");
+    setHovered(null);
     const top = new Set(
-      [...data.series]
-        .sort((a, b) => lastValue(b) - lastValue(a))
+      data.metrics
+        .filter((metric) => !metric.benchmark && (family === "all" || (metric.family ?? "other") === family))
+        .sort((a, b) => b.cagr - a.cagr)
         .slice(0, 6)
-        .map((curve) => curve.id),
+        .map((metric) => metric.id),
     );
+    top.add("tqqq");
+    top.add("qqq");
     setHidden(new Set(data.series.filter((curve) => !top.has(curve.id)).map((curve) => curve.id)));
   };
 
-  const filterAbove = (key: "all" | "tqqq" | "qqq") => {
+  const applyAbove = (key: "all" | "tqqq" | "qqq", nextFamily: string) => {
     setAbove(key);
+    setHovered(null);
     if (!data || key === "all") {
       setHidden(new Set());
       return;
     }
-    const bench = data.metrics.find((m) => m.id === key && m.benchmark);
+    const bench = data.metrics.find((metric) => metric.id === key && metric.benchmark);
     if (!bench) return;
-    const keep = new Set(
-      data.metrics
-        .filter((metric) => {
-          if (metric.benchmark) return true;
-          if (key === "tqqq") return Boolean(metric.family_winner);
-          return metric.cagr > bench.cagr;
-        })
-        .map((metric) => metric.id),
+    const keep = new Set<string>(["tqqq", "qqq"]);
+    const matches = data.metrics.filter(
+      (metric) =>
+        !metric.benchmark &&
+        metric.cagr > bench.cagr &&
+        (nextFamily === "all" || (metric.family ?? "other") === nextFamily),
     );
+    if (key === "tqqq") {
+      // One strategy per family: keep the highest-CAGR name in each family.
+      const best = new Map<string, Metric>();
+      [...matches]
+        .sort((a, b) => b.cagr - a.cagr)
+        .forEach((metric) => {
+          const key = metric.family ?? "other";
+          if (!best.has(key)) best.set(key, metric);
+        });
+      best.forEach((metric) => keep.add(metric.id));
+    } else {
+      matches.forEach((metric) => keep.add(metric.id));
+    }
     setHidden(new Set(data.series.filter((curve) => !keep.has(curve.id)).map((curve) => curve.id)));
   };
 
-  const table = [...(data?.metrics ?? [])].sort((a, b) => {
-    const bench = (a.benchmark ? 1 : 0) - (b.benchmark ? 1 : 0);
-    return bench || b.cagr - a.cagr;
-  });
+  const filterAbove = (key: "all" | "tqqq" | "qqq") => applyAbove(key, family);
+
+  const changeFamily = (next: string) => {
+    setFamily(next);
+    applyAbove(above, next);
+  };
+
+  const table = [...(data?.metrics ?? [])]
+    .filter((metric) => visible.some((curve) => curve.id === metric.id))
+    .sort((a, b) => {
+      const bench = (a.benchmark ? 1 : 0) - (b.benchmark ? 1 : 0);
+      return bench || b.cagr - a.cagr;
+    });
 
   if (error) {
     return (
@@ -472,6 +547,22 @@ export function AllStrategiesChart() {
                 </button>
               ))}
             </div>
+            <label className="flex items-center gap-1.5 rounded-full border border-white/10 bg-black/20 px-2.5 py-1 text-[10px] text-zinc-500">
+              <span className="uppercase tracking-[0.12em]">Family</span>
+              <select
+                value={family}
+                onChange={(event) => changeFamily(event.target.value)}
+                className="max-w-[130px] bg-transparent text-[10px] text-zinc-200 outline-none"
+                aria-label="Filter by family"
+              >
+                <option value="all">All families</option>
+                {families.map((item) => (
+                  <option key={item} value={item}>
+                    {item}
+                  </option>
+                ))}
+              </select>
+            </label>
             <button
               onClick={() => filterAbove("tqqq")}
               className={`rounded-full border px-3 py-1 text-[10px] uppercase tracking-[0.14em] transition ${
@@ -483,7 +574,7 @@ export function AllStrategiesChart() {
               Above TQQQ
             </button>
             <span className="text-[10px] text-zinc-500">
-              one verified winner per family
+              highest above-TQQQ name per family
             </span>
             <button
               onClick={() => filterAbove("qqq")}
@@ -510,17 +601,33 @@ export function AllStrategiesChart() {
           </div>
         </div>
 
+        <div className="mb-2 flex flex-wrap items-center justify-between gap-2 text-[10px] text-zinc-500">
+          <span>
+            Showing {visible.length} of {data.series.length} curves
+            {family !== "all" ? ` in ${family}` : ""}
+          </span>
+          <span>Hover a line or row to highlight it</span>
+        </div>
+
         <div className="mb-4 flex flex-wrap gap-2">
-          {data.series.map((curve) => {
+          {legendSeries.map((curve) => {
             const off = hidden.has(curve.id);
+            const isHovered = hovered === curve.id;
             return (
               <button
                 key={curve.id}
                 onClick={() => toggle(curve.id)}
+                onMouseEnter={() => setHovered(curve.id)}
+                onMouseLeave={() => setHovered(null)}
+                onFocus={() => setHovered(curve.id)}
+                onBlur={() => setHovered(null)}
+                title={off ? `Show ${curve.name}` : `Hide ${curve.name}`}
                 className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[10px] transition ${
-                  off
-                    ? "border-white/[0.06] text-zinc-600"
-                    : "border-white/10 text-zinc-300 hover:border-white/20 hover:text-zinc-100"
+                  isHovered
+                    ? "border-emerald-300/40 bg-emerald-300/[0.08] text-emerald-100"
+                    : off
+                      ? "border-white/[0.06] text-zinc-600"
+                      : "border-white/10 text-zinc-300 hover:border-white/20 hover:text-zinc-100"
                 }`}
               >
                 <span
@@ -556,21 +663,26 @@ export function AllStrategiesChart() {
                 width={46}
               />
               <Tooltip content={<CompareTooltip />} />
-              {visible.map((curve) => (
-                <Line
-                  key={curve.id}
-                  type="monotone"
-                  dataKey={curve.id}
-                  name={curve.name}
-                  stroke={curve.color}
-                  strokeWidth={curve.id === "tqqq" ? 1.3 : 1.9}
-                  strokeDasharray={curve.id === "tqqq" ? "4 4" : undefined}
-                  dot={false}
-                  connectNulls
-                  isAnimationActive={false}
-                  activeDot={{ r: 2.5, fill: curve.color, stroke: "#08090b", strokeWidth: 2 }}
-                />
-              ))}
+              {visible.map((curve) => {
+                const isHovered = hovered === curve.id;
+                const dimmed = hovered !== null && !isHovered;
+                return (
+                  <Line
+                    key={curve.id}
+                    type="monotone"
+                    dataKey={curve.id}
+                    name={curve.name}
+                    stroke={curve.color}
+                    strokeWidth={isHovered ? 3 : curve.id === "tqqq" ? 1.3 : 1.9}
+                    strokeOpacity={dimmed ? 0.12 : 1}
+                    strokeDasharray={curve.id === "tqqq" ? "4 4" : undefined}
+                    dot={false}
+                    connectNulls
+                    isAnimationActive={false}
+                    activeDot={{ r: 2.5, fill: curve.color, stroke: "#08090b", strokeWidth: 2 }}
+                  />
+                );
+              })}
               <Brush
                 dataKey="date"
                 height={26}
@@ -596,17 +708,25 @@ export function AllStrategiesChart() {
               the same treatment. Scroll to zoom and drag to pan.
             </p>
           </div>
-          <ScatterPlot metrics={data.metrics} />
+          <ScatterPlot
+            metrics={data.metrics.filter((metric) =>
+              visible.some((curve) => curve.id === metric.id),
+            )}
+            colors={colorById}
+            hoveredId={hovered}
+            onHoverId={setHovered}
+          />
         </div>
 
         <div className="panel overflow-hidden">
           <div className="border-b border-white/[0.06] px-4 py-4 sm:px-5">
             <div className="eyebrow">Metrics</div>
             <h2 className="mt-1 text-lg font-semibold text-zinc-100">
-              All strategies
+              {family === "all" ? "All strategies" : `${family} strategies`}
             </h2>
             <p className="mt-1 text-[11px] text-zinc-500">
               2016-2026 daily curves, 1 bp costs, same window and rules for every row.
+              Hover a row to highlight its line.
             </p>
           </div>
           <div className="max-h-[340px] overflow-auto">
@@ -621,8 +741,28 @@ export function AllStrategiesChart() {
               </thead>
               <tbody>
                 {table.map((metric) => (
-                  <tr key={metric.id} className="border-t border-white/[0.04]">
-                    <td className="px-4 py-2 text-zinc-300">{metric.name}</td>
+                  <tr
+                    key={metric.id}
+                    onMouseEnter={() => setHovered(metric.id)}
+                    onMouseLeave={() => setHovered(null)}
+                    className={`border-t border-white/[0.04] transition ${
+                      hovered === metric.id ? "bg-white/[0.04]" : ""
+                    }`}
+                  >
+                    <td className="px-4 py-2 text-zinc-300">
+                      <span className="flex items-center gap-2">
+                        <span
+                          className="h-1.5 w-1.5 shrink-0 rounded-full"
+                          style={{ background: colorById[metric.id] ?? "#71717a" }}
+                        />
+                        <span>
+                          <span className="block">{metric.name}</span>
+                          <span className="block text-[9px] uppercase tracking-[0.1em] text-zinc-600">
+                            {metric.benchmark ? "benchmark" : metric.family ?? "other"}
+                          </span>
+                        </span>
+                      </span>
+                    </td>
                     <td className="px-2 py-2 text-right text-emerald-200/90">{pct(metric.cagr)}</td>
                     <td className="px-2 py-2 text-right text-rose-200/80">{pct(metric.dd)}</td>
                     <td className="px-4 py-2 text-right text-zinc-400">
