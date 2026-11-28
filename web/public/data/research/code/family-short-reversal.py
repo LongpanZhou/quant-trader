@@ -20,7 +20,7 @@ drawdown-recovery state machine is used by the strategy.
 Run:
     $env:PYTHONPATH = "C:\\Users\\27175\\AppData\\Local\\Temp\\opencode\\pylibs"
     $env:BT_THREADS = "1"
-    python research/new/family-short-reversal/strategy.py
+    python research/strategies/family-short-reversal/strategy.py
 """
 from __future__ import annotations
 

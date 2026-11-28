@@ -15,7 +15,7 @@ No 165-day (or any 100-250 day) moving average is used.  No 4% TQQQ stop.
 
 Run:
     $env:PYTHONPATH = "C:\\Users\\27175\\AppData\\Local\\Temp\\opencode\\pylibs"
-    python research/new/fast-trend-vol/strategy.py
+    python research/strategies/fast-trend-vol/strategy.py
 """
 from __future__ import annotations
 

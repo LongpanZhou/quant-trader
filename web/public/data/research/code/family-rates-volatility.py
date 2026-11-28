@@ -17,7 +17,7 @@ Plateau: 2 median windows x 2 thresholds x 2 mappings = 8 cells.
 
 Run from the repo root:
     $env:PYTHONPATH = "C:/Users/27175/AppData/Local/Temp/opencode/pylibs"
-    python research/new/family-rates-volatility/strategy.py
+    python research/strategies/family-rates-volatility/strategy.py
 """
 from __future__ import annotations
 

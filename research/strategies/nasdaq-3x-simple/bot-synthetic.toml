@@ -1,4 +1,4 @@
-# Research variant for the website. Not a live preset.
+# Rust bot config for the long-run (synthetic TQQQ) website windows.
 # Long-run version of the simple Nasdaq 3x rule: synthetic TQQQ before 2010
 # (and throughout, to keep one price path).
 broker = "sim"

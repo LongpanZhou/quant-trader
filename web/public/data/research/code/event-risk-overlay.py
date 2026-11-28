@@ -35,8 +35,8 @@ Falsifiers (pre-registered; see report.md):
 
 Run (only after the lead authorises):
     $env:PYTHONPATH = "C:\\Users\\27175\\AppData\\Local\\Temp\\opencode\\pylibs"
-    python research/revisit/event-risk-overlay/strategy.py
-    python research/revisit/event-risk-overlay/strategy.py --with-holdout   # lead only
+    python research/strategies/event-risk-overlay/strategy.py
+    python research/strategies/event-risk-overlay/strategy.py --with-holdout   # lead only
 """
 from __future__ import annotations
 

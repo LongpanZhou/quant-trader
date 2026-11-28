@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import type { PerformanceData } from "@/lib/types";
-import { BENCHMARKS } from "@/lib/presets";
+import { BENCHMARKS } from "@/lib/bot-strategies";
 import {
   CUSTOM_MAX_SYMBOLS,
   CUSTOM_TICKER,
@@ -794,7 +794,7 @@ export default function CustomLabPage() {
           </div>
 
           <div className="panel-soft mt-4 flex flex-col gap-2 p-4 text-[11px] leading-relaxed text-zinc-500 sm:flex-row sm:items-center sm:justify-between">
-            <span>Want to test a preset strategy instead? Use the Backtest Lab.</span>
+            <span>Want to adjust one of the library strategies instead? Use the Backtest Lab.</span>
             <a className="shrink-0 text-zinc-300 transition hover:text-emerald-200" href="/lab">
               Open the backtest lab →
             </a>

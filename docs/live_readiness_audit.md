@@ -339,7 +339,7 @@ the full-cycle average.
 ## 9. Pre-live checklist (revised)
 
 1. `cargo build --release && cargo test` - 54 tests.
-2. `preflight --config configs\nasdaq_leveraged_trend.toml` — require PASS;
+2. `preflight --config research\strategies\nasdaq-leveraged-trend\bot.toml` — require PASS;
    read the quote-age line and any Alpaca warnings.
 3. `replay` — confirm the order matches the target and the residual cash is
    small.

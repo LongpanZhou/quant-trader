@@ -30,8 +30,8 @@ k-1 also carries tgt[k] so `bt.simulate` fills at session k's open.
 
 Run (only after authorisation):
     $env:PYTHONPATH = "C:\\Users\\27175\\AppData\\Local\\Temp\\opencode\\pylibs"
-    python research/revisit/risk-parity-hrp/strategy.py            # dev only
-    python research/revisit/risk-parity-hrp/strategy.py --controls # + robustness
+    python research/strategies/risk-parity-hrp/strategy.py            # dev only
+    python research/strategies/risk-parity-hrp/strategy.py --controls # + robustness
 """
 from __future__ import annotations
 

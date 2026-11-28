@@ -23,7 +23,7 @@ This file is frozen for test.  It is NOT to be run while backtests are paused.
 
 Run (when authorised):
     $env:PYTHONPATH = "C:\\Users\\27175\\AppData\\Local\\Temp\\opencode\\pylibs"
-    python research/revisit/intraday-seasonality/strategy.py --windows dev
+    python research/strategies/intraday-seasonality/strategy.py --windows dev
 """
 from __future__ import annotations
 

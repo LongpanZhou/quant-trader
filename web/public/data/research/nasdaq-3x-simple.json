@@ -1,0 +1,50 @@
+{
+ "slug": "nasdaq-3x-simple",
+ "name": "Nasdaq 3x Simple Trend",
+ "tagline": "Hold TQQQ while QQQ is above its 200-day average; hold T-bills below it.",
+ "summary": "Python port of the Rust bot's simple 3x rule: no volatility target, full TQQQ in an uptrend, BIL otherwise. It shows what the volatility target in Nasdaq Leveraged Trend adds. Matches the Rust backtest with 0.9995 daily-return correlation.",
+ "metrics": {
+  "cagr": 0.3528910576626276,
+  "dd": 0.5659135169494769,
+  "sharpe": 0.8676162200583482
+ },
+ "status": "verified-full",
+ "assessment": {
+  "verdict": "Verified - trend (Rust bot rule)",
+  "reason": "Same rule as bot.toml in this folder; the Python curve matches the Rust engine's curve on the same window. A deeper drawdown than the volatility-targeted version."
+ },
+ "paths": {
+  "report": null,
+  "hypothesis": "research/strategies/nasdaq-3x-simple/HYPOTHESIS.md",
+  "spec": null,
+  "provenance": null,
+  "code": "research/strategies/nasdaq-3x-simple/strategy.py",
+  "code_public": "/data/research/code/nasdaq-3x-simple.py"
+ },
+ "extracted": {
+  "hypothesis": false,
+  "spec": false,
+  "provenance": true
+ },
+ "decision": "Python port of the Rust bot's simple 3x rule: no volatility target, full TQQQ in an uptrend, BIL otherwise. It shows what the volatility target in Nasdaq Leveraged Trend adds. Matches the Rust backtest with 0.9995 daily-return correlation.",
+ "rules": [],
+ "papers": [],
+ "provenance_cards": [
+  {
+   "idea": "quant-trader research program",
+   "source": "Own test",
+   "url": null,
+   "source_type": "Own test",
+   "role": "own test",
+   "role_detail": "",
+   "evidence": "Pre-registered development test on 2016-2023 and a one-shot 2024-2026 holdout; implementation and results are in report.md and strategy.py.",
+   "confidence": ""
+  }
+ ],
+ "rejected_sources": [],
+ "report_md": "",
+ "hypothesis_md": "# Nasdaq 3x Simple Trend\n\nPython version of the rule the Rust bot trades from `bot.toml` in this folder, so the research runner can test it\nnext to the other strategies on the same 2016-2026 panel and rules.\n\nQQQ above its 200-day average -> 100% TQQQ; below it -> 100% BIL. No volatility target.\n\nParameters are copied from the TOML. The logic is `LeveragedIndex` in\n`src/strategy.rs`, ported to `research/strategies/leveraged_index.py`.\n",
+ "spec_md": "",
+ "provenance_md": "## Own test\n\n- **quant-trader research program** - Pre-registered development test on 2016-2023 and a one-shot 2024-2026 holdout; implementation and results are in `report.md` and `strategy.py`.",
+ "code": "\"\"\"Nasdaq 3x Simple Trend: Python version of the rule the Rust bot trades from `bot.toml` in this folder.\n\nQQQ above its 200-day average -> 100% TQQQ; below it -> 100% BIL. No volatility target.\n\nThe rule lives in `research/strategies/leveraged_index.py`, a line-for-line\nport of `LeveragedIndex` in `src/strategy.rs`.  This file only pins the\nbot.toml parameters.  Daily strategy: run it with\n\n    python research/strategies/run_holdout.py nasdaq-3x-simple --daily\n\"\"\"\nfrom __future__ import annotations\n\nimport importlib.util\nfrom pathlib import Path\n\n_PATH = Path(__file__).resolve().parents[1] / \"leveraged_index.py\"\n_spec = importlib.util.spec_from_file_location(\"leveraged_index\", _PATH)\nleveraged_index = importlib.util.module_from_spec(_spec)\n_spec.loader.exec_module(leveraged_index)\n\nPARAMS = {\"sma_days\": 200, \"target_vol\": 0.0, \"vol_days\": 20, \"leverage\": 3.0}\n\n\ndef build_weights(ts, opens, closes):\n    \"\"\"Daily (QQQ, TQQQ, BIL) target weights, set at each session's close.\"\"\"\n    return leveraged_index.daily_weights(closes, **PARAMS)\n"
+}

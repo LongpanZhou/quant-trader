@@ -1,12 +1,13 @@
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
 import { StrategyCatalog } from "@/components/strategy-catalog";
 import { Pill } from "@/components/ui";
-import { researchStrategyCount } from "@/lib/research-count";
+import { catalogCounts, researchStrategyCount } from "@/lib/research-count";
 
 export const dynamic = "force-dynamic";
 
 export default function Page() {
   const researchCount = researchStrategyCount();
+  const { total, adjustable } = catalogCounts();
   return (
     <div className="min-h-screen">
       <div className="pointer-events-none fixed inset-0 grid-lines opacity-40" />
@@ -25,9 +26,9 @@ export default function Page() {
                 <span className="text-emerald-200">library.</span>
               </h1>
               <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-zinc-400">
-                One catalog: three editable Rust presets and {researchCount} strategies on the same
-                2016-2026 window. Open a preset to run and edit it, or open the all-strategies
-                view to compare every strategy.
+                One catalog of {total} strategies, {researchCount} of them on the same 2016-2026
+                window. Open any strategy for its results, rules and code, or open the
+                all-strategies view to compare them.
               </p>
             </div>
             <div className="flex flex-col gap-3 lg:items-end">
@@ -36,9 +37,8 @@ export default function Page() {
                 Research data through Nov 27, 2026
               </div>
               <div className="flex flex-wrap gap-2 lg:justify-end">
-                <Pill>{researchCount + 3} strategies</Pill>
-                <Pill>3 runnable</Pill>
-                <Pill>{researchCount} research</Pill>
+                <Pill>{total} strategies</Pill>
+                <Pill>{adjustable} adjustable</Pill>
                 <Pill>1 bp costs</Pill>
               </div>
               <div className="flex flex-wrap gap-2 lg:justify-end">
@@ -49,10 +49,10 @@ export default function Page() {
                   All-strategy chart
                 </a>
                 <a
-                  href="/research"
+                  href="/strategies/"
                   className="inline-flex items-center justify-center rounded-full border border-emerald-300/25 bg-emerald-300/[0.06] px-4 py-2 text-[11px] font-semibold text-emerald-100 transition hover:border-emerald-300/40 hover:bg-emerald-300/[0.10]"
                 >
-                  Research library
+                  Strategy library
                 </a>
                 <a
                   href="/lab"
@@ -70,12 +70,12 @@ export default function Page() {
             <div>
               <div className="eyebrow mb-2">One library</div>
               <h2 className="display text-2xl font-semibold text-zinc-100 sm:text-[1.7rem]">
-                Presets and research, together
+                Every strategy
               </h2>
             </div>
             <p className="max-w-md text-[11px] leading-relaxed text-zinc-500">
-              Runnable presets use the editable Rust engine. Research strategies are precomputed
-              1-minute results with papers and provenance. Both open from the same catalog.
+              Every strategy is listed the same way. The {adjustable} marked adjustable are also
+              traded by the Rust bot, so the lab can rerun them with new settings.
             </p>
           </div>
           <StrategyCatalog />

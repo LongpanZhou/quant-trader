@@ -1,0 +1,50 @@
+{
+ "slug": "nasdaq-leveraged-trend",
+ "name": "Nasdaq Leveraged Trend",
+ "tagline": "QQQ above its 165-day average: a QQQ/TQQQ blend sized to 40% volatility. Below it: T-bills.",
+ "summary": "Python port of the Rust bot's live rule. On each daily close, if QQQ is above its 165-day average the book holds a QQQ/TQQQ blend sized to a 40% annual volatility budget (20-day realised volatility, at most 3x); otherwise it holds BIL. Trades at the next open. Matches the Rust backtest with 0.998 daily-return correlation.",
+ "metrics": {
+  "cagr": 0.3577991685200952,
+  "dd": 0.3718164242046945,
+  "sharpe": 1.0319435550874494
+ },
+ "status": "verified-full",
+ "assessment": {
+  "verdict": "Verified - trend/vol (Rust bot rule)",
+  "reason": "Same rule as bot.toml in this folder; the Python curve matches the Rust engine's curve on the same window. Below the TQQQ CAGR bar, with a much smaller drawdown."
+ },
+ "paths": {
+  "report": null,
+  "hypothesis": "research/strategies/nasdaq-leveraged-trend/HYPOTHESIS.md",
+  "spec": null,
+  "provenance": null,
+  "code": "research/strategies/nasdaq-leveraged-trend/strategy.py",
+  "code_public": "/data/research/code/nasdaq-leveraged-trend.py"
+ },
+ "extracted": {
+  "hypothesis": false,
+  "spec": false,
+  "provenance": true
+ },
+ "decision": "Python port of the Rust bot's live rule. On each daily close, if QQQ is above its 165-day average the book holds a QQQ/TQQQ blend sized to a 40% annual volatility budget (20-day realised volatility, at most 3x); otherwise it holds BIL. Trades at the next open. Matches the Rust backtest with 0.998 daily-return correlation.",
+ "rules": [],
+ "papers": [],
+ "provenance_cards": [
+  {
+   "idea": "quant-trader research program",
+   "source": "Own test",
+   "url": null,
+   "source_type": "Own test",
+   "role": "own test",
+   "role_detail": "",
+   "evidence": "Pre-registered development test on 2016-2023 and a one-shot 2024-2026 holdout; implementation and results are in report.md and strategy.py.",
+   "confidence": ""
+  }
+ ],
+ "rejected_sources": [],
+ "report_md": "",
+ "hypothesis_md": "# Nasdaq Leveraged Trend\n\nPython version of the rule the Rust bot trades from `bot.toml` in this folder, so the research runner can test it\nnext to the other strategies on the same 2016-2026 panel and rules.\n\nQQQ above its 165-day average -> a QQQ/TQQQ blend sized to a 40% annualised volatility target; below it -> BIL.\n\nParameters are copied from the TOML. The logic is `LeveragedIndex` in\n`src/strategy.rs`, ported to `research/strategies/leveraged_index.py`.\n",
+ "spec_md": "",
+ "provenance_md": "## Own test\n\n- **quant-trader research program** - Pre-registered development test on 2016-2023 and a one-shot 2024-2026 holdout; implementation and results are in `report.md` and `strategy.py`.",
+ "code": "\"\"\"Nasdaq Leveraged Trend: Python version of the rule the Rust bot trades from `bot.toml` in this folder.\n\nQQQ above its 165-day average -> a QQQ/TQQQ blend sized to a 40% annualised volatility target; below it -> BIL.\n\nThe rule lives in `research/strategies/leveraged_index.py`, a line-for-line\nport of `LeveragedIndex` in `src/strategy.rs`.  This file only pins the\nbot.toml parameters.  Daily strategy: run it with\n\n    python research/strategies/run_holdout.py nasdaq-leveraged-trend --daily\n\"\"\"\nfrom __future__ import annotations\n\nimport importlib.util\nfrom pathlib import Path\n\n_PATH = Path(__file__).resolve().parents[1] / \"leveraged_index.py\"\n_spec = importlib.util.spec_from_file_location(\"leveraged_index\", _PATH)\nleveraged_index = importlib.util.module_from_spec(_spec)\n_spec.loader.exec_module(leveraged_index)\n\nPARAMS = {\"sma_days\": 165, \"target_vol\": 0.40, \"vol_days\": 20, \"leverage\": 3.0}\n\n\ndef build_weights(ts, opens, closes):\n    \"\"\"Daily (QQQ, TQQQ, BIL) target weights, set at each session's close.\"\"\"\n    return leveraged_index.daily_weights(closes, **PARAMS)\n"
+}

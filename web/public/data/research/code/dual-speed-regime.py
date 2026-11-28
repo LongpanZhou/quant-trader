@@ -17,7 +17,7 @@ Development period: 2016-01-04 .. 2023-12-29. Holdout is not computed here.
 
 Run (only after the lead/user authorizes the new test):
     $env:PYTHONPATH = "C:\\Users\\27175\\AppData\\Local\\Temp\\opencode\\pylibs"
-    python research/revisit/dual-speed-regime/strategy.py
+    python research/strategies/dual-speed-regime/strategy.py
 """
 from __future__ import annotations
 

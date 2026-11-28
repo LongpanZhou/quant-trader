@@ -5,14 +5,14 @@ import { Pill } from "@/components/ui";
 import { researchStrategyCount } from "@/lib/research-count";
 
 export const metadata: Metadata = {
-  title: "Research library  -  quant-trader",
+  title: "Strategy library  -  quant-trader",
   description:
-    "Every research agent strategy: rules, metrics, the exact report, and the papers it cites.",
+    "Every strategy: rules, metrics, the exact report, and the papers it cites.",
 };
 
 export const dynamic = "force-dynamic";
 
-export default function ResearchPage() {
+export default function StrategyLibraryPage() {
   const researchCount = researchStrategyCount();
   return (
     <div className="min-h-screen">
@@ -22,7 +22,7 @@ export default function ResearchPage() {
         <section className="fade-up pt-12 sm:pt-16">
           <div className="max-w-3xl">
             <div className="mb-4 flex flex-wrap gap-2">
-              <Pill tone="green">Research library</Pill>
+              <Pill tone="green">Strategy library</Pill>
               <Pill>{researchCount} strategies</Pill>
               <Pill>Same rules</Pill>
             </div>

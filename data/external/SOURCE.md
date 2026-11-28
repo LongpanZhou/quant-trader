@@ -12,6 +12,9 @@ Symbols: `^VIX`, `^VIX3M`, `^TNX`, `^IRX`, `^TYX`, `^FVX`, `^MOVE`, `^SKEW`,
 `XLRE`, `XLC`, `IWM`, `EEM`, `EFA`, `RSP`, `SPY`, `QUAL`, `MTUM`, `GDX`,
 `SLV`, `SMH`, `XBI`, `XHB`, `XRT`, `BTC-USD`, `JPY=X`.
 
+`SSO` (2x S&P 500, same window) was added later as the traded fund for the
+S&P 500 2x Trend strategy; it is a traded asset, not only a signal input.
+
 Fetch script: `research/fetch_external.py`.  Loader/alignment helper:
 `research/external.py`.  The external series are signal inputs only; the
 traded assets remain TQQQ/BIL/QQQ on the local adjusted 1-minute panel.

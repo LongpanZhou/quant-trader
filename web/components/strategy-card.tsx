@@ -5,7 +5,7 @@ import { Sparkline } from "./sparkline";
 
 const STATUS = {
   current: { label: "Current strategy", tone: "green" as const },
-  research: { label: "Research variant", tone: "blue" as const },
+  variant: { label: "Variant", tone: "blue" as const },
   ablation: { label: "Ablation", tone: "amber" as const },
 };
 

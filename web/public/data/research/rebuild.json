@@ -156,6 +156,15 @@
    "sharpe": 0.8963920562277656
   },
   {
+   "slug": "nasdaq-leveraged-trend",
+   "name": "Nasdaq Leveraged Trend",
+   "tagline": "QQQ above its 165-day average: a QQQ/TQQQ blend sized to 40% volatility. Below it: T-bills.",
+   "summary": "Python port of the Rust bot's live rule. On each daily close, if QQQ is above its 165-day average the book holds a QQQ/TQQQ blend sized to a 40% annual volatility budget (20-day realised volatility, at most 3x); otherwise it holds BIL. Trades at the next open. Matches the Rust backtest with 0.998 daily-return correlation.",
+   "cagr": 0.3577991685200952,
+   "dd": 0.3718164242046945,
+   "sharpe": 1.0319435550874494
+  },
+  {
    "slug": "family-efa-spy",
    "name": "Developed-market relative",
    "tagline": "EFA/SPY developed-market leadership",
@@ -163,6 +172,15 @@
    "cagr": 0.35587502103742064,
    "dd": 0.5922345837615999,
    "sharpe": 0.9139778904400119
+  },
+  {
+   "slug": "nasdaq-3x-simple",
+   "name": "Nasdaq 3x Simple Trend",
+   "tagline": "Hold TQQQ while QQQ is above its 200-day average; hold T-bills below it.",
+   "summary": "Python port of the Rust bot's simple 3x rule: no volatility target, full TQQQ in an uptrend, BIL otherwise. It shows what the volatility target in Nasdaq Leveraged Trend adds. Matches the Rust backtest with 0.9995 daily-return correlation.",
+   "cagr": 0.3528910576626276,
+   "dd": 0.5659135169494769,
+   "sharpe": 0.8676162200583482
   },
   {
    "slug": "family-qual-spy",

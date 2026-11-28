@@ -27,7 +27,7 @@ is the flow proxy. See HYPOTHESIS.md and provenance.md.
 
 Run (only after authorization):
     $env:PYTHONPATH = "C:\Users\27175\AppData\Local\Temp\opencode\pylibs"
-    python research/revisit/letf-rebalance-flow/strategy.py
+    python research/strategies/letf-rebalance-flow/strategy.py
 """
 
 from __future__ import annotations

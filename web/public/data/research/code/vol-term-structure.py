@@ -16,7 +16,7 @@ Weight w_t is the TQQQ target for session t+1, filled at the next open with a
 Run from the repo root:
     $env:PYTHONPATH = "C:\\Users\\27175\\AppData\\Local\\Temp\\opencode\\pylibs"
     $env:BT_THREADS = "1"
-    python research/new/vol-term-structure/strategy.py
+    python research/strategies/vol-term-structure/strategy.py
 """
 from __future__ import annotations
 

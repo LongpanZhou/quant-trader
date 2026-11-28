@@ -428,7 +428,7 @@ def main():
 
     out = {
         "strategy": "fomc-opex-window",
-        "directory": "research/new/fomc-opex-window",
+        "directory": "research/strategies/fomc-opex-window",
         "window": {"start": DEV_START, "end": DEV_END, "marks": "1m",
                    "fills": "next open, 2% band", "idle": "BIL"},
         "idea": "Own TQQQ in the post-decision FOMC drift and the post-OpEx "

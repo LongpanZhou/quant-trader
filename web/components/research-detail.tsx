@@ -108,7 +108,7 @@ export const CurveChart = memo(function CurveChart({ slug }: { slug: string }) {
   useEffect(() => {
     const controller = new AbortController();
     setPayload(null);
-    fetch(`/data/compare/curves/${encodeURIComponent(slug)}.json?v=2026-11-28-44c`, {
+    fetch(`/data/compare/curves/${encodeURIComponent(slug)}.json?v=2026-11-28-47`, {
       signal: controller.signal,
     })
       .then((response) => {
@@ -271,7 +271,7 @@ function CodePanel({
         <div className="eyebrow">Source code</div>
         <h2 className="mt-1 text-lg font-semibold text-zinc-100">Code not found</h2>
         <p className="mt-2 text-[12px] text-zinc-500">
-          No <code>strategy.py</code> was found next to this research record.
+          No <code>strategy.py</code> was found for this strategy.
         </p>
       </section>
     );
@@ -520,21 +520,37 @@ function PaperPanel({ detail }: { detail: Detail }) {
         href="#full-report"
         className="mt-4 inline-flex rounded-full border border-white/10 px-3 py-1.5 text-[10px] uppercase tracking-[0.12em] text-zinc-400 transition hover:border-white/20 hover:text-zinc-100"
       >
-        Read full research report ↓
+        Read full report ↓
       </a>
     </div>
   );
 }
 
-export function ResearchDetail({ detail }: { detail: Detail }) {
+/**
+ * A strategy's 2016-2026 record: metrics, curve, rules, sources, report and code.
+ * `embedded` drops the page header so it can sit under a strategy dashboard.
+ */
+export function ResearchDetail({ detail, embedded = false }: { detail: Detail; embedded?: boolean }) {
   return (
     <div className="space-y-6">
-      <div className="flex flex-wrap items-center justify-between gap-3">
+      {embedded ? (
+        <div>
+          <div className="eyebrow">Same-window record</div>
+          <h2 className="display mt-1 text-2xl font-semibold text-zinc-100 sm:text-[1.7rem]">
+            2016-2026 results, rules and Python code
+          </h2>
+          <p className="mt-2 max-w-3xl text-[12px] leading-relaxed text-zinc-500">
+            The same rule run on the 2016-2026 window every strategy shares, so it can be compared
+            with the rest of the library.
+          </p>
+        </div>
+      ) : null}
+      <div className={`flex flex-wrap items-center justify-between gap-3 ${embedded ? "hidden" : ""}`}>
         <a
-          href="/research"
+          href="/strategies/"
           className="inline-flex text-[11px] text-zinc-500 transition hover:text-zinc-200"
         >
-          ← Research library
+          ← Strategy library
         </a>
         <a
           href="/compare"
@@ -546,9 +562,9 @@ export function ResearchDetail({ detail }: { detail: Detail }) {
         </a>
       </div>
 
-      <section className="panel-soft p-5 sm:p-6">
+      <section className={`panel-soft p-5 sm:p-6 ${embedded ? "hidden" : ""}`}>
         <div className="flex flex-wrap items-center gap-2">
-          <Pill>{detail.archive ? "Research archive" : "Research record"}</Pill>
+          {detail.archive ? <Pill>Archived</Pill> : null}
           {detail.status ? <Pill>{detail.status}</Pill> : null}
           {detail.assessment.verdict ? <Pill>{detail.assessment.verdict}</Pill> : null}
           <span className="text-[11px] text-zinc-500">
@@ -578,7 +594,7 @@ export function ResearchDetail({ detail }: { detail: Detail }) {
 
       {detail.archive ? (
         <div className="panel-soft p-4 text-[12px] leading-relaxed text-zinc-400">
-          This is a development-only or below-bar research record. It is kept in the
+          This is a development-only or below-bar strategy. It is kept in the
           archive for completeness and is not part of the 2016-2026 above-TQQQ ranking.
         </div>
       ) : null}
@@ -611,12 +627,12 @@ export function ResearchDetail({ detail }: { detail: Detail }) {
       ) : null}
 
       <section id="full-report" className="panel p-5">
-        <div className="eyebrow">Full research report</div>
+        <div className="eyebrow">Full report</div>
         <h2 className="mt-1 text-lg font-semibold text-zinc-100">
           Original pre-registration and notes
         </h2>
         <p className="mt-2 max-w-3xl text-[11px] leading-relaxed text-zinc-500">
-          The research record behind the rules: sources, falsifiers, results and limitations. The
+          The record behind the rules: sources, falsifiers, results and limitations. The
           dated note at the top points to the consolidated audit.
         </p>
         <Markdown>{detail.report_md}</Markdown>

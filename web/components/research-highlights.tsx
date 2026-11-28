@@ -40,27 +40,27 @@ export function ResearchHighlights() {
     <div>
       <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
         <div>
-          <div className="eyebrow">Research library</div>
+          <div className="eyebrow">Strategy library</div>
           <h2 className="display text-2xl font-semibold text-zinc-100 sm:text-[1.7rem]">
-            All 31 research strategies
+            Every strategy
           </h2>
           <p className="mt-1 max-w-2xl text-[12px] text-zinc-500">
-            Every agent result, not just the three runnable portals. Each card opens its rules,
+            Every strategy in the library. Each card opens its rules,
             metrics, papers and source code.
           </p>
         </div>
         <a
-          href="/research"
+          href="/strategies/"
           className="rounded-full border border-white/10 px-3 py-1.5 text-[10px] uppercase tracking-[0.12em] text-zinc-400 transition hover:border-white/20 hover:text-zinc-100"
         >
-          Browse all 31 →
+          Browse all →
         </a>
       </div>
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         {strategies.map((strategy) => (
           <a
             key={strategy.slug}
-            href={`/research/${strategy.slug}`}
+            href={`/strategies/${strategy.slug}`}
             className="group panel flex flex-col p-5 transition hover:border-white/20"
           >
             <div className="flex items-center justify-between gap-2">
@@ -82,7 +82,7 @@ export function ResearchHighlights() {
               <Metric label="5y DD" value={pct(strategy.metrics.dd5)} tone="text-rose-200/80" />
             </div>
             <div className="mt-4 text-[10px] text-zinc-500 transition group-hover:text-zinc-200">
-              Open research view →
+              Open strategy →
             </div>
           </a>
         ))}

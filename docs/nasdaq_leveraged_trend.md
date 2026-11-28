@@ -4,7 +4,7 @@
 buying and holding the Nasdaq-100 (QQQ) by 10 percentage points a year — if
 QQQ makes 10%, make 20%; if QQQ makes -10%, make 0%.
 
-**Answer.** `configs/nasdaq_leveraged_trend.toml` — hold a volatility-targeted
+**Answer.** `research/strategies/nasdaq-leveraged-trend/bot.toml` — hold a volatility-targeted
 blend of QQQ and TQQQ while QQQ is above its 165-day average, T-bills
 otherwise. Over the five years to 20 Nov 2026 it returned **26.4% a year
 against QQQ's 9.5% (+16.9 points a year)**, with a **29.4% maximum drawdown
@@ -161,7 +161,7 @@ The worst drawdown was **29% in July-September 2024**, the yen-carry unwind —
 a fast V-shaped selloff, which is the failure mode trend following handles
 worst. It was not the 2022 bear market.
 
-Reproduce it with `quant-trader backtest --config configs/nasdaq_leveraged_trend.toml`.
+Reproduce it with `quant-trader backtest --config research/strategies/nasdaq-leveraged-trend/bot.toml`.
 
 ## 5. Robustness
 
@@ -335,14 +335,14 @@ actual funds, not a hand-picked list of survivors.
 cargo build --release
 
 # headline, five years
-.\target\release\quant-trader.exe backtest --config configs\nasdaq_leveraged_trend.toml
+.\target\release\quant-trader.exe backtest --config research\strategies\nasdaq-leveraged-trend\bot.toml
 
 # ten-year robustness
-.\target\release\quant-trader.exe backtest --config configs\nasdaq_leveraged_trend.toml --days 3650
+.\target\release\quant-trader.exe backtest --config research\strategies\nasdaq-leveraged-trend\bot.toml --days 3650
 
 # full cycle, synthetic 3x before TQQQ existed
-.\target\release\quant-trader.exe backtest --config configs\nasdaq_synthetic_20y.toml
-.\target\release\quant-trader.exe backtest --config configs\nasdaq_synthetic_20y.toml --days 9500
+.\target\release\quant-trader.exe backtest --config research\strategies\nasdaq-leveraged-trend\bot-synthetic.toml
+.\target\release\quant-trader.exe backtest --config research\strategies\nasdaq-leveraged-trend\bot-synthetic.toml --days 9500
 ```
 
 The study configs pin `end_date = "2026-11-20"` so the window does not move
@@ -371,8 +371,8 @@ nothing is pre-baked.
   live loop and preflight.
 - `src/preflight.rs`: live data, freshness, corporate-action and target check.
 - `src/sim.rs`: splits and dividends applied to the paper ledger.
-- `configs/nasdaq_leveraged_trend.toml`: the live/5-year preset.
-- `configs/nasdaq_synthetic_20y.toml`: the long-run research preset.
+- `research/strategies/nasdaq-leveraged-trend/bot.toml`: the live/5-year config.
+- `research/strategies/nasdaq-leveraged-trend/bot-synthetic.toml`: the long-run config.
 
 ## 10. Five-year verdict
 
@@ -597,9 +597,9 @@ unchanged by the split; the dividends add $97 of cash.
 ### 12.5 Before running it for real (paper)
 
 1. `cargo build --release`
-2. `.\target\release\quant-trader.exe preflight --config configs\nasdaq_leveraged_trend.toml`
+2. `.\target\release\quant-trader.exe preflight --config research\strategies\nasdaq-leveraged-trend\bot.toml`
    - require `PREFLIGHT: PASS`.
-3. `.\target\release\quant-trader.exe replay --config configs\nasdaq_leveraged_trend.toml`
+3. `.\target\release\quant-trader.exe replay --config research\strategies\nasdaq-leveraged-trend\bot.toml`
    - confirm the orders match the target.
 4. Start `run` before 9:25 ET; while the market is closed the loop wakes every
    minute, so the first decision lands at the open.

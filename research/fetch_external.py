@@ -23,6 +23,7 @@ SYMBOLS = [
     "XLC", "IWM", "EEM", "EFA", "RSP", "SPY",
     "QUAL", "MTUM", "GDX", "SLV", "SMH", "XBI", "XHB", "XRT",
     "BTC-USD", "JPY=X",
+    "SSO",  # 2x S&P 500; traded asset for the S&P 500 2x Trend strategy
 ]
 P1, P2 = 1420070400, 1790000000  # 2015-01-01 .. 2026-10
 

@@ -40,7 +40,7 @@ NO LOOK-AHEAD
 
 Run (only after the user authorises backtests):
     $env:PYTHONPATH = "C:\\Users\\27175\\AppData\\Local\\Temp\\opencode\\pylibs"
-    python research/revisit/intraday-mean-reversion/strategy.py
+    python research/strategies/intraday-mean-reversion/strategy.py
 """
 from __future__ import annotations
 

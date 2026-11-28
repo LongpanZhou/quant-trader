@@ -6,7 +6,7 @@ shared panel sliced to (TQQQ, BIL) columns; the output is the same 2-column
 shape.
 
 The base helpers are inlined here so this library entry does not depend on the
-deleted `research/new/family-intraday-microstructure/` candidate directory.
+deleted `research/strategies/family-intraday-microstructure/` candidate directory.
 The signal mechanics, thresholds and `night_th=-1.0` no-overnight setting are
 unchanged.
 """

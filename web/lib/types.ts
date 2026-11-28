@@ -1,6 +1,6 @@
 export type WindowId = "5y" | "10y" | "20y" | "26y";
 
-export type StrategyStatus = "current" | "research" | "ablation";
+export type StrategyStatus = "current" | "variant" | "ablation";
 
 export type PaperId =
   | "gayed-bilello-2016"
@@ -81,7 +81,7 @@ export type Params = {
   targetVol?: number;
   volDays?: number;
   rebalanceBand?: number;
-  /** Custom-lab additions. The Rust presets leave these undefined. */
+  /** Custom-lab additions. The bot strategies leave these undefined. */
   symbols?: string[];
   slippageBps?: number;
 };

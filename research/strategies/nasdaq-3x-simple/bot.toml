@@ -1,4 +1,4 @@
-# Research variant for the website. Not a live preset.
+# Rust bot config for nasdaq-3x-simple.
 # The same Nasdaq trend rule as the main strategy, but with no volatility
 # target: hold TQQQ at full size while QQQ is above its 200-day average.
 broker = "sim"

@@ -16,8 +16,8 @@ The repository has two layers:
 
 | Item | Value |
 |---|---:|
-| Visible strategies | **44** |
-| Curves on the compare page | **46** |
+| Visible strategies | **46** |
+| Curves on the compare page | **48** |
 | Above-TQQQ winners | **14** |
 | New independent families | **20** |
 | Max new-family Jaccard vs existing winners | **0.66** |
@@ -76,12 +76,12 @@ See `research/strategies/NEW_FAMILIES.md`,
 
 ```
 src/                 Rust paper-trading engine and backtester
-web/                 Next.js dashboard (compare, research, lab)
+web/                 Next.js dashboard (compare, strategy library, lab)
 research/            Python research and verification
-research/strategies/    all 44 strategies, shared harness, curves, holdouts, audits
+research/strategies/    every strategy (one folder each), shared harness, curves, holdouts, audits;
+                        a strategy the Rust bot can trade also has bot.toml there
 research/archive/       historical experiments kept for provenance
 data/external/       committed Yahoo daily cross-asset series
-configs/             TOML strategy/config files
 scripts/             data export and intraday backtest helpers
 docs/                notes and methodology
 ```
@@ -132,27 +132,27 @@ and Recharts. It has four main views:
 
 | View | Route | What it shows |
 |---|---|---|
-| **Home** | `/` | Hero, library counts, runnable presets, and research cards |
+| **Home** | `/` | Hero, library counts, and strategy cards |
 | **All strategies** | `/compare` | One normalized growth chart, log/linear toggle, family filter, above-TQQQ/above-QQQ filters |
-| **Research library** | `/research` | Every verified strategy as a card with CAGR, max drawdown and Sharpe |
-| **Backtest lab** | `/lab` | Strategy selector, editable presets, decision process, equity curve, custom-strategy entry |
+| **Strategy library** | `/strategies` | Every strategy with a 2016-2026 record, as a card with CAGR, max drawdown and Sharpe |
+| **Backtest lab** | `/lab` | Strategy selector, adjustable settings, decision process, equity curve, custom-strategy entry |
 
-Each research card opens a detail page at `/research/<slug>` with metrics, the
+Every strategy has one page at `/strategies/<slug>` (old `/research/...` links redirect) with metrics, the
 equity curve, the decision process, the audit assessment, and the code.
 
 ### Screenshots
 
-**Home — one catalog for runnable presets and research**
+**Home — one catalog of strategies**
 
-<img src="docs/screenshots/home.png" alt="Home: strategy library with runnable presets and research cards" width="900">
+<img src="docs/screenshots/home.png" alt="Home: strategy library" width="900">
 
-**All strategies — one graph, 46 curves, 44 strategies**
+**All strategies — one graph, 48 curves, 46 strategies**
 
 <img src="docs/screenshots/compare.png" alt="All strategies: one normalized growth chart with filters" width="900">
 
-**Research library — every strategy, same standard**
+**Strategy library — every strategy, same standard**
 
-<img src="docs/screenshots/research.png" alt="Research library: 44 verified strategy cards with CAGR, drawdown and Sharpe" width="900">
+<img src="docs/screenshots/research.png" alt="Strategy library: 46 verified strategy cards with CAGR, drawdown and Sharpe" width="900">
 
 **Regime-switch detail — the beater's research page**
 
@@ -190,8 +190,9 @@ python research/export_web_catalog.py
 python research/export_research_detail.py
 ```
 
-The home page shows 47 cards: 3 editable Rust presets plus 44 research
-strategies. The compare page shows 46 curves: the 44 strategies plus TQQQ and
+The home page shows 47 cards, one per strategy. The 3 with a `bot.toml` are also
+traded by the Rust bot, so their page has the adjustable dashboard and the lab can
+re-run them with new settings. The compare page shows 48 curves: 46 strategies plus TQQQ and
 QQQ benchmarks.
 
 ## Data

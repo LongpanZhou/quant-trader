@@ -16,7 +16,7 @@ export const BENCHMARKS = [
   { value: "^IXIC", label: "^IXIC · Nasdaq Composite" },
 ];
 
-export type PresetStrategy = {
+export type BotSettings = {
   index: string;
   riskAsset: string;
   leverage: number;
@@ -27,7 +27,7 @@ export type PresetStrategy = {
   rebalanceBand: number;
 };
 
-export type PresetSynthetic = {
+export type BotSynthetic = {
   symbol: string;
   index: string;
   leverage: number;
@@ -35,18 +35,18 @@ export type PresetSynthetic = {
   spreadPct: number;
 };
 
-export type Preset = {
+export type BotStrategy = {
   id: string;
   name: string;
   symbols: string[];
   benchmark: string;
   accent: string;
   windows: WindowId[];
-  strategy: PresetStrategy;
-  synthetic?: PresetSynthetic;
+  strategy: BotSettings;
+  synthetic?: BotSynthetic;
 };
 
-export const PRESETS: Record<string, Preset> = {
+export const BOT_STRATEGIES: Record<string, BotStrategy> = {
   "nasdaq-leveraged-trend": {
     id: "nasdaq-leveraged-trend",
     name: "Nasdaq Leveraged Trend",
@@ -117,4 +117,4 @@ export const PRESETS: Record<string, Preset> = {
   },
 };
 
-export const PRESET_LIST = Object.values(PRESETS);
+export const BOT_STRATEGY_LIST = Object.values(BOT_STRATEGIES);

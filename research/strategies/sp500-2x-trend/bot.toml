@@ -1,4 +1,4 @@
-# Research variant for the website. Not a live preset.
+# Rust bot config for sp500-2x-trend.
 # Gayed & Bilello's 2x S&P 500 rule: SSO while SPY is above its 200-day
 # average, short-term Treasuries (SHY) below it.
 broker = "sim"

@@ -293,7 +293,7 @@ def main():
 
     out = {
         "strategy": "family-rebalance-flow",
-        "directory": "research/new/family-rebalance-flow",
+        "directory": "research/strategies/family-rebalance-flow",
         "window": {"start": DEV_START, "end": DEV_END, "marks": "1m",
                    "fills": "next open, 2% band", "idle": "BIL"},
         "rules": {

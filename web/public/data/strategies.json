@@ -28,7 +28,7 @@
       "name": "S&P 500 2x Trend",
       "tagline": "The original leverage rotation, applied to the S&P 500.",
       "description": "Hold the 2x S&P 500 fund (SSO) while SPY is above its 200-day average; hold short-term Treasuries (SHY) below it. No volatility target.",
-      "status": "research",
+      "status": "variant",
       "asOf": "2026-11-20",
       "accent": "#93c5fd",
       "tags": ["SPY", "SSO", "SHY", "daily"],

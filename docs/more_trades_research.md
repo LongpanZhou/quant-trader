@@ -183,8 +183,8 @@ cost it saves. Faster signals are not the lever either: a 100-day SMA returned
 The shipped core is what can be reproduced in this repo:
 
 ```powershell
-.\target\release\quant-trader.exe backtest --config configs\nasdaq_leveraged_trend.toml
-.\target\release\quant-trader.exe backtest --config configs\nasdaq_leveraged_trend.toml --days 3650
+.\target\release\quant-trader.exe backtest --config research\strategies\nasdaq-leveraged-trend\bot.toml
+.\target\release\quant-trader.exe backtest --config research\strategies\nasdaq-leveraged-trend\bot.toml --days 3650
 ```
 
 The expansion and intraday sweep configs were removed with their exploratory

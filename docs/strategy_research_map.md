@@ -16,8 +16,8 @@ results are in [more-trades research](more_trades_research.md).
 |---|---|---|---|
 | `nasdaq_leveraged_trend` | 1d | Faber (2007); Gayed & Bilello (2016); Moreira & Muir (2017); Zarattini & Antonacci (2024) | QQQ above its 165-day average: hold a QQQ/TQQQ blend sized to 40% volatility. Below it: hold BIL. |
 
-This is the live preset; `config.toml` is the same rule.
-`configs/nasdaq_synthetic_20y.toml` runs the same strategy over the long
+This is the live strategy; `config.toml` is the same rule.
+`research/strategies/nasdaq-leveraged-trend/bot-synthetic.toml` runs the same strategy over the long
 history with a synthetic 3x series.
 
 ## Trend plus leverage

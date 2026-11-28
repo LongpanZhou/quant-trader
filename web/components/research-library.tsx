@@ -20,7 +20,7 @@ export function ResearchLibrary() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch("/data/research/rebuild.json?v=2026-11-28-44c")
+    fetch("/data/research/rebuild.json?v=2026-11-28-47")
       .then((response) => {
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         return response.json() as Promise<Payload>;
@@ -32,7 +32,7 @@ export function ResearchLibrary() {
   const strategies = useMemo(() => data?.strategies ?? [], [data]);
 
   if (error) {
-    return <div className="panel p-6 text-[12px] text-rose-200">Could not load research data: {error}</div>;
+    return <div className="panel p-6 text-[12px] text-rose-200">Could not load strategies: {error}</div>;
   }
 
   if (!data) {
@@ -57,7 +57,7 @@ export function ResearchLibrary() {
         {strategies.map((strategy) => (
           <a
             key={strategy.slug}
-            href={`/research/${strategy.slug}`}
+            href={`/strategies/${strategy.slug}`}
             className="group panel flex flex-col overflow-hidden transition hover:border-white/20"
           >
             <div className="h-[3px] w-full bg-gradient-to-r from-emerald-300/80 via-sky-300/60 to-transparent" />
@@ -75,7 +75,7 @@ export function ResearchLibrary() {
               </div>
               <div className="mt-4 flex items-center justify-between text-[10px] text-zinc-500">
                 <span>2016-2026  -  1 bp</span>
-                <span className="transition group-hover:text-zinc-200">Open research</span>
+                <span className="transition group-hover:text-zinc-200">Open</span>
               </div>
             </div>
           </a>

@@ -1,4 +1,4 @@
-# Research preset: the same rule over the full cycle.
+# Rust bot config: the same rule over the full cycle.
 #
 # TQQQ only exists from 2010, so `synthetic_symbol` replaces TQQQ before then
 # with a daily-reset 3x QQQ series (0.95%/yr fee, T-bill financing). From 2010

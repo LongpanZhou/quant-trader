@@ -20,7 +20,7 @@ effects.
 Run from the repo root (only when authorized):
 
     $env:PYTHONPATH = "C:\\Users\\27175\\AppData\\Local\\Temp\\opencode\\pylibs"
-    python research/revisit/ml-classifier/strategy.py
+    python research/strategies/ml-classifier/strategy.py
 """
 
 from __future__ import annotations

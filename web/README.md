@@ -36,7 +36,7 @@ cargo build --release
 
 ## Backtest lab
 
-- `/lab` — edit a preset's parameters, costs and benchmark, then run the Rust
+- `/lab` — edit an adjustable strategy's parameters, costs and benchmark, then run the Rust
   engine through `POST /api/backtest`.
 - `/lab/custom` — write a `decide(ctx)` function. The code is compiled and run
   in a browser Web Worker with a 30-second timeout; it never reaches the server.
@@ -56,7 +56,7 @@ Intraday windows are capped by Yahoo Finance:
 | 15 minutes | 59 calendar days |
 | 1 hour | 2 years |
 
-The preset lab stays daily: 165/200-day trend filters need several years of
+The adjustable-strategy lab stays daily: 165/200-day trend filters need several years of
 history. Intraday results are shown as window returns rather than annualised
 CAGR, because annualising a two-day sample is not meaningful.
 
@@ -110,7 +110,7 @@ prices. The S&P 500 variant uses real SSO prices.
 
 ## Add a strategy
 
-1. Add a config in `web/strategies/` (or use an existing preset).
+1. Add `research/strategies/<slug>/bot.toml` (the Rust bot config).
 2. Add its windows to `scripts/export-web-data.ps1` and run it.
 3. Add an entry to `public/data/strategies.json` with its slug, tags, windows
    and paper ids.

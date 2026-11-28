@@ -8,7 +8,7 @@ const REPO = "https://github.com/LongpanZhou/quant-trader";
 const LINKS = [
   { href: "/", label: "Home" },
   { href: "/compare", label: "All strategies" },
-  { href: "/research", label: "Research library" },
+  { href: "/strategies", label: "Strategy library" },
   { href: "/lab", label: "Backtest lab" },
 ];
 

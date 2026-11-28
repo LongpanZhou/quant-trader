@@ -23,7 +23,7 @@ never loaded.
 Run from the repository root:
     $env:PYTHONPATH = "C:\\Users\\27175\\AppData\\Local\\Temp\\opencode\\pylibs"
     $env:BT_THREADS = "1"
-    python research/new/family-ml-microstructure/strategy.py
+    python research/strategies/family-ml-microstructure/strategy.py
 """
 
 from __future__ import annotations

@@ -22,9 +22,9 @@ BACKTESTS ARE PAUSED (2026-11-26).  This file is the implementation of the spec
 in report.md; it has not been run.  When the lead authorises the test, run:
 
     $env:PYTHONPATH = "C:\\Users\\27175\\AppData\\Local\\Temp\\opencode\\pylibs"
-    python research/revisit/ml-crash-overlay-winner/strategy.py            # dev only
-    python research/revisit/ml-crash-overlay-winner/strategy.py --full     # lead only
-    python research/revisit/ml-crash-overlay-winner/strategy.py --neighbourhood
+    python research/strategies/ml-crash-overlay-winner/strategy.py            # dev only
+    python research/strategies/ml-crash-overlay-winner/strategy.py --full     # lead only
+    python research/strategies/ml-crash-overlay-winner/strategy.py --neighbourhood
 """
 from __future__ import annotations
 

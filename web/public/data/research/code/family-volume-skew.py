@@ -44,7 +44,7 @@ relative-strength input.  The only signal is volume asymmetry.
 Run:
     $env:PYTHONPATH = "C:\\Users\\27175\\AppData\\Local\\Temp\\opencode\\pylibs"
     $env:BT_THREADS = "1"
-    python research/new/family-volume-skew/strategy.py
+    python research/strategies/family-volume-skew/strategy.py
 """
 from __future__ import annotations
 
@@ -321,7 +321,7 @@ def main():
 
     out = {
         "strategy": "volume-asymmetry-fragility",
-        "directory": "research/new/family-volume-skew",
+        "directory": "research/strategies/family-volume-skew",
         "window": {
             "start": DEV_START, "end": DEV_END, "marks": "1min",
             "fills": "next-minute open, 2% band", "idle": "cash (0%)",

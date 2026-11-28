@@ -361,6 +361,26 @@
    "reason": "Low-overlap family added 2026-11-28. Full 24.04% CAGR / 65.72% DD / 0.68 Sharpe; 429 full fills. Max winner correlation 0.69, signal Jaccard 0.54. Holdout 25.90%.",
    "family": "gold-miner-stress",
    "visible": true
+  },
+  {
+   "slug": "nasdaq-leveraged-trend",
+   "name": "Nasdaq Leveraged Trend",
+   "tagline": "QQQ above its 165-day average: a QQQ/TQQQ blend sized to 40% volatility. Below it: T-bills.",
+   "summary": "Python port of the Rust bot's live rule. On each daily close, if QQQ is above its 165-day average the book holds a QQQ/TQQQ blend sized to a 40% annual volatility budget (20-day realised volatility, at most 3x); otherwise it holds BIL. Trades at the next open. Matches the Rust backtest with 0.998 daily-return correlation.",
+   "verdict": "Verified - trend/vol (Rust bot rule)",
+   "reason": "Same rule as bot.toml in this folder; the Python curve matches the Rust engine's curve on the same window. Below the TQQQ CAGR bar, with a much smaller drawdown.",
+   "family": "trend-vol",
+   "visible": true
+  },
+  {
+   "slug": "nasdaq-3x-simple",
+   "name": "Nasdaq 3x Simple Trend",
+   "tagline": "Hold TQQQ while QQQ is above its 200-day average; hold T-bills below it.",
+   "summary": "Python port of the Rust bot's simple 3x rule: no volatility target, full TQQQ in an uptrend, BIL otherwise. It shows what the volatility target in Nasdaq Leveraged Trend adds. Matches the Rust backtest with 0.9995 daily-return correlation.",
+   "verdict": "Verified - trend (Rust bot rule)",
+   "reason": "Same rule as bot.toml in this folder; the Python curve matches the Rust engine's curve on the same window. A deeper drawdown than the volatility-targeted version.",
+   "family": "trend-vol",
+   "visible": true
   }
  ],
  "visibility_note": "Website shows one verified above-TQQQ winner per family. Legacy above-bar names remain research records; non-performers are in the research archive."
