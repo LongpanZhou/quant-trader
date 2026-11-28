@@ -50,3 +50,33 @@ existing ten:
 Data are cached under `data/external/` from Yahoo daily adjusted series. The
 TQQQ execution panel remains the local 1-minute QQQ/TQQQ/BIL panel; signals use
 the prior external close and fill at the next QQQ open.
+
+
+## Final replacement results
+
+The ten overlaps were replaced by these external-data families. Metrics are
+full 2016-2026 daily-close; the one-shot 2024-2026 holdout is included.
+
+| Replacement | Full CAGR | Full DD | Sharpe | Fills | Bar |
+|---|---:|---:|---:|---:|:--:|
+| ix-term-structure | 38.68% | 65.45% | 0.94 | 241 | above |
+| credit-spread | 33.17% | 77.46% | 0.85 | 183 | below |
+| sector-rotation | 29.86% | 48.79% | 0.94 | 719 | below |
+| readth | 34.21% | 64.66% | 0.94 | 743 | below |
+| crypto-risk-appetite | 46.50% | 52.33% | 1.19 | 293 | above |
+| small-cap-relative | 47.02% | 78.08% | 1.01 | 511 | above |
+| international-relative | 48.44% | 60.93% | 1.06 | 359 | above |
+| 
+ates-volatility | 38.80% | 43.01% | 1.05 | 355 | above |
+| copper-gold | 28.60% | 73.53% | 0.76 | 347 | below |
+| energy-rotation | 36.48% | 72.74% | 0.90 | 447 | below |
+
+Kept from the original additions: tail-hedge, close-location,
+policy-liquidity, volume-skew, vol-of-volume, change-point, Hurst,
+TQQQ-decay, realized-skew and beta-rotation.
+
+**Residual caveat:** close-location still correlates 0.79 with
+amily-short-reversal, and tail-hedge 0.85 with ol-scaled-crash-stop.
+They are retained because they are the only two candidates that beat
+
+atio-froth on full CAGR; removing them would remove the ratio-froth result.
