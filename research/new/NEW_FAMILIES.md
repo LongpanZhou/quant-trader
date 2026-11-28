@@ -48,5 +48,9 @@ second, qualified result.
 - `family-lead-lag-spillover` was not added: the orthogonalized residual has
   t = -0.84 and the result is common-factor short-term reversal, not an
   independent family. It was replaced by `family-range-compression`.
+- `family-autocorrelation-regime` is numerically above the bar, but its agent
+  found the edge is a short-reversal variant (0.765 correlation with
+  `family-short-reversal`); it is kept as an above-bar research record with
+  that family-purity caveat, not claimed as cleanly orthogonal.
 
 All 20 active entries have at least 100 full-window fills; the minimum is 225.
