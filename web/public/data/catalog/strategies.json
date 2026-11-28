@@ -142,34 +142,6 @@
    "provenanceCount": 0
   },
   {
-   "id": "research:family-policy-liquidity",
-   "slug": "family-policy-liquidity",
-   "kind": "research",
-   "name": "Policy liquidity",
-   "group": "Strategy",
-   "status": "Strategy",
-   "tagline": "Short-rate/T-bill liquidity regime",
-   "summary": "The pass is not clean. The 2022-2023 subperiod is -2.99% CAGR with a 74.37% drawdown; the max drawdown is only 5.6 pp better than TQQQ; 2020 and 2022 together contribute more than 100% of the net log excess; the 2020 P&L is a single-event outcome; and the off-run hit rate is only 20% (the edge is a few large crisis exits, not a consistent timing rule). The strategy is a short-rate liquidity-stress overlay, not an all-weather policy-liquidity regime. It should go to a one-shot holdout only as a crisis-alpha candidate, not be promoted on development alone.",
-   "window": "2016-2026",
-   "cagr": 0.5613161552124286,
-   "dd": 0.7522583618426831,
-   "sharpe": 1.072500865150404,
-   "metrics": {
-    "cagr10": 0.5613161552124286,
-    "dd10": 0.7522583618426831,
-    "cagr5": 0.5613161552124286,
-    "dd5": 0.7522583618426831
-   },
-   "href": "/research/family-policy-liquidity",
-   "runnable": false,
-   "accent": "#9ae6a5",
-   "tags": [
-    "2016-2026"
-   ],
-   "papersCount": 0,
-   "provenanceCount": 0
-  },
-  {
    "id": "research:fomc-opex-window",
    "slug": "fomc-opex-window",
    "kind": "research",
@@ -674,34 +646,6 @@
    "provenanceCount": 0
   },
   {
-   "id": "research:family-vix-term-structure",
-   "slug": "family-vix-term-structure",
-   "kind": "research",
-   "name": "VIX term structure",
-   "group": "Strategy",
-   "status": "Strategy",
-   "tagline": "Implied-vol curve contango/backwardation",
-   "summary": "The pass is not clean. The 2022 calendar year is -55.9%; the max drawdown is a 63.3% peak-to-trough fall from 2021-11-19 to 2022-06-16 on session-end marks (65.45% intraday). The term-structure signal did not anticipate the slow 2022 bear market: it reacted to vol spikes, re-entered on calm, and was whipsawed through the H1 2022 bear rallies. The edge is a handful of large regime calls (2018, 2020, 2022 relative), not a consistent monthly timing rule. It should go to a one-shot holdout only as a diversifying regime overlay, not as a crash shield.",
-   "window": "2016-2026",
-   "cagr": 0.3867835998333937,
-   "dd": 0.6330069679946597,
-   "sharpe": 0.9251152281267017,
-   "metrics": {
-    "cagr10": 0.3867835998333937,
-    "dd10": 0.6330069679946597,
-    "cagr5": 0.3867835998333937,
-    "dd5": 0.6330069679946597
-   },
-   "href": "/research/family-vix-term-structure",
-   "runnable": false,
-   "accent": "#9ae6a5",
-   "tags": [
-    "2016-2026"
-   ],
-   "papersCount": 0,
-   "provenanceCount": 0
-  },
-  {
    "id": "research:family-style-rotation",
    "slug": "family-style-rotation",
    "kind": "research",
@@ -842,25 +786,25 @@
    "provenanceCount": 0
   },
   {
-   "id": "research:family-credit-spread",
-   "slug": "family-credit-spread",
+   "id": "research:family-financials-rotation",
+   "slug": "family-financials-rotation",
    "kind": "research",
-   "name": "Credit risk appetite",
+   "name": "Financials rotation",
    "group": "Strategy",
    "status": "Strategy",
-   "tagline": "HYG/IEF credit-spread impulse",
-   "summary": "This is a clean negative result, not a dead strategy. The mechanism is rejected.",
+   "tagline": "XLF/XLK financials-vs-tech leadership",
+   "summary": "External financials-rotation family; full-window holdout.",
    "window": "2016-2026",
-   "cagr": 0.3316865588782594,
-   "dd": 0.7643857264814112,
-   "sharpe": 0.8400148987192493,
+   "cagr": 0.3360082702948668,
+   "dd": 0.5392569079845981,
+   "sharpe": 0.8953409885502899,
    "metrics": {
-    "cagr10": 0.3316865588782594,
-    "dd10": 0.7643857264814112,
-    "cagr5": 0.3316865588782594,
-    "dd5": 0.7643857264814112
+    "cagr10": 0.3360082702948668,
+    "dd10": 0.5392569079845981,
+    "cagr5": 0.3360082702948668,
+    "dd5": 0.5392569079845981
    },
-   "href": "/research/family-credit-spread",
+   "href": "/research/family-financials-rotation",
    "runnable": false,
    "accent": "#9ae6a5",
    "tags": [
@@ -898,6 +842,34 @@
    "provenanceCount": 0
   },
   {
+   "id": "research:family-retail-rotation",
+   "slug": "family-retail-rotation",
+   "kind": "research",
+   "name": "Retail rotation",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "XRT/SPY consumer leadership",
+   "summary": "External retail-rotation family; full-window holdout.",
+   "window": "2016-2026",
+   "cagr": 0.278195382237278,
+   "dd": 0.5521812613789022,
+   "sharpe": 0.8990940312943363,
+   "metrics": {
+    "cagr10": 0.278195382237278,
+    "dd10": 0.5521812613789022,
+    "cagr5": 0.278195382237278,
+    "dd5": 0.5521812613789022
+   },
+   "href": "/research/family-retail-rotation",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
    "id": "research:intraday-seasonality",
    "slug": "intraday-seasonality",
    "kind": "research",
@@ -917,6 +889,34 @@
     "dd5": 0.39236922880122205
    },
    "href": "/research/intraday-seasonality",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
+   "id": "research:family-homebuilder-rotation",
+   "slug": "family-homebuilder-rotation",
+   "kind": "research",
+   "name": "Homebuilder rotation",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "XHB/SPY housing-cycle leadership",
+   "summary": "External homebuilder-rotation family; full-window holdout.",
+   "window": "2016-2026",
+   "cagr": 0.2497474041962453,
+   "dd": 0.5888929037439536,
+   "sharpe": 0.7512867222586379,
+   "metrics": {
+    "cagr10": 0.2497474041962453,
+    "dd10": 0.5888929037439536,
+    "cagr5": 0.2497474041962453,
+    "dd5": 0.5888929037439536
+   },
+   "href": "/research/family-homebuilder-rotation",
    "runnable": false,
    "accent": "#9ae6a5",
    "tags": [

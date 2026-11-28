@@ -20,13 +20,13 @@ import bt  # noqa: E402
 import run_holdout as R  # noqa: E402
 
 NEW_SLUGS = [
-    "family-close-location", "family-policy-liquidity", "family-volume-skew",
-    "family-vol-of-volume", "family-change-point", "family-hurst-persistence",
-    "family-tqqq-decay", "family-realized-skew", "family-beta-rotation",
-    "family-vix-term-structure", "family-credit-spread", "family-sector-rotation",
+    "family-close-location", "family-volume-skew", "family-vol-of-volume",
+    "family-change-point", "family-hurst-persistence", "family-tqqq-decay",
+    "family-realized-skew", "family-beta-rotation", "family-sector-rotation",
     "family-breadth", "family-crypto-risk-appetite", "family-rates-volatility",
     "family-energy-rotation", "family-oil-shock", "family-style-rotation",
-    "family-yen-carry", "family-lowvol-rotation",
+    "family-yen-carry", "family-lowvol-rotation", "family-homebuilder-rotation",
+    "family-financials-rotation", "family-retail-rotation",
 ]
 EXISTING = [
     "ratio-froth", "vol-scaled-crash-stop", "relative-value-tqqq",

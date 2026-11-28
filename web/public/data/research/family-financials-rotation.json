@@ -1,0 +1,50 @@
+{
+ "slug": "family-financials-rotation",
+ "name": "Financials rotation",
+ "tagline": "XLF/XLK financials-vs-tech leadership",
+ "summary": "External financials-rotation family; full-window holdout.",
+ "metrics": {
+  "cagr": 0.3360082702948668,
+  "dd": 0.5392569079845981,
+  "sharpe": 0.8953409885502899
+ },
+ "status": "verified-full",
+ "assessment": {
+  "verdict": "Verified - external family",
+  "reason": "External family added 2026-11-28. Full 33.60% CAGR / 53.93% DD / 0.90 Sharpe; 333 full fills."
+ },
+ "paths": {
+  "report": "research/new/family-financials-rotation/report.md",
+  "hypothesis": "research/new/family-financials-rotation/HYPOTHESIS.md",
+  "spec": null,
+  "provenance": null,
+  "code": "research/new/family-financials-rotation/strategy.py",
+  "code_public": "/data/research/code/family-financials-rotation.py"
+ },
+ "extracted": {
+  "hypothesis": false,
+  "spec": true,
+  "provenance": true
+ },
+ "decision": "External financials-rotation family; full-window holdout.",
+ "rules": [],
+ "papers": [],
+ "provenance_cards": [
+  {
+   "idea": "quant-trader research program",
+   "source": "Own test",
+   "url": null,
+   "source_type": "Own test",
+   "role": "own test",
+   "role_detail": "",
+   "evidence": "Pre-registered development test on 2016-2023 and a one-shot 2024-2026 holdout; implementation and results are in report.md and strategy.py.",
+   "confidence": ""
+  }
+ ],
+ "rejected_sources": [],
+ "report_md": "# Financials rotation — report\n\n**Dev:** 29.45% CAGR / 48.24% DD / 0.84 Sharpe.  \n**Full:** 33.60% CAGR / 53.93% DD / 0.90 Sharpe; 333 fills.\n\nHold TQQQ when financials (XLF) lead technology (XLK) over 60 sessions; otherwise BIL.\n\n**Caveat:** below the TQQQ bar; retained as an active, low-overlap research family.\n",
+ "hypothesis_md": "# Financials rotation\n\n**Slug:** `family-financials-rotation`  \n**Family:** financials-rotation  \n**Window:** 2016-01-04 .. 2023-12-29 development; full holdout 2024-2026.\n\n## Claim\n\nHold TQQQ when financials (XLF) lead technology (XLK) over 60 sessions; otherwise BIL.\n\n## Rules\n\nSignal at the close; fill next QQQ/TQQQ open; long-only TQQQ/BIL, 2% band, 1 bp headline. No trend/vol/calendar/opening-range/ML gate.\n\n## Falsifiers\n\n- Dev CAGR <=5% or fewer than 100 full fills.\n- No positive plateau.\n- Jaccard overlap >0.70 with an existing winner.\n",
+ "spec_md": "## Rules\n\nSignal at the close; fill next QQQ/TQQQ open; long-only TQQQ/BIL, 2% band, 1 bp headline. No trend/vol/calendar/opening-range/ML gate.",
+ "provenance_md": "## Own test\n\n- **quant-trader research program** - Pre-registered development test on 2016-2023 and a one-shot 2024-2026 holdout; implementation and results are in `report.md` and `strategy.py`.",
+ "code": "\"\"\"financials sector family.\"\"\"\nfrom __future__ import annotations\nimport sys\nfrom pathlib import Path\nsys.path.insert(0, str(Path(__file__).resolve().parents[1]))\nimport ext_sector\n\ndef build_weights(ts, opens, closes):\n    return ext_sector.make_weights(ts, opens, closes, \"financials\")\n\nif __name__ == \"__main__\":\n    ext_sector.run_main(\"financials\")\n"
+}

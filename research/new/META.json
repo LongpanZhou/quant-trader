@@ -163,16 +163,6 @@
    "visible": true
   },
   {
-   "slug": "family-policy-liquidity",
-   "name": "Policy liquidity",
-   "tagline": "Short-rate/T-bill liquidity regime",
-   "summary": "The pass is not clean. The 2022-2023 subperiod is -2.99% CAGR with a 74.37% drawdown; the max drawdown is only 5.6 pp better than TQQQ; 2020 and 2022 together contribute more than 100% of the net log excess; the 2020 P&L is a single-event outcome; and the off-run hit rate is only 20% (the edge is a few large crisis exits, not a consistent timing rule). The strategy is a short-rate liquidity-stress overlay, not an all-weather policy-liquidity regime. It should go to a one-shot holdout only as a crisis-alpha candidate, not be promoted on development alone.",
-   "verdict": "Verified - new family",
-   "reason": "Full 56.13% CAGR / 75.23% DD / 1.07 Sharpe; 439 fills; above the TQQQ bar.",
-   "family": "policy-liquidity",
-   "visible": true
-  },
-  {
    "slug": "family-vol-of-volume",
    "name": "Volatility of volume",
    "tagline": "Volume-dispersion state",
@@ -240,26 +230,6 @@
    "verdict": "Verified - new family, below bar",
    "reason": "Full 34.39% CAGR / 46.36% DD / 1.03 Sharpe; 2,124 fills; independent volume-asymmetry signal.",
    "family": "volume-skew",
-   "visible": true
-  },
-  {
-   "slug": "family-vix-term-structure",
-   "name": "VIX term structure",
-   "tagline": "Implied-vol curve contango/backwardation",
-   "summary": "The pass is not clean. The 2022 calendar year is -55.9%; the max drawdown is a 63.3% peak-to-trough fall from 2021-11-19 to 2022-06-16 on session-end marks (65.45% intraday). The term-structure signal did not anticipate the slow 2022 bear market: it reacted to vol spikes, re-entered on calm, and was whipsawed through the H1 2022 bear rallies. The edge is a handful of large regime calls (2018, 2020, 2022 relative), not a consistent monthly timing rule. It should go to a one-shot holdout only as a diversifying regime overlay, not as a crash shield.",
-   "verdict": "Verified - new external family",
-   "reason": "Full 38.68% CAGR / 63.30% DD / 0.93 Sharpe; 241 fills; above the TQQQ bar.",
-   "family": "vix-term-structure",
-   "visible": true
-  },
-  {
-   "slug": "family-credit-spread",
-   "name": "Credit risk appetite",
-   "tagline": "HYG/IEF credit-spread impulse",
-   "summary": "This is a clean negative result, not a dead strategy. The mechanism is rejected.",
-   "verdict": "Verified - new external family",
-   "reason": "Full 33.17% CAGR / 76.44% DD / 0.84 Sharpe; 183 fills; below the TQQQ bar.",
-   "family": "credit-spread",
    "visible": true
   },
   {
@@ -350,6 +320,36 @@
    "verdict": "Verified - external family",
    "reason": "External family added 2026-11-28. Full 13.31% CAGR / 70.95% DD / 0.51 Sharpe; 295 full fills.",
    "family": "lowvol-rotation",
+   "visible": true
+  },
+  {
+   "slug": "family-homebuilder-rotation",
+   "name": "Homebuilder rotation",
+   "tagline": "XHB/SPY housing-cycle leadership",
+   "summary": "External homebuilder-rotation family; full-window holdout.",
+   "verdict": "Verified - external family",
+   "reason": "External family added 2026-11-28. Full 24.97% CAGR / 58.89% DD / 0.75 Sharpe; 333 full fills.",
+   "family": "homebuilder-rotation",
+   "visible": true
+  },
+  {
+   "slug": "family-financials-rotation",
+   "name": "Financials rotation",
+   "tagline": "XLF/XLK financials-vs-tech leadership",
+   "summary": "External financials-rotation family; full-window holdout.",
+   "verdict": "Verified - external family",
+   "reason": "External family added 2026-11-28. Full 33.60% CAGR / 53.93% DD / 0.90 Sharpe; 333 full fills.",
+   "family": "financials-rotation",
+   "visible": true
+  },
+  {
+   "slug": "family-retail-rotation",
+   "name": "Retail rotation",
+   "tagline": "XRT/SPY consumer leadership",
+   "summary": "External retail-rotation family; full-window holdout.",
+   "verdict": "Verified - external family",
+   "reason": "External family added 2026-11-28. Full 27.82% CAGR / 55.22% DD / 0.90 Sharpe; 329 full fills.",
+   "family": "retail-rotation",
    "visible": true
   }
  ],

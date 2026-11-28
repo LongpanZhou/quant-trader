@@ -1,0 +1,68 @@
+{
+ "slug": "family-financials-rotation",
+ "family": "financials-rotation",
+ "idea": "financials sector/commodity gate",
+ "window": {
+  "dev": [
+   "2016-01-04",
+   "2023-12-29"
+  ],
+  "holdout": "not loaded"
+ },
+ "params": {
+  "look": 60,
+  "symbols": [
+   "XLF",
+   "XLK"
+  ]
+ },
+ "info": {
+  "params": {
+   "look": 60,
+   "symbols": [
+    "XLF",
+    "XLK"
+   ]
+  },
+  "tqqq_exposure": 0.3643141153081511,
+  "switches": 116
+ },
+ "dev": {
+  "1bp": {
+   "cagr": 0.294456846872446,
+   "max_drawdown": 0.4842565330400741,
+   "sharpe": 0.8648066628855162,
+   "sortino": 1.2457168993509764,
+   "volatility": 0.3851450437292967,
+   "exposure": 0.9995012022305213,
+   "turnover": 811.8644962164384,
+   "fills": 233.0,
+   "ending_equity": 785131.2101865096,
+   "years": 7.984312495246787
+  },
+  "5bp": {
+   "cagr": 0.2794346592613024,
+   "max_drawdown": 0.4850810628726455,
+   "sharpe": 0.8344493318550174,
+   "sortino": 1.201212558196363,
+   "volatility": 0.38509951518001717,
+   "exposure": 0.9995012022305213,
+   "turnover": 762.7538799870108,
+   "fills": 233.0,
+   "ending_equity": 715263.4675608103,
+   "years": 7.984312495246787
+  },
+  "10bp": {
+   "cagr": 0.2609018691647491,
+   "max_drawdown": 0.4861098721947802,
+   "sharpe": 0.7964559871358062,
+   "sortino": 1.145605807213744,
+   "volatility": 0.38507684361041167,
+   "exposure": 0.9995012022305213,
+   "turnover": 706.1052628748598,
+   "fills": 233.0,
+   "ending_equity": 636606.2088617446,
+   "years": 7.984312495246787
+  }
+ }
+}

@@ -10,16 +10,6 @@
   "overlap_against": "family-short-reversal"
  },
  {
-  "new": "family-policy-liquidity",
-  "max_corr": 0.8573357913377074,
-  "corr_against": "relative-value-tqqq",
-  "max_alpha": 0.2592118930492803,
-  "alpha_t": 1.8429669899575218,
-  "alpha_against": "family-intraday-microstructure-day",
-  "max_jaccard": 0.8732864023712487,
-  "overlap_against": "family-session-timing"
- },
- {
   "new": "family-volume-skew",
   "max_corr": 0.5053820503799222,
   "corr_against": "family-rebalance-flow",
@@ -87,26 +77,6 @@
   "alpha_t": 1.6198834449655526,
   "alpha_against": "family-intraday-microstructure-day",
   "max_jaccard": 0.27276105536975104,
-  "overlap_against": "family-session-timing"
- },
- {
-  "new": "family-vix-term-structure",
-  "max_corr": 0.7533057029805881,
-  "corr_against": "family-rebalance-flow",
-  "max_alpha": 0.20145719912911053,
-  "alpha_t": 1.5669268228719735,
-  "alpha_against": "family-intraday-microstructure-day",
-  "max_jaccard": 0.8057527082555099,
-  "overlap_against": "family-session-timing"
- },
- {
-  "new": "family-credit-spread",
-  "max_corr": 0.758852624755768,
-  "corr_against": "family-rebalance-flow",
-  "max_alpha": 0.17778864534360822,
-  "alpha_t": 1.354089410355273,
-  "alpha_against": "family-intraday-microstructure-day",
-  "max_jaccard": 0.7326362957430919,
   "overlap_against": "family-session-timing"
  },
  {
@@ -197,6 +167,36 @@
   "alpha_t": -1.427913048024592,
   "alpha_against": "family-short-reversal",
   "max_jaccard": 0.5161883738042679,
+  "overlap_against": "family-session-timing"
+ },
+ {
+  "new": "family-homebuilder-rotation",
+  "max_corr": 0.6424652712443341,
+  "corr_against": "relative-value-tqqq",
+  "max_alpha": 0.13042579376348776,
+  "alpha_t": 1.1415488420391953,
+  "alpha_against": "family-intraday-microstructure-day",
+  "max_jaccard": 0.4921583271097834,
+  "overlap_against": "family-session-timing"
+ },
+ {
+  "new": "family-financials-rotation",
+  "max_corr": 0.6100915198802253,
+  "corr_against": "family-short-reversal",
+  "max_alpha": 0.19158708158280066,
+  "alpha_t": 1.554394011866359,
+  "alpha_against": "ratio-froth",
+  "max_jaccard": 0.4000744324525493,
+  "overlap_against": "family-session-timing"
+ },
+ {
+  "new": "family-retail-rotation",
+  "max_corr": 0.5656372685605578,
+  "corr_against": "relative-value-tqqq",
+  "max_alpha": 0.18072622964107857,
+  "alpha_t": 1.8688823811849065,
+  "alpha_against": "family-intraday-microstructure-day",
+  "max_jaccard": 0.3705640642510273,
   "overlap_against": "family-session-timing"
  }
 ]

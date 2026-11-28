@@ -1127,30 +1127,6 @@
    "source": "research/new/family-close-location/report.md"
   },
   {
-   "slug": "family-policy-liquidity",
-   "name": "Policy liquidity",
-   "family": "policy-liquidity",
-   "tagline": "Short-rate/T-bill liquidity regime",
-   "summary": "The pass is not clean. The 2022-2023 subperiod is -2.99% CAGR with a 74.37% drawdown; the max drawdown is only 5.6 pp better than TQQQ; 2020 and 2022 together contribute more than 100% of the net log excess; the 2020 P&L is a single-event outcome; and the off-run hit rate is only 20% (the edge is a few large crisis exits, not a consistent timing rule). The strategy is a short-rate liquidity-stress overlay, not an all-weather policy-liquidity regime. It should go to a one-shot holdout only as a crisis-alpha candidate, not be promoted on development alone.",
-   "dev": {
-    "cagr": 0.5777400014048153,
-    "max_dd": 0.7522583618426831,
-    "sharpe": 1.1045244667327132
-   },
-   "full": {
-    "cagr": 0.5613161552124286,
-    "max_dd": 0.7522583618426831,
-    "sharpe": 1.072500865150404
-   },
-   "above_tqqq": true,
-   "dev_above_tqqq": null,
-   "status": "verified-full",
-   "visible": true,
-   "family_winner": true,
-   "note": "New family added 2026-11-28. Full 56.13% CAGR / 75.23% DD / 1.07 Sharpe; 439 full fills. One-shot 2024-2026 holdout. ",
-   "source": "research/new/family-policy-liquidity/report.md"
-  },
-  {
    "slug": "family-vol-of-volume",
    "name": "Volatility of volume",
    "family": "vol-of-volume",
@@ -1317,54 +1293,6 @@
    "family_winner": false,
    "note": "New family added 2026-11-28. Full 34.39% CAGR / 46.36% DD / 1.03 Sharpe; 2,124 full fills. Max correlation with existing winners 0.51.",
    "source": "research/new/family-volume-skew/report.md"
-  },
-  {
-   "slug": "family-vix-term-structure",
-   "name": "VIX term structure",
-   "family": "vix-term-structure",
-   "tagline": "Implied-vol curve contango/backwardation",
-   "summary": "The pass is not clean. The 2022 calendar year is -55.9%; the max drawdown is a 63.3% peak-to-trough fall from 2021-11-19 to 2022-06-16 on session-end marks (65.45% intraday). The term-structure signal did not anticipate the slow 2022 bear market: it reacted to vol spikes, re-entered on calm, and was whipsawed through the H1 2022 bear rallies. The edge is a handful of large regime calls (2018, 2020, 2022 relative), not a consistent monthly timing rule. It should go to a one-shot holdout only as a diversifying regime overlay, not as a crash shield.",
-   "dev": {
-    "cagr": 0.4863054408777918,
-    "max_dd": 0.6330069679946597,
-    "sharpe": 1.064533379154432
-   },
-   "full": {
-    "cagr": 0.3867835998333937,
-    "max_dd": 0.6330069679946597,
-    "sharpe": 0.9251152281267017
-   },
-   "above_tqqq": true,
-   "dev_above_tqqq": null,
-   "status": "verified-full",
-   "visible": true,
-   "family_winner": true,
-   "note": "External-data family added 2026-11-28. Full 38.68% CAGR / 63.30% DD / 0.93 Sharpe; 241 full fills. One-shot 2024-2026 holdout.",
-   "source": "research/new/family-vix-term-structure/report.md"
-  },
-  {
-   "slug": "family-credit-spread",
-   "name": "Credit risk appetite",
-   "family": "credit-spread",
-   "tagline": "HYG/IEF credit-spread impulse",
-   "summary": "This is a clean negative result, not a dead strategy. The mechanism is rejected.",
-   "dev": {
-    "cagr": 0.2907255993865474,
-    "max_dd": 0.7643857264814112,
-    "sharpe": 0.7722116805838413
-   },
-   "full": {
-    "cagr": 0.3316865588782594,
-    "max_dd": 0.7643857264814112,
-    "sharpe": 0.8400148987192493
-   },
-   "above_tqqq": false,
-   "dev_above_tqqq": null,
-   "status": "verified-full",
-   "visible": true,
-   "family_winner": false,
-   "note": "External-data family added 2026-11-28. Full 33.17% CAGR / 76.44% DD / 0.84 Sharpe; 183 full fills. One-shot 2024-2026 holdout.",
-   "source": "research/new/family-credit-spread/report.md"
   },
   {
    "slug": "family-sector-rotation",
@@ -1581,6 +1509,78 @@
    "family_winner": false,
    "note": "External family added 2026-11-28. Full 13.31% CAGR / 70.95% DD / 0.51 Sharpe; 295 full fills.",
    "source": "research/new/family-lowvol-rotation/report.md"
+  },
+  {
+   "slug": "family-homebuilder-rotation",
+   "name": "Homebuilder rotation",
+   "family": "homebuilder-rotation",
+   "tagline": "XHB/SPY housing-cycle leadership",
+   "summary": "External homebuilder-rotation family; full-window holdout.",
+   "dev": {
+    "cagr": 0.3017182323227403,
+    "max_dd": 0.5888929037439536,
+    "sharpe": 0.8297698054804087
+   },
+   "full": {
+    "cagr": 0.2497474041962453,
+    "max_dd": 0.5888929037439536,
+    "sharpe": 0.7512867222586379
+   },
+   "above_tqqq": false,
+   "dev_above_tqqq": null,
+   "status": "verified-full",
+   "visible": true,
+   "family_winner": false,
+   "note": "External family added 2026-11-28. Full 24.97% CAGR / 58.89% DD / 0.75 Sharpe; 333 full fills.",
+   "source": "research/new/family-homebuilder-rotation/report.md"
+  },
+  {
+   "slug": "family-financials-rotation",
+   "name": "Financials rotation",
+   "family": "financials-rotation",
+   "tagline": "XLF/XLK financials-vs-tech leadership",
+   "summary": "External financials-rotation family; full-window holdout.",
+   "dev": {
+    "cagr": 0.29448779721986096,
+    "max_dd": 0.48236652498434607,
+    "sharpe": 0.8438257570564239
+   },
+   "full": {
+    "cagr": 0.3360082702948668,
+    "max_dd": 0.5392569079845981,
+    "sharpe": 0.8953409885502899
+   },
+   "above_tqqq": false,
+   "dev_above_tqqq": null,
+   "status": "verified-full",
+   "visible": true,
+   "family_winner": false,
+   "note": "External family added 2026-11-28. Full 33.60% CAGR / 53.93% DD / 0.90 Sharpe; 333 full fills.",
+   "source": "research/new/family-financials-rotation/report.md"
+  },
+  {
+   "slug": "family-retail-rotation",
+   "name": "Retail rotation",
+   "family": "retail-rotation",
+   "tagline": "XRT/SPY consumer leadership",
+   "summary": "External retail-rotation family; full-window holdout.",
+   "dev": {
+    "cagr": 0.23113472306834004,
+    "max_dd": 0.5521812613789022,
+    "sharpe": 0.7691811782562867
+   },
+   "full": {
+    "cagr": 0.278195382237278,
+    "max_dd": 0.5521812613789022,
+    "sharpe": 0.8990940312943363
+   },
+   "above_tqqq": false,
+   "dev_above_tqqq": null,
+   "status": "verified-full",
+   "visible": true,
+   "family_winner": false,
+   "note": "External family added 2026-11-28. Full 27.82% CAGR / 55.22% DD / 0.90 Sharpe; 329 full fills.",
+   "source": "research/new/family-retail-rotation/report.md"
   }
  ],
  "winner_policy": "One verified-full above-TQQQ winner per family, selected by full-window CAGR. ratio-froth and vol-scaled-crash-stop are now verified-full via clean reruns and audits; the previous fast-trend-vol / vol-term-structure remain verified research records but are not family winners."

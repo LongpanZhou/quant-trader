@@ -46,7 +46,7 @@ export function ResearchLabBrowser({
   }, [initialSlug]);
 
   useEffect(() => {
-    fetch("/data/research/strategies.json?v=2026-11-28-43s", { cache: "no-store" })
+    fetch("/data/research/strategies.json?v=2026-11-28-43f", { cache: "no-store" })
       .then((response) => {
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         return response.json() as Promise<Payload>;

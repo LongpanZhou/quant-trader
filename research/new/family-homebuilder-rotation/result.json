@@ -1,0 +1,68 @@
+{
+ "slug": "family-homebuilder-rotation",
+ "family": "homebuilder-rotation",
+ "idea": "homebuilder sector/commodity gate",
+ "window": {
+  "dev": [
+   "2016-01-04",
+   "2023-12-29"
+  ],
+  "holdout": "not loaded"
+ },
+ "params": {
+  "look": 60,
+  "symbols": [
+   "XHB",
+   "SPY"
+  ]
+ },
+ "info": {
+  "params": {
+   "look": 60,
+   "symbols": [
+    "XHB",
+    "SPY"
+   ]
+  },
+  "tqqq_exposure": 0.5213717693836978,
+  "switches": 129
+ },
+ "dev": {
+  "1bp": {
+   "cagr": 0.3016864374825261,
+   "max_drawdown": 0.5942625716113759,
+   "sharpe": 0.838828418926106,
+   "sortino": 1.177580105404796,
+   "volatility": 0.42228650621224906,
+   "exposure": 0.9995012022305213,
+   "turnover": 1185.0723911605253,
+   "fills": 259.0,
+   "ending_equity": 820832.832812465,
+   "years": 7.984312495246787
+  },
+  "5bp": {
+   "cagr": 0.2849056004982171,
+   "max_drawdown": 0.5974955223273054,
+   "sharpe": 0.8080089703449321,
+   "sortino": 1.1334260060401136,
+   "volatility": 0.422286302193021,
+   "exposure": 0.9995012022305213,
+   "turnover": 1109.1369099964215,
+   "fills": 259.0,
+   "ending_equity": 740051.3560820537,
+   "years": 7.984312495246787
+  },
+  "10bp": {
+   "cagr": 0.2642334693770281,
+   "max_drawdown": 0.6015005111214347,
+   "sharpe": 0.7694563003068116,
+   "sortino": 1.078288935443862,
+   "volatility": 0.42232059764655605,
+   "exposure": 0.9995012022305213,
+   "turnover": 1021.865769491868,
+   "fills": 259.0,
+   "ending_equity": 650160.9082186263,
+   "years": 7.984312495246787
+  }
+ }
+}
