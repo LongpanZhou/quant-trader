@@ -122,6 +122,16 @@ def main() -> None:
         "slug": SLUG,
         "family": FAMILY,
         "primary_object": PRIMARY_OBJECT,
+        "status": "passed" if (st["cagr"] > ca.TQQQ_BAR_CAGR
+                              and st["max_drawdown"] < ca.TQQQ_BAR_DD) else "negative_result",
+        "passed": bool(st["cagr"] > ca.TQQQ_BAR_CAGR
+                       and st["max_drawdown"] < ca.TQQQ_BAR_DD),
+        "exploratory": True,
+        "exploratory_reason": (
+            "The primary cell was chosen after daily-bar diagnostics on the "
+            "development window; the 8-cell grid is a robustness probe, not a "
+            "clean out-of-sample pre-registration."
+        ),
         "hypothesis": (
             "Emerging-market leadership relative to large-cap Nasdaq is a "
             "global risk-on signal. When EEM's 60-session total return is not "

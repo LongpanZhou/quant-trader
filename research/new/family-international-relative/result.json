@@ -2,6 +2,10 @@
   "slug": "family-international-relative",
   "family": "international-relative",
   "primary_object": "EEM/QQQ 60-session relative total-return z-score",
+  "status": "passed",
+  "passed": true,
+  "exploratory": true,
+  "exploratory_reason": "The primary cell was chosen after daily-bar diagnostics on the development window; the 8-cell grid is a robustness probe, not a clean out-of-sample pre-registration.",
   "hypothesis": "Emerging-market leadership relative to large-cap Nasdaq is a global risk-on signal. When EEM's 60-session total return is not more than half a standard deviation below QQQ's, hold TQQQ; when the spread breaks down, rotate to large-cap defensive QQQ (or BIL on a severe break).",
   "universe": [
     "TQQQ",
@@ -684,6 +688,14 @@
     "negative_subperiod": false,
     "static_blend_matches": false
   },
+  "cut_tests": [
+    {
+      "cut": "2020-03-12 11:07",
+      "bars_checked": 409460,
+      "max_abs_weight_diff": 0.0,
+      "pass": true
+    }
+  ],
   "verdict": "dev_pass",
   "notes": [
     "Both legs use total-return adjusted closes through session k; the target is written at k's 15:59 close and filled at k+1's open.",

@@ -341,6 +341,13 @@
    "pass": 25
   }
  },
+ "trend_control": {
+  "name": "QQQ 20/60 momentum, same binary risk-on map",
+  "cagr": 0.286446321416443,
+  "max_drawdown": 0.6432240231151095,
+  "sharpe": 0.8717648741179002,
+  "corr_to_strategy": 0.5824783382220813
+ },
  "kill_checks": {
   "cagr_below_tqqq_bar": false,
   "drawdown_above_tqqq": false,

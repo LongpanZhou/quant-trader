@@ -16,13 +16,20 @@ ROOT = Path(__file__).resolve().parents[1]
 EXT = ROOT / "data" / "external"
 
 
-def load(symbol: str, field: str = "adjclose") -> pd.Series:
-    """Daily series indexed by tz-naive normalized date."""
+def load(symbol: str, field: str = "adjclose", end=None) -> pd.Series:
+    """Daily series indexed by tz-naive normalized date.
+
+    `end`, when supplied, is pushed into the parquet reader so later rows are
+    never materialised (used by development runs to exclude 2024-2026).
+    """
     name = symbol.replace("^", "").replace("=", "_")
     p = EXT / f"{name}.parquet"
     if not p.exists():
         raise FileNotFoundError(p)
-    df = pd.read_parquet(p)
+    if end is None:
+        df = pd.read_parquet(p)
+    else:
+        df = pd.read_parquet(p, filters=[("date", "<=", pd.Timestamp(end))])
     df["date"] = pd.to_datetime(df["date"]).dt.tz_localize(None).dt.normalize()
     s = df.set_index("date")[field].astype(float).sort_index()
     return s[~s.index.duplicated(keep="last")]
@@ -34,12 +41,17 @@ def session_index(ts) -> pd.DatetimeIndex:
     return pd.DatetimeIndex(dates[first]).tz_localize(None).normalize()
 
 
-def align(ts, symbols: list[str], field: str = "adjclose") -> pd.DataFrame:
-    """External closes reindexed/ffilled to the QQQ session calendar."""
+def align(ts, symbols: list[str], field: str = "adjclose",
+          end=None) -> pd.DataFrame:
+    """External closes reindexed/ffilled to the QQQ session calendar.
+
+    `end` is forwarded to `load`, so a development run can prevent post-window
+    parquet rows from being read at all.
+    """
     idx = session_index(ts)
     cols = {}
     for sym in symbols:
-        cols[sym] = load(sym, field).reindex(idx).ffill()
+        cols[sym] = load(sym, field, end=end).reindex(idx).ffill()
     return pd.DataFrame(cols, index=idx)
 
 

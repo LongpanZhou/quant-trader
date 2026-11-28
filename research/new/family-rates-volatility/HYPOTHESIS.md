@@ -89,20 +89,20 @@ is the flat asset.
 
 ## 5. Pre-registered 8-cell plateau
 
-The primary is cell 1: MOVE / 252-session median - 1 < 0 -> TQQQ, else BIL.
+The primary is cell 5: MOVE / 252-session median - 1 < 0 -> TQQQ, else BIL.
 The other seven cells vary the normalisation window (126/252 sessions), the
 calm threshold (0 / +20%) and the mapping (binary/ladder).
 
 | # | median window | calm threshold | mapping |
 |---:|---:|---:|---|
-| 1 | 252 | 0.00 | binary (primary) |
-| 2 | 252 | 0.00 | ladder |
-| 3 | 252 | +0.20 | binary |
-| 4 | 252 | +0.20 | ladder |
-| 5 | 126 | 0.00 | binary |
-| 6 | 126 | 0.00 | ladder |
-| 7 | 126 | +0.20 | binary |
-| 8 | 126 | +0.20 | ladder |
+| 1 | 126 | 0.00 | binary |
+| 2 | 126 | 0.00 | ladder |
+| 3 | 126 | +0.20 | binary |
+| 4 | 126 | +0.20 | ladder |
+| 5 | 252 | 0.00 | binary (primary) |
+| 6 | 252 | 0.00 | ladder |
+| 7 | 252 | +0.20 | binary |
+| 8 | 252 | +0.20 | ladder |
 
 A plateau passes if at least 5 of 8 cells beat TQQQ's development bar
 (36.72% CAGR / 82.29% max drawdown). The threshold is fixed before the run.

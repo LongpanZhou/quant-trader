@@ -66,9 +66,8 @@ def load_panel():
 
 
 def session_index(ts) -> pd.DatetimeIndex:
-    """Panel session dates, tz-naive."""
-    dates, first, _ = bt.day_bounds(ts)
-    return pd.DatetimeIndex(pd.to_datetime(dates[first])).tz_localize(None).normalize()
+    """Panel session dates, tz-naive (delegates to ``external.session_index``)."""
+    return external.session_index(ts)
 
 
 def _filtered_external(symbol: str, end=DEV_END) -> pd.Series:

@@ -340,6 +340,13 @@
    "pass": 25
   }
  },
+ "trend_control": {
+  "name": "QQQ 20/60 momentum, same three-state map",
+  "cagr": 0.18546210140447483,
+  "max_drawdown": 0.6374051919946516,
+  "sharpe": 0.7181620830808224,
+  "corr_to_strategy": 0.3756429614273127
+ },
  "kill_checks": {
   "cagr_below_tqqq_bar": true,
   "drawdown_above_tqqq": false,
