@@ -12,7 +12,7 @@ family.
 | `trend-vol` | `ratio-froth` | 62.21% | 36.65% | 1.43 |
 | `vol-crash` | `vol-scaled-crash-stop` | 51.32% | 37.88% | 1.26 |
 | `relative` | `relative-value-tqqq` | 40.50% | 51.54% | 0.94 |
-| `event-recovery` | `drawdown-recovery-v2` | 49.99% | 41.11% | 1.12 |
+| `event-recovery` | — (no winner; `drawdown-recovery-v2` removed for 35 fills) | — | — | — |
 | `calendar` | `fomc-opex-window` | 52.77% | 40.64% | 1.28 |
 | `session-timing` | `family-session-timing` | 46.26% | 41.42% | 1.16 |
 | `short-reversal` | `family-short-reversal` | 49.54% | 66.46% | 0.98 |
@@ -30,6 +30,11 @@ family.
 - `fast-trend-vol` and `vol-term-structure` remain verified-full research
   records but are no longer family winners because their verified full CAGR is
   lower.
+- `drawdown-recovery-v2` was removed from the visible library on 2026-11-27:
+  its 2016-2026 record has only **35 fills / 18 entries** (binary 0/100
+  switching, ~6-month average hold). The low count is structural, not a fill
+  bug, but it is below the activity floor for a published winner. The
+  `event-recovery` family now has no above-TQQQ winner.
 
 ## Rules
 

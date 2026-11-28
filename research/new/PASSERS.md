@@ -7,8 +7,7 @@ on disk, and it must clear the causality/freshness/weight audit in `AUDIT.md`.
 
 | # | Strategy | Dev CAGR | 2024-26 CAGR | Full CAGR | Full DD | Full Sharpe |
 |---:|---|---:|---:|---:|---:|---:|
-| 1 | `drawdown-recovery-v2` | 57.63% | 32.87% | **49.99%** | 41.11% | 1.12 |
-| 2 | `fast-trend-vol` | 51.51% | 29.22% | **44.61%** | 40.26% | 1.06 |
+| 1 | `fast-trend-vol` | 51.51% | 29.22% | **44.61%** | 40.26% | 1.06 |
 | 3 | `vol-term-structure` | 51.58% | 21.89% | **42.48%** | 35.80% | 1.15 |
 | 4 | `vol-of-vol-timing` | 45.35% | 36.17% | **42.17%** | 51.64% | 1.08 |
 | 5 | `crash-early-warning` | 40.21% | 50.44% | **42.06%** | 52.96% | 0.99 |
@@ -30,7 +29,7 @@ on disk, and it must clear the causality/freshness/weight audit in `AUDIT.md`.
 | ML microstructure | `family-ml-microstructure` | 49.81% | 20.45% | **41.03%** | 44.51% | 1.02 |
 | Intraday microstructure | `family-intraday-microstructure-day` | 44.12% | 32.55% | **40.97%** | 47.42% | 1.05 |
 
-All ten have **0.0 pre-cut weight difference** at 2020-03-12 11:07, fresh
+All nine have **0.0 pre-cut weight difference** at 2020-03-12 11:07, fresh
 2024-2026 weights, valid long-only weights and a reproduced development slice
 (`ml-regime-v2` dev difference -0.29 pp is the only non-zero, from its
 one-change risk-off holdout; `tqqq-52week-high` is -0.09 pp from the v2 daily
@@ -46,7 +45,7 @@ but retained on disk (`META.json` `visible=false`).
 | Trend + vol | `fast-trend-vol` (44.61%) | `ema-ribbon-trend`, `tqqq-52week-high` |
 | Vol / crash | `vol-term-structure` (42.48%) | `vol-of-vol-timing`, `crash-early-warning`, `ml-regime-v2` |
 | Relative ladder | `relative-value-tqqq` (40.50%) | `qqq-spy-relative` |
-| Event recovery | `drawdown-recovery-v2` (49.99%) | — |
+| Event recovery | — (removed: 35 fills) | - |
 
 Four new strategies are visible; six are hidden. The existing 27 are unchanged.
 

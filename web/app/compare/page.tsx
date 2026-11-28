@@ -28,7 +28,7 @@ export default function ComparePage() {
               <span className="text-emerald-200">Every strategy.</span>
             </h1>
             <p className="mt-5 max-w-2xl text-[14px] leading-relaxed text-zinc-400">
-              37 strategies on one 2016-2026 window, with the same rules, costs and metrics.
+              36 strategies on one 2016-2026 window, with the same rules, costs and metrics.
               TQQQ and QQQ are shown for reference. No groups, no special treatment - rank them
               by return, drawdown and Sharpe.
             </p>

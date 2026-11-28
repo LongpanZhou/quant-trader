@@ -13,6 +13,15 @@ No 2024+ bar entered the panel, any signal or any statistic: `bt.panel`
 slices the 1-minute archive at 2023-12-29.  All numbers below are
 development-window numbers.
 
+**Full-window note (authorized holdout, added after the development report):**
+the 2016-2026 record is **35 fills = 27 dev + 8 holdout**.  The 80.7% average
+exposure is **time at 100% TQQQ**, not an 80% position: the weight path is
+binary 0/1, so the 2% band never triggers a positive-to-positive rebalance.
+The 35 fills are 18 buys + 17 sells; the 17 completed positions average
+**126 sessions** (median 90) and each fill moves the whole book.  This is a
+low-turnover crash circuit breaker by design, not a high-frequency trader.
+See `FILL_AUDIT.md` for the full 35-row table.
+
 ---
 
 ## 1. Rules

@@ -63,16 +63,6 @@
    "visible": false
   },
   {
-   "slug": "drawdown-recovery-v2",
-   "name": "Deep-drawdown recovery",
-   "tagline": "Buys TQQQ after deep capitulation drawdowns with a two-speed re-entry, and holds cash between episodes.",
-   "summary": "Waits for a deep TQQQ drawdown, enters on a stabilisation signal, adds on a faster recovery trigger, and exits back to cash when the rebound matures. The pass rests on three macro episodes - 2018Q4, 2020Q1 and 2022 - not a large sample.",
-   "verdict": "Verified - event-driven recovery",
-   "reason": "Full-window CAGR and drawdown pass and the causality audit is exact. Only three major crash episodes drive the edge; 7/11 and 9/13 grid cells clear the bar, and the result is fragile to the next bear's shape.",
-   "family": "event",
-   "visible": true
-  },
-  {
    "slug": "vol-term-structure",
    "name": "Volatility term structure",
    "tagline": "Splits TQQQ exposure between a 165-day trend sleeve and a RV20/RV60 term-structure sleeve, with an acute-spike kill switch.",

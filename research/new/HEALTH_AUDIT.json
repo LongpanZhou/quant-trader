@@ -12,8 +12,9 @@
   "curve_vol": 0.4589686746487372,
   "curve_n": 2718,
   "flags": [
-   "low-fills"
-  ]
+   "removed"
+  ],
+  "fills_full": 35
  },
  {
   "slug": "ensemble-signals",

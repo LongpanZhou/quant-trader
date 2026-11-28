@@ -1,20 +1,22 @@
 # Strategy Research Library
 
-> **Final update:** the machine-readable `LIBRARY.json` now contains 59 records,
-> including the six new verified family winners. The website uses ten verified
-> above-TQQQ family winners; the two legacy above-bar names are retained as
-> research records but are not family winners. See `FAMILY_POLICY.md` and
-> `SIX_FAMILIES.md` for the final selection.
+> **Final update:** the machine-readable `LIBRARY.json` now contains 58 records,
+> including the five remaining new verified family winners. The website uses
+> nine verified above-TQQQ family winners; the two legacy above-bar names are
+> retained as research records but are not family winners. See
+> `FAMILY_POLICY.md` and `SIX_FAMILIES.md` for the final selection.
 
-**Current inventory:** **59 records**, **23 above the TQQQ bar**, **10 family
-winners**, and **59 `verified-full`**.  Full-window bar: TQQQ **37.54% CAGR /
+**Current inventory:** **58 records**, **22 above the TQQQ bar**, **9 family
+winners**, and **58 `verified-full`**.  Full-window bar: TQQQ **37.54% CAGR /
 81.68% max DD / 0.82 Sharpe** on 2016-01-04 to 2026-10-23 daily-close marks.
 
 **Repair follow-up:** the eight names flagged in `HEALTH_AUDIT.md` are resolved
 in `REPAIRS.md`.  Four have full-holdout re-specifications (all below the bar),
 three are retired (`vol-kelly-overlay`, `volume-orderflow`,
 `drawdown-stop-overlay`), and one remains development-only
-(`gap-fill-fade`).  No published curve, metric, family or winner changed.
+(`gap-fill-fade`).  `drawdown-recovery-v2` was removed from the visible
+library because its 2016-2026 record has only 35 fills; no other published
+curve, metric or winner changed.
 
 The family tables below preserve the **pre-final audit snapshot** and are kept
 for provenance; `LIBRARY.json` is authoritative for current status, metrics and
@@ -65,13 +67,12 @@ _A cross-asset or TQQQ/QQQ ratio/relative-momentum gate decides how much leverag
 | Ratio-cycle standalone | `ratio-pairs` | 18.96% / 34.59% / 1.11 | 20.42% / 33.94% / 1.13 | no | verified-full |  |
 | Dual-momentum TQQQ | `dual-momentum-tqqq` | 41.15% / 57.95% / 0.98 | — | no (dev yes) | dev-only |  |
 
-## event-recovery (6)
+## event-recovery (5)
 
 _A deep drawdown or capitulation event opens a time-limited recovery window; cash between episodes._
 
 | Strategy | slug | Dev CAGR / DD / Sharpe | Full CAGR / DD / Sharpe | Above TQQQ | Status | Winner |
 |---|---|---|---|:--:|---|:--:|
-| Deep-drawdown recovery | `drawdown-recovery-v2` | 57.63% / 43.39% / 1.25 | 49.99% / 41.11% / 1.12 | **yes** | verified-full | **yes** |
 | Quiet capitulation reversal | `capitulation-reversal-v2` | 39.75% / 26.44% / 1.46 | 32.21% / 20.86% / 1.30 | no | failed |  |
 | Quiet capitulation | `gap-capitulation-reversal` | 8.30% / 10.26% / 0.88 | 4.64% / 10.63% / 0.82 | no | verified-full |  |
 | Volatility-shock recovery | `dynamic-leverage-throttle` | 5.24% / 9.16% / 1.06 | 2.38% / 15.30% / 0.54 | no | failed |  |
@@ -188,7 +189,7 @@ Rule: one above-TQQQ keeper per family, chosen by highest full CAGR, then Sharpe
 
 **Keeper: `relative-value-tqqq` (TQQQ/QQQ relative value).** Highest full CAGR at 40.50% with 51.54% DD and 0.94 Sharpe. Both candidates are verified-full; `relative-value-tqqq` wins on CAGR and drawdown, while `qqq-spy-relative` has the higher Sharpe and is the better risk-adjusted alternative.
 
-Single-candidate above-TQQQ family: `event-recovery` (`drawdown-recovery-v2`, 49.99%). `ml-microstructure` has no above-TQQQ member, which is exactly why it is one of the six new-family targets. No other family has an above-TQQQ strategy.
+`event-recovery` now has no above-TQQQ winner: `drawdown-recovery-v2` was removed from the visible library because its 2016-2026 record has only 35 fills. `ml-microstructure` has no above-TQQQ member, which is exactly why it is one of the six new-family targets. No other family has an above-TQQQ strategy.
 
 ## Non-performers added
 
@@ -255,7 +256,7 @@ Each family is defined by the *first* thing that changes the position. If two st
 | **trend-vol** | Slow/fast price trend (EMA stack, Donchian channel, 52-week-high proximity, momentum vote); vol target sizes the TQQQ sleeve. | Not a volatility-state or crash model: the trend decides *whether*, vol only decides *how much*. | `ratio-froth`, `fast-trend-vol`, `ema-ribbon-trend`, `tqqq-52week-high`, `donchian-trend` |
 | **vol-crash** | Volatility level, term-structure slope, vol-of-vol, an ML path-risk state or a drawdown/gap early-warning composite; de-risk when vol is expanding. | Not a price-trend gate and not a post-crash recovery entry: the signal is the risk state itself. | `vol-term-structure`, `vol-of-vol-timing`, `crash-early-warning`, `ml-regime-v2`, `tqqq-fast-drawdown-stop` |
 | **relative** | Cross-asset or TQQQ/QQQ relative strength/ratio momentum; leverage ladder 3x/2x/1x/0x. | Not an absolute trend model: the *relative* leg is the distinctive input. | `relative-value-tqqq`, `qqq-spy-relative`, `ratio-pairs`, `dual-momentum-tqqq` |
-| **event-recovery** | A deep drawdown or capitulation event opens a recovery window; enter on stabilisation and hold for the rebound. | Not a permanent trend follower: cash between episodes and the event is the gate. | `drawdown-recovery-v2`, `drawdown-regime`, `capitulation-reversal-v2`, `dynamic-leverage-throttle` |
+| **event-recovery** | A deep drawdown or capitulation event opens a recovery window; enter on stabilisation and hold for the rebound. | Not a permanent trend follower: cash between episodes and the event is the gate. | `drawdown-regime`, `capitulation-reversal-v2`, `dynamic-leverage-throttle` |
 | **calendar** | A date known in advance: month boundary, FOMC decision, OpEx Friday, pre-holiday session. | Not a price signal: the calendar decides the window and BIL fills the rest. | `turn-of-month`, `macro-event-tqqq`, `fomc-opex-window`, `pre-holiday`, `event-risk-overlay` |
 | **session-timing** | Which session block is held: overnight (close-to-open), first hour, or a close-anchored 24-hour position. | Not a date event and not a trend: the clock/clientèle is the signal. | `time-of-day`, `overnight-drift-filter`, `overnight-intraday-trend`, `overnight-crash-filter`, `intraday-momentum` |
 | **short-reversal** | A short-horizon price overreaction (intraday flush, small gap, failed breakdown) that mean-reverts over 1-5 sessions. | Not a flow model: no leveraged-ETF relative-overshoot condition and no deep-drawdown regime. | `intraday-mean-reversion`, `gap-fill-fade`, `drawdown-stop-overlay` |

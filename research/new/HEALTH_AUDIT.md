@@ -3,13 +3,14 @@
 All library strategies except the eight under repair. Flags are diagnostics, not verdicts.
 
 **Follow-up:** the eight excluded names are resolved in `REPAIRS.md` (four
-full-holdout re-specifications, three retired, one development-only).  The
-`drawdown-recovery-v2` row shows the **dev** fill count; the corrected split is
-27 dev + 8 holdout = 35 full (see `FILL_AGGREGATION_FIX.md`).
+full-holdout re-specifications, three retired, one development-only).  The only
+visible low-fill winner, `drawdown-recovery-v2` (**27 dev / 35 full**), was
+removed from the library because it is below the activity floor; see
+`FAMILY_POLICY.md`.
 
 | slug | family | dev CAGR | dev DD | Sharpe | fills | actual exposure | curve vol | flags |
 |---|---|---:|---:|---:|---:|---:|---:|---|
-| `drawdown-recovery-v2` | event-recovery | 57.63% | 43.39% | 1.25 | 27 | — | 45.90% | low-fills |
+| `drawdown-recovery-v2` | event-recovery | 57.63% | 43.39% | 1.25 | 27 dev / 35 full | — | 45.90% | removed (35 full fills) |
 | `ensemble-signals` | vol-crash | -6.34% | 76.04% | -0.05 | 768 | — | 31.74% | negative-edge, weak-sharpe |
 | `winner-ensemble-blend` | other | 0.30% | 32.67% | 0.08 | 773 | — | 10.76% | weak-sharpe |
 | `daily-regime-minute-entry` | intraday-microstructure | 0.91% | 61.74% | 0.15 | 1309.0 | — | 20.12% | weak-sharpe |

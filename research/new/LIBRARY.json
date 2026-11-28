@@ -147,30 +147,6 @@
    "source": "research/new/donchian-trend/report.md"
   },
   {
-   "slug": "drawdown-recovery-v2",
-   "name": "Deep-drawdown recovery",
-   "family": "event-recovery",
-   "tagline": "A two-speed drawdown circuit breaker that steps aside in acute crashes and re-enters on volatility contraction.",
-   "summary": "Defaults to TQQQ, exits on an 8% 20-day or 12% 60-day drawdown, and re-enters on a 10-day high for shallow pullbacks or a volatility contraction for deep ones. The 49.99% full CAGR rests on three macro episodes, and 2018 whipsawed to a 43% drawdown.",
-   "dev": {
-    "cagr": 0.57626,
-    "max_dd": 0.433921,
-    "sharpe": 1.254744
-   },
-   "full": {
-    "cagr": 0.499904,
-    "max_dd": 0.411054,
-    "sharpe": 1.117363
-   },
-   "above_tqqq": true,
-   "dev_above_tqqq": null,
-   "status": "verified-full",
-   "visible": true,
-   "family_winner": true,
-   "note": "Only three macro crash episodes drive the edge, and the 8%/12% circuit-breaker levels are a local peak; 2018 whipsawed to -43%.",
-   "source": "research/new/drawdown-recovery-v2/report.md"
-  },
-  {
    "slug": "dual-momentum-tqqq",
    "name": "Dual-momentum TQQQ",
    "family": "relative",

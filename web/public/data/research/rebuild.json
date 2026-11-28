@@ -30,15 +30,6 @@
    "sharpe": 1.2649272669012215
   },
   {
-   "slug": "drawdown-recovery-v2",
-   "name": "Deep-drawdown recovery",
-   "tagline": "Buys TQQQ after deep capitulation drawdowns with a two-speed re-entry, and holds cash between episodes.",
-   "summary": "Waits for a deep TQQQ drawdown, enters on a stabilisation signal, adds on a faster recovery trigger, and exits back to cash when the rebound matures. The pass rests on three macro episodes - 2018Q4, 2020Q1 and 2022 - not a large sample.",
-   "cagr": 0.4999043484172039,
-   "dd": 0.41105436202354595,
-   "sharpe": 1.1173632263794746
-  },
-  {
    "slug": "family-short-reversal",
    "name": "Short-term reversal",
    "tagline": "Buys TQQQ after a two-session down streak or a 3-session drop of at least 1.5%, then holds for a rolling five-session rebound.",

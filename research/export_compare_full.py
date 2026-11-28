@@ -19,7 +19,7 @@ LIBRARY = json.loads((NEW / "LIBRARY.json").read_text(encoding="utf-8"))
 FAMILY = {s["slug"]: s.get("family", "other") for s in LIBRARY["strategies"]}
 FAMILY_WINNERS = {
     "ratio-froth", "vol-scaled-crash-stop", "relative-value-tqqq",
-    "drawdown-recovery-v2", "fomc-opex-window", "family-session-timing",
+    "fomc-opex-window", "family-session-timing",
     "family-short-reversal", "family-rebalance-flow",
     "family-intraday-microstructure-day", "family-ml-microstructure",
 }

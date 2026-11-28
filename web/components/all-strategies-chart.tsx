@@ -528,7 +528,7 @@ export function AllStrategiesChart() {
               Growth of $100  -  normalized  -  1 bp costs
             </h2>
             <p className="mt-1 text-[11px] text-zinc-500">
-              {data.start} to {data.end} - {data.series.length} curves - 37 strategies + TQQQ/QQQ
+              {data.start} to {data.end} - {data.series.length} curves - 36 strategies + TQQQ/QQQ
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-2">
