@@ -506,6 +506,8 @@ export function AllStrategiesChart() {
     return <div className="panel h-[420px] animate-pulse bg-white/[0.02]" />;
   }
 
+  const strategyCount = data.metrics.filter((metric) => !metric.benchmark).length;
+
   return (
     <div className="space-y-8">
       <section className="panel p-4 sm:p-6">
@@ -516,7 +518,7 @@ export function AllStrategiesChart() {
               Growth of $100  -  normalized  -  1 bp costs
             </h2>
             <p className="mt-1 text-[11px] text-zinc-500">
-              {data.start} to {data.end} - {data.series.length} curves - 23 strategies + TQQQ/QQQ
+              {data.start} to {data.end} - {data.series.length} curves - {strategyCount} strategies + TQQQ/QQQ
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-2">
@@ -561,9 +563,6 @@ export function AllStrategiesChart() {
             >
               Above TQQQ
             </button>
-            <span className="text-[10px] text-zinc-500">
-all strategies above TQQQ
-            </span>
             <button
               onClick={() => filterAbove("qqq")}
               className={`rounded-full border px-3 py-1 text-[10px] uppercase tracking-[0.14em] transition ${

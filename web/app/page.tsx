@@ -1,10 +1,12 @@
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
 import { StrategyCatalog } from "@/components/strategy-catalog";
 import { Pill } from "@/components/ui";
+import { researchStrategyCount } from "@/lib/research-count";
 
 export const dynamic = "force-dynamic";
 
 export default function Page() {
+  const researchCount = researchStrategyCount();
   return (
     <div className="min-h-screen">
       <div className="pointer-events-none fixed inset-0 grid-lines opacity-40" />
@@ -23,7 +25,7 @@ export default function Page() {
                 <span className="text-emerald-200">library.</span>
               </h1>
               <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-zinc-400">
-                One catalog: three editable Rust presets and 23 strategies on the same
+                One catalog: three editable Rust presets and {researchCount} strategies on the same
                 2016-2026 window. Open a preset to run and edit it, or open the all-strategies
                 view to compare every strategy.
               </p>
@@ -34,9 +36,9 @@ export default function Page() {
                 Research data through Nov 27, 2026
               </div>
               <div className="flex flex-wrap gap-2 lg:justify-end">
-                <Pill>40 strategies</Pill>
+                <Pill>{researchCount + 3} strategies</Pill>
                 <Pill>3 runnable</Pill>
-                <Pill>23 research</Pill>
+                <Pill>{researchCount} research</Pill>
                 <Pill>1 bp costs</Pill>
               </div>
               <div className="flex flex-wrap gap-2 lg:justify-end">
