@@ -35,6 +35,9 @@ family.
   switching, ~6-month average hold). The low count is structural, not a fill
   bug, but it is below the activity floor for a published winner. The
   `event-recovery` family now has no above-TQQQ winner.
+- 13 non-winner strategies with full-window CAGR below **5%** were removed
+  from the visible library on 2026-11-28; see `FLAT_REMOVAL.md`.  No family
+  winner was affected.
 
 ## Rules
 

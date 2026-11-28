@@ -8,6 +8,10 @@ visible low-fill winner, `drawdown-recovery-v2` (**27 dev / 35 full**), was
 removed from the library because it is below the activity floor; see
 `FAMILY_POLICY.md`.
 
+**Flat-line purge:** 13 non-winners with full-window CAGR below **5%** were
+also removed from the visible library; their rows below are retained only as a
+historical audit snapshot. See `FLAT_REMOVAL.md`.
+
 | slug | family | dev CAGR | dev DD | Sharpe | fills | actual exposure | curve vol | flags |
 |---|---|---:|---:|---:|---:|---:|---:|---|
 | `drawdown-recovery-v2` | event-recovery | 57.63% | 43.39% | 1.25 | 27 dev / 35 full | — | 45.90% | removed (35 full fills) |

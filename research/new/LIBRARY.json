@@ -671,127 +671,6 @@
    "source": "web/public/data/research/ratio-froth.json"
   },
   {
-   "slug": "daily-regime-minute-entry",
-   "name": "Crash-continuation short",
-   "family": "intraday-microstructure",
-   "tagline": "A 4% break below the TQQQ session open predicts continuation into the close; trade it as an intraday short.",
-   "summary": "Shorts TQQQ from the break to the close and stays flat otherwise. The event study is 165-day-gated rather than ungated, the largest motivating events are in the 2024 holdout, and the synthetic short is not investable.",
-   "dev": {
-    "cagr": 0.009145,
-    "max_dd": 0.617354,
-    "sharpe": 0.153063
-   },
-   "full": {
-    "cagr": 0.020427,
-    "max_dd": 0.62818,
-    "sharpe": 0.200298
-   },
-   "above_tqqq": false,
-   "dev_above_tqqq": null,
-   "status": "verified-full",
-   "visible": true,
-   "family_winner": false,
-   "note": "Verified against the published pre-tune freeze; current code is a later variant. Published curve unchanged.",
-   "source": "research/revisit/daily-regime-minute-entry/report.md"
-  },
-  {
-   "slug": "donchian-breakout",
-   "name": "Donchian alignment ladder",
-   "family": "trend-vol",
-   "tagline": "A Donchian breakout is only worth leveraging when short, medium and long horizons agree.",
-   "summary": "Scales from BIL to QQQ to TQQQ with three-horizon 1-hour Donchian alignment. The pre-registered 5-minute version lost 3.4%/yr, the shipped 1-hour version was chosen after, and it earns only +0.8 pp over a leverage-matched static mix.",
-   "dev": {
-    "cagr": 0.134042,
-    "max_dd": 0.15021,
-    "sharpe": 0.997038
-   },
-   "full": {
-    "cagr": -0.009425,
-    "max_dd": 0.357677,
-    "sharpe": 0.0131
-   },
-   "above_tqqq": false,
-   "dev_above_tqqq": null,
-   "status": "verified-full",
-   "visible": true,
-   "family_winner": false,
-   "note": "Verified against the published pre-tune freeze; current code is a later variant. Published curve unchanged.",
-   "source": "research/revisit/donchian-breakout/report.md"
-  },
-  {
-   "slug": "drawdown-regime",
-   "name": "Deep drawdown recovery",
-   "family": "event-recovery",
-   "tagline": "After a >=20% QQQ drawdown, own TQQQ only inside a confirmed 60-session recovery window.",
-   "summary": "Treats the post-capitulation recovery as a distinct, time-limited return state, entering on a 20-session high and standing aside when the window ends. Eight episodes include 3 of 5 in 2022-23 that lost 12-14%; the full 47.55% drawdown and Sharpe 0.78 are worse than a constant 14% TQQQ mix.",
-   "dev": {
-    "cagr": 0.171984,
-    "max_dd": 0.490246,
-    "sharpe": 0.775917
-   },
-   "full": {
-    "cagr": -0.001114,
-    "max_dd": 0.475474,
-    "sharpe": 0.065613
-   },
-   "above_tqqq": false,
-   "dev_above_tqqq": null,
-   "status": "verified-full",
-   "visible": true,
-   "family_winner": false,
-   "note": "Verified against the published pre-tune freeze; current code is a later variant. Published curve unchanged.",
-   "source": "research/revisit/drawdown-regime/report.md",
-   "repair_status": "repaired-diversifier",
-   "repair_source": "research/new/drawdown-regime-v2/report.md",
-   "repair_note": "19 entries, 28.8% exposure; 2024-26 holdout has 0 entries and stays in BIL. Broader recovery sleeve, below the bar.",
-   "repair_dev": {
-    "cagr": 0.26790018478573296,
-    "max_dd": 0.3834474641810347,
-    "sharpe": 0.9546739467735778
-   },
-   "repair_full": {
-    "cagr": 0.20511372988539822,
-    "max_dd": 0.3834474641810347,
-    "sharpe": 0.8650920022680764,
-    "fills": 77
-   }
-  },
-  {
-   "slug": "drawdown-stop-overlay",
-   "name": "Failed-breakdown spring",
-   "family": "short-reversal",
-   "tagline": "Buy TQQQ after QQQ undercuts its prior 20-day low intraday but closes back above it.",
-   "summary": "The failed-breakdown spring is treated as exhausted forced selling, with a five-day hold. It loses 9.3%/yr, every one of 10 variants is negative, and a \"buy any -1% day\" control earns +15.8%, so the failed-spring pattern itself is the problem.",
-   "dev": {
-    "cagr": -0.092482,
-    "max_dd": 0.63087,
-    "sharpe": -0.266504
-   },
-   "full": {
-    "cagr": -0.023678,
-    "max_dd": 0.553347,
-    "sharpe": 0.064549
-   },
-   "above_tqqq": false,
-   "dev_above_tqqq": null,
-   "status": "verified-full",
-   "visible": true,
-   "family_winner": false,
-   "note": "Verified against the published pre-tune freeze; current code is a later variant. Published curve unchanged.",
-   "source": "research/revisit/drawdown-stop-overlay/report.md",
-   "repair_status": "retired",
-   "repair_source": "research/new/drawdown-stop-overlay-v2/report.md",
-   "repair_note": "Primary 1-day trend/vol variant: 3.36% dev CAGR, 23.37% DD, 0.54 Sharpe, 1.14% TQQQ time. A static mix at the same exposure earns 1.96%/2.11%/1.13, so retire as a standalone; overlay-only.",
-   "repair_dev": {
-    "cagr": 0.033593987796908475,
-    "max_dd": 0.2336803692122872,
-    "sharpe": 0.5423852594287144,
-    "fills": 93.0
-   },
-   "repair_full": null,
-   "retired": true
-  },
-  {
    "slug": "dual-speed-regime",
    "name": "Intraday 60-minute trend",
    "family": "intraday-microstructure",
@@ -816,68 +695,6 @@
    "source": "research/revisit/dual-speed-regime/report.md"
   },
   {
-   "slug": "dynamic-leverage-throttle",
-   "name": "Volatility-shock recovery",
-   "family": "event-recovery",
-   "tagline": "Buys TQQQ when a realised-vol shock is decaying inside a market drawdown, sized inversely to vol.",
-   "summary": "Treats post-shock volatility decay as the end of forced deleveraging and holds an inverse-vol TQQQ position for the recovery. Six entries cluster on known stress dates and the result is effectively cash-plus (5.24% dev, 2.38% full).",
-   "dev": {
-    "cagr": 0.052446,
-    "max_dd": 0.091618,
-    "sharpe": 1.061546
-   },
-   "full": {
-    "cagr": 0.02376,
-    "max_dd": 0.152967,
-    "sharpe": 0.538018
-   },
-   "above_tqqq": false,
-   "dev_above_tqqq": null,
-   "status": "verified-full",
-   "visible": true,
-   "family_winner": false,
-   "note": "Verified against the published pre-tune freeze; current code is a later variant. Published curve unchanged.",
-   "source": "research/revisit/dynamic-leverage-throttle/report.md",
-   "repair_status": "repaired-diversifier",
-   "repair_source": "research/new/dynamic-leverage-throttle-v2/report.md",
-   "repair_note": "18 entries, 3.41% average TQQQ weight; event mean +2.37% (p=0.019). Low-exposure diversifier, below the bar.",
-   "repair_dev": {
-    "cagr": 0.07040124728924102,
-    "max_dd": 0.1151694207943792,
-    "sharpe": 0.8050823209766749
-   },
-   "repair_full": {
-    "cagr": 0.0707290343240996,
-    "max_dd": 0.17163546175341127,
-    "sharpe": 0.7842542196676787,
-    "fills": 283
-   }
-  },
-  {
-   "slug": "ensemble-signals",
-   "name": "Volatility contraction recovery",
-   "family": "vol-crash",
-   "tagline": "A vol-percentile and vol-slope state machine that owns TQQQ in post-spike contractions and QQQ otherwise.",
-   "summary": "Treats the high-vol contraction phase as a distinct TQQQ recovery window, with QQQ as the default risk asset and rising vol from a low as a de-risking signal. It loses 6.34%/yr with a 76% drawdown, and 97.5% of placebo state machines beat it.",
-   "dev": {
-    "cagr": -0.063358,
-    "max_dd": 0.760425,
-    "sharpe": -0.047543
-   },
-   "full": {
-    "cagr": 0.01338,
-    "max_dd": 0.759088,
-    "sharpe": 0.202536
-   },
-   "above_tqqq": false,
-   "dev_above_tqqq": null,
-   "status": "verified-full",
-   "visible": true,
-   "family_winner": false,
-   "note": "Verified against the published pre-tune freeze; current code is a later variant. Published curve unchanged.",
-   "source": "research/revisit/ensemble-signals/report.md"
-  },
-  {
    "slug": "event-risk-overlay",
    "name": "OpEx cycle",
    "family": "calendar",
@@ -900,78 +717,6 @@
    "family_winner": false,
    "note": "Frozen-code full rerun reproduces the published curve exactly (0.00 pp CAGR/DD, 0.000 Sharpe).",
    "source": "research/revisit/event-risk-overlay/report.md"
-  },
-  {
-   "slug": "gap-capitulation-reversal",
-   "name": "Quiet capitulation",
-   "family": "event-recovery",
-   "tagline": "Buys a quiet, short-term-oversold QQQ capitulation, not a generic gap-down in a bull regime.",
-   "summary": "A large QQQ decline on below-average volume while the market is already 20-day oversold reverses over the next three sessions; high-volume declines do not. There are 30 events at +6.03% (t=2.89), but the 1.2x volume cap is knife-edge and the stop was removed post-holdout.",
-   "dev": {
-    "cagr": 0.083023,
-    "max_dd": 0.102606,
-    "sharpe": 0.876907
-   },
-   "full": {
-    "cagr": 0.04643,
-    "max_dd": 0.106285,
-    "sharpe": 0.815752
-   },
-   "above_tqqq": false,
-   "dev_above_tqqq": null,
-   "status": "verified-full",
-   "visible": true,
-   "family_winner": false,
-   "note": "Verified against the published pre-tune freeze; current code is a later variant. Published curve unchanged.",
-   "source": "research/revisit/gap-capitulation-reversal/report.md",
-   "repair_status": "repaired-diversifier",
-   "repair_source": "research/new/gap-capitulation-reversal-v2/report.md",
-   "repair_note": "39 events / 26 starts, 7.3% average exposure; 5-session event mean +7.40% (t=3.27). Below the bar.",
-   "repair_dev": {
-    "cagr": 0.2054577419963921,
-    "max_dd": 0.21941356633196085,
-    "sharpe": 0.9675063534930978
-   },
-   "repair_full": {
-    "cagr": 0.17054770943095443,
-    "max_dd": 0.25535758719828194,
-    "sharpe": 0.8619853176092065,
-    "fills": 137
-   }
-  },
-  {
-   "slug": "gap-fill-fade",
-   "name": "Failed gap-up fade",
-   "family": "short-reversal",
-   "tagline": "Short QQQ on confirmed failed small gap-ups in a weak, stressed tape.",
-   "summary": "Fades a small opening gap-up only when the first 30 minutes confirm the failure, with an opening-range stop and a time stop. There are 25 events at +5.6 bp (t=1.01, p=0.15), the no-confirmation variant is better, and 10 bp CAGR is below BIL.",
-   "dev": {
-    "cagr": 0.014319,
-    "max_dd": 0.004813,
-    "sharpe": 0.936785
-   },
-   "full": {
-    "cagr": 0.02206,
-    "max_dd": 0.003841,
-    "sharpe": 6.534809
-   },
-   "above_tqqq": false,
-   "dev_above_tqqq": null,
-   "status": "verified-full",
-   "visible": true,
-   "family_winner": false,
-   "note": "Frozen-code full rerun reproduces the published curve within 0.01 pp CAGR/DD and 0.006 Sharpe.",
-   "source": "research/revisit/gap-fill-fade/report.md",
-   "repair_status": "development-only",
-   "repair_source": "research/new/gap-fill-fade-v2/report.md",
-   "repair_note": "Small-gap/2x inverse variant: 3.21% dev CAGR, 4.69% DD, 1.09 Sharpe, 0.46% average short notional. Development-only satellite; t=2.73, 2018+2022 drive 80% of P&L.",
-   "repair_dev": {
-    "cagr": 0.03213464814966249,
-    "max_dd": 0.046940439791586575,
-    "sharpe": 1.0918887712895513,
-    "fills": 145.0
-   },
-   "repair_full": null
   },
   {
    "slug": "intraday-mean-reversion",
@@ -1118,30 +863,6 @@
    "source": "research/revisit/ml-crash-overlay-winner/report.md"
   },
   {
-   "slug": "opening-range-breakout",
-   "name": "Opening-range failed-breakdown reclaim",
-   "family": "intraday-microstructure",
-   "tagline": "A failed breakdown of the 30-minute opening range that reclaims the range low is a liquidity-sweep reversal.",
-   "summary": "Buys the reclaim of the opening-range low and targets the opposite side of the range before the close. Dev is -2.1% at 1 bp and -15.1% at 5 bp, consistent with the published finding that opening-range breakouts fail costs.",
-   "dev": {
-    "cagr": -0.020954,
-    "max_dd": 0.172169,
-    "sharpe": -0.531694
-   },
-   "full": {
-    "cagr": -0.013159,
-    "max_dd": 0.199874,
-    "sharpe": -0.327007
-   },
-   "above_tqqq": false,
-   "dev_above_tqqq": null,
-   "status": "verified-full",
-   "visible": true,
-   "family_winner": false,
-   "note": "Frozen-code full rerun reproduces the published curve exactly (0.00 pp CAGR/DD, 0.000 Sharpe).",
-   "source": "research/revisit/opening-range-breakout/report.md"
-  },
-  {
    "slug": "overnight-crash-filter",
    "name": "Night continuation / day reversal",
    "family": "session-timing",
@@ -1214,44 +935,6 @@
    "source": "research/revisit/risk-parity-hrp/report.md"
   },
   {
-   "slug": "stop-reentry-recovery",
-   "name": "LETF overshoot recovery",
-   "family": "rebalance-flow",
-   "tagline": "Buys TQQQ after a leveraged-ETF downside overshoot and scales in on a recovery close.",
-   "summary": "The trigger is TQQQ falling at least 3% intraday while underperforming 3x QQQ by at least 1 pp; the position scales 50% then 100% after a recovery close. There was one event in eight years, because the condition mostly captures permanent daily-reset drag rather than temporary overshoot.",
-   "dev": {
-    "cagr": 0.01255,
-    "max_dd": 0.01815,
-    "sharpe": 0.803922
-   },
-   "full": {
-    "cagr": 0.020542,
-    "max_dd": 0.012454,
-    "sharpe": 5.088872
-   },
-   "above_tqqq": false,
-   "dev_above_tqqq": null,
-   "status": "verified-full",
-   "visible": true,
-   "family_winner": false,
-   "note": "Frozen-code full rerun reproduces the published curve exactly (0.00 pp CAGR/DD, 0.000 Sharpe).",
-   "source": "research/revisit/stop-reentry-recovery/report.md",
-   "repair_status": "repaired-diversifier",
-   "repair_source": "research/new/stop-reentry-recovery-v2/report.md",
-   "repair_note": "56 events, one-session hold, 313 full fills; mostly QQQ beta. Below the bar.",
-   "repair_dev": {
-    "cagr": 0.14501222067517472,
-    "max_dd": 0.08327770516707378,
-    "sharpe": 1.0972286867747434
-   },
-   "repair_full": {
-    "cagr": 0.16259348564009435,
-    "max_dd": 0.08327770516707378,
-    "sharpe": 0.9939877089055511,
-    "fills": 313
-   }
-  },
-  {
    "slug": "time-of-day",
    "name": "Closing-pressure overnight carry",
    "family": "session-timing",
@@ -1276,41 +959,6 @@
    "source": "research/revisit/time-of-day/report.md"
   },
   {
-   "slug": "vol-kelly-overlay",
-   "name": "Vol-spike reflation",
-   "family": "event-recovery",
-   "tagline": "Buys a vol-scaled TQQQ position after a 1-minute RV spike, an oversold drawdown and the first up-close.",
-   "summary": "Bets on post-spike volatility mean reversion plus TQQQ convexity over one to three sessions. There are 11 events against its own minimum of 15, the mean is +0.015% (p=0.49), and 2020-21 is -4.3%.",
-   "dev": {
-    "cagr": 0.018078,
-    "max_dd": 0.192165,
-    "sharpe": 0.254129
-   },
-   "full": {
-    "cagr": 0.010341,
-    "max_dd": 0.164961,
-    "sharpe": 0.169193
-   },
-   "above_tqqq": false,
-   "dev_above_tqqq": null,
-   "status": "verified-full",
-   "visible": true,
-   "family_winner": false,
-   "note": "Frozen-code full rerun reproduces the published curve exactly (0.00 pp CAGR/DD, 0.000 Sharpe).",
-   "source": "research/revisit/vol-kelly-overlay/report.md",
-   "repair_status": "retired",
-   "repair_source": "research/new/vol-kelly-overlay-v2/report.md",
-   "repair_note": "Count repair reaches 28 entries but the best grid p=0.223; no edge. Retired.",
-   "repair_dev": {
-    "cagr": 0.031791917029607264,
-    "max_dd": 0.12611098139458599,
-    "sharpe": 0.3785460518496103,
-    "fills": 149
-   },
-   "repair_full": null,
-   "retired": true
-  },
-  {
    "slug": "vol-scaled-crash-stop",
    "name": "Vol-scaled crash system",
    "family": "vol-crash",
@@ -1333,65 +981,6 @@
    "family_winner": true,
    "note": "Shared OHLC/ATR adapter; dev 57.84%, holdout 34.89%, full 51.46% 1 bp / 51.32% daily-close; audit exact.",
    "source": "research/revisit/vol-scaled-crash-stop/report.md"
-  },
-  {
-   "slug": "volume-orderflow",
-   "name": "Participation exhaustion",
-   "family": "intraday-microstructure",
-   "tagline": "A heavy-volume intraday decline that closes in the upper half of its range marks absorbed supply.",
-   "summary": "Buys TQQQ for five sessions after a participation-conditioned supply climax. There are only 3 events in 2,012 sessions, below its own ~40-event gate, and the close-location filter is untested.",
-   "dev": {
-    "cagr": 0.008746,
-    "max_dd": 0.166637,
-    "sharpe": 0.154384
-   },
-   "full": {
-    "cagr": 0.024937,
-    "max_dd": 0.13109,
-    "sharpe": 0.358681
-   },
-   "above_tqqq": false,
-   "dev_above_tqqq": null,
-   "status": "verified-full",
-   "visible": true,
-   "family_winner": false,
-   "note": "Frozen-code full rerun reproduces the published curve exactly (0.00 pp CAGR/DD, 0.000 Sharpe).",
-   "source": "research/revisit/volume-orderflow/report.md",
-   "repair_status": "retired",
-   "repair_source": "research/new/volume-orderflow-v2/report.md",
-   "repair_note": "44 events but volume is not additive (p=0.36) and the close-location sign is backwards. Retired.",
-   "repair_dev": {
-    "cagr": 0.1553608791517347,
-    "max_dd": 0.29401157966136127,
-    "sharpe": 0.7233639300033575,
-    "fills": 145
-   },
-   "repair_full": null,
-   "retired": true
-  },
-  {
-   "slug": "winner-ensemble-blend",
-   "name": "Two-stream risk parity",
-   "family": "other",
-   "tagline": "Inverse-vol allocation across calm QQQ carry and panic-reversal TQQQ.",
-   "summary": "Blends a 1x QQQ carry stream with a 3x TQQQ panic-reversal stream by inverse volatility. Stream A earns +1.68%, Stream B -6.19%, and the blend +0.30%; the placebo p=0.79 and the blend fails at 5 bp.",
-   "dev": {
-    "cagr": 0.003028,
-    "max_dd": 0.326723,
-    "sharpe": 0.084379
-   },
-   "full": {
-    "cagr": 0.030391,
-    "max_dd": 0.305323,
-    "sharpe": 0.332673
-   },
-   "above_tqqq": false,
-   "dev_above_tqqq": null,
-   "status": "verified-full",
-   "visible": true,
-   "family_winner": false,
-   "note": "Frozen-code full rerun reproduces the published curve exactly (0.00 pp CAGR/DD, 0.000 Sharpe).",
-   "source": "research/revisit/winner-ensemble-blend/report.md"
   },
   {
    "slug": "family-session-timing",

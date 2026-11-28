@@ -356,7 +356,7 @@ export function AllStrategiesChart() {
   const [hovered, setHovered] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch("/data/compare/all.json?v=2026-11-28-36", { cache: "no-store" })
+    fetch("/data/compare/all.json?v=2026-11-28-23", { cache: "no-store" })
       .then((response) => {
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         return response.json();
@@ -528,7 +528,7 @@ export function AllStrategiesChart() {
               Growth of $100  -  normalized  -  1 bp costs
             </h2>
             <p className="mt-1 text-[11px] text-zinc-500">
-              {data.start} to {data.end} - {data.series.length} curves - 36 strategies + TQQQ/QQQ
+              {data.start} to {data.end} - {data.series.length} curves - 23 strategies + TQQQ/QQQ
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-2">

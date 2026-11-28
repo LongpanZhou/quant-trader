@@ -1,14 +1,17 @@
 # Strategy Research Library
 
-> **Final update:** the machine-readable `LIBRARY.json` now contains 58 records,
+> **Final update:** the machine-readable `LIBRARY.json` now contains 45 records,
 > including the five remaining new verified family winners. The website uses
 > nine verified above-TQQQ family winners; the two legacy above-bar names are
 > retained as research records but are not family winners. See
 > `FAMILY_POLICY.md` and `SIX_FAMILIES.md` for the final selection.
 
-**Current inventory:** **58 records**, **22 above the TQQQ bar**, **9 family
-winners**, and **58 `verified-full`**.  Full-window bar: TQQQ **37.54% CAGR /
+**Current inventory:** **45 records**, **22 above the TQQQ bar**, **9 family
+winners**, and **45 `verified-full`**.  Full-window bar: TQQQ **37.54% CAGR /
 81.68% max DD / 0.82 Sharpe** on 2016-01-04 to 2026-10-23 daily-close marks.
+
+**Flat-line removal:** 13 non-winners with full-window CAGR below **5%** were
+removed from the visible library on 2026-11-28; see `FLAT_REMOVAL.md`.
 
 **Repair follow-up:** the eight names flagged in `HEALTH_AUDIT.md` are resolved
 in `REPAIRS.md`.  Four have full-holdout re-specifications (all below the bar),

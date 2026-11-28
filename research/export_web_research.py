@@ -18,6 +18,15 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "web" / "public" / "data" / "research" / "strategies.json"
+
+# Removed from the visible library on 2026-11-28 (full-window CAGR < 5%).
+REMOVED = {
+    "drawdown-stop-overlay", "opening-range-breakout", "donchian-breakout",
+    "drawdown-regime", "vol-kelly-overlay", "ensemble-signals",
+    "daily-regime-minute-entry", "stop-reentry-recovery", "gap-fill-fade",
+    "dynamic-leverage-throttle", "volume-orderflow", "winner-ensemble-blend",
+    "gap-capitulation-reversal",
+}
 REPORT_OUT = ROOT / "web" / "public" / "research"
 CODE_OUT = ROOT / "web" / "public" / "research" / "code"
 
@@ -437,6 +446,8 @@ def main():
     CODE_OUT.mkdir(parents=True, exist_ok=True)
     records = []
     for slug, meta in M.items():
+        if slug in REMOVED:
+            continue
         report = find_report(slug)
         report_url = None
         if report:
