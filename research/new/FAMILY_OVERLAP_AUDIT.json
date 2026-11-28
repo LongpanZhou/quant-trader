@@ -1,0 +1,202 @@
+[
+ {
+  "new": "family-close-location",
+  "max_corr": 0.7725966653054451,
+  "corr_against": "family-short-reversal",
+  "max_alpha": 0.3782389438629948,
+  "alpha_t": 2.7974530721189588,
+  "alpha_against": "family-intraday-microstructure-day",
+  "max_jaccard": 0.47085201793721976,
+  "overlap_against": "family-short-reversal"
+ },
+ {
+  "new": "family-policy-liquidity",
+  "max_corr": 0.8573357913377074,
+  "corr_against": "relative-value-tqqq",
+  "max_alpha": 0.2592118930492803,
+  "alpha_t": 1.8429669899575218,
+  "alpha_against": "family-intraday-microstructure-day",
+  "max_jaccard": 0.8732864023712487,
+  "overlap_against": "family-session-timing"
+ },
+ {
+  "new": "family-volume-skew",
+  "max_corr": 0.5053820503799222,
+  "corr_against": "family-rebalance-flow",
+  "max_alpha": 0.2699983595866469,
+  "alpha_t": 2.635510954271459,
+  "alpha_against": "family-session-timing",
+  "max_jaccard": 0.4074534161490683,
+  "overlap_against": "family-rebalance-flow"
+ },
+ {
+  "new": "family-vol-of-volume",
+  "max_corr": 0.8363523436002802,
+  "corr_against": "relative-value-tqqq",
+  "max_alpha": 0.21735514176145687,
+  "alpha_t": 1.935246618804227,
+  "alpha_against": "family-intraday-microstructure-day",
+  "max_jaccard": 0.5900111815132315,
+  "overlap_against": "family-session-timing"
+ },
+ {
+  "new": "family-change-point",
+  "max_corr": 0.6773162853938512,
+  "corr_against": "family-rebalance-flow",
+  "max_alpha": 0.30001754648239315,
+  "alpha_t": 2.6686542298717995,
+  "alpha_against": "family-short-reversal",
+  "max_jaccard": 0.6559581621217782,
+  "overlap_against": "family-session-timing"
+ },
+ {
+  "new": "family-hurst-persistence",
+  "max_corr": 0.5964356274617257,
+  "corr_against": "relative-value-tqqq",
+  "max_alpha": 0.2892891982388259,
+  "alpha_t": 2.351237224042438,
+  "alpha_against": "family-intraday-microstructure-day",
+  "max_jaccard": 0.4423147806855879,
+  "overlap_against": "family-session-timing"
+ },
+ {
+  "new": "family-tqqq-decay",
+  "max_corr": 0.7313614796598364,
+  "corr_against": "family-rebalance-flow",
+  "max_alpha": 0.2495213794891062,
+  "alpha_t": 2.3904413700264104,
+  "alpha_against": "family-intraday-microstructure-day",
+  "max_jaccard": 0.532150776053215,
+  "overlap_against": "relative-value-tqqq"
+ },
+ {
+  "new": "family-realized-skew",
+  "max_corr": 0.735368565677821,
+  "corr_against": "relative-value-tqqq",
+  "max_alpha": 0.22152954978158698,
+  "alpha_t": 1.769259037964779,
+  "alpha_against": "family-intraday-microstructure-day",
+  "max_jaccard": 0.558955223880597,
+  "overlap_against": "family-session-timing"
+ },
+ {
+  "new": "family-beta-rotation",
+  "max_corr": 0.7724914048756274,
+  "corr_against": "family-rebalance-flow",
+  "max_alpha": 0.1607641740318969,
+  "alpha_t": 1.6198834449655526,
+  "alpha_against": "family-intraday-microstructure-day",
+  "max_jaccard": 0.27276105536975104,
+  "overlap_against": "family-session-timing"
+ },
+ {
+  "new": "family-vix-term-structure",
+  "max_corr": 0.7533057029805881,
+  "corr_against": "family-rebalance-flow",
+  "max_alpha": 0.20145719912911053,
+  "alpha_t": 1.5669268228719735,
+  "alpha_against": "family-intraday-microstructure-day",
+  "max_jaccard": 0.8057527082555099,
+  "overlap_against": "family-session-timing"
+ },
+ {
+  "new": "family-credit-spread",
+  "max_corr": 0.758852624755768,
+  "corr_against": "family-rebalance-flow",
+  "max_alpha": 0.17778864534360822,
+  "alpha_t": 1.354089410355273,
+  "alpha_against": "family-intraday-microstructure-day",
+  "max_jaccard": 0.7326362957430919,
+  "overlap_against": "family-session-timing"
+ },
+ {
+  "new": "family-sector-rotation",
+  "max_corr": 0.6614156434520658,
+  "corr_against": "relative-value-tqqq",
+  "max_alpha": 0.17154026343255538,
+  "alpha_t": 1.8213585744796321,
+  "alpha_against": "family-intraday-microstructure-day",
+  "max_jaccard": 0.3095352180162913,
+  "overlap_against": "vol-scaled-crash-stop"
+ },
+ {
+  "new": "family-breadth",
+  "max_corr": 0.6849487508867687,
+  "corr_against": "family-short-reversal",
+  "max_alpha": 0.1466284458625816,
+  "alpha_t": 1.387707354688618,
+  "alpha_against": "family-intraday-microstructure-day",
+  "max_jaccard": 0.28422152560083597,
+  "overlap_against": "family-short-reversal"
+ },
+ {
+  "new": "family-crypto-risk-appetite",
+  "max_corr": 0.6501271979602279,
+  "corr_against": "family-rebalance-flow",
+  "max_alpha": 0.3001823408577066,
+  "alpha_t": 2.728386031499195,
+  "alpha_against": "family-intraday-microstructure-day",
+  "max_jaccard": 0.47012696041822255,
+  "overlap_against": "family-session-timing"
+ },
+ {
+  "new": "family-rates-volatility",
+  "max_corr": 0.6456784718918098,
+  "corr_against": "relative-value-tqqq",
+  "max_alpha": 0.2581089483536416,
+  "alpha_t": 2.3926106280218313,
+  "alpha_against": "family-intraday-microstructure-day",
+  "max_jaccard": 0.5561776782381486,
+  "overlap_against": "family-session-timing"
+ },
+ {
+  "new": "family-energy-rotation",
+  "max_corr": 0.6860566578565785,
+  "corr_against": "relative-value-tqqq",
+  "max_alpha": 0.2215576870941387,
+  "alpha_t": 1.6651071714509194,
+  "alpha_against": "family-intraday-microstructure-day",
+  "max_jaccard": 0.5617853190704537,
+  "overlap_against": "family-session-timing"
+ },
+ {
+  "new": "family-oil-shock",
+  "max_corr": 0.7958086655213269,
+  "corr_against": "relative-value-tqqq",
+  "max_alpha": 0.2100818424671386,
+  "alpha_t": 1.4712310106804554,
+  "alpha_against": "family-intraday-microstructure-day",
+  "max_jaccard": 0.6633296255098258,
+  "overlap_against": "family-session-timing"
+ },
+ {
+  "new": "family-style-rotation",
+  "max_corr": 0.7119458529681671,
+  "corr_against": "relative-value-tqqq",
+  "max_alpha": 0.24392248424667942,
+  "alpha_t": 1.7974915174439337,
+  "alpha_against": "family-intraday-microstructure-day",
+  "max_jaccard": 0.6113165680473372,
+  "overlap_against": "family-session-timing"
+ },
+ {
+  "new": "family-yen-carry",
+  "max_corr": 0.6839849379714149,
+  "corr_against": "family-rebalance-flow",
+  "max_alpha": -0.08790767460401133,
+  "alpha_t": -0.7644215496285981,
+  "alpha_against": "vol-scaled-crash-stop",
+  "max_jaccard": 0.5762648809523809,
+  "overlap_against": "family-session-timing"
+ },
+ {
+  "new": "family-lowvol-rotation",
+  "max_corr": 0.7876457756826306,
+  "corr_against": "family-short-reversal",
+  "max_alpha": -0.1468647971507243,
+  "alpha_t": -1.427913048024592,
+  "alpha_against": "family-short-reversal",
+  "max_jaccard": 0.5161883738042679,
+  "overlap_against": "family-session-timing"
+ }
+]
