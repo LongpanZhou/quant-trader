@@ -1554,8 +1554,8 @@
    "dev_above_tqqq": null,
    "status": "verified-full",
    "visible": true,
-   "family_winner": true,
-   "note": "External family added 2026-11-28. Full 42.69% CAGR / 74.73% DD / 0.89 Sharpe; 121 full fills.",
+   "family_winner": false,
+   "note": "External family added 2026-11-28. Full 42.69% CAGR / 74.73% DD / 0.89 Sharpe; 121 full fills. Demoted: agent found 2022-23 -9.0% and horizon collapse, so it is above the bar but not a family winner.",
    "source": "research/new/family-gold-safe-haven/report.md"
   },
   {

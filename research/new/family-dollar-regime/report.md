@@ -38,6 +38,8 @@ At the close of session *k*, compute `u60 = log(UUP[k] / UUP[k-60])`.  If `u60 <
 | TQQQ buy & hold | 36.15% | 82.29% | 0.80 | 1.12 | 66.55% | 100.0% | 1 | 1x |
 | Published dev bar | 36.72% | 82.29% | 0.82 | — | — | — | — | — |
 
+Vol is annualized from 1-minute marks.  Exposure is the invested fraction; BIL and QQQ count as invested, so the TQQQ/BIL/QQQ sleeve split is in section 3.2.  Daily-sampled vol and Sharpe are in `result.json`.
+
 At 1 bp the book returns 41.24% CAGR with a 72.11% max drawdown and Sharpe 0.90; at 10 bp the CAGR is still 39.17%.  TQQQ exposure is 79.9%, so the book is selectively de-risked rather than a permanent BIL overlay.
 
 ### 3.2 Activity and exposure

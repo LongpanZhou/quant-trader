@@ -26,7 +26,7 @@ export function ResearchHighlights() {
   const [strategies, setStrategies] = useState<Strategy[] | null>(null);
 
   useEffect(() => {
-    fetch("/data/research/strategies.json?v=2026-11-28-43z", { cache: "no-store" })
+    fetch("/data/research/strategies.json?v=2026-11-28-43g", { cache: "no-store" })
       .then((response) => response.json() as Promise<{ strategies: Strategy[] }>)
       .then((payload) => setStrategies(payload.strategies.slice(0, 6)))
       .catch(() => setStrategies([]));

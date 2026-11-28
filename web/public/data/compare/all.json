@@ -125509,7 +125509,7 @@
    "sharpe": 0.8880186860035495,
    "benchmark": false,
    "family": "gold-safe-haven",
-   "family_winner": true
+   "family_winner": false
   },
   {
    "id": "vol-term-structure",

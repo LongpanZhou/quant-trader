@@ -38,6 +38,8 @@ At the close of session *k*, compute `o5 = log(USO[k] / USO[k-5])`.  If `o5 > 0.
 | TQQQ buy & hold | 36.15% | 82.29% | 0.80 | 1.12 | 66.55% | 100.0% | 1 | 1x |
 | Published dev bar | 36.72% | 82.29% | 0.82 | — | — | — | — | — |
 
+Vol is annualized from 1-minute marks.  Exposure is the invested fraction; BIL and QQQ count as invested, so the TQQQ/BIL/QQQ sleeve split is in section 3.2.  Daily-sampled vol and Sharpe are in `result.json`.
+
 The primary compounds 48.71% at 1 bp with a 64.46% drawdown and Sharpe 1.00.  TQQQ exposure is 66.9%; the book holds BIL in short bursts after oil spikes.  The 10 bp cost is modest: CAGR is still 42.98%.
 
 ### 3.2 Activity and exposure

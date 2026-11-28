@@ -38,6 +38,8 @@ At the close of session *k*, compute `g5 = log(GLD[k] / GLD[k-5])`.  If `g5 > 0.
 | TQQQ buy & hold | 36.15% | 82.29% | 0.80 | 1.12 | 66.55% | 100.0% | 1 | 1x |
 | Published dev bar | 36.72% | 82.29% | 0.82 | — | — | — | — | — |
 
+Vol is annualized from 1-minute marks.  Exposure is the invested fraction; BIL and QQQ count as invested, so the TQQQ/BIL/QQQ sleeve split is in section 3.2.  Daily-sampled vol and Sharpe are in `result.json`.
+
 The primary returns 42.91% CAGR at 1 bp with a 74.90% drawdown and Sharpe 0.89.  It is in TQQQ 92.6% of sessions, so the gold shock is a sparse overlay.  The 2022-23 subperiod is the problem: -9.0% CAGR, because gold shocks in 2022 were not reliable equity risk-off signals.
 
 ### 3.2 Activity and exposure

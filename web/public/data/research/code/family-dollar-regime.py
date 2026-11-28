@@ -182,7 +182,7 @@ def main():
         "external": SYMBOLS,
         "universe": list(common.SYMS),
         "window": {"dev": [common.DEV_START, common.DEV_END],
-                   "holdout": "not used (hard-truncated at 2023-12-29)"},
+                   "holdout": "not computed in this study (dev panel ends 2023-12-29)"},
         "execution": {
             "engine": "research/bt.py", "marks": "1min",
             "fills": "next session 09:30 open", "band": common.BAND,
