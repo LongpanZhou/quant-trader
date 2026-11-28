@@ -116,6 +116,10 @@ def run(slug: str, start: str, end: str, params: dict | None = None,
     if eq.index.tz is not None:
         eq.index = eq.index.tz_localize(None)
     daily = eq.groupby(eq.index.normalize()).last()
+    dates, first, last = bt.day_bounds(ts)
+    sess = pd.to_datetime(pd.Index(dates[first])).normalize()
+    qqq = pd.Series(c[last, 0], index=sess).reindex(daily.index)
+    qqq = qqq / qqq.iloc[0] * 100.0
     return {
         "ok": True,
         "slug": slug,
@@ -123,6 +127,7 @@ def run(slug: str, start: str, end: str, params: dict | None = None,
         "end": end,
         "params": params,
         "slippage_bps": float(slippage_bps),
+        "benchmark": "QQQ",
         "cagr": float(s["cagr"]),
         "max_drawdown": float(s["max_drawdown"]),
         "sharpe": float(s["sharpe"]),
@@ -133,6 +138,10 @@ def run(slug: str, start: str, end: str, params: dict | None = None,
         "daily_curve": {
             "dates": [str(d.date()) for d in daily.index],
             "values": [float(v) for v in daily.to_numpy()],
+        },
+        "benchmark_curve": {
+            "dates": [str(d.date()) for d in qqq.index],
+            "values": [float(v) for v in qqq.to_numpy()],
         },
     }
 

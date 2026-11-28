@@ -1,140 +1,152 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import type { PerformanceData, WindowId } from "@/lib/types";
-import { BENCHMARKS, PRESETS, PRESET_LIST } from "@/lib/presets";
-import { isoRange, multiple, num, pct, points } from "@/lib/format";
-import { EquityChart } from "@/components/equity-chart";
+import { useEffect, useMemo, useState } from "react";
 import { DrawdownChart } from "@/components/drawdown-chart";
-import { YearlyChart } from "@/components/yearly-chart";
-import { TradePanel } from "@/components/trade-panel";
-import { RangeSelector, filterSeries, type SeriesRange } from "@/components/range-selector";
+import { EquityChart } from "@/components/equity-chart";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
-import { ResearchLabBrowser } from "@/components/research-lab-browser";
 import { Pill, StatCard } from "@/components/ui";
+import { multiple, num, pct } from "@/lib/format";
+import type { SeriesPoint } from "@/lib/types";
 
-const inputClass =
-  "mt-1 w-full rounded-lg border border-white/10 bg-[#0b0d10] px-3 py-2 text-[12px] text-zinc-200 outline-none transition focus:border-emerald-300/40";
+type StrategyRow = {
+  slug: string;
+  name: string;
+  tagline: string;
+  cagr: number;
+  dd: number;
+  sharpe: number;
+};
+
+type ParamField = {
+  key: string;
+  label: string;
+  type: "int" | "float" | "bool" | "text";
+  default: boolean | number | string;
+  editable: boolean;
+};
+
+type ParamsFile = { strategies: Record<string, { fields: ParamField[] }> };
+
+type ResearchResult = {
+  ok: true;
+  slug: string;
+  start: string;
+  end: string;
+  benchmark: string;
+  cagr: number;
+  max_drawdown: number;
+  sharpe: number;
+  sortino: number;
+  volatility: number;
+  fills: number;
+  turnover: number;
+  daily_curve: { dates: string[]; values: number[] };
+  benchmark_curve: { dates: string[]; values: number[] };
+};
+
+const START = "2016-01-04";
+const END = "2026-10-23";
+const HIDE_KEYS = new Set(["smaDays", "sma_days", "ma"]);
 
 export default function LabPage() {
-  const first = PRESET_LIST[0];
-  const [presetId, setPresetId] = useState(first.id);
-  const preset = PRESETS[presetId] ?? first;
-  const [windowId, setWindowId] = useState<WindowId>(preset.windows[0]);
-  const [benchmark, setBenchmark] = useState(preset.benchmark);
+  const [strategies, setStrategies] = useState<StrategyRow[]>([]);
+  const [schema, setSchema] = useState<ParamsFile>({ strategies: {} });
+  const [slug, setSlug] = useState("family-regime-switch");
+  const [start, setStart] = useState(START);
+  const [end, setEnd] = useState(END);
   const [slippage, setSlippage] = useState(1);
-  const [sma, setSma] = useState(preset.strategy.smaDays);
-  const [targetVol, setTargetVol] = useState(preset.strategy.targetVol * 100);
-  const [leverage, setLeverage] = useState(preset.strategy.leverage);
-  const [band, setBand] = useState(preset.strategy.rebalanceBand * 100);
-  const [refresh, setRefresh] = useState(false);
+  const [values, setValues] = useState<Record<string, boolean | number | string>>({});
+  const [result, setResult] = useState<ResearchResult | null>(null);
   const [running, setRunning] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [data, setData] = useState<PerformanceData | null>(null);
-  const [meta, setMeta] = useState<{ cached: boolean; elapsedMs: number } | null>(null);
-  const [range, setRange] = useState<SeriesRange>("all");
-  const [selection, setSelection] = useState("research:ratio-pairs");
-  const [catalog, setCatalog] = useState<
-    { id: string; slug: string; name: string; runnable: boolean; status: string }[]
-  >([]);
-  const bootstrapped = useRef(false);
-  const isResearch = selection.startsWith("research:");
-  const researchSlug = isResearch ? selection.slice("research:".length) : "ratio-pairs";
 
   useEffect(() => {
-    fetch("/data/catalog/strategies.json?v=2026-11-28-44c")
-      .then((response) => response.json() as Promise<{ strategies: typeof catalog }>)
-      .then((payload) => setCatalog(payload.strategies))
-      .catch(() => setCatalog([]));
+    fetch("/data/research/rebuild.json")
+      .then((r) => r.json())
+      .then((d: { strategies: StrategyRow[] }) => {
+        setStrategies(d.strategies);
+        if (!d.strategies.some((s) => s.slug === slug) && d.strategies[0]) {
+          setSlug(d.strategies[0].slug);
+        }
+      })
+      .catch(() => setStrategies([]));
+    fetch("/data/research/params.json")
+      .then((r) => r.json())
+      .then((d: ParamsFile) => setSchema(d))
+      .catch(() => setSchema({ strategies: {} }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const choosePreset = (id: string) => {
-    const next = PRESETS[id];
-    if (!next) return;
-    setPresetId(id);
-    setWindowId(next.windows[0]);
-    setBenchmark(next.benchmark);
-    setSma(next.strategy.smaDays);
-    setTargetVol(next.strategy.targetVol * 100);
-    setLeverage(next.strategy.leverage);
-    setBand(next.strategy.rebalanceBand * 100);
-    setData(null);
-    setMeta(null);
+  const fields = useMemo(() => {
+    const raw = schema.strategies[slug]?.fields ?? [];
+    return raw.filter((f) => !HIDE_KEYS.has(f.key) && !/trend|sma/i.test(f.label));
+  }, [schema, slug]);
+
+  useEffect(() => {
+    const next: Record<string, boolean | number | string> = {};
+    for (const f of fields) {
+      if (f.editable) next[f.key] = f.default;
+    }
+    setValues(next);
+    setResult(null);
     setError(null);
-  };
+  }, [fields]);
+
+  const selected = strategies.find((s) => s.slug === slug);
+
+  const series = useMemo<SeriesPoint[]>(() => {
+    if (!result) return [];
+    const { dates, values: sv } = result.daily_curve;
+    const bv = result.benchmark_curve.values;
+    const base = sv[0] || 1;
+    const bbase = bv[0] || 1;
+    let peak = -Infinity;
+    let bpeak = -Infinity;
+    return dates.map((date, i) => {
+      const strategy = (sv[i] / base) * 100;
+      const qqq = ((bv[i] ?? bv[bv.length - 1] ?? 0) / bbase) * 100;
+      peak = Math.max(peak, strategy);
+      bpeak = Math.max(bpeak, qqq);
+      return {
+        date,
+        strategy,
+        qqq,
+        drawdown: strategy / peak - 1,
+        qqqDrawdown: qqq / bpeak - 1,
+      };
+    });
+  }, [result]);
+
+  const strategyMax = useMemo(
+    () => Math.max(0, ...series.map((p) => -p.drawdown)),
+    [series],
+  );
+  const qqqMax = useMemo(
+    () => Math.max(0, ...series.map((p) => -(p.qqqDrawdown ?? 0))),
+    [series],
+  );
 
   const run = async () => {
     setRunning(true);
     setError(null);
     try {
-      const response = await fetch("/api/backtest", {
+      const response = await fetch("/api/research-backtest", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({
-          preset: presetId,
-          window: windowId,
-          benchmark,
-          slippageBps: slippage,
-          refresh,
-          strategy: {
-            smaDays: sma,
-            targetVol: targetVol / 100,
-            leverage,
-            rebalanceBand: band / 100,
-          },
-        }),
+        body: JSON.stringify({ slug, start, end, params: values, slippageBps: slippage }),
       });
-      const payload = (await response.json()) as {
-        data?: PerformanceData;
-        error?: string;
-        cached?: boolean;
-        elapsedMs?: number;
-      };
-      if (!response.ok || !payload.data) throw new Error(payload.error ?? "Backtest failed");
-      setData(payload.data);
-      setMeta({ cached: Boolean(payload.cached), elapsedMs: payload.elapsedMs ?? 0 });
-      setRange("all");
+      const payload = (await response.json()) as ResearchResult | { ok: false; error?: string };
+      if (!response.ok || !("ok" in payload) || payload.ok !== true) {
+        throw new Error("error" in payload && payload.error ? payload.error : "Backtest failed");
+      }
+      setResult(payload);
     } catch (reason) {
       setError(reason instanceof Error ? reason.message : "Backtest failed");
+      setResult(null);
     } finally {
       setRunning(false);
     }
   };
-
-  useEffect(() => {
-    if (isResearch || bootstrapped.current) return;
-    bootstrapped.current = true;
-    void run();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isResearch]);
-
-  const viewSeries = useMemo(
-    () => (data ? filterSeries(data.series, range) : []),
-    [data, range],
-  );
-  const maxDrawdown = useMemo(
-    () => Math.max(0, ...viewSeries.map((point) => -point.drawdown)),
-    [viewSeries],
-  );
-  const benchmarkDrawdown = useMemo(
-    () =>
-      Math.max(
-        0,
-        ...viewSeries.map((point) => (point.qqqDrawdown == null ? 0 : -point.qqqDrawdown)),
-      ),
-    [viewSeries],
-  );
-
-  const presetOptions = catalog.filter((item) => item.runnable).length
-    ? catalog.filter((item) => item.runnable)
-    : PRESET_LIST.map((item) => ({
-        id: `preset:${item.id}`,
-        slug: item.id,
-        name: item.name,
-        runnable: true,
-        status: "Runnable",
-      }));
-  const researchOptions = catalog.filter((item) => !item.runnable);
 
   return (
     <div className="min-h-screen">
@@ -142,381 +154,237 @@ export default function LabPage() {
       <SiteHeader mode="lab" />
       <main className="relative mx-auto max-w-[1180px] px-5 pb-20 lg:px-8">
         <section className="fade-up pt-12 sm:pt-16">
-          <div className="flex flex-col justify-between gap-8 lg:flex-row lg:items-end">
-            <div className="max-w-3xl">
-              <div className="mb-4 flex flex-wrap gap-2">
-                <Pill tone="green">Local backtest</Pill>
-                <Pill tone="blue">Yahoo Finance</Pill>
-                <Pill>32 strategies</Pill>
-              </div>
-              <h1 className="display text-[2.7rem] font-semibold text-zinc-50 sm:text-[3.6rem]">
-                Backtest
-                <br />
-                <span className="text-emerald-200">lab.</span>
-              </h1>
-              <p className="mt-5 max-w-xl text-[14px] leading-relaxed text-zinc-400">
-                Choose any of the 32 strategies from one selector. Runnable presets open editable
-                controls and rerun the Rust engine; research strategies show precomputed results,
-                code and provenance.
-              </p>
-            </div>
-            <div className="flex flex-col gap-3 lg:items-end">
-              <a
-                href="/lab/custom"
-                className="inline-flex items-center justify-center rounded-full bg-emerald-300 px-4 py-2 text-[11px] font-semibold text-[#07110a] transition hover:bg-emerald-200"
-              >
-                Write a custom strategy →
-              </a>
-
-            </div>
+          <div className="mb-4 flex flex-wrap gap-2">
+            <Pill tone="green">Research only</Pill>
+            <Pill tone="blue">Python execution</Pill>
+            <Pill>{strategies.length} strategies</Pill>
           </div>
+          <h1 className="display text-[2.7rem] font-semibold text-zinc-50 sm:text-[3.6rem]">
+            Backtest
+            <br />
+            <span className="text-emerald-200">any research strategy.</span>
+          </h1>
+          <p className="mt-5 max-w-2xl text-[14px] leading-relaxed text-zinc-400">
+            Pick a strategy, set any start and end date, edit its Python parameters, and run it
+            on the local 1-minute QQQ/TQQQ/BIL panel. No presets and no fixed windows.
+          </p>
         </section>
 
-        <section id="lab" className="scroll-mt-24 pt-12">
-          <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
-            <label className="min-w-[280px] flex-1 text-[10px] uppercase tracking-[0.12em] text-zinc-600">
+        <section className="mt-10 grid gap-4 lg:grid-cols-[380px_1fr]">
+          <div className="panel h-fit min-w-0 p-5">
+            <label className="text-[10px] uppercase tracking-[0.12em] text-zinc-600">
               Strategy
               <select
-                value={selection}
-                onChange={(event) => {
-                  const value = event.target.value;
-                  setSelection(value);
-                  if (value.startsWith("preset:")) choosePreset(value.slice("preset:".length));
-                }}
+                value={slug}
+                onChange={(event) => setSlug(event.target.value)}
                 className="mt-1 w-full rounded-lg border border-white/10 bg-[#0b0d10] px-3 py-2 text-[12px] text-zinc-200 outline-none transition focus:border-emerald-300/40"
               >
-                <optgroup label="Runnable presets (editable)">
-                  {presetOptions.map((item) => (
-                    <option key={item.id} value={item.id}>
-                      {item.name}
-                    </option>
-                  ))}
-                </optgroup>
-                <optgroup label="Research strategies (precomputed)">
-                  {researchOptions.map((item) => (
-                    <option key={item.id} value={item.id}>
-                      {item.name} · {item.status}
-                    </option>
-                  ))}
-                </optgroup>
+                {strategies.map((s) => (
+                  <option key={s.slug} value={s.slug}>
+                    {s.name}
+                  </option>
+                ))}
               </select>
             </label>
-            <div className="text-[11px] text-zinc-500">
-              {presetOptions.length} editable presets · {researchOptions.length} research results · one selector
-            </div>
-          </div>
-          {!isResearch ? (
-          <div className="grid gap-4 lg:grid-cols-[360px_1fr]">
-            <div className="panel min-w-0 p-5">
-              <div className="flex items-start justify-between gap-3">
-                <div>
-                  <div className="eyebrow">Selected preset</div>
-                  <div className="mt-1 text-[14px] font-medium text-zinc-100">{preset.name}</div>
-                </div>
-                <button
-                  onClick={() => choosePreset(presetId)}
-                  className="text-[10px] uppercase tracking-[0.12em] text-zinc-500 transition hover:text-zinc-200"
-                >
-                  Reset
-                </button>
-              </div>
-              <p className="mt-2 text-[11px] leading-relaxed text-zinc-500">
-                {preset.symbols.join(" / ")} · daily trend + leverage. Choose a period and costs,
-                then run.
-              </p>
+            {selected ? (
+              <p className="mt-2 text-[11px] leading-relaxed text-zinc-500">{selected.tagline}</p>
+            ) : null}
 
-              <div className="mt-5 eyebrow">Period</div>
-              <div className="mt-2 grid grid-cols-4 gap-1.5">
-                {preset.windows.map((window) => (
-                  <button
-                    key={window}
-                    onClick={() => setWindowId(window)}
-                    className={`rounded-lg border px-2 py-2 text-[11px] uppercase tracking-[0.08em] transition ${
-                      windowId === window
-                        ? "border-emerald-300/30 bg-emerald-300/[0.08] text-emerald-100"
-                        : "border-white/10 text-zinc-400 hover:border-white/20 hover:text-zinc-100"
-                    }`}
-                  >
-                    {window.toUpperCase()}
-                  </button>
-                ))}
-              </div>
-
-              <div className="mt-5 eyebrow">Costs</div>
-              <div className="mt-2 grid grid-cols-4 gap-1.5">
-                {[0, 1, 5, 10].map((bp) => (
-                  <button
-                    key={bp}
-                    onClick={() => setSlippage(bp)}
-                    className={`rounded-lg border px-2 py-2 text-[11px] transition ${
-                      slippage === bp
-                        ? "border-emerald-300/30 bg-emerald-300/[0.08] text-emerald-100"
-                        : "border-white/10 text-zinc-400 hover:border-white/20 hover:text-zinc-100"
-                    }`}
-                  >
-                    {bp} bp
-                  </button>
-                ))}
-              </div>
-
-              <label className="mt-4 block text-[10px] uppercase tracking-[0.12em] text-zinc-600">
-                Benchmark
-                <select
-                  value={benchmark}
-                  onChange={(event) => setBenchmark(event.target.value)}
-                  className={inputClass}
-                >
-                  {BENCHMARKS.map((item) => (
-                    <option key={item.value} value={item.value}>
-                      {item.label}
-                    </option>
-                  ))}
-                </select>
+            <div className="mt-5 grid grid-cols-2 gap-3">
+              <label className="text-[10px] uppercase tracking-[0.12em] text-zinc-600">
+                Start
+                <input
+                  type="date"
+                  min={START}
+                  max={END}
+                  value={start}
+                  onChange={(event) => setStart(event.target.value)}
+                  className="mt-1 w-full rounded-lg border border-white/10 bg-[#0b0d10] px-3 py-2 text-[12px] text-zinc-200 outline-none transition focus:border-emerald-300/40"
+                />
               </label>
-
-              <details className="mt-4 rounded-lg border border-white/10 p-3">
-                <summary className="cursor-pointer text-[11px] font-medium text-zinc-400 transition hover:text-zinc-200">
-                  Advanced parameters
-                </summary>
-                <div className="mt-3 grid grid-cols-2 gap-3">
-                <NumberInput label="Trend filter (days)" value={sma} setValue={setSma} min={2} max={500} step={1} />
-                <NumberInput
-                  label="Vol target % (0 = off)"
-                  value={targetVol}
-                  setValue={setTargetVol}
-                  min={0}
-                  max={100}
-                  step={5}
+              <label className="text-[10px] uppercase tracking-[0.12em] text-zinc-600">
+                End
+                <input
+                  type="date"
+                  min={START}
+                  max={END}
+                  value={end}
+                  onChange={(event) => setEnd(event.target.value)}
+                  className="mt-1 w-full rounded-lg border border-white/10 bg-[#0b0d10] px-3 py-2 text-[12px] text-zinc-200 outline-none transition focus:border-emerald-300/40"
                 />
-                <NumberInput
-                  label="Leverage (1–5)"
-                  value={leverage}
-                  setValue={setLeverage}
-                  min={1}
-                  max={5}
-                  step={0.5}
-                />
-                <NumberInput
-                  label="Band %"
-                  value={band}
-                  setValue={setBand}
-                  min={0}
-                  max={50}
-                  step={1}
-                />
-                <NumberInput
-                  label="Custom slippage (bp)"
-                  value={slippage}
-                  setValue={setSlippage}
-                  min={0}
-                  max={100}
-                  step={1}
-                />
-                <label className="flex items-end gap-2 pb-2 text-[11px] text-zinc-500">
-                  <input
-                    type="checkbox"
-                    checked={refresh}
-                    onChange={(event) => setRefresh(event.target.checked)}
-                    className="h-3.5 w-3.5 rounded border-white/20 bg-black/30"
-                  />
-                  Ignore cache
-                </label>
-                </div>
-              </details>
-
-              <button
-                onClick={() => void run()}
-                disabled={running}
-                className="mt-5 w-full rounded-lg bg-emerald-300 px-4 py-2.5 text-[12px] font-semibold text-[#07110a] transition hover:bg-emerald-200 disabled:cursor-wait disabled:opacity-60"
-              >
-                {running ? "Running backtest..." : "Run backtest"}
-              </button>
-              <p className="mt-3 text-[10px] leading-relaxed text-zinc-600">
-                The first run downloads Yahoo data and can take several seconds. Results are cached
-                locally by input hash.
-              </p>
-              {error ? (
-                <div className="mt-3 max-h-48 overflow-auto rounded-lg border border-rose-300/20 bg-rose-300/[0.05] p-3 text-[10px] leading-relaxed text-rose-200">
-                  {error}
-                </div>
-              ) : null}
+              </label>
             </div>
 
-            <div className="min-w-0">
-              {!data ? (
-                <div className="panel flex min-h-[420px] flex-col items-center justify-center p-8 text-center">
-                  <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full border border-emerald-300/20 bg-emerald-300/[0.06] text-emerald-200">
-                    ▶
-                  </div>
-                  <div className="text-[14px] font-medium text-zinc-300">
-                    {running ? "Running the first backtest…" : "No run yet"}
-                  </div>
-                  <p className="mt-2 max-w-sm text-[11px] leading-relaxed text-zinc-600">
-                    Pick a strategy and horizon, then run the backtest. The result will appear here
-                    with the same charts as the strategy portals.
-                  </p>
-                  <button
-                    onClick={() => void run()}
-                    disabled={running}
-                    className="mt-4 rounded-full bg-emerald-300 px-4 py-2 text-[11px] font-semibold text-[#07110a] transition hover:bg-emerald-200 disabled:cursor-wait disabled:opacity-60"
-                  >
-                    {running ? "Running…" : "Run the default backtest"}
-                  </button>
-                </div>
+            <label className="mt-4 block text-[10px] uppercase tracking-[0.12em] text-zinc-600">
+              Slippage (bp)
+              <input
+                type="number"
+                min={0}
+                max={100}
+                step={1}
+                value={slippage}
+                onChange={(event) => setSlippage(Number(event.target.value))}
+                className="mt-1 w-full rounded-lg border border-white/10 bg-[#0b0d10] px-3 py-2 text-[12px] text-zinc-200 outline-none transition focus:border-emerald-300/40"
+              />
+            </label>
+
+            <div className="mt-5 border-t border-white/5 pt-4">
+              <div className="text-[10px] uppercase tracking-[0.12em] text-zinc-600">
+                Python parameters
+              </div>
+              {fields.length === 0 ? (
+                <p className="mt-2 text-[11px] leading-relaxed text-zinc-500">
+                  This strategy has no tunable parameters exposed. Date-range testing is still
+                  available.
+                </p>
               ) : (
-                <div>
-                  <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
-                    <div>
-                      <div className="text-[11px] text-zinc-500">
-                        {preset.name} · {isoRange(data.start, data.end)}
-                      </div>
-                      <div className="mt-1 text-[10px] text-zinc-600">
-                        {meta?.cached ? "cached result" : `ran in ${((meta?.elapsedMs ?? 0) / 1000).toFixed(1)}s`}
-                        {" · "}
-                        <a
-                          href={`/strategies/${presetId}/`}
-                          className="text-zinc-400 transition hover:text-zinc-200"
-                        >
-                          open full portal ↗
-                        </a>
-                      </div>
-                    </div>
-                    <RangeSelector
-                      value={range}
-                      onChange={setRange}
-                      series={viewSeries}
-                      name={preset.name}
-                      benchmark={data.benchmark}
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-3 lg:grid-cols-3">
-                    <StatCard label="CAGR" value={pct(data.metrics.cagr)} sub={`${data.benchmark} ${pct(data.metrics.benchmarkCagr)} / yr`} tone="green" />
-                    <StatCard label={`Excess vs ${data.benchmark}`} value={points(data.metrics.excess)} sub="per year, after costs" tone="green" />
-                    <StatCard label="Max drawdown" value={pct(-data.metrics.maxDrawdown)} sub={`${data.benchmark} ${pct(data.metrics.benchmarkMaxDrawdown)}`} tone="red" />
-                    <StatCard label="Sharpe" value={data.metrics.sharpe.toFixed(2)} sub={`Sortino ${data.metrics.sortino.toFixed(2)}`} tone="blue" />
-                    <StatCard label="Win rate" value={pct(data.metrics.winRate)} sub={`${data.metrics.wins} wins · ${data.metrics.losses} losses`} />
-                    <StatCard label="Round trips" value={num(data.metrics.closedTrades)} sub={`${num(data.metrics.fills)} fills · ${multiple(data.metrics.turnover)} turnover`} />
-                  </div>
-
-                  <div className="panel mt-4 min-w-0 p-5">
-                    <EquityChart series={viewSeries} start={viewSeries[0]?.date ?? data.start} end={data.end} benchmark={data.benchmark} accent={preset.accent} />
-                  </div>
-                  <div className="mt-4 grid gap-4 xl:grid-cols-2">
-                    <div className="panel min-w-0 p-5">
-                      <DrawdownChart series={viewSeries} strategyMax={maxDrawdown} qqqMax={benchmarkDrawdown} benchmark={data.benchmark} />
-                    </div>
-                    <div className="panel min-w-0 p-5">
-                      <TradePanel metrics={data.metrics} compact />
-                    </div>
-                  </div>
-                  <div className="panel mt-4 min-w-0 p-5">
-                    <YearlyChart yearly={data.yearly} benchmark={data.benchmark} />
-                  </div>
+                <div className="mt-3 grid gap-3">
+                  {fields.map((field) => (
+                    <label
+                      key={field.key}
+                      className="text-[10px] uppercase tracking-[0.08em] text-zinc-600"
+                    >
+                      <span className="flex items-center justify-between gap-2">
+                        <span>{field.label}</span>
+                        {!field.editable ? (
+                          <span className="normal-case tracking-normal text-[9px] text-zinc-700">
+                            fixed
+                          </span>
+                        ) : null}
+                      </span>
+                      {field.type === "bool" ? (
+                        <input
+                          type="checkbox"
+                          checked={Boolean(values[field.key] ?? field.default)}
+                          disabled={!field.editable}
+                          onChange={(event) =>
+                            setValues((v) => ({ ...v, [field.key]: event.target.checked }))
+                          }
+                          className="mt-2 h-4 w-4 rounded border-white/20 bg-black/30"
+                        />
+                      ) : (
+                        <input
+                          type={field.type === "text" ? "text" : "number"}
+                          value={String(values[field.key] ?? field.default)}
+                          disabled={!field.editable}
+                          step={field.type === "int" ? 1 : "any"}
+                          onChange={(event) =>
+                            setValues((v) => ({
+                              ...v,
+                              [field.key]:
+                                field.type === "text"
+                                  ? event.target.value
+                                  : Number(event.target.value),
+                            }))
+                          }
+                          className="mt-1 w-full rounded-lg border border-white/10 bg-[#0b0d10] px-3 py-2 text-[12px] normal-case tracking-normal text-zinc-200 outline-none transition disabled:opacity-40 focus:border-emerald-300/40"
+                        />
+                      )}
+                    </label>
+                  ))}
                 </div>
               )}
             </div>
-          </div>
-          ) : (
-            <ResearchLabBrowser initialSlug={researchSlug} showSelector={false} />
-          )}
-        </section>
 
-        <section id="data" className="scroll-mt-24 pt-16">
-          <div className="eyebrow mb-2">Data</div>
-          <h2 className="display text-2xl font-semibold text-zinc-100 sm:text-[1.7rem]">
-            What the lab does and does not model
-          </h2>
-          <div className="mt-4 grid gap-3 md:grid-cols-2">
-            <DataCard title="Prices and corporate actions" tone="green">
-              Yahoo Finance daily adjusted closes. Splits and dividends are embedded in the
-              adjusted series, and the simulator applies them to the paper ledger. Backtests use
-              next-open fills and 1bp default slippage.
-            </DataCard>
-            <DataCard title="Delisting" tone="amber">
-              The shipped strategies trade ETFs, so there is no stock-delisting risk in these
-              windows. The custom lab accepts arbitrary tickers but also does not model delisting:
-              a run ends at the last common bar. A survivorship-free stock universe needs a
-              point-in-time delisting feed; this local dataset does not claim one.
-            </DataCard>
-            <DataCard title="Financial statements" tone="red">
-              Not in the local dataset yet. The current engine is price-only; the custom lab is
-              price-only too. SEC/EDGAR fundamentals need a separate data layer, CIK mapping,
-              point-in-time filing dates and a cache before they can be a strategy input.
-            </DataCard>
-            <DataCard title="Reproducibility" tone="blue">
-              Every run pins the end date and caches by the input settings. Use “Ignore cache” to
-              force a fresh download. The
-              custom lab runs in your browser and caches Yahoo prices locally for six hours.
-            </DataCard>
+            <button
+              onClick={() => void run()}
+              disabled={running || !slug || !start || !end}
+              className="mt-5 w-full rounded-lg bg-emerald-300 px-4 py-2.5 text-[12px] font-semibold text-[#07110a] transition hover:bg-emerald-200 disabled:cursor-wait disabled:opacity-60"
+            >
+              {running ? "Running Python backtest…" : "Run backtest"}
+            </button>
+            <p className="mt-3 text-[10px] leading-relaxed text-zinc-600">
+              The first run loads the 1-minute panel and can take several seconds. Results are
+              cached by strategy, dates and parameters.
+            </p>
+            {error ? (
+              <div className="mt-3 max-h-40 overflow-auto rounded-lg border border-rose-300/20 bg-rose-300/[0.05] p-3 text-[10px] leading-relaxed text-rose-200">
+                {error}
+              </div>
+            ) : null}
           </div>
 
-          <div className="panel-soft mt-4 flex flex-col gap-2 p-4 text-[11px] leading-relaxed text-zinc-500 sm:flex-row sm:items-center sm:justify-between">
-            <span>
-              Want to test your own rule, daily or intraday? Write it in the custom workspace
-              and get the same charts.
-            </span>
-            <a className="shrink-0 text-zinc-300 transition hover:text-emerald-200" href="/lab/custom">
-              Open the custom strategy workspace →
-            </a>
+          <div className="min-w-0">
+            {!result ? (
+              <div className="panel flex min-h-[460px] flex-col items-center justify-center p-8 text-center">
+                <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full border border-emerald-300/20 bg-emerald-300/[0.06] text-emerald-200">
+                  ▶
+                </div>
+                <div className="text-[14px] font-medium text-zinc-300">
+                  {running ? "Running the selected strategy…" : "No run yet"}
+                </div>
+                <p className="mt-2 max-w-sm text-[11px] leading-relaxed text-zinc-600">
+                  Choose a strategy, set the start and end dates, then run. The result uses the
+                  same 1-minute execution and daily-close reporting as the research library.
+                </p>
+              </div>
+            ) : (
+              <div>
+                <div className="mb-3 flex flex-wrap items-end justify-between gap-2">
+                  <div>
+                    <div className="text-[13px] font-medium text-zinc-200">
+                      {selected?.name ?? result.slug}
+                    </div>
+                    <div className="mt-1 text-[10px] text-zinc-600">
+                      {result.start} → {result.end} · {result.benchmark} benchmark ·{" "}
+                      {slippage} bp costs
+                    </div>
+                  </div>
+                  <a
+                    href={`/strategies/${result.slug}/`}
+                    className="text-[10px] uppercase tracking-[0.1em] text-zinc-500 transition hover:text-zinc-200"
+                  >
+                    Open research page ↗
+                  </a>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+                  <StatCard label="CAGR" value={pct(result.cagr)} sub="custom window" tone="green" />
+                  <StatCard
+                    label="Max drawdown"
+                    value={pct(result.max_drawdown)}
+                    sub="daily close"
+                    tone="red"
+                  />
+                  <StatCard label="Sharpe" value={result.sharpe.toFixed(2)} sub="daily" tone="blue" />
+                  <StatCard
+                    label="Fills"
+                    value={num(result.fills)}
+                    sub={`${multiple(result.turnover)} turnover`}
+                  />
+                </div>
+
+                <div className="panel mt-4 min-w-0 p-5">
+                  <EquityChart
+                    series={series}
+                    start={result.start}
+                    end={result.end}
+                    benchmark={result.benchmark}
+                    accent="#9ae6a5"
+                  />
+                </div>
+
+                <div className="panel mt-4 min-w-0 p-5">
+                  <DrawdownChart
+                    series={series}
+                    strategyMax={strategyMax}
+                    qqqMax={qqqMax}
+                    benchmark={result.benchmark}
+                  />
+                </div>
+
+                <div className="mt-4 grid grid-cols-2 gap-3 lg:grid-cols-4">
+                  <StatCard label="Sortino" value={result.sortino.toFixed(2)} />
+                  <StatCard label="Volatility" value={pct(result.volatility)} />
+                  <StatCard label="Turnover" value={multiple(result.turnover)} />
+                  <StatCard label="Strategy" value={result.slug} />
+                </div>
+              </div>
+            )}
           </div>
         </section>
       </main>
       <SiteFooter />
-    </div>
-  );
-}
-
-function NumberInput({
-  label,
-  value,
-  setValue,
-  min,
-  max,
-  step,
-}: {
-  label: string;
-  value: number;
-  setValue: (value: number) => void;
-  min: number;
-  max: number;
-  step: number;
-}) {
-  return (
-    <label className="block text-[10px] uppercase tracking-[0.12em] text-zinc-600">
-      {label}
-      <input
-        type="number"
-        value={Number.isFinite(value) ? value : 0}
-        min={min}
-        max={max}
-        step={step}
-        onChange={(event) => setValue(Number(event.target.value))}
-        className={inputClass}
-      />
-    </label>
-  );
-}
-
-function DataCard({
-  title,
-  tone,
-  children,
-}: {
-  title: string;
-  tone: "green" | "amber" | "red" | "blue";
-  children: ReactNode;
-}) {
-  const border = {
-    green: "border-emerald-300/15",
-    amber: "border-amber-300/15",
-    red: "border-rose-300/15",
-    blue: "border-sky-300/15",
-  }[tone];
-  return (
-    <div className={`panel-soft border ${border} p-4`}>
-      <div className="text-[11px] font-medium uppercase tracking-[0.14em] text-zinc-300">{title}</div>
-      <p className="mt-2 text-[11px] leading-relaxed text-zinc-500">{children}</p>
     </div>
   );
 }

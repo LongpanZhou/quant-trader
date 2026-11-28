@@ -1,0 +1,1045 @@
+{
+ "strategies": {
+  "family-regime-switch": {
+   "fields": [
+    {
+     "key": "ma",
+     "label": "Ma",
+     "type": "int",
+     "default": 150,
+     "editable": true
+    },
+    {
+     "key": "vix",
+     "label": "Vix",
+     "type": "float",
+     "default": 25.0,
+     "editable": true
+    }
+   ]
+  },
+  "ratio-froth": {
+   "fields": []
+  },
+  "fomc-opex-window": {
+   "fields": []
+  },
+  "vol-scaled-crash-stop": {
+   "fields": []
+  },
+  "family-short-reversal": {
+   "fields": [
+    {
+     "key": "q3_thr",
+     "label": "Q3 thr",
+     "type": "float",
+     "default": -0.015,
+     "editable": true
+    },
+    {
+     "key": "hold",
+     "label": "Hold",
+     "type": "int",
+     "default": 5,
+     "editable": true
+    },
+    {
+     "key": "use_q2dn",
+     "label": "Use q2dn",
+     "type": "bool",
+     "default": true,
+     "editable": true
+    },
+    {
+     "key": "chain",
+     "label": "Chain",
+     "type": "bool",
+     "default": true,
+     "editable": true
+    },
+    {
+     "key": "size",
+     "label": "Size",
+     "type": "float",
+     "default": 1.0,
+     "editable": true
+    },
+    {
+     "key": "block",
+     "label": "Block",
+     "type": "int",
+     "default": 0,
+     "editable": true
+    }
+   ]
+  },
+  "family-crypto-risk-appetite": {
+   "fields": [
+    {
+     "key": "z_window",
+     "label": "Z window",
+     "type": "int",
+     "default": 252,
+     "editable": true
+    },
+    {
+     "key": "min_periods",
+     "label": "Min periods",
+     "type": "int",
+     "default": 120,
+     "editable": true
+    },
+    {
+     "key": "btc_lag",
+     "label": "Btc lag",
+     "type": "int",
+     "default": 1,
+     "editable": true
+    },
+    {
+     "key": "tqqq_z",
+     "label": "Tqqq z",
+     "type": "float",
+     "default": 0.0,
+     "editable": true
+    },
+    {
+     "key": "bil_z",
+     "label": "Bil z",
+     "type": "float",
+     "default": 0.0,
+     "editable": true
+    }
+   ]
+  },
+  "family-session-timing": {
+   "fields": []
+  },
+  "family-rebalance-flow": {
+   "fields": []
+  },
+  "family-change-point": {
+   "fields": [
+    {
+     "key": "k",
+     "label": "K",
+     "type": "float",
+     "default": 0.0,
+     "editable": true
+    },
+    {
+     "key": "h",
+     "label": "H",
+     "type": "float",
+     "default": 3.0,
+     "editable": true
+    },
+    {
+     "key": "hold",
+     "label": "Hold",
+     "type": "int",
+     "default": 20,
+     "editable": true
+    },
+    {
+     "key": "increment",
+     "label": "Increment",
+     "type": "text",
+     "default": "sign",
+     "editable": true
+    }
+   ]
+  },
+  "fast-trend-vol": {
+   "fields": []
+  },
+  "family-hurst-persistence": {
+   "fields": [
+    {
+     "key": "window",
+     "label": "Window",
+     "type": "int",
+     "default": 252,
+     "editable": true
+    },
+    {
+     "key": "q",
+     "label": "Q",
+     "type": "int",
+     "default": 5,
+     "editable": true
+    },
+    {
+     "key": "qlo",
+     "label": "Qlo",
+     "type": "float",
+     "default": 0.3,
+     "editable": true
+    },
+    {
+     "key": "qhi",
+     "label": "Qhi",
+     "type": "float",
+     "default": 0.7,
+     "editable": true
+    },
+    {
+     "key": "min_obs",
+     "label": "Min obs",
+     "type": "int",
+     "default": 60,
+     "editable": true
+    },
+    {
+     "key": "look",
+     "label": "Look",
+     "type": "int",
+     "default": 1260,
+     "editable": true
+    }
+   ]
+  },
+  "vol-term-structure": {
+   "fields": []
+  },
+  "family-ml-microstructure": {
+   "fields": []
+  },
+  "family-intraday-microstructure-day": {
+   "fields": []
+  },
+  "relative-value-tqqq": {
+   "fields": [
+    {
+     "key": "n",
+     "label": "N",
+     "type": "int",
+     "default": 100,
+     "editable": false
+    },
+    {
+     "key": "mom_min",
+     "label": "Mom min",
+     "type": "float",
+     "default": -0.1,
+     "editable": false
+    },
+    {
+     "key": "v_lo",
+     "label": "V lo",
+     "type": "float",
+     "default": 0.3,
+     "editable": false
+    },
+    {
+     "key": "v_hi",
+     "label": "V hi",
+     "type": "float",
+     "default": 0.4,
+     "editable": false
+    }
+   ]
+  },
+  "family-rates-volatility": {
+   "fields": [
+    {
+     "key": "measure",
+     "label": "Measure",
+     "type": "text",
+     "default": "level",
+     "editable": true
+    },
+    {
+     "key": "median_window",
+     "label": "Median window",
+     "type": "int",
+     "default": 252,
+     "editable": true
+    },
+    {
+     "key": "threshold",
+     "label": "Threshold",
+     "type": "float",
+     "default": 0.0,
+     "editable": true
+    },
+    {
+     "key": "mapping",
+     "label": "Mapping",
+     "type": "text",
+     "default": "binary",
+     "editable": true
+    }
+   ]
+  },
+  "family-energy-rotation": {
+   "fields": [
+    {
+     "key": "look",
+     "label": "Look",
+     "type": "int",
+     "default": 20,
+     "editable": true
+    },
+    {
+     "key": "deadband",
+     "label": "Deadband",
+     "type": "float",
+     "default": 0.0,
+     "editable": true
+    }
+   ]
+  },
+  "nasdaq-leveraged-trend": {
+   "fields": [
+    {
+     "key": "sma_days",
+     "label": "Sma days",
+     "type": "int",
+     "default": 165,
+     "editable": false
+    },
+    {
+     "key": "target_vol",
+     "label": "Target vol",
+     "type": "float",
+     "default": 0.4,
+     "editable": false
+    },
+    {
+     "key": "vol_days",
+     "label": "Vol days",
+     "type": "int",
+     "default": 20,
+     "editable": false
+    },
+    {
+     "key": "leverage",
+     "label": "Leverage",
+     "type": "float",
+     "default": 3.0,
+     "editable": false
+    }
+   ]
+  },
+  "family-efa-spy": {
+   "fields": [
+    {
+     "key": "look",
+     "label": "Look",
+     "type": "int",
+     "default": 60,
+     "editable": false
+    },
+    {
+     "key": "low",
+     "label": "Low",
+     "type": "float",
+     "default": 0.45,
+     "editable": false
+    },
+    {
+     "key": "high",
+     "label": "High",
+     "type": "float",
+     "default": 0.55,
+     "editable": false
+    },
+    {
+     "key": "flip",
+     "label": "Flip",
+     "type": "bool",
+     "default": true,
+     "editable": false
+    }
+   ]
+  },
+  "nasdaq-3x-simple": {
+   "fields": [
+    {
+     "key": "sma_days",
+     "label": "Sma days",
+     "type": "int",
+     "default": 200,
+     "editable": false
+    },
+    {
+     "key": "target_vol",
+     "label": "Target vol",
+     "type": "float",
+     "default": 0.0,
+     "editable": false
+    },
+    {
+     "key": "vol_days",
+     "label": "Vol days",
+     "type": "int",
+     "default": 20,
+     "editable": false
+    },
+    {
+     "key": "leverage",
+     "label": "Leverage",
+     "type": "float",
+     "default": 3.0,
+     "editable": false
+    }
+   ]
+  },
+  "family-qual-spy": {
+   "fields": [
+    {
+     "key": "look",
+     "label": "Look",
+     "type": "int",
+     "default": 60,
+     "editable": false
+    },
+    {
+     "key": "low",
+     "label": "Low",
+     "type": "float",
+     "default": 0.45,
+     "editable": false
+    },
+    {
+     "key": "high",
+     "label": "High",
+     "type": "float",
+     "default": 0.55,
+     "editable": false
+    },
+    {
+     "key": "flip",
+     "label": "Flip",
+     "type": "bool",
+     "default": true,
+     "editable": false
+    }
+   ]
+  },
+  "family-volume-skew": {
+   "fields": []
+  },
+  "family-breadth": {
+   "fields": [
+    {
+     "key": "z_window",
+     "label": "Z window",
+     "type": "int",
+     "default": 252,
+     "editable": true
+    },
+    {
+     "key": "min_periods",
+     "label": "Min periods",
+     "type": "int",
+     "default": 120,
+     "editable": true
+    },
+    {
+     "key": "tqqq_z",
+     "label": "Tqqq z",
+     "type": "float",
+     "default": 0.5,
+     "editable": true
+    },
+    {
+     "key": "bil_z",
+     "label": "Bil z",
+     "type": "float",
+     "default": -0.5,
+     "editable": true
+    }
+   ]
+  },
+  "family-mtum-spy": {
+   "fields": [
+    {
+     "key": "look",
+     "label": "Look",
+     "type": "int",
+     "default": 60,
+     "editable": false
+    },
+    {
+     "key": "low",
+     "label": "Low",
+     "type": "float",
+     "default": 0.45,
+     "editable": false
+    },
+    {
+     "key": "high",
+     "label": "High",
+     "type": "float",
+     "default": 0.55,
+     "editable": false
+    },
+    {
+     "key": "flip",
+     "label": "Flip",
+     "type": "bool",
+     "default": false,
+     "editable": false
+    }
+   ]
+  },
+  "family-financials-rotation": {
+   "fields": [
+    {
+     "key": "look",
+     "label": "Look",
+     "type": "int",
+     "default": 60,
+     "editable": false
+    }
+   ]
+  },
+  "family-skew-change": {
+   "fields": [
+    {
+     "key": "look",
+     "label": "Look",
+     "type": "int",
+     "default": 20,
+     "editable": false
+    },
+    {
+     "key": "low",
+     "label": "Low",
+     "type": "float",
+     "default": 0.45,
+     "editable": false
+    },
+    {
+     "key": "high",
+     "label": "High",
+     "type": "float",
+     "default": 0.55,
+     "editable": false
+    },
+    {
+     "key": "flip",
+     "label": "Flip",
+     "type": "bool",
+     "default": true,
+     "editable": false
+    }
+   ]
+  },
+  "family-sector-rotation": {
+   "fields": [
+    {
+     "key": "z_window",
+     "label": "Z window",
+     "type": "int",
+     "default": 252,
+     "editable": true
+    },
+    {
+     "key": "min_periods",
+     "label": "Min periods",
+     "type": "int",
+     "default": 120,
+     "editable": true
+    },
+    {
+     "key": "tqqq_z",
+     "label": "Tqqq z",
+     "type": "float",
+     "default": 0.5,
+     "editable": true
+    },
+    {
+     "key": "bil_z",
+     "label": "Bil z",
+     "type": "float",
+     "default": -0.5,
+     "editable": true
+    }
+   ]
+  },
+  "family-retail-rotation": {
+   "fields": [
+    {
+     "key": "look",
+     "label": "Look",
+     "type": "int",
+     "default": 60,
+     "editable": false
+    }
+   ]
+  },
+  "intraday-seasonality": {
+   "fields": []
+  },
+  "family-homebuilder-rotation": {
+   "fields": [
+    {
+     "key": "look",
+     "label": "Look",
+     "type": "int",
+     "default": 60,
+     "editable": false
+    }
+   ]
+  },
+  "family-gold-miner-stress": {
+   "fields": [
+    {
+     "key": "look",
+     "label": "Look",
+     "type": "int",
+     "default": 20,
+     "editable": false
+    },
+    {
+     "key": "low",
+     "label": "Low",
+     "type": "float",
+     "default": 0.45,
+     "editable": false
+    },
+    {
+     "key": "high",
+     "label": "High",
+     "type": "float",
+     "default": 0.55,
+     "editable": false
+    },
+    {
+     "key": "flip",
+     "label": "Flip",
+     "type": "bool",
+     "default": false,
+     "editable": false
+    }
+   ]
+  },
+  "event-risk-overlay": {
+   "fields": []
+  },
+  "ratio-pairs": {
+   "fields": [
+    {
+     "key": "ext_ma",
+     "label": "Ext ma",
+     "type": "int",
+     "default": 200,
+     "editable": true
+    },
+    {
+     "key": "froth",
+     "label": "Froth",
+     "type": "float",
+     "default": 0.2,
+     "editable": true
+    },
+    {
+     "key": "deep",
+     "label": "Deep",
+     "type": "float",
+     "default": -0.3,
+     "editable": true
+    },
+    {
+     "key": "stress_hi",
+     "label": "Stress hi",
+     "type": "float",
+     "default": 1.75,
+     "editable": true
+    },
+    {
+     "key": "turn_look",
+     "label": "Turn look",
+     "type": "int",
+     "default": 20,
+     "editable": true
+    },
+    {
+     "key": "tqqq_deep",
+     "label": "Tqqq deep",
+     "type": "float",
+     "default": 0.4,
+     "editable": true
+    },
+    {
+     "key": "qqq_deep",
+     "label": "Qqq deep",
+     "type": "float",
+     "default": 0.3,
+     "editable": true
+    },
+    {
+     "key": "qqq_core",
+     "label": "Qqq core",
+     "type": "float",
+     "default": 0.9,
+     "editable": true
+    },
+    {
+     "key": "cash_core",
+     "label": "Cash core",
+     "type": "float",
+     "default": 0.1,
+     "editable": true
+    },
+    {
+     "key": "daily_warmup",
+     "label": "Daily warmup",
+     "type": "bool",
+     "default": true,
+     "editable": true
+    }
+   ]
+  },
+  "family-breakeven": {
+   "fields": [
+    {
+     "key": "look",
+     "label": "Look",
+     "type": "int",
+     "default": 10,
+     "editable": false
+    },
+    {
+     "key": "low",
+     "label": "Low",
+     "type": "float",
+     "default": 0.45,
+     "editable": false
+    },
+    {
+     "key": "high",
+     "label": "High",
+     "type": "float",
+     "default": 0.55,
+     "editable": false
+    },
+    {
+     "key": "flip",
+     "label": "Flip",
+     "type": "bool",
+     "default": true,
+     "editable": false
+    }
+   ]
+  },
+  "family-hyg-spy": {
+   "fields": [
+    {
+     "key": "look",
+     "label": "Look",
+     "type": "int",
+     "default": 20,
+     "editable": false
+    },
+    {
+     "key": "low",
+     "label": "Low",
+     "type": "float",
+     "default": 0.45,
+     "editable": false
+    },
+    {
+     "key": "high",
+     "label": "High",
+     "type": "float",
+     "default": 0.55,
+     "editable": false
+    },
+    {
+     "key": "flip",
+     "label": "Flip",
+     "type": "bool",
+     "default": false,
+     "editable": false
+    }
+   ]
+  },
+  "family-yen-carry": {
+   "fields": [
+    {
+     "key": "look",
+     "label": "Look",
+     "type": "int",
+     "default": 40,
+     "editable": false
+    },
+    {
+     "key": "enter",
+     "label": "Enter",
+     "type": "float",
+     "default": 0.0,
+     "editable": false
+    },
+    {
+     "key": "exit",
+     "label": "Exit",
+     "type": "float",
+     "default": 0.0,
+     "editable": false
+    }
+   ]
+  },
+  "time-of-day": {
+   "fields": [
+    {
+     "key": "use_close",
+     "label": "Use close",
+     "type": "bool",
+     "default": true,
+     "editable": true
+    },
+    {
+     "key": "close_sign",
+     "label": "Close sign",
+     "type": "int",
+     "default": -1,
+     "editable": true
+    },
+    {
+     "key": "close_window",
+     "label": "Close window",
+     "type": "int",
+     "default": 30,
+     "editable": true
+    },
+    {
+     "key": "close_min_z",
+     "label": "Close min z",
+     "type": "float",
+     "default": 0.5,
+     "editable": true
+    },
+    {
+     "key": "close_ref",
+     "label": "Close ref",
+     "type": "int",
+     "default": 20,
+     "editable": true
+    },
+    {
+     "key": "use_gate",
+     "label": "Use gate",
+     "type": "bool",
+     "default": true,
+     "editable": true
+    },
+    {
+     "key": "vol_look",
+     "label": "Vol look",
+     "type": "int",
+     "default": 10,
+     "editable": true
+    },
+    {
+     "key": "ref_look",
+     "label": "Ref look",
+     "type": "int",
+     "default": 60,
+     "editable": true
+    },
+    {
+     "key": "vol_mult",
+     "label": "Vol mult",
+     "type": "float",
+     "default": 1.5,
+     "editable": true
+    },
+    {
+     "key": "vol_target",
+     "label": "Vol target",
+     "type": "float",
+     "default": 0.4,
+     "editable": true
+    },
+    {
+     "key": "size_floor",
+     "label": "Size floor",
+     "type": "float",
+     "default": 0.0,
+     "editable": true
+    },
+    {
+     "key": "idle",
+     "label": "Idle",
+     "type": "text",
+     "default": "cash",
+     "editable": true
+    }
+   ]
+  },
+  "family-sector-dispersion": {
+   "fields": [
+    {
+     "key": "look",
+     "label": "Look",
+     "type": "int",
+     "default": 10,
+     "editable": false
+    },
+    {
+     "key": "low",
+     "label": "Low",
+     "type": "float",
+     "default": 0.45,
+     "editable": false
+    },
+    {
+     "key": "high",
+     "label": "High",
+     "type": "float",
+     "default": 0.55,
+     "editable": false
+    },
+    {
+     "key": "flip",
+     "label": "Flip",
+     "type": "bool",
+     "default": false,
+     "editable": false
+    }
+   ]
+  },
+  "ml-classifier": {
+   "fields": []
+  },
+  "ml-crash-overlay-winner": {
+   "fields": []
+  },
+  "intraday-momentum": {
+   "fields": [
+    {
+     "key": "rebalance_every",
+     "label": "Rebalance every",
+     "type": "int",
+     "default": 5,
+     "editable": false
+    },
+    {
+     "key": "median_weeks",
+     "label": "Median weeks",
+     "type": "int",
+     "default": 26,
+     "editable": false
+    },
+    {
+     "key": "min_history",
+     "label": "Min history",
+     "type": "int",
+     "default": 13,
+     "editable": false
+    },
+    {
+     "key": "vol_window",
+     "label": "Vol window",
+     "type": "int",
+     "default": 20,
+     "editable": false
+    },
+    {
+     "key": "vol_cap_qqq",
+     "label": "Vol cap qqq",
+     "type": "float",
+     "default": 0.6,
+     "editable": false
+    },
+    {
+     "key": "vol_cap_bil",
+     "label": "Vol cap bil",
+     "type": "float",
+     "default": 0.8,
+     "editable": false
+    },
+    {
+     "key": "fh_bars",
+     "label": "Fh bars",
+     "type": "int",
+     "default": 60,
+     "editable": false
+    }
+   ]
+  },
+  "intraday-mean-reversion": {
+   "fields": []
+  },
+  "overnight-crash-filter": {
+   "fields": [
+    {
+     "key": "vol_win",
+     "label": "Vol win",
+     "type": "int",
+     "default": 20,
+     "editable": false
+    },
+    {
+     "key": "vol_ceil",
+     "label": "Vol ceil",
+     "type": "float",
+     "default": 0.4,
+     "editable": false
+    },
+    {
+     "key": "target_gap",
+     "label": "Target gap",
+     "type": "float",
+     "default": 0.04,
+     "editable": false
+    },
+    {
+     "key": "z",
+     "label": "Z",
+     "type": "float",
+     "default": 3.0,
+     "editable": false
+    },
+    {
+     "key": "day_scale",
+     "label": "Day scale",
+     "type": "float",
+     "default": 0.5,
+     "editable": false
+    },
+    {
+     "key": "morning_min",
+     "label": "Morning min",
+     "type": "int",
+     "default": 0,
+     "editable": false
+    },
+    {
+     "key": "night_leg",
+     "label": "Night leg",
+     "type": "bool",
+     "default": true,
+     "editable": false
+    },
+    {
+     "key": "day_leg",
+     "label": "Day leg",
+     "type": "bool",
+     "default": true,
+     "editable": false
+    },
+    {
+     "key": "night_cond",
+     "label": "Night cond",
+     "type": "bool",
+     "default": true,
+     "editable": false
+    }
+   ]
+  },
+  "letf-rebalance-flow": {
+   "fields": []
+  },
+  "risk-parity-hrp": {
+   "fields": []
+  },
+  "dual-speed-regime": {
+   "fields": []
+  }
+ }
+}
