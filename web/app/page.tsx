@@ -2,6 +2,8 @@ import { SiteFooter, SiteHeader } from "@/components/site-chrome";
 import { StrategyCatalog } from "@/components/strategy-catalog";
 import { Pill } from "@/components/ui";
 
+export const dynamic = "force-dynamic";
+
 export default function Page() {
   return (
     <div className="min-h-screen">

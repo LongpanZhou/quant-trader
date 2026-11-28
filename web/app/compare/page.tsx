@@ -9,6 +9,8 @@ export const metadata: Metadata = {
     "Every completed research strategy on one normalized equity chart, with a risk/return map and full metrics.",
 };
 
+export const dynamic = "force-dynamic";
+
 export default function ComparePage() {
   return (
     <div className="min-h-screen">

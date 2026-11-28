@@ -9,6 +9,8 @@ export const metadata: Metadata = {
     "Every research agent strategy: rules, metrics, the exact report, and the papers it cites.",
 };
 
+export const dynamic = "force-dynamic";
+
 export default function ResearchPage() {
   return (
     <div className="min-h-screen">
