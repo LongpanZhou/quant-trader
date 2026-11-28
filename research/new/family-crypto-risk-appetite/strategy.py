@@ -106,6 +106,14 @@ def main() -> None:
             ext, make_targets, cutoff_offset=1),
         "close_to_next_open_mapping": H.mapping_audit(ts, targets),
     }
+    ctrl_st, ctrl_ret = H.trend_control(ts, o, c, 0.0, 0.0)
+    trend_control = {
+        "name": "QQQ 20/60 momentum, same binary risk-on map",
+        "cagr": ctrl_st["cagr"],
+        "max_drawdown": ctrl_st["max_drawdown"],
+        "sharpe": ctrl_st["sharpe"],
+        "corr_to_strategy": float(ev["_daily_ret"].corr(ctrl_ret)),
+    }
     i = H.bt.start_index(ts, H.START)
     bench = H.bt.benchmark(c[i:, 1], ts[i:], H.BARS_PER_YEAR)
     payload = {
@@ -138,6 +146,7 @@ def main() -> None:
         "plateau": plateau,
         "placebo": ev["placebo"],
         "causality_audit": causality,
+        "trend_control": trend_control,
         "kill_checks": kills,
         "verdict": "dev_pass" if not any(kills.values()) else "fail",
         "timing": ("BTC daily closes lagged one QQQ session (Yahoo BTC bars "

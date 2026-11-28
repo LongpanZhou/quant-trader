@@ -117,6 +117,7 @@ def main() -> None:
     bench_tqqq = ca.bt.benchmark(c[:, 1][i0:], ts[i0:], ca.BARS_PER_YEAR)
     bench_qqq = ca.bt.benchmark(c[:, 0][i0:], ts[i0:], ca.BARS_PER_YEAR)
     max_corr_slug = max(primary_ev["corr_winners"], key=primary_ev["corr_winners"].get)
+    cut_tests = [ca.cut_test(ts, o, c, lambda a, b, d: build_weights(a, b, d))]
 
     payload = {
         "slug": SLUG,
@@ -154,6 +155,7 @@ def main() -> None:
         "plateau": {"cells": len(GRID), "pass_cells": int(n_pass),
                     "share": float(n_pass / len(GRID))},
         "kill_checks": kills,
+        "cut_tests": cut_tests,
         "verdict": "dev_pass" if not any(kills.values()) else "fail",
         "notes": [
             "Both legs use total-return adjusted closes through session k; the "
