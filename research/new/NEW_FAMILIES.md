@@ -3,7 +3,7 @@
 **Target:** 20 strategies with primary signals distinct from the ten existing
 families, plus one that beats `ratio-froth` (full 62.21% CAGR).
 
-**Final set:** 20 new families. Fourteen clear the TQQQ full bar; six are
+**Final set:** 20 new families. Fifteen clear the TQQQ full bar; five are
 active below it. The ten overlapping calendar/session/intraday/risk-sizing
 names were replaced with cross-asset families built on `data/external/`.
 

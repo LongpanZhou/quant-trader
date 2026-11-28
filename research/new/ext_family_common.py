@@ -481,6 +481,11 @@ def render_report(result: dict, narrative: dict) -> str:
     lines.append(f"| Published dev bar | {_p(bar['cagr'])} | {_p(bar['max_drawdown'])} | "
                  f"{_f(bar['sharpe'])} | — | — | — | — | — |")
     lines.append("")
+    lines.append("Vol is annualized from 1-minute marks.  Exposure is the invested "
+                 "fraction; BIL and QQQ count as invested, so the TQQQ/BIL/QQQ "
+                 "sleeve split is in section 3.2.  Daily-sampled vol and Sharpe "
+                 "are in `result.json`.")
+    lines.append("")
     lines.append(narrative["result_comment"])
     lines.append("")
     lines.append("### 3.2 Activity and exposure")
