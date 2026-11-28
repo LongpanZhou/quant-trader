@@ -114,6 +114,34 @@
    "provenanceCount": 0
   },
   {
+   "id": "research:family-regime-switch",
+   "slug": "family-regime-switch",
+   "kind": "research",
+   "name": "Trend/VIX regime switch",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "Close-location in calm, ratio-froth in stress",
+   "summary": "Use close-location when QQQ is above its 150-session MA and VIX <=25; otherwise use ratio-froth.",
+   "window": "2016-2026",
+   "cagr": 0.6358812197640149,
+   "dd": 0.3122192281257977,
+   "sharpe": 1.572709905823126,
+   "metrics": {
+    "cagr10": 0.6358812197640149,
+    "dd10": 0.3122192281257977,
+    "cagr5": 0.6358812197640149,
+    "dd5": 0.3122192281257977
+   },
+   "href": "/research/family-regime-switch",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
    "id": "research:ratio-froth",
    "slug": "ratio-froth",
    "kind": "research",

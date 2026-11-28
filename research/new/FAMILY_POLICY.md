@@ -4,7 +4,7 @@ The website lists every research strategy. The rule is about **above-TQQQ**
 strategies: one verified winner per family. Non-performers remain research
 records and do not affect the one-winner count.
 
-## Verified above-TQQQ family winners (14)
+## Verified above-TQQQ family winners (15)
 
 | Family | Winner | Full CAGR | Full DD | Full Sharpe |
 |---|---|---:|---:|---:|
@@ -23,6 +23,7 @@ records and do not affect the one-winner count.
 | `change-point` | `family-change-point` | 45.29% | 54.10% | 1.13 |
 | `hurst-persistence` | `family-hurst-persistence` | 43.00% | 56.25% | 1.04 |
 | `rates-volatility` | `family-rates-volatility` | 38.80% | 43.01% | 1.05 |
+| `regime-switch` | `family-regime-switch` | 63.59% | 31.40% | 1.58 |
 
 ## Rules
 
@@ -40,3 +41,7 @@ records and do not affect the one-winner count.
    alpha is +37.8%/yr at t=2.80. The gate-level definition was accepted on
    2026-11-28: beta decomposition shows 0.289 residual correlation with
    short-reversal and +24.79%/yr alpha after all eight winners.
+5. `family-regime-switch` is a composite overlay, not one of the 20 independent
+   families. It uses close-location in calm and ratio-froth in stress, and is
+   the drawdown-adjusted beater: 63.59% CAGR / 31.40% DD / 1.58 Sharpe versus
+   ratio-froth 62.21% / 36.65% / 1.43.

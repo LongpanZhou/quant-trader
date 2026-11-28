@@ -1581,6 +1581,30 @@
    "family_winner": false,
    "note": "Low-overlap family added 2026-11-28. Full 16.76% CAGR / 67.86% DD / 0.61 Sharpe; 273 full fills. Max winner correlation 0.64, signal Jaccard 0.55.",
    "source": "research/new/family-sector-dispersion/report.md"
+  },
+  {
+   "slug": "family-regime-switch",
+   "name": "Trend/VIX regime switch",
+   "family": "regime-switch",
+   "tagline": "Close-location in calm, ratio-froth in stress",
+   "summary": "Use close-location when QQQ is above its 150-session MA and VIX <=25; otherwise use ratio-froth.",
+   "dev": {
+    "cagr": 0.7347286674313116,
+    "max_dd": 0.3122192281257977,
+    "sharpe": 1.7210679140728085
+   },
+   "full": {
+    "cagr": 0.6358812197640149,
+    "max_dd": 0.3122192281257977,
+    "sharpe": 1.572709905823126
+   },
+   "above_tqqq": true,
+   "dev_above_tqqq": true,
+   "status": "verified-full",
+   "visible": true,
+   "family_winner": true,
+   "note": "Composite overlay added 2026-11-28: close-location in calm (QQQ > 150-session MA and VIX <=25), ratio-froth in stress. Full 63.59% CAGR / 31.40% DD / 1.58 Sharpe; 735 fills. Beats ratio-froth on CAGR, DD, Sharpe and CAGR/DD; 1/5/10 bp 63.59/59.19/53.87 vs 62.21/56.62/50.67. Holdout 38.70% / 25.38% / 1.13. Not one of the 20 independent families.",
+   "source": "research/new/family-regime-switch/report.md"
   }
  ],
  "winner_policy": "One verified-full above-TQQQ winner per family, selected by full-window CAGR. ratio-froth and vol-scaled-crash-stop are now verified-full via clean reruns and audits; the previous fast-trend-vol / vol-term-structure remain verified research records but are not family winners."

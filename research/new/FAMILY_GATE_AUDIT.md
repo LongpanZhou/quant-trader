@@ -61,4 +61,6 @@ energy rotation, yen carry, homebuilder, financials, retail,
 SKEW tail-risk, EFA/SPY, QUAL/SPY, HYG/SPY, MTUM/SPY, breakeven,
 sector dispersion.
 
-The final site set is 43 strategies / 45 curves / 14 winners.
+The final site set is 44 strategies / 46 curves / 15 winners. The additional
+winner is amily-regime-switch, a disclosed composite overlay, not one of
+the 20 independent families.

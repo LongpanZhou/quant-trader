@@ -1,14 +1,14 @@
 # Strategy Research Library
 
-> **Final update:** the machine-readable `LIBRARY.json` now contains 65 records,
-> including 20 additional new-family strategies added on 2026-11-28. The
-> website uses 14 verified above-TQQQ family winners; the two legacy above-bar
-> names are retained as research records but are not family winners. See
-> `FAMILY_POLICY.md`, `NEW_FAMILIES.md` and `RATIO_FROTH_BEATER.md` for the
-> final selection.
+> **Final update:** the machine-readable `LIBRARY.json` now contains 66 records,
+> including 20 additional new-family strategies added on 2026-11-28 plus the
+> regime-switch overlay. The website uses 15 verified above-TQQQ family winners;
+> the two legacy above-bar names are retained as research records but are not
+> family winners. See `FAMILY_POLICY.md`, `NEW_FAMILIES.md` and
+> `RATIO_FROTH_BEATER.md` for the final selection.
 
-**Current inventory:** **65 records**, **27 above the TQQQ bar**, **14 family
-winners**, and **65 `verified-full`**.  Full-window bar: TQQQ **37.54% CAGR /
+**Current inventory:** **66 records**, **28 above the TQQQ bar**, **15 family
+winners**, and **66 `verified-full`**.  Full-window bar: TQQQ **37.54% CAGR /
 81.68% max DD / 0.82 Sharpe** on 2016-01-04 to 2026-10-23 daily-close marks.
 
 **Flat-line removal:** 13 non-winners with full-window CAGR below **5%** were

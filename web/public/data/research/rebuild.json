@@ -12,6 +12,15 @@
    "sharpe": 1.2603890946795673
   },
   {
+   "slug": "family-regime-switch",
+   "name": "Trend/VIX regime switch",
+   "tagline": "Close-location in calm, ratio-froth in stress",
+   "summary": "Use close-location when QQQ is above its 150-session MA and VIX <=25; otherwise use ratio-froth.",
+   "cagr": 0.6358812197640149,
+   "dd": 0.3122192281257977,
+   "sharpe": 1.572709905823126
+  },
+  {
    "slug": "ratio-froth",
    "name": "Ratio froth",
    "tagline": "The original 165-day shared-base leader, included as a strategy for the same-window comparison.",

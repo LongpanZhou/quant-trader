@@ -31,12 +31,23 @@ exception is the ratio-froth beater itself, which is disclosed below.
 | 19 | `yen-carry` | 18.21% | 71.47% | 0.59 | 399 | no |
 | 20 | `sector-dispersion` | 16.76% | 68.95% | 0.61 | 273 | no |
 
-## The ratio-froth beater
+## Beating ratio-froth
 
-`family-close-location` beats `ratio-froth` on CAGR at 1, 5 and 10 bp:
-**66.23% / 62.26% / 57.43%** vs **62.21% / 56.62% / 50.67%**. It is long-only
-TQQQ and uses no synthetic short. It does not beat ratio-froth on drawdown or
-Sharpe; see `RATIO_FROTH_BEATER.md`.
+The drawdown-adjusted beater is `family-regime-switch`, a composite overlay
+(not one of the 20 independent families): close-location in calm, ratio-froth
+in stress.
+
+| Full window | regime switch | ratio-froth |
+|---|---:|---:|
+| CAGR | **63.59%** | 62.21% |
+| Max drawdown | **31.40%** | 36.65% |
+| Sharpe | **1.58** | 1.43 |
+| CAGR / DD | **2.02** | 1.70 |
+| 5 bp / 10 bp CAGR | **59.19% / 53.87%** | 56.62% / 50.67% |
+
+The raw-CAGR component is `family-close-location`: **66.23% / 62.26% / 57.43%**
+at 1/5/10 bp, but 62.76% drawdown and 1.26 Sharpe. It wins on raw CAGR only.
+See `RATIO_FROTH_BEATER.md`.
 
 ## Strict overlap result
 

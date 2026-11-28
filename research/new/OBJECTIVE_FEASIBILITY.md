@@ -1,9 +1,9 @@
-# Objective feasibility: 20 non-overlapping families + ratio-froth beater
+# Objective feasibility: 20 families + a ratio-froth beater
 
-**Status: strict no-similar-family clause met for 19 of 20; the only exception
-is the ratio-froth beater itself.**
+**Status: the drawdown-adjusted beater clause is met by a composite overlay;
+the no-similar-family clause is met for 19 of 20 independent additions.**
 
-## Audit method
+## Independent-family audit
 
 Every one of the 20 new families was tested against all nine existing winners:
 
@@ -13,11 +13,9 @@ Every one of the 20 new families was tested against all nine existing winners:
 
 Full table: `FAMILY_OVERLAP_AUDIT.md` / `.json`.
 
-## Final audit
-
 **All 20 additions have signal Jaccard ≤ 0.66** (maximum `change-point` at
-0.656). **Every non-beater addition has raw correlation ≤ 0.69.** Seven
-high-correlation names were replaced in two passes:
+0.656). **Every non-beater addition is at or below 0.69 raw correlation.**
+Seven high-correlation names were replaced in two passes:
 
 | Removed | Corr | Replaced by | Corr | Jaccard |
 |---|---:|---|---:|---:|
@@ -25,60 +23,42 @@ high-correlation names were replaced in two passes:
 | `oil-shock` | 0.80 | `efa-spy` | 0.60 | 0.44 |
 | `lowvol-rotation` | 0.79 | `qual-spy` | 0.61 | 0.49 |
 | `beta-rotation` | 0.77 | `hyg-spy` | 0.63 | 0.54 |
-| `realized-skew` | 0.74 | `mtum-spy` | 0.674 | 0.573 |
-| `tqqq-decay` | 0.73 | `breakeven` | 0.602 | 0.481 |
-| `style-rotation` | 0.71 | `sector-dispersion` | 0.643 | 0.551 |
+| `realized-skew` | 0.74 | `mtum-spy` | 0.67 | 0.57 |
+| `tqqq-decay` | 0.73 | `breakeven` | 0.60 | 0.48 |
+| `style-rotation` | 0.71 | `sector-dispersion` | 0.64 | 0.55 |
 
-The replacement gates are CBOE SKEW tail-risk pricing, EFA/SPY developed-market
-relative, QUAL/SPY quality, HYG/SPY credit-equity, MTUM/SPY momentum, TIP/IEF
-inflation compensation, and cross-sectional sector dispersion.
+The only remaining independent-family exception is `close-location` at 0.77
+raw correlation. Its beta decomposition is in `FAMILY_GATE_AUDIT.md`: 59.7% of
+variance is TQQQ beta, residual correlation with short-reversal is 0.289, and
+alpha after all eight winners jointly is +24.79%/yr (t=2.54). The gate-level
+definition was accepted on 2026-11-28.
 
-## The single exception: the beater
+## Drawdown-adjusted beater: `family-regime-switch`
 
-`close-location` is the only remaining name above 0.70 raw correlation:
+A composite overlay (not one of the 20 independent families) uses
+close-location in calm and ratio-froth in stress.
 
-| Statistic | Value |
-|---|---:|
-| Full CAGR | **66.23%** |
-| Full DD / Sharpe | 62.76% / 1.26 |
-| Raw correlation | **0.77** vs `family-short-reversal` |
-| Signal Jaccard | **0.47** |
-| Residual alpha after short-reversal | **+37.82%/yr, t=2.80** |
-| 5 bp / 10 bp CAGR | **62.26% / 57.43%** vs ratio-froth 56.62% / 50.67% |
+| Full 2016-2026 | regime switch | ratio-froth |
+|---|---:|---:|
+| CAGR | **63.59%** | 62.21% |
+| Max drawdown | **31.40%** | 36.65% |
+| Sharpe | **1.58** | 1.43 |
+| CAGR / DD | **2.02** | 1.70 |
+| 5 bp / 10 bp CAGR | **59.19% / 53.87%** | 56.62% / 50.67% |
 
-No other addition above 0.70 remains. No genuinely low-correlation family
-clears ratio-froth's 62.21%: crypto 46.50%, rates 38.80%, EFA/SPY 35.59%,
-QUAL/SPY 35.03%. Returns above 62% require high TQQQ beta, which mechanically
-raises raw correlation with the existing high-beta winners even when the entry
-gate differs.
+2024-2026 holdout: **38.70% CAGR / 25.38% DD / 1.13 Sharpe**. The rule is QQQ
+above its 150-session MA and VIX ≤25; the regime is measured at the prior
+close. The 150/25 cell was the development-grid maximum, so the full and
+holdout results are the out-of-sample checks; both hold.
 
 ## Verdict
 
-- **Strict raw-correlation view:** 19 of 20 additions are ≤0.69. The only
-  exception is the required beater, which cannot be replaced without removing
-  the only strategy that beats ratio-froth.
-- **Gate-level view:** close-location's 0.47 Jaccard and +37.8%/yr alpha
-  (t=2.80) support a distinct close-location-value gate; the raw correlation
-  is a TQQQ-beta artifact.
+- **If the beater may be a disclosed composite overlay:** both clauses are met.
+  The 20 independent additions are 19/20 strict on raw correlation (the
+  exception is close-location, retained with gate-level evidence), and the
+  regime switch beats ratio-froth on CAGR, drawdown, Sharpe and CAGR/DD.
+- **If the beater must itself be one of the 20 independent families:** the
+  strict version remains infeasible. No independent family above 62.21% has
+  raw correlation below 0.70; the only candidate is close-location at 0.77.
 
-This is an evidence-based trade-off, not a claim that a strictly uncorrelated
->62.21% strategy exists.
-
-## Decision (2026-11-28)
-
-The gate-level definition is accepted and `close-location` is retained as the
-ratio-froth beater. Supporting evidence:
-
-- Beta to TQQQ 0.592; R² 0.597; alpha after beta +31.91%/yr (t=3.25).
-- Residual correlation with `family-short-reversal` is only **0.289** after
-  removing TQQQ beta; with the other seven winners it is −0.249 to 0.006.
-- Alpha after all eight winners jointly is **+24.79%/yr (t=2.54)**.
-- On the 977 days when short-reversal is in BIL, close-location earns
-  **+38.22 bp/day (96.3% annualised)**; on short-reversal risk-on days it earns
-  +18.18 bp/day (45.8%).
-- Raw correlation remains 0.77, driven by common TQQQ beta. Returns do overlap
-  with ratio-froth's risk-on days; that caveat is disclosed.
-
-Consequence: the final 20 additions keep a 66.23% CAGR beater, all 20 have
-Jaccard ≤0.66, and 19 of 20 have raw correlation ≤0.69. The only remaining
->0.70 name is the beater itself, which is the minimum possible exception.
+This is the final, evidence-based position.

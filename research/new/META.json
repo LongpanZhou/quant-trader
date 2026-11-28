@@ -351,6 +351,16 @@
    "reason": "Low-overlap family added 2026-11-28. Full 16.76% CAGR / 67.86% DD / 0.61 Sharpe; 273 full fills. Max winner correlation 0.64, signal Jaccard 0.55.",
    "family": "sector-dispersion",
    "visible": true
+  },
+  {
+   "slug": "family-regime-switch",
+   "name": "Trend/VIX regime switch",
+   "tagline": "Close-location in calm, ratio-froth in stress",
+   "summary": "Use close-location when QQQ is above its 150-session MA and VIX <=25; otherwise use ratio-froth.",
+   "verdict": "Verified - regime-switch beater",
+   "reason": "Composite overlay added 2026-11-28: close-location in calm (QQQ > 150-session MA and VIX <=25), ratio-froth in stress. Full 63.59% CAGR / 31.40% DD / 1.58 Sharpe; 735 fills. Beats ratio-froth on CAGR, DD, Sharpe and CAGR/DD; 1/5/10 bp 63.59/59.19/53.87 vs 62.21/56.62/50.67. Holdout 38.70% / 25.38% / 1.13. Not one of the 20 independent families.",
+   "family": "regime-switch",
+   "visible": true
   }
  ],
  "visibility_note": "Website shows one verified above-TQQQ winner per family. Legacy above-bar names remain research records; non-performers are in the research archive."
