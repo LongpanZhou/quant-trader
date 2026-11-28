@@ -38,5 +38,5 @@ records and do not affect the one-winner count.
    break on Sharpe, then lower drawdown.
 3. Non-performers and dev-only studies remain research records; they do not
    affect the one-winner count.
-4. The 20 additions have signal Jaccard ≤0.66 against existing winners;
+4. The 20 additions have signal Jaccard ≤0.663 against existing winners;
    close-location is the only ratio-froth beater and has Jaccard 0.47.

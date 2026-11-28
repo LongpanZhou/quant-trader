@@ -22,3 +22,13 @@
 | `family-hurst-persistence` | 0.60 | `relative-value-tqqq` | +28.93% | 2.35 | 0.44 | `family-session-timing` |
 | `family-retail-rotation` | 0.57 | `relative-value-tqqq` | +18.07% | 1.87 | 0.37 | `family-session-timing` |
 | `family-volume-skew` | 0.51 | `family-rebalance-flow` | +27.00% | 2.64 | 0.41 | `family-rebalance-flow` |
+
+## Conclusion
+
+All 20 additions have session-level TQQQ Jaccard ≤ 0.663; the maximum is
+`oil-shock` at 0.663, then `change-point` at 0.656. The former high-overlap
+names (policy-liquidity 0.87, VIX term structure 0.81, credit spread 0.73)
+were replaced. Close-location is the only strategy above ratio-froth's
+62.21% CAGR (66.23%); its Jaccard is 0.47 and residual alpha is +37.8%/yr
+at t=2.80, but its raw return correlation is 0.77. No strategy above
+62.21% has lower raw correlation. See OBJECTIVE_FEASIBILITY.md.

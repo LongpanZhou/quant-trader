@@ -4,7 +4,7 @@
 families, plus one that beats `ratio-froth` (full 62.21% CAGR).
 
 **Final set:** 20 new families. Eleven clear the TQQQ full bar; nine are active
-below it. Every remaining addition has session-level TQQQ Jaccard **≤ 0.66**
+below it. Every remaining addition has session-level TQQQ Jaccard **≤ 0.663**
 against the existing winners; the full audit is in `FAMILY_OVERLAP_AUDIT.md`.
 
 | # | Family | Full CAGR | Full DD | Sharpe | Fills | Winner |
@@ -40,8 +40,9 @@ Sharpe; see `RATIO_FROTH_BEATER.md`.
 ## Overlap audit
 
 All 20 were tested against all nine existing winners for return correlation,
-conditional alpha and signal Jaccard. Maximum remaining Jaccard is 0.66
-(`change-point`); the other 19 are ≤ 0.61. Close-location has Jaccard 0.47 and
+conditional alpha and signal Jaccard. Maximum remaining Jaccard is 0.663
+(`oil-shock`); `change-point` is 0.656 and the other 18 are ≤ 0.611.
+Close-location has Jaccard 0.47 and
 residual alpha +37.8%/yr (t=2.80), but raw correlation 0.77; see
 `OBJECTIVE_FEASIBILITY.md`.
 

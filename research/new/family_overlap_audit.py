@@ -129,6 +129,19 @@ def main():
         lines.append(f"| `{s['new']}` | {s['max_corr']:.2f} | `{s['corr_against']}` | "
                      f"{s['max_alpha']*100:+.2f}% | {s['alpha_t']:.2f} | "
                      f"{s['max_jaccard']:.2f} | `{s['overlap_against']}` |")
+    lines += [
+        "",
+        "## Conclusion",
+        "",
+        "All 20 additions have session-level TQQQ Jaccard ≤ 0.663; the maximum is",
+        "`oil-shock` at 0.663, then `change-point` at 0.656. The former high-overlap",
+        "names (policy-liquidity 0.87, VIX term structure 0.81, credit spread 0.73)",
+        "were replaced. Close-location is the only strategy above ratio-froth's",
+        "62.21% CAGR (66.23%); its Jaccard is 0.47 and residual alpha is +37.8%/yr",
+        "at t=2.80, but its raw return correlation is 0.77. No strategy above",
+        "62.21% has lower raw correlation. See OBJECTIVE_FEASIBILITY.md.",
+        "",
+    ]
     (NEW / "FAMILY_OVERLAP_AUDIT.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
     for s in summary:
         print(f"{s['new']:36s} corr {s['max_corr']:5.2f} {s['corr_against']:28s} "

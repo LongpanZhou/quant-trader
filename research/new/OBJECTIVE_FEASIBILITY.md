@@ -14,14 +14,15 @@ Full table: `FAMILY_OVERLAP_AUDIT.md` / `.json`.
 
 ## Final audit
 
-**All 20 additions have signal Jaccard ≤ 0.66.** The maximum is
-`change-point` at 0.66; 19 are ≤ 0.61. The three former high-overlap names
+**All 20 additions have signal Jaccard ≤ 0.663.** The maximum is
+`oil-shock` at 0.663; `change-point` is second at 0.656, and the remaining 18
+are ≤ 0.611. The three former high-overlap names
 (policy-liquidity, VIX term structure, credit spread) were replaced by
 homebuilder, financials and retail rotation.
 
 | Statistic | Worst remaining |
 |---|---:|
-| Signal Jaccard | **0.66** (`change-point`) |
+| Signal Jaccard | **0.663** (`oil-shock`) |
 | Raw correlation | **0.84** (`vol-of-volume` vs relative-value) |
 | Raw correlation of the ratio beater | **0.77** (`close-location` vs short-reversal) |
 | Close-location Jaccard | **0.47** |
@@ -43,7 +44,7 @@ when the entry gate differs.
 
 ## Verdict
 
-- **Gate-level view:** all 20 have Jaccard ≤0.66, and close-location's 0.47
+- **Gate-level view:** all 20 have Jaccard ≤0.663, and close-location's 0.47
   signal overlap plus +37.8%/yr residual alpha supports a distinct CLV gate.
   The objective is met under this definition.
 - **Strict raw-return view:** close-location's 0.77 correlation fails a
