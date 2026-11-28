@@ -100,7 +100,7 @@ export function CurveChart({ slug }: { slug: string }) {
   const [scale, setScale] = useState<"log" | "linear">("log");
 
   useEffect(() => {
-    fetch("/data/compare/all.json?v=2026-11-28-43l", { cache: "no-store" })
+    fetch("/data/compare/all.json?v=2026-11-28-43z", { cache: "no-store" })
       .then((response) => {
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         return response.json() as Promise<AllPayload>;

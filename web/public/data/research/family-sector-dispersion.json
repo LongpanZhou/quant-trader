@@ -1,0 +1,50 @@
+{
+ "slug": "family-sector-dispersion",
+ "name": "Sector dispersion",
+ "tagline": "Cross-sectional dispersion of 10 sector ETFs",
+ "summary": "When sector dispersion is low (broad macro-driven move), buy TQQQ; when dispersion is high, hold BIL.",
+ "metrics": {
+  "cagr": 0.16758217931823682,
+  "dd": 0.6786315294409623,
+  "sharpe": 0.6076093157261201
+ },
+ "status": "verified-full",
+ "assessment": {
+  "verdict": "Verified - low-overlap family",
+  "reason": "Low-overlap family added 2026-11-28. Full 16.76% CAGR / 67.86% DD / 0.61 Sharpe; 273 full fills. Max winner correlation 0.64, signal Jaccard 0.55."
+ },
+ "paths": {
+  "report": "research/new/family-sector-dispersion/report.md",
+  "hypothesis": "research/new/family-sector-dispersion/HYPOTHESIS.md",
+  "spec": null,
+  "provenance": null,
+  "code": "research/new/family-sector-dispersion/strategy.py",
+  "code_public": "/data/research/code/family-sector-dispersion.py"
+ },
+ "extracted": {
+  "hypothesis": false,
+  "spec": true,
+  "provenance": true
+ },
+ "decision": "When sector dispersion is low (broad macro-driven move), buy TQQQ; when dispersion is high, hold BIL.",
+ "rules": [],
+ "papers": [],
+ "provenance_cards": [
+  {
+   "idea": "quant-trader research program",
+   "source": "Own test",
+   "url": null,
+   "source_type": "Own test",
+   "role": "own test",
+   "role_detail": "",
+   "evidence": "Pre-registered development test on 2016-2023 and a one-shot 2024-2026 holdout; implementation and results are in report.md and strategy.py.",
+   "confidence": ""
+  }
+ ],
+ "rejected_sources": [],
+ "report_md": "# Sector dispersion — report\n\n**Dev:** 23.23% CAGR / 67.86% DD / 0.73 Sharpe.  \n**Full:** 16.76% CAGR / 67.86% DD / 0.61 Sharpe; 273 full fills.  \n**2024-2026 holdout:** 2.09% CAGR / 34.18% DD / 0.22 Sharpe.\n\n## Rules\n\nWhen sector dispersion is low, the market is moving on broad macro factors; buy TQQQ. When dispersion is high, hold BIL.\n\n## Why it is distinct\n\nThe primary object is cross-sectional dispersion, not relative sector leadership. It is not a sector-rotation gate. Maximum signal Jaccard against the nine existing winners is 0.55 and maximum raw correlation is 0.64.\n\n## Caveats\n\n- Full CAGR is below the TQQQ bar; this is an active research family, not a winner.\n- The 2024-2026 holdout is reported exactly as run; it is not used to tune parameters.\n- External daily series are committed under `data/external/`.\n",
+ "hypothesis_md": "# Sector dispersion\n\n**Slug:** `family-sector-dispersion`  \n**Family:** sector-dispersion  \n**Primary object:** Cross-sectional dispersion of 10 sector ETFs  \n**Window:** 2016-01-04 .. 2023-12-29 development; full holdout 2024-01-02..2026-10-23.\n\n## Claim\n\nWhen sector dispersion is low, the market is moving on broad macro factors; buy TQQQ. When dispersion is high, hold BIL.\n\n## Rules\n\n- Signal uses the external daily series through the prior session; it is lagged one session.\n- Target is written at the session close and filled at the next QQQ/TQQQ open.\n- Long-only TQQQ/BIL, weights >=0, sum <=1, 2% band, 1 bp headline.\n- 252-session percentile rank with a 0.45/0.55 deadband.\n- No price-trend, realised-vol, calendar, opening-range, ML or risk-sizing gate.\n\n## Falsifiers\n\n- Full CAGR <=5% or fewer than 100 full fills (or 30 events).\n- Signal Jaccard >0.70 against an existing winner.\n- Raw daily-return correlation >0.70 against an existing winner.\n\n## Caveat\n\nThe primary object is cross-sectional dispersion, not relative sector leadership. It is not a sector-rotation gate.\n",
+ "spec_md": "## Rules\n\nWhen sector dispersion is low, the market is moving on broad macro factors; buy TQQQ. When dispersion is high, hold BIL.",
+ "provenance_md": "## Own test\n\n- **quant-trader research program** - Pre-registered development test on 2016-2023 and a one-shot 2024-2026 holdout; implementation and results are in `report.md` and `strategy.py`.",
+ "code": "\"\"\"sector_dispersion low-overlap external family.\"\"\"\nfrom __future__ import annotations\nimport sys\nfrom pathlib import Path\nsys.path.insert(0, str(Path(__file__).resolve().parents[1]))\nimport ext_alt\n\ndef build_weights(ts, opens, closes):\n    return ext_alt.make_weights(ts, opens, closes, \"sector_dispersion\")\n\nif __name__ == \"__main__\":\n    ext_alt.run_main(\"sector_dispersion\")\n"
+}

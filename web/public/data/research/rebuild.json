@@ -138,24 +138,6 @@
    "sharpe": 0.9436170928461253
   },
   {
-   "slug": "family-tqqq-decay",
-   "name": "TQQQ decay",
-   "tagline": "Realized variance-drag timing",
-   "summary": "There are 209 fills across 105 independent fill days. Average weights are 13.2% QQQ, 50.4% TQQQ, 36.4% BIL \u2014 the strategy spends about a third of the sample in cash and half in TQQQ.",
-   "cagr": 0.39999358404755636,
-   "dd": 0.37614770700583844,
-   "sharpe": 1.0917995252102342
-  },
-  {
-   "slug": "family-realized-skew",
-   "name": "Realized skew",
-   "tagline": "Intraday realized skewness",
-   "summary": "The stated bar is TQQQ 36.72% CAGR / 82.29% max DD / 0.82 Sharpe. The local 1-minute benchmark is 36.15% / 82.29% / 0.80.",
-   "cagr": 0.38828022346177593,
-   "dd": 0.5398041890228424,
-   "sharpe": 0.9489063682773773
-  },
-  {
    "slug": "family-rates-volatility",
    "name": "Rates volatility",
    "tagline": "MOVE rates-vol regime",
@@ -163,15 +145,6 @@
    "cagr": 0.38803898709404727,
    "dd": 0.4193533311417291,
    "sharpe": 1.0598529763317859
-  },
-  {
-   "slug": "family-style-rotation",
-   "name": "Style rotation",
-   "tagline": "IWF/IWD growth-vs-value leadership",
-   "summary": "External style-rotation family; full-window holdout.",
-   "cagr": 0.3798167230801135,
-   "dd": 0.6989160359593212,
-   "sharpe": 0.915686635936342
   },
   {
    "slug": "family-energy-rotation",
@@ -217,6 +190,15 @@
    "cagr": 0.34205260338363885,
    "dd": 0.6362344976121757,
    "sharpe": 0.9227543633330384
+  },
+  {
+   "slug": "family-mtum-spy",
+   "name": "Momentum factor leadership",
+   "tagline": "MTUM/SPY 60-session momentum-factor leadership",
+   "summary": "When the momentum factor leads the broad market (MTUM/SPY 60-session change in its top half), buy TQQQ; otherwise BIL.",
+   "cagr": 0.34062227056316474,
+   "dd": 0.579655793549277,
+   "sharpe": 0.883185939327871
   },
   {
    "slug": "family-financials-rotation",
@@ -291,6 +273,15 @@
    "sharpe": 1.1340444026468461
   },
   {
+   "slug": "family-breakeven",
+   "name": "Breakeven inflation",
+   "tagline": "TIP/IEF 10-session inflation-compensation impulse",
+   "summary": "When inflation compensation is rising (TIP/IEF 10-session change in its top half), buy TQQQ; otherwise BIL.",
+   "cagr": 0.1966727829093673,
+   "dd": 0.7495812016988255,
+   "sharpe": 0.6459373923565775
+  },
+  {
    "slug": "family-hyg-spy",
    "name": "Credit-equity risk appetite",
    "tagline": "HYG/SPY high-yield credit leadership",
@@ -316,6 +307,15 @@
    "cagr": 0.1720686466450867,
    "dd": 0.31778000954771257,
    "sharpe": 0.8901603484581297
+  },
+  {
+   "slug": "family-sector-dispersion",
+   "name": "Sector dispersion",
+   "tagline": "Cross-sectional dispersion of 10 sector ETFs",
+   "summary": "When sector dispersion is low (broad macro-driven move), buy TQQQ; when dispersion is high, hold BIL.",
+   "cagr": 0.16758217931823682,
+   "dd": 0.6786315294409623,
+   "sharpe": 0.6076093157261201
   },
   {
    "slug": "ml-classifier",

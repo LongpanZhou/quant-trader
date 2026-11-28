@@ -40,26 +40,6 @@
   "overlap_against": "family-session-timing"
  },
  {
-  "new": "family-tqqq-decay",
-  "max_corr": 0.7313614796598364,
-  "corr_against": "family-rebalance-flow",
-  "max_alpha": 0.2495213794891062,
-  "alpha_t": 2.3904413700264104,
-  "alpha_against": "family-intraday-microstructure-day",
-  "max_jaccard": 0.532150776053215,
-  "overlap_against": "relative-value-tqqq"
- },
- {
-  "new": "family-realized-skew",
-  "max_corr": 0.735368565677821,
-  "corr_against": "relative-value-tqqq",
-  "max_alpha": 0.22152954978158698,
-  "alpha_t": 1.769259037964779,
-  "alpha_against": "family-intraday-microstructure-day",
-  "max_jaccard": 0.558955223880597,
-  "overlap_against": "family-session-timing"
- },
- {
   "new": "family-sector-rotation",
   "max_corr": 0.6614156434520658,
   "corr_against": "relative-value-tqqq",
@@ -107,16 +87,6 @@
   "alpha_t": 1.6651071714509194,
   "alpha_against": "family-intraday-microstructure-day",
   "max_jaccard": 0.5617853190704537,
-  "overlap_against": "family-session-timing"
- },
- {
-  "new": "family-style-rotation",
-  "max_corr": 0.7119458529681671,
-  "corr_against": "relative-value-tqqq",
-  "max_alpha": 0.24392248424667942,
-  "alpha_t": 1.7974915174439337,
-  "alpha_against": "family-intraday-microstructure-day",
-  "max_jaccard": 0.6113165680473372,
   "overlap_against": "family-session-timing"
  },
  {
@@ -198,5 +168,35 @@
   "alpha_against": "family-intraday-microstructure-day",
   "max_jaccard": 0.5386049981350243,
   "overlap_against": "family-session-timing"
+ },
+ {
+  "new": "family-mtum-spy",
+  "max_corr": 0.6740377494305824,
+  "corr_against": "relative-value-tqqq",
+  "max_alpha": 0.18952411693849325,
+  "alpha_t": 1.5444815944572978,
+  "alpha_against": "family-intraday-microstructure-day",
+  "max_jaccard": 0.5729205520328235,
+  "overlap_against": "family-session-timing"
+ },
+ {
+  "new": "family-breakeven",
+  "max_corr": 0.6017280185897375,
+  "corr_against": "family-rebalance-flow",
+  "max_alpha": 0.08574093708916881,
+  "alpha_t": 0.7521143778420746,
+  "alpha_against": "family-intraday-microstructure-day",
+  "max_jaccard": 0.48087634608243596,
+  "overlap_against": "family-session-timing"
+ },
+ {
+  "new": "family-sector-dispersion",
+  "max_corr": 0.6434836888039056,
+  "corr_against": "family-rebalance-flow",
+  "max_alpha": 0.0887106575257946,
+  "alpha_t": 0.8442988765728769,
+  "alpha_against": "family-intraday-microstructure-day",
+  "max_jaccard": 0.5509698720594305,
+  "overlap_against": "family-rebalance-flow"
  }
 ]

@@ -97,3 +97,20 @@ unused data dimensions:
 Primary objects: CBOE SKEW tail-risk pricing, EFA/SPY developed-market
 relative, QUAL/SPY quality-factor leadership, HYG/SPY credit-equity risk
 appetite. Pairwise correlations 0.38-0.61; pairwise Jaccard 0.27-0.40.
+
+
+## 2026-11-28 strict pass: remaining non-beater names
+
+The audit still showed three non-beater winners above 0.70 raw correlation.
+They were replaced with low-overlap gates:
+
+| Removed | Corr | Added | Corr | Jaccard | Full CAGR | Holdout CAGR |
+|---|---:|---|---:|---:|---:|---:|
+| 
+ealized-skew | 0.74 | mtum-spy | 0.67 | 0.57 | 34.06% | 22.99% |
+| 	qqq-decay | 0.73 | reakeven | 0.60 | 0.48 | 19.67% | -7.88% |
+| style-rotation | 0.71 | sector-dispersion | 0.64 | 0.55 | 16.76% | 1.15% |
+
+Result: every non-beater addition is now at or below 0.69 raw correlation.
+close-location (0.77) is the only exception, and it is the only ratio-froth
+beater. Winner count is 14; the site remains 43 strategies / 45 curves.

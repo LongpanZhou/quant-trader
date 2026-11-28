@@ -1175,54 +1175,6 @@
    "source": "research/new/family-hurst-persistence/report.md"
   },
   {
-   "slug": "family-tqqq-decay",
-   "name": "TQQQ decay",
-   "family": "tqqq-decay",
-   "tagline": "Realized variance-drag timing",
-   "summary": "There are 209 fills across 105 independent fill days. Average weights are 13.2% QQQ, 50.4% TQQQ, 36.4% BIL \u2014 the strategy spends about a third of the sample in cash and half in TQQQ.",
-   "dev": {
-    "cagr": 0.4548460204339928,
-    "max_dd": 0.35380378139501434,
-    "sharpe": 1.178175868224331
-   },
-   "full": {
-    "cagr": 0.39999358404755636,
-    "max_dd": 0.37614770700583844,
-    "sharpe": 1.0917995252102342
-   },
-   "above_tqqq": true,
-   "dev_above_tqqq": null,
-   "status": "verified-full",
-   "visible": true,
-   "family_winner": true,
-   "note": "New family added 2026-11-28. Full 40.00% CAGR / 37.61% DD / 1.09 Sharpe; 329 full fills. One-shot 2024-2026 holdout. ",
-   "source": "research/new/family-tqqq-decay/report.md"
-  },
-  {
-   "slug": "family-realized-skew",
-   "name": "Realized skew",
-   "family": "realized-skew",
-   "tagline": "Intraday realized skewness",
-   "summary": "The stated bar is TQQQ 36.72% CAGR / 82.29% max DD / 0.82 Sharpe. The local 1-minute benchmark is 36.15% / 82.29% / 0.80.",
-   "dev": {
-    "cagr": 0.4066725916696907,
-    "max_dd": 0.5398041890228424,
-    "sharpe": 0.9690702839980431
-   },
-   "full": {
-    "cagr": 0.38828022346177593,
-    "max_dd": 0.5398041890228424,
-    "sharpe": 0.9489063682773773
-   },
-   "above_tqqq": true,
-   "dev_above_tqqq": null,
-   "status": "verified-full",
-   "visible": true,
-   "family_winner": true,
-   "note": "New family added 2026-11-28. Full 38.83% CAGR / 53.98% DD / 0.95 Sharpe; 439 full fills. One-shot 2024-2026 holdout. ",
-   "source": "research/new/family-realized-skew/report.md"
-  },
-  {
    "slug": "family-volume-skew",
    "name": "Volume skew",
    "family": "volume-skew",
@@ -1365,30 +1317,6 @@
    "family_winner": false,
    "note": "External-data family added 2026-11-28. Full 36.48% CAGR / 69.89% DD / 0.90 Sharpe; 447 full fills. One-shot 2024-2026 holdout.",
    "source": "research/new/family-energy-rotation/report.md"
-  },
-  {
-   "slug": "family-style-rotation",
-   "name": "Style rotation",
-   "family": "style-rotation",
-   "tagline": "IWF/IWD growth-vs-value leadership",
-   "summary": "External style-rotation family; full-window holdout.",
-   "dev": {
-    "cagr": 0.3133421725120864,
-    "max_dd": 0.6989160359593212,
-    "sharpe": 0.7940684792508517
-   },
-   "full": {
-    "cagr": 0.3798167230801135,
-    "max_dd": 0.6989160359593212,
-    "sharpe": 0.915686635936342
-   },
-   "above_tqqq": true,
-   "dev_above_tqqq": null,
-   "status": "verified-full",
-   "visible": true,
-   "family_winner": true,
-   "note": "External family added 2026-11-28. Full 37.98% CAGR / 69.89% DD / 0.92 Sharpe; 341 full fills.",
-   "source": "research/new/family-style-rotation/report.md"
   },
   {
    "slug": "family-yen-carry",
@@ -1581,6 +1509,78 @@
    "family_winner": false,
    "note": "Low-overlap family added 2026-11-28. Full 19.37% CAGR / 78.00% DD / 0.65 Sharpe; 383 full fills. Max winner correlation <=0.63, signal Jaccard <=0.55.",
    "source": "research/new/family-hyg-spy/report.md"
+  },
+  {
+   "slug": "family-mtum-spy",
+   "name": "Momentum factor leadership",
+   "family": "mtum-spy",
+   "tagline": "MTUM/SPY 60-session momentum-factor leadership",
+   "summary": "When the momentum factor leads the broad market (MTUM/SPY 60-session change in its top half), buy TQQQ; otherwise BIL.",
+   "dev": {
+    "cagr": 0.3823749730259143,
+    "max_dd": 0.579655793549277,
+    "sharpe": 0.9244795248411917
+   },
+   "full": {
+    "cagr": 0.34062227056316474,
+    "max_dd": 0.579655793549277,
+    "sharpe": 0.883185939327871
+   },
+   "above_tqqq": false,
+   "dev_above_tqqq": null,
+   "status": "verified-full",
+   "visible": true,
+   "family_winner": false,
+   "note": "Low-overlap family added 2026-11-28. Full 34.06% CAGR / 57.97% DD / 0.88 Sharpe; 179 full fills. Max winner correlation 0.67, signal Jaccard 0.57.",
+   "source": "research/new/family-mtum-spy/report.md"
+  },
+  {
+   "slug": "family-breakeven",
+   "name": "Breakeven inflation",
+   "family": "breakeven",
+   "tagline": "TIP/IEF 10-session inflation-compensation impulse",
+   "summary": "When inflation compensation is rising (TIP/IEF 10-session change in its top half), buy TQQQ; otherwise BIL.",
+   "dev": {
+    "cagr": 0.31225021307327694,
+    "max_dd": 0.6027594110299699,
+    "sharpe": 0.8673485847886345
+   },
+   "full": {
+    "cagr": 0.1966727829093673,
+    "max_dd": 0.7495812016988255,
+    "sharpe": 0.6459373923565775
+   },
+   "above_tqqq": false,
+   "dev_above_tqqq": null,
+   "status": "verified-full",
+   "visible": true,
+   "family_winner": false,
+   "note": "Low-overlap family added 2026-11-28. Full 19.67% CAGR / 74.96% DD / 0.65 Sharpe; 557 full fills. Max winner correlation 0.60, signal Jaccard 0.48.",
+   "source": "research/new/family-breakeven/report.md"
+  },
+  {
+   "slug": "family-sector-dispersion",
+   "name": "Sector dispersion",
+   "family": "sector-dispersion",
+   "tagline": "Cross-sectional dispersion of 10 sector ETFs",
+   "summary": "When sector dispersion is low (broad macro-driven move), buy TQQQ; when dispersion is high, hold BIL.",
+   "dev": {
+    "cagr": 0.23230144985671375,
+    "max_dd": 0.6786315294409623,
+    "sharpe": 0.7313012811508488
+   },
+   "full": {
+    "cagr": 0.16758217931823682,
+    "max_dd": 0.6786315294409623,
+    "sharpe": 0.6076093157261201
+   },
+   "above_tqqq": false,
+   "dev_above_tqqq": null,
+   "status": "verified-full",
+   "visible": true,
+   "family_winner": false,
+   "note": "Low-overlap family added 2026-11-28. Full 16.76% CAGR / 67.86% DD / 0.61 Sharpe; 273 full fills. Max winner correlation 0.64, signal Jaccard 0.55.",
+   "source": "research/new/family-sector-dispersion/report.md"
   }
  ],
  "winner_policy": "One verified-full above-TQQQ winner per family, selected by full-window CAGR. ratio-froth and vol-scaled-crash-stop are now verified-full via clean reruns and audits; the previous fast-trend-vol / vol-term-structure remain verified research records but are not family winners."

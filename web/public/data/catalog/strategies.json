@@ -506,62 +506,6 @@
    "provenanceCount": 0
   },
   {
-   "id": "research:family-tqqq-decay",
-   "slug": "family-tqqq-decay",
-   "kind": "research",
-   "name": "TQQQ decay",
-   "group": "Strategy",
-   "status": "Strategy",
-   "tagline": "Realized variance-drag timing",
-   "summary": "There are 209 fills across 105 independent fill days. Average weights are 13.2% QQQ, 50.4% TQQQ, 36.4% BIL \u2014 the strategy spends about a third of the sample in cash and half in TQQQ.",
-   "window": "2016-2026",
-   "cagr": 0.39999358404755636,
-   "dd": 0.37614770700583844,
-   "sharpe": 1.0917995252102342,
-   "metrics": {
-    "cagr10": 0.39999358404755636,
-    "dd10": 0.37614770700583844,
-    "cagr5": 0.39999358404755636,
-    "dd5": 0.37614770700583844
-   },
-   "href": "/research/family-tqqq-decay",
-   "runnable": false,
-   "accent": "#9ae6a5",
-   "tags": [
-    "2016-2026"
-   ],
-   "papersCount": 0,
-   "provenanceCount": 0
-  },
-  {
-   "id": "research:family-realized-skew",
-   "slug": "family-realized-skew",
-   "kind": "research",
-   "name": "Realized skew",
-   "group": "Strategy",
-   "status": "Strategy",
-   "tagline": "Intraday realized skewness",
-   "summary": "The stated bar is TQQQ 36.72% CAGR / 82.29% max DD / 0.82 Sharpe. The local 1-minute benchmark is 36.15% / 82.29% / 0.80.",
-   "window": "2016-2026",
-   "cagr": 0.38828022346177593,
-   "dd": 0.5398041890228424,
-   "sharpe": 0.9489063682773773,
-   "metrics": {
-    "cagr10": 0.38828022346177593,
-    "dd10": 0.5398041890228424,
-    "cagr5": 0.38828022346177593,
-    "dd5": 0.5398041890228424
-   },
-   "href": "/research/family-realized-skew",
-   "runnable": false,
-   "accent": "#9ae6a5",
-   "tags": [
-    "2016-2026"
-   ],
-   "papersCount": 0,
-   "provenanceCount": 0
-  },
-  {
    "id": "research:family-rates-volatility",
    "slug": "family-rates-volatility",
    "kind": "research",
@@ -581,34 +525,6 @@
     "dd5": 0.4193533311417291
    },
    "href": "/research/family-rates-volatility",
-   "runnable": false,
-   "accent": "#9ae6a5",
-   "tags": [
-    "2016-2026"
-   ],
-   "papersCount": 0,
-   "provenanceCount": 0
-  },
-  {
-   "id": "research:family-style-rotation",
-   "slug": "family-style-rotation",
-   "kind": "research",
-   "name": "Style rotation",
-   "group": "Strategy",
-   "status": "Strategy",
-   "tagline": "IWF/IWD growth-vs-value leadership",
-   "summary": "External style-rotation family; full-window holdout.",
-   "window": "2016-2026",
-   "cagr": 0.3798167230801135,
-   "dd": 0.6989160359593212,
-   "sharpe": 0.915686635936342,
-   "metrics": {
-    "cagr10": 0.3798167230801135,
-    "dd10": 0.6989160359593212,
-    "cagr5": 0.3798167230801135,
-    "dd5": 0.6989160359593212
-   },
-   "href": "/research/family-style-rotation",
    "runnable": false,
    "accent": "#9ae6a5",
    "tags": [
@@ -749,6 +665,34 @@
     "dd5": 0.6362344976121757
    },
    "href": "/research/family-breadth",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
+   "id": "research:family-mtum-spy",
+   "slug": "family-mtum-spy",
+   "kind": "research",
+   "name": "Momentum factor leadership",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "MTUM/SPY 60-session momentum-factor leadership",
+   "summary": "When the momentum factor leads the broad market (MTUM/SPY 60-session change in its top half), buy TQQQ; otherwise BIL.",
+   "window": "2016-2026",
+   "cagr": 0.34062227056316474,
+   "dd": 0.579655793549277,
+   "sharpe": 0.883185939327871,
+   "metrics": {
+    "cagr10": 0.34062227056316474,
+    "dd10": 0.579655793549277,
+    "cagr5": 0.34062227056316474,
+    "dd5": 0.579655793549277
+   },
+   "href": "/research/family-mtum-spy",
    "runnable": false,
    "accent": "#9ae6a5",
    "tags": [
@@ -982,6 +926,34 @@
    "provenanceCount": 0
   },
   {
+   "id": "research:family-breakeven",
+   "slug": "family-breakeven",
+   "kind": "research",
+   "name": "Breakeven inflation",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "TIP/IEF 10-session inflation-compensation impulse",
+   "summary": "When inflation compensation is rising (TIP/IEF 10-session change in its top half), buy TQQQ; otherwise BIL.",
+   "window": "2016-2026",
+   "cagr": 0.1966727829093673,
+   "dd": 0.7495812016988255,
+   "sharpe": 0.6459373923565775,
+   "metrics": {
+    "cagr10": 0.1966727829093673,
+    "dd10": 0.7495812016988255,
+    "cagr5": 0.1966727829093673,
+    "dd5": 0.7495812016988255
+   },
+   "href": "/research/family-breakeven",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
    "id": "research:family-hyg-spy",
    "slug": "family-hyg-spy",
    "kind": "research",
@@ -1057,6 +1029,34 @@
     "dd5": 0.31778000954771257
    },
    "href": "/research/time-of-day",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
+   "id": "research:family-sector-dispersion",
+   "slug": "family-sector-dispersion",
+   "kind": "research",
+   "name": "Sector dispersion",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "Cross-sectional dispersion of 10 sector ETFs",
+   "summary": "When sector dispersion is low (broad macro-driven move), buy TQQQ; when dispersion is high, hold BIL.",
+   "window": "2016-2026",
+   "cagr": 0.16758217931823682,
+   "dd": 0.6786315294409623,
+   "sharpe": 0.6076093157261201,
+   "metrics": {
+    "cagr10": 0.16758217931823682,
+    "dd10": 0.6786315294409623,
+    "cagr5": 0.16758217931823682,
+    "dd5": 0.6786315294409623
+   },
+   "href": "/research/family-sector-dispersion",
    "runnable": false,
    "accent": "#9ae6a5",
    "tags": [

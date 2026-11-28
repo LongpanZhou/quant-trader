@@ -183,26 +183,6 @@
    "visible": true
   },
   {
-   "slug": "family-tqqq-decay",
-   "name": "TQQQ decay",
-   "tagline": "Realized variance-drag timing",
-   "summary": "There are 209 fills across 105 independent fill days. Average weights are 13.2% QQQ, 50.4% TQQQ, 36.4% BIL \u2014 the strategy spends about a third of the sample in cash and half in TQQQ.",
-   "verdict": "Verified - new family",
-   "reason": "Full 40.00% CAGR / 37.61% DD / 1.09 Sharpe; 329 fills; above the TQQQ bar.",
-   "family": "tqqq-decay",
-   "visible": true
-  },
-  {
-   "slug": "family-realized-skew",
-   "name": "Realized skew",
-   "tagline": "Intraday realized skewness",
-   "summary": "The stated bar is TQQQ 36.72% CAGR / 82.29% max DD / 0.82 Sharpe. The local 1-minute benchmark is 36.15% / 82.29% / 0.80.",
-   "verdict": "Verified - new family",
-   "reason": "Full 38.83% CAGR / 53.98% DD / 0.95 Sharpe; 439 fills; above the TQQQ bar.",
-   "family": "realized-skew",
-   "visible": true
-  },
-  {
    "slug": "family-volume-skew",
    "name": "Volume skew",
    "tagline": "QQQ up/down volume asymmetry below its prior-60-session 40th percentile.",
@@ -260,16 +240,6 @@
    "verdict": "Verified - new external family",
    "reason": "Full 36.48% CAGR / 69.89% DD / 0.90 Sharpe; 447 fills; below the TQQQ bar.",
    "family": "energy-rotation",
-   "visible": true
-  },
-  {
-   "slug": "family-style-rotation",
-   "name": "Style rotation",
-   "tagline": "IWF/IWD growth-vs-value leadership",
-   "summary": "External style-rotation family; full-window holdout.",
-   "verdict": "Verified - external family",
-   "reason": "External family added 2026-11-28. Full 37.98% CAGR / 69.89% DD / 0.92 Sharpe; 341 full fills.",
-   "family": "style-rotation",
    "visible": true
   },
   {
@@ -350,6 +320,36 @@
    "verdict": "Verified - low-overlap family",
    "reason": "Low-overlap family added 2026-11-28. Full 19.37% CAGR / 78.00% DD / 0.65 Sharpe; 383 full fills. Max winner correlation <=0.63, signal Jaccard <=0.55.",
    "family": "hyg-spy",
+   "visible": true
+  },
+  {
+   "slug": "family-mtum-spy",
+   "name": "Momentum factor leadership",
+   "tagline": "MTUM/SPY 60-session momentum-factor leadership",
+   "summary": "When the momentum factor leads the broad market (MTUM/SPY 60-session change in its top half), buy TQQQ; otherwise BIL.",
+   "verdict": "Verified - low-overlap family",
+   "reason": "Low-overlap family added 2026-11-28. Full 34.06% CAGR / 57.97% DD / 0.88 Sharpe; 179 full fills. Max winner correlation 0.67, signal Jaccard 0.57.",
+   "family": "mtum-spy",
+   "visible": true
+  },
+  {
+   "slug": "family-breakeven",
+   "name": "Breakeven inflation",
+   "tagline": "TIP/IEF 10-session inflation-compensation impulse",
+   "summary": "When inflation compensation is rising (TIP/IEF 10-session change in its top half), buy TQQQ; otherwise BIL.",
+   "verdict": "Verified - low-overlap family",
+   "reason": "Low-overlap family added 2026-11-28. Full 19.67% CAGR / 74.96% DD / 0.65 Sharpe; 557 full fills. Max winner correlation 0.60, signal Jaccard 0.48.",
+   "family": "breakeven",
+   "visible": true
+  },
+  {
+   "slug": "family-sector-dispersion",
+   "name": "Sector dispersion",
+   "tagline": "Cross-sectional dispersion of 10 sector ETFs",
+   "summary": "When sector dispersion is low (broad macro-driven move), buy TQQQ; when dispersion is high, hold BIL.",
+   "verdict": "Verified - low-overlap family",
+   "reason": "Low-overlap family added 2026-11-28. Full 16.76% CAGR / 67.86% DD / 0.61 Sharpe; 273 full fills. Max winner correlation 0.64, signal Jaccard 0.55.",
+   "family": "sector-dispersion",
    "visible": true
   }
  ],

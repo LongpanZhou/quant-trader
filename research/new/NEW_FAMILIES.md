@@ -3,10 +3,10 @@
 **Target:** 20 strategies with primary signals distinct from the ten existing
 families, plus one that beats `ratio-froth` (full 62.21% CAGR).
 
-**Final set:** 20 new families. Eight clear the TQQQ full bar; twelve are active
-below it. The four highest raw-correlation additions were replaced on
-2026-11-28 with low-overlap gates; the full 20×9 audit is in
-`FAMILY_OVERLAP_AUDIT.md`.
+**Final set:** 20 new families. Five clear the TQQQ full bar; fifteen are
+active below it. Every addition has signal Jaccard ≤0.66 against the existing
+winners, and every non-beater has raw correlation ≤0.69. The only remaining
+exception is the ratio-froth beater itself, which is disclosed below.
 
 | # | Family | Full CAGR | Full DD | Sharpe | Fills | Winner |
 |---:|---|---:|---:|---:|---:|:--:|
@@ -14,22 +14,22 @@ below it. The four highest raw-correlation additions were replaced on
 | 2 | `crypto-risk-appetite` | 46.50% | 52.33% | 1.19 | 293 | yes |
 | 3 | `change-point` | 45.29% | 54.10% | 1.13 | 229 | yes |
 | 4 | `hurst-persistence` | 43.00% | 56.25% | 1.04 | 437 | yes |
-| 5 | `tqqq-decay` | 40.00% | 37.60% | 1.09 | 329 | yes |
-| 6 | `realized-skew` | 38.83% | 53.98% | 0.97 | 439 | yes |
-| 7 | `rates-volatility` | 38.80% | 43.01% | 1.05 | 355 | yes |
-| 8 | `style-rotation` | 37.98% | 69.89% | 0.92 | 341 | yes |
-| 9 | `energy-rotation` | 36.48% | 72.74% | 0.90 | 447 | no |
-| 10 | `efa-spy` | 35.59% | 63.39% | 0.93 | 165 | no |
-| 11 | `qual-spy` | 35.03% | 55.72% | 0.91 | 217 | no |
-| 12 | `volume-skew` | 34.39% | 46.36% | 1.03 | 2,124 | no |
-| 13 | `breadth` | 34.21% | 64.66% | 0.94 | 743 | no |
-| 14 | `financials-rotation` | 33.60% | 58.36% | 0.91 | 333 | no |
-| 15 | `skew-change` | 32.19% | 56.50% | 0.90 | 577 | no |
-| 16 | `sector-rotation` | 29.86% | 48.79% | 0.94 | 719 | no |
-| 17 | `retail-rotation` | 27.82% | 56.21% | 0.90 | 329 | no |
-| 18 | `homebuilder-rotation` | 24.97% | 59.43% | 0.75 | 333 | no |
-| 19 | `hyg-spy` | 19.37% | 78.60% | 0.66 | 383 | no |
-| 20 | `yen-carry` | 18.21% | 71.47% | 0.59 | 399 | no |
+| 5 | `rates-volatility` | 38.80% | 43.01% | 1.05 | 355 | yes |
+| 6 | `energy-rotation` | 36.48% | 72.74% | 0.90 | 447 | no |
+| 7 | `efa-spy` | 35.59% | 63.39% | 0.93 | 165 | no |
+| 8 | `qual-spy` | 35.03% | 55.72% | 0.91 | 217 | no |
+| 9 | `volume-skew` | 34.39% | 46.36% | 1.03 | 2,124 | no |
+| 10 | `breadth` | 34.21% | 64.66% | 0.94 | 743 | no |
+| 11 | `mtum-spy` | 34.06% | 59.62% | 0.89 | 179 | no |
+| 12 | `financials-rotation` | 33.60% | 58.36% | 0.91 | 333 | no |
+| 13 | `skew-change` | 32.19% | 56.50% | 0.90 | 577 | no |
+| 14 | `sector-rotation` | 29.86% | 48.79% | 0.94 | 719 | no |
+| 15 | `retail-rotation` | 27.82% | 56.21% | 0.90 | 329 | no |
+| 16 | `homebuilder-rotation` | 24.97% | 59.43% | 0.75 | 333 | no |
+| 17 | `breakeven` | 19.67% | 76.11% | 0.65 | 557 | no |
+| 18 | `hyg-spy` | 19.37% | 78.60% | 0.66 | 383 | no |
+| 19 | `yen-carry` | 18.21% | 71.47% | 0.59 | 399 | no |
+| 20 | `sector-dispersion` | 16.76% | 68.95% | 0.61 | 273 | no |
 
 ## The ratio-froth beater
 
@@ -38,44 +38,42 @@ below it. The four highest raw-correlation additions were replaced on
 TQQQ and uses no synthetic short. It does not beat ratio-froth on drawdown or
 Sharpe; see `RATIO_FROTH_BEATER.md`.
 
-## The four low-overlap replacements
+## Strict overlap result
 
-The audit identified four additions whose raw correlation with an existing
-winner exceeded 0.77. They were replaced with gates from unused data
-dimensions:
+All 20 additions have signal Jaccard ≤0.66 (`change-point`). The four highest
+raw-correlation names were replaced first:
 
-| Removed | Corr | Replaced by | Corr | Jaccard | Full CAGR | Holdout CAGR |
-|---|---:|---|---:|---:|---:|---:|
-| `vol-of-volume` | 0.84 | `skew-change` | 0.60 | 0.48 | 32.19% | 4.00% |
-| `oil-shock` | 0.80 | `efa-spy` | 0.60 | 0.44 | 35.59% | 37.16% |
-| `lowvol-rotation` | 0.79 | `qual-spy` | 0.61 | 0.49 | 35.03% | 10.85% |
-| `beta-rotation` | 0.77 | `hyg-spy` | 0.63 | 0.54 | 19.37% | 12.79% |
-
-The new gates are CBOE SKEW tail-risk pricing, EFA/SPY developed-market
-relative, QUAL/SPY quality-factor leadership, and HYG/SPY credit-equity risk
-appetite. Pairwise correlations among the four are 0.38–0.61; pairwise
-Jaccard is 0.27–0.40.
-
-## Overlap audit
-
-All 20 were tested against all nine existing winners for return correlation,
-conditional alpha and signal Jaccard. Maximum Jaccard is 0.66
-(`change-point`). The remaining raw correlations above 0.70 are:
-
-| Family | Max corr | Against | Alpha t | Jaccard |
+| Removed | Corr | Replaced by | Corr | Jaccard |
 |---|---:|---|---:|---:|
-| `close-location` | 0.77 | short-reversal | 2.80 | 0.47 |
-| `realized-skew` | 0.74 | relative-value | 1.77 | 0.56 |
-| `tqqq-decay` | 0.73 | rebalance-flow | 2.39 | 0.53 |
-| `style-rotation` | 0.71 | relative-value | 1.80 | 0.61 |
+| `vol-of-volume` | 0.84 | `skew-change` | 0.60 | 0.48 |
+| `oil-shock` | 0.80 | `efa-spy` | 0.60 | 0.44 |
+| `lowvol-rotation` | 0.79 | `qual-spy` | 0.61 | 0.49 |
+| `beta-rotation` | 0.77 | `hyg-spy` | 0.63 | 0.54 |
 
-Each has positive residual alpha and Jaccard ≤0.61. No strategy above 62.21%
-has lower raw correlation than close-location; the strict zero-correlation
-version of the objective is therefore not achievable with this data. See
+The three remaining non-beater names above 0.70 were then replaced:
+
+| Removed | Corr | Replaced by | Corr | Jaccard |
+|---|---:|---|---:|---:|
+| `realized-skew` | 0.74 | `mtum-spy` | 0.674 | 0.573 |
+| `tqqq-decay` | 0.73 | `breakeven` | 0.602 | 0.481 |
+| `style-rotation` | 0.71 | `sector-dispersion` | 0.643 | 0.551 |
+
+**Every non-beater addition is now at or below 0.69 raw correlation.** The
+only remaining exception is `close-location` at 0.77, and it is the only
+strategy above ratio-froth's 62.21% CAGR.
+
+## Why the beater exception remains
+
+`close-location` has Jaccard **0.47**, residual alpha **+37.8%/yr at t=2.80**,
+and +25.44%/yr alpha after short-reversal. No genuinely low-correlation family
+clears 62.21%: crypto 46.50%, rates 38.80%, EFA/SPY 35.59%, QUAL/SPY 35.03%.
+Returns above 62% require high TQQQ beta, which mechanically raises raw
+correlation with the existing high-beta winners. See
 `OBJECTIVE_FEASIBILITY.md`.
 
 ## Removed overlaps
 
 Earlier removals: calendar/session/intraday/risk-sizing overlaps, tail-hedge,
-dollar, gold, policy-liquidity, VIX term structure, credit spread. This turn:
-`vol-of-volume`, `oil-shock`, `lowvol-rotation`, `beta-rotation`.
+dollar, gold, policy-liquidity, VIX term structure, credit spread. Then
+vol-of-volume, oil-shock, low-vol, beta-rotation. Finally realized-skew,
+tqqq-decay and style-rotation.
