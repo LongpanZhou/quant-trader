@@ -38,6 +38,28 @@
   "Harness: research/bt.py, compiled simcore; bt.run on 1-minute bars"
  ],
  "papers": [],
+ "brief": {
+  "origin": "The idea is adapted from Asness, Frazzini & Pedersen (2012), Leverage Aversion and Risk Parity; Own derivation from the ERC definition; consistent with Asness et al; Cheng & Madhavan (2009), The Dynamics of Leveraged and Inverse ETFs.",
+  "mechanism": "The original agent's genuinely new content was not the 165-day regime and not the 4% stop. It was the risk model: an inverse-volatility / HRP allocation across QQQ, TQQQ and BIL, used to size the equity sleeve (a 70% vol target with a TQQQ cap). Everything else was the shared base.",
+  "steps": [
+   "Session k = one regular-session day (09:30–15:59 ET); the last bar is that",
+   "Every daily signal used for session k is computed from data through the",
+   "Weights for session k are weights[i] = tgt[k] for every bar of session k",
+   "The drawdown brake uses the strategy's own equity through the prior close",
+   "slope > 0: short-horizon vol is elevated relative to the 4-month norm",
+   "persist → 1: the 4-month vol is itself ≥ 1.5× its 3-year median"
+  ],
+  "why": "Equal-risk QQQ/TQQQ composition with a risk budget that rises after transient volatility spikes and is damped in persistent high-vol regimes.",
+  "falsifiers": [
+   "Diversity: dev daily-return correlation with the 165-day baseline ≥ 0.60.",
+   "No premium: dev CAGR below BIL, or Sharpe < 0.35.",
+   "The tilt is not the source: a sign-flipped (pro-cyclical) placebo has an equal or higher Sharpe, or a constant-35%-budget ablation beats the strategy.",
+   "All of it is 2020: both 2016–19 and 2022–23 sub-periods have negative CAGR while the full-dev result is positive.",
+   "No event effect: forward 20-day sleeve return after transient vol spikes (slope > +0.5, persist < 0.3) is not greater than the unconditional mean, with a bootstrap p-value > 0.10.",
+   "Underpowered: fewer than 40 transient-spike events in dev."
+  ],
+  "caveat": ""
+ },
  "provenance_cards": [
   {
    "idea": "Weight assets by risk contribution, not capital",

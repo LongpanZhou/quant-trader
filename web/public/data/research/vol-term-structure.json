@@ -29,6 +29,18 @@
  "decision": "Holds half the book on the QQQ trend and half on a calm term structure (short vol below long vol), drops to cash when short/long vol spikes, and sizes the remainder to the regime. The term structure buys drawdown and Sharpe, not raw CAGR over a simpler trend+spike rule.",
  "rules": [],
  "papers": [],
+ "brief": {
+  "origin": "No external paper is linked. This is an internal research hypothesis: the rule was generated and tested inside this project, so its origin is the research record below, not a published paper.",
+  "mechanism": "TQQQ is a 3x daily-reset fund. Its long-run return is high, but its drawdowns are dominated by a small number of volatility regime shifts: the short end of realized volatility rises faster than the long end, the realized-vol term structure inverts, and the leveraged fund compounds the decline. A signal built on the slope of realized volatility — the ratio of short-window to long-window RV — should therefore identify stress earlier than a price trend and more selectively than a plain volatility target.",
+  "steps": [],
+  "why": "Splits TQQQ exposure between a 165-day trend sleeve and a RV20/RV60 term-structure sleeve, with an acute-spike kill switch.",
+  "falsifiers": [
+   "A negative 2024-2026 holdout.",
+   "Full-window CAGR at or below TQQQ's, or a drawdown at or above TQQQ's.",
+   "The edge disappearing at 5-10 bp costs."
+  ],
+  "caveat": ""
+ },
  "provenance_cards": [
   {
    "idea": "quant-trader research program",

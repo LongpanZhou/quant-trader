@@ -29,6 +29,20 @@
  "decision": "New rates-volatility family; full-window holdout.",
  "rules": [],
  "papers": [],
+ "brief": {
+  "origin": "No external paper is linked. This is an internal research hypothesis: the rule was generated and tested inside this project, so its origin is the research record below, not a published paper.",
+  "mechanism": "Let \\(M_t\\) be the MOVE daily close and \\(\\mathrm{med}_{252}(M)_t\\) its trailing 252-session median (minimum 120 observations)",
+  "steps": [],
+  "why": "Rates volatility is the price of uncertainty about the discount rate. When the rates market is calm (MOVE low relative to its own recent history), long-duration growth equity is cheap to finance and volatility drag is low; a 3x Nasdaq sleeve can compound. When rates volatility spikes, the whole duration complex is re-priced, correlations go to one and drawdowns cluster. The MOVE spike is therefore a de-risking signal even before equity volatility reacts. This is deliberately not an equity-volatility strategy. VIX, VIX3M and realized QQQ volatility are not inputs. The test is whether the rates-vol complex carries incremental timing information.",
+  "falsifiers": [
+   "The level signal works only at one window/threshold and the 8-cell plateau collapses.",
+   "The placebo distribution contains the real result (timing is not special).",
+   "The 20-session change is as good as the level (then the object is just short-term rates momentum, not a regime).",
+   "The result is explained by the average TQQQ/BIL mix.",
+   "Any of the nine winner correlations is above 0.95 (duplicate)."
+  ],
+  "caveat": "Development-only: 2016-2023. The 2024-2026 holdout was physically excluded from every Parquet read. A separate process deposited holdout.json / holdout_run.log in this folder after the development run; this agent did not read or use them. The primary cell was chosen after daily-bar diagnostics on the same window; the 8-cell grid is a robustness probe, not a clean out-of-sample pre-registration."
+ },
  "provenance_cards": [
   {
    "idea": "quant-trader research program",

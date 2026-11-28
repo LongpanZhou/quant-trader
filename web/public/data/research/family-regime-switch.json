@@ -10,41 +10,86 @@
  },
  "status": "verified-full",
  "assessment": {
-  "verdict": "Verified - regime-switch beater",
-  "reason": "Composite overlay added 2026-11-28: close-location in calm (QQQ > 150-session MA and VIX <=25), ratio-froth in stress. Full 63.59% CAGR / 31.40% DD / 1.58 Sharpe; 735 fills. Beats ratio-froth on CAGR, DD, Sharpe and CAGR/DD; 1/5/10 bp 63.59/59.19/53.87 vs 62.21/56.62/50.67. Holdout 38.70% / 25.38% / 1.13. Not one of the 20 independent families."
+  "verdict": "Verified - period-dependent overlay",
+  "reason": "Full 2016-2026: 63.59% / 31.22% / 1.57 vs ratio-froth 62.21% / 36.65% / 1.43. The lead is not current: 2025 20.49% vs 83.35%, 2026 YTD 0.79% vs 29.83%, trailing 1y 13.67% vs 37.35%. Manual two-strategy overlay; research record, not a live edge."
  },
  "paths": {
   "report": "research/strategies/family-regime-switch/report.md",
   "hypothesis": "research/strategies/family-regime-switch/HYPOTHESIS.md",
   "spec": null,
-  "provenance": null,
+  "provenance": "research/strategies/family-regime-switch/PROVENANCE.md",
   "code": "research/strategies/family-regime-switch/strategy.py",
   "code_public": "/data/research/code/family-regime-switch.py"
  },
  "extracted": {
   "hypothesis": false,
   "spec": true,
-  "provenance": true
+  "provenance": false
  },
  "decision": "Use close-location when QQQ is above its 150-session MA and VIX <=25; otherwise use ratio-froth.",
  "rules": [],
  "papers": [],
+ "brief": {
+  "origin": "No external paper is linked. This is a manual overlay of family-close-location and ratio-froth, built and selected inside this project.",
+  "mechanism": "Use close-location when QQQ is above its 150-session MA and VIX <=25; otherwise use ratio-froth.",
+  "steps": [
+   "Calm: QQQ close is above its 150-session moving average and VIX ≤25.",
+   "Stress: either condition fails; use ratio-froth's weights for that session."
+  ],
+  "why": "Use the aggressive close-location strategy when the market is calm, and the defensive ratio-froth strategy when it is not Calm: QQQ close is above its 150-session moving average and VIX ≤25. Stress: either condition fails; use ratio-froth's weights for that session.",
+  "falsifiers": [
+   "Full CAGR ≤62.21% or max drawdown ≥36.65%.",
+   "Negative 2024-2026 holdout.",
+   "No improvement at 5/10 bp costs."
+  ],
+  "caveat": "The overlay wins in 2024 and over the full window, but materially underperforms ratio-froth in 2025, 2026 and the trailing year. The full-window result should not be read as a current edge."
+ },
  "provenance_cards": [
   {
-   "idea": "quant-trader research program",
-   "source": "Own test",
+   "idea": "Calm sleeve: buy TQQQ after a close in the bottom tenth of the QQQ range, hold five sessions",
+   "source": "family-close-location",
    "url": null,
-   "source_type": "Own test",
+   "source_type": "provenance table",
+   "role": "source",
+   "role_detail": "internal component",
+   "evidence": "verified strategy record in research/strategies/family-close-location",
+   "confidence": ""
+  },
+  {
+   "idea": "Stress sleeve: 165-day trend + volatility throttle",
+   "source": "ratio-froth",
+   "url": null,
+   "source_type": "provenance table",
+   "role": "source",
+   "role_detail": "internal component",
+   "evidence": "verified strategy record in research/strategies/ratio-froth",
+   "confidence": ""
+  },
+  {
+   "idea": "Calm/stress switch: QQQ > 150-session MA and VIX ≤25",
+   "source": "own 3×3 grid",
+   "url": null,
+   "source_type": "provenance table",
    "role": "own test",
-   "role_detail": "",
-   "evidence": "Pre-registered development test on 2016-2023 and a one-shot 2024-2026 holdout; implementation and results are in report.md and strategy.py.",
+   "role_detail": "own test",
+   "evidence": "150/25 was the development-grid maximum; see report",
+   "confidence": ""
+  },
+  {
+   "idea": "Costs and execution: next-open fills, 2% band, 1 bp headline",
+   "source": "shared research harness",
+   "url": null,
+   "source_type": "provenance table",
+   "role": "source",
+   "role_detail": "internal infrastructure",
+   "evidence": "benchmarked at 5/10 bp in the report",
    "confidence": ""
   }
  ],
  "rejected_sources": [],
- "report_md": "# Trend/VIX regime switch — report\n\n**Slug:** `family-regime-switch`  \n**Dev:** 73.47% CAGR / 31.40% DD / 1.74 Sharpe.  \n**Full:** **63.59% CAGR / 31.40% DD / 1.58 Sharpe**; 735 full fills;\n35,087x turnover.  \n**2024-2026 holdout:** 38.70% CAGR / 25.38% DD / 1.13 Sharpe.\n\n## Head-to-head vs ratio-froth\n\n| Full window | regime switch | ratio-froth |\n|---|---:|---:|\n| 1 bp CAGR | **63.59%** | 62.21% |\n| 5 bp CAGR | **59.19%** | 56.62% |\n| 10 bp CAGR | **53.87%** | 50.67% |\n| Max drawdown | **31.40%** | 36.65% |\n| Sharpe | **1.58** | 1.43 |\n| CAGR / DD | **2.02** | 1.70 |\n\nThe switch beats ratio-froth on CAGR, drawdown, Sharpe and CAGR/DD, and the\nCAGR lead survives 5 and 10 bp. It is the first strategy in the library to do\nso.\n\n## Rules\n\nCalm (QQQ > 150-session MA **and** VIX ≤25): close-location weights.  \nStress (either condition fails): ratio-froth weights.\n\nThe regime uses the prior session close and applies to the next session, so\nthere is no look-ahead. Stress share is 22.5%; 106 switches.\n\n## Grid\n\nDevelopment-window CAGR (1 bp):\n\n| MA \\ VIX | 20 | 25 | 30 |\n|---|---:|---:|---:|\n| 100 | 55.32% | 70.41% | 66.93% |\n| 150 | 58.65% | **73.47%** | 71.04% |\n| 200 | 57.18% | 70.41% | 68.03% |\n\nThe 150/25 cell is the development-grid maximum. That is a selection-bias\ncaveat: the full 63.59% and the 2024-2026 holdout 38.70% are the out-of-sample\nchecks, and they hold. The neighbouring cells (150/30, 150/20, 200/25) are also\npositive, so the result is not a single isolated cell.\n\n## Why this is not one of the 20 independent families\n\nThe switch is a composite of `family-close-location` and `ratio-froth`. It\ninherits their signals by construction and is disclosed as an overlay, not as\na new orthogonal family. The 20-family programme remains the 20 independent\nadditions audited in `FAMILY_OVERLAP_AUDIT.md`.\n\n## Caveats\n\n- Turnover is high (35,087x); the 5/10 bp CAGRs are 59.19% and 53.87%.\n- The regime grid was evaluated on the development window; the full and\n  holdout results are reported as run and are not used to tune the rule.\n- The overlay is only as good as its two components; if close-location's edge\n  decays, the calm-regime return decays with it.\n",
+ "report_md": "# Trend/VIX regime switch — report\n\n**Slug:** `family-regime-switch`  \n**Dev:** 73.47% CAGR / 31.40% DD / 1.74 Sharpe.  \n**Full:** **63.59% CAGR / 31.22% DD / 1.57 Sharpe**; 735 full fills;\n35,087x turnover.  \n**2024-2026 holdout:** 38.70% CAGR / 25.38% DD / 1.13 Sharpe.\n\n## Head-to-head vs ratio-froth\n\n| Full window | regime switch | ratio-froth |\n|---|---:|---:|\n| 1 bp CAGR | **63.59%** | 62.21% |\n| 5 bp CAGR | **59.19%** | 56.62% |\n| 10 bp CAGR | **53.87%** | 50.67% |\n| Max drawdown | **31.22%** | 36.65% |\n| Sharpe | **1.57** | 1.43 |\n| CAGR / DD | **2.04** | 1.70 |\n\nThe switch beats ratio-froth on the full window. **That lead is not stable\nthrough time.**\n\n## Recent performance — the full-window lead is not robust\n\n| Window | regime switch | ratio-froth |\n|---|---:|---:|\n| 2024 | **108.71%** | 89.73% |\n| 2025 | 20.49% | **83.35%** |\n| 2026 YTD | 0.79% | **29.83%** |\n| Trailing 1 year | 13.67% | **37.35%** |\n| Trailing 6 months | **−12.98%** | 23.42% |\n| 2024-2026 holdout | 38.70% | **65.40%** |\n\nThe overlay wins in 2024 and over the full window, but materially underperforms\nratio-froth in 2025, 2026 and the trailing year. The full-window result should\nnot be read as a current edge.\n\n## Rules\n\nCalm (QQQ > 150-session MA **and** VIX ≤25): close-location weights.  \nStress (either condition fails): ratio-froth weights.\n\nThe regime uses the prior session close and applies to the next session, so\nthere is no look-ahead. Stress share is 22.5%; 106 switches.\n\n## Grid\n\nDevelopment-window CAGR (1 bp):\n\n| MA \\ VIX | 20 | 25 | 30 |\n|---|---:|---:|---:|\n| 100 | 55.32% | 70.41% | 66.93% |\n| 150 | 58.65% | **73.47%** | 71.04% |\n| 200 | 57.18% | 70.41% | 68.03% |\n\nThe 150/25 cell is the development-grid maximum. That is a selection-bias\ncaveat. The full and holdout results are out-of-sample, but the recent table\nshows the edge is period-dependent.\n\n## Why this is an overlay\n\nThe switch is a composite of `family-close-location` and `ratio-froth`. It\ninherits their signals by construction and is disclosed as an overlay, not as\nan independent strategy.\n\n## Caveats\n\n- **No external paper is linked.** The rule was constructed manually as a\n  two-strategy overlay and selected from the 3×3 grid above.\n- The full-window lead is concentrated in 2016-2024; 2025-2026 underperform\n  ratio-froth.\n- Turnover is high (35,087x); the 5/10 bp CAGRs are 59.19% and 53.87%.\n- The overlay is only as good as its two components.\n",
  "hypothesis_md": "# Trend/VIX regime switch\n\n**Slug:** `family-regime-switch`  \n**Family:** regime-switch (portfolio overlay, not one of the 20 independent\nfamilies)  \n**Primary object:** QQQ 150-session trend and VIX level  \n**Window:** 2016-01-04 .. 2023-12-29 development; full holdout\n2024-01-02..2026-10-23.\n\n## Claim\n\nUse the aggressive close-location strategy when the market is calm, and the\ndefensive ratio-froth strategy when it is not:\n\n- **Calm:** QQQ close is above its 150-session moving average **and** VIX ≤25.\n- **Stress:** either condition fails; use ratio-froth's weights for that\n  session.\n\nThe regime is measured at the prior session close, so execution is causal.\nThis is a portfolio overlay of two existing strategies, not a new independent\nsignal family. It exists to answer the specific requirement of beating\nratio-froth on both CAGR and drawdown.\n\n## Rules\n\n- Long-only TQQQ/BIL, weights ≥0, sum ≤1, 2% band, 1 bp headline.\n- Calm sessions inherit close-location's minute weights.\n- Stress sessions inherit ratio-froth's minute weights.\n- No shorting, no leverage beyond TQQQ, no look-ahead.\n- Stress share 22.5%; 106 regime switches over the full window.\n\n## Falsifiers\n\n- Full CAGR ≤62.21% or max drawdown ≥36.65%.\n- Negative 2024-2026 holdout.\n- No improvement at 5/10 bp costs.\n",
  "spec_md": "## Rules\n\nCalm (QQQ > 150-session MA **and** VIX ≤25): close-location weights.  \nStress (either condition fails): ratio-froth weights.\n\nThe regime uses the prior session close and applies to the next session, so\nthere is no look-ahead. Stress share is 22.5%; 106 switches.",
- "provenance_md": "## Own test\n\n- **quant-trader research program** - Pre-registered development test on 2016-2023 and a one-shot 2024-2026 holdout; implementation and results are in `report.md` and `strategy.py`.",
+ "provenance_md": "# Provenance — Trend/VIX regime switch\n\n**No external paper is linked.** This overlay was constructed manually inside\nthis project from two existing strategies.\n\n| Rule / component | Source | Role | Evidence |\n|---|---|---|---|\n| Calm sleeve: buy TQQQ after a close in the bottom tenth of the QQQ range, hold five sessions | `family-close-location` | internal component | verified strategy record in `research/strategies/family-close-location` |\n| Stress sleeve: 165-day trend + volatility throttle | `ratio-froth` | internal component | verified strategy record in `research/strategies/ratio-froth` |\n| Calm/stress switch: QQQ > 150-session MA and VIX ≤25 | own 3×3 grid | own test | 150/25 was the development-grid maximum; see report |\n| Costs and execution: next-open fills, 2% band, 1 bp headline | shared research harness | internal infrastructure | benchmarked at 5/10 bp in the report |\n\nThe full-window edge is concentrated in 2016-2024. In 2025 the overlay returned\n20.49% versus ratio-froth 83.35%; 2026 YTD 0.79% versus 29.83%; trailing one\nyear 13.67% versus 37.35%. It is a research overlay, not a current live edge.\n",
  "code": "\"\"\"Trend/VIX regime switch: close-location in calm, ratio-froth in stress.\n\nCalm = QQQ above its 150-session moving average AND VIX <= 25.\nStress = either condition fails; use ratio-froth's weights for that session.\nThe regime is measured at the prior session close, so execution is causal.\n\"\"\"\nfrom __future__ import annotations\n\nimport json\nimport sys\nfrom pathlib import Path\n\nimport numpy as np\nimport pandas as pd\n\nROOT = Path(__file__).resolve().parents[3]\nsys.path.insert(0, str(ROOT / \"research\"))\nsys.path.insert(0, str(ROOT / \"research\" / \"strategies\"))\nimport bt  # noqa: E402\nimport external  # noqa: E402\nimport run_holdout as R  # noqa: E402\n\nDEV_START, DEV_END = \"2016-01-04\", \"2023-12-29\"\nBPY = 252 * 390\nOUT = Path(__file__).resolve().parent\nPARAMS = dict(ma=150, vix=25.0)\n\n\ndef _qqq_daily(dates):\n    p = ROOT / \"data\" / \"intraday-hf\" / \"QQQ-1d-yahoo.parquet\"\n    df = pd.read_parquet(p)\n    df[\"date\"] = pd.to_datetime(df[\"date\"]).dt.tz_localize(None).dt.normalize()\n    s = df.set_index(\"date\")[\"adjclose\"].astype(float).sort_index()\n    s = s[~s.index.duplicated(keep=\"last\")]\n    return s.reindex(pd.DatetimeIndex(dates)).ffill()\n\n\ndef _weights(slug, ts, o, c):\n    m = R.load(slug)\n    out = R.build_full(m, ts, o, c)\n    w = out[0] if isinstance(out, tuple) else out\n    w = np.asarray(w, float)\n    if w.shape[1] == 2:\n        w = R.tqqq_bil_to_three(w, len(ts))\n    return w\n\n\ndef build_weights(ts, o, c, params=None):\n    p = dict(PARAMS)\n    if params:\n        p.update(params)\n    wc = _weights(\"family-close-location\", ts, o, c)\n    wr = _weights(\"ratio-froth\", ts, o, c)\n    dates, first, last = bt.day_bounds(ts)\n    sess = pd.DatetimeIndex(dates[first]).tz_localize(None).normalize()\n    qqq = _qqq_daily(sess)\n    ma = qqq.rolling(int(p[\"ma\"]), min_periods=max(20, int(p[\"ma\"]) // 2)).mean()\n    vix = external.align(ts, [\"^VIX\"])[\"^VIX\"].reindex(sess).ffill()\n    stress = ((qqq < ma) | (vix > float(p[\"vix\"]))).to_numpy()\n    w = wc.copy()\n    for j in range(1, len(first)):\n        if bool(stress[j - 1]):\n            a, b = int(first[j]), int(last[j])\n            w[a:b + 1] = wr[a:b + 1]\n    info = {\"params\": p, \"stress_share\": float(stress.mean()),\n            \"switches\": int((np.diff(stress.astype(int)) != 0).sum())}\n    return w, info\n\n\ndef run(w, ts, o, c, bps):\n    r = bt.run(ts, o, c, w, DEV_START, band=0.02, slippage_bps=bps)\n    s = bt.stats(r, BPY)\n    return {k: float(s[k]) for k in (\"cagr\", \"max_drawdown\", \"sharpe\", \"sortino\",\n                                     \"volatility\", \"exposure\", \"turnover\", \"fills\",\n                                     \"ending_equity\", \"years\")}\n\n\ndef main():\n    ts, o, c = bt.panel((\"QQQ\", \"TQQQ\", \"BIL\"), DEV_START, DEV_END, \"1min\", warmup_days=0)\n    w, info = build_weights(ts, o, c)\n    out = {\"slug\": \"family-regime-switch\", \"family\": \"regime-switch\",\n           \"idea\": \"Close-location in calm, ratio-froth in stress.\",\n           \"window\": {\"dev\": [DEV_START, DEV_END], \"holdout\": \"not loaded\"},\n           \"params\": info[\"params\"], \"info\": info,\n           \"dev\": {f\"{b}bp\": run(w, ts, o, c, b) for b in (1, 5, 10)},\n           \"grid\": []}\n    for ma in (100, 150, 200):\n        for vix in (20.0, 25.0, 30.0):\n            ww, ii = build_weights(ts, o, c, dict(ma=ma, vix=vix))\n            out[\"grid\"].append({\"ma\": ma, \"vix\": vix, \"switches\": ii[\"switches\"],\n                                **run(ww, ts, o, c, 1)})\n    (OUT / \"result.json\").write_text(json.dumps(out, indent=1), encoding=\"utf-8\")\n    s = out[\"dev\"][\"1bp\"]\n    print(f\"family-regime-switch dev {s['cagr']*100:.2f}% CAGR \"\n          f\"{s['max_drawdown']*100:.2f}% DD {s['sharpe']:.2f} Sharpe \"\n          f\"fills {int(s['fills'])}\")\n\n\nif __name__ == \"__main__\":\n    main()\n"
 }

@@ -29,6 +29,21 @@
  "decision": "The original overlay's genuinely new claim was not the TQQQ trend base. It was that the end-of-day move contains temporary leveraged-ETF / options-hedging pressure that partly reverses afterwards. On risk-off days when QQQ rallied more than 1.5% by 14:59, the old strategy bought TQQQ for the last hour and exited before the close, because the overnight after those rallies was negative on average.",
  "rules": [],
  "papers": [],
+ "brief": {
+  "origin": "The idea is adapted from Barbon et al. (2022), Liquidity Provision to Leveraged ETFs and Equity Options Rebalancing Flows: Evidence from End-of-Day Stock Prices; Shum, Hejazi, Haryanto & Rodier (2016), Intraday Share Price Volatility and Leveraged ETF Rebalancing, Review of Finance 20(6):2379–2409; Baltussen, Da & Soebhag (2025); Vidovich & Zerjal (2026), The End-of-Day Reversal After 2019: A Pre-Registered Test on S&P 500 Stocks Excluding Heavily Traded Names.",
+  "mechanism": "The old strategy was an overlay on the 165-day QQQ/TQQQ winner: on a risk-off session, if QQQ was up more than 1.5% by 14:59, it bought TQQQ for the last hour and exited before the close, because the overnight after those rallies reversed. The genuinely new part is not the TQQQ trend base; it is the claim that the end-of-day move contains temporary leveraged-ETF / options-hedging pressure that partly reverses afterwards.",
+  "steps": [],
+  "why": "Nasdaq underperformance vs SPY at the close is temporary LETF/flow pressure; buy TQQQ for a three-session reversal.",
+  "falsifiers": [
+   "No predictive power: the coefficient of the next 1/3-session TQQQ return on z_t is ≤ 0, or its HAC t-statistic is below 2.",
+   "Too correlated: development daily-return correlation with the 165-day baseline is ≥ 0.60.",
+   "No excess return: development CAGR is below BIL, or Sharpe < 0.3.",
+   "Fragile event count: fewer than 100 events and a bootstrap p-value above 0.10; or the result is driven by a single sub-period (2020) or a single side (only up-market dips or only down-market dips).",
+   "Costs kill it: the edge disappears at 5 bp or 10 bp.",
+   "Placebo: random entries with the same number of events, holding period and exposure produce a similar CAGR/Sharpe."
+  ],
+  "caveat": "1. No 1-minute SPY for dev. The signal is daily, not last-hour. The \"late-day\" part is the close-to-close relative move, which includes the close; it is not the same as a 15:00–15:58 signal. 2. The signal is a proxy for flow, not a direct measurement of LETF rebalancing. We do not observe LETF creations/redemptions or underlying volume. The relative QQQ–SPY move is an inference. 3. TQQQ adds beta. Even on event days, the strategy carries 3x Nasdaq beta; the QQQ variant is the clean test of whether the relative reversal survives without leverage. 4. The old evidence is absolute, not relative. The overnight reversal regression used QQQ/TQQQ absolute returns. The relative QQQ–SPY version may be weaker if the flow is market-wide rather than Nasdaq-specific. 5. Parameter priors are in-sample. z = −1.25 and hold = 3 come from the old event study and standard practice, not from a pre-2026 independent sample. The plateau and placebo tests are mandatory. 6. No short leg. The design is long-only because the engine is long-only; the \"relative value\" is implemented by choosing TQQQ vs BIL, not by shorting SPY. This leaves market beta in the signal days."
+ },
  "provenance_cards": [
   {
    "idea": "Leveraged-ETF rebalancing and option delta-hedging create measurable price pressure in the last part of the session, concentrated in the underlying index.",

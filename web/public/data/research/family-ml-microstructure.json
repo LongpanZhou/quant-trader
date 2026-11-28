@@ -29,6 +29,21 @@
  "decision": "Uses close-location and volume-ratio features over five-session windows, refits monthly, and holds a vol-targeted TQQQ position when the predicted return exceeds a fraction of the trailing mean. No daily vol/drawdown/trend features in the primary.",
  "rules": [],
  "papers": [],
+ "brief": {
+  "origin": "No external paper is linked. This is an internal research hypothesis: the rule was generated and tested inside this project, so its origin is the research record below, not a published paper.",
+  "mechanism": "Uses close-location and volume-ratio features over five-session windows, refits monthly, and holds a vol-targeted TQQQ position when the predicted return exceeds a fraction of the trailing mean. No daily vol/drawdown/trend features in the primary.",
+  "steps": [],
+  "why": "A walk-forward weekly ridge model on session-shape price/volume features times TQQQ exposure.",
+  "falsifiers": [
+   "The label-shuffle or feature-shuffle placebo matches the real CAGR/DD.",
+   "Shifting the features by one block (5 sessions) leaves the result intact.",
+   "The cut test changes pre-cut weights.",
+   "The edge is one year (2022) or one crash episode.",
+   "A simple fixed rule on clv5 matches the ML.",
+   "The 5 bp or 10 bp CAGR falls below 36.72%."
+  ],
+  "caveat": ""
+ },
  "provenance_cards": [
   {
    "idea": "quant-trader research program",

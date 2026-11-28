@@ -29,6 +29,18 @@
  "decision": "New energy-rotation family; full-window holdout.",
  "rules": [],
  "papers": [],
+ "brief": {
+  "origin": "No external paper is linked. This is an internal research hypothesis: the rule was generated and tested inside this project, so its origin is the research record below, not a published paper.",
+  "mechanism": "When energy leads technology, treat it as inflation/commodity stress and hold BIL; otherwise TQQQ.",
+  "steps": [],
+  "why": "When energy leads technology, treat it as inflation/commodity stress and hold BIL; otherwise TQQQ.",
+  "falsifiers": [
+   "Dev CAGR <=5% or fewer than 100 full fills.",
+   "No positive plateau/placebo.",
+   "Correlation above 0.70 with an existing winner."
+  ],
+  "caveat": "This is a cross-asset signal, not a price-trend or calendar variant. The external series ends 2026-09-21; the final panel weeks carry the last signal state. Full-window results are daily-close; the headline is 1 bp."
+ },
  "provenance_cards": [
   {
    "idea": "quant-trader research program",

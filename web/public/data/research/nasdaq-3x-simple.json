@@ -29,6 +29,18 @@
  "decision": "Python port of the Rust bot's simple 3x rule: no volatility target, full TQQQ in an uptrend, BIL otherwise. It shows what the volatility target in Nasdaq Leveraged Trend adds. Matches the Rust backtest with 0.9995 daily-return correlation.",
  "rules": [],
  "papers": [],
+ "brief": {
+  "origin": "No external paper is linked. This is an internal research hypothesis: the rule was generated and tested inside this project, so its origin is the research record below, not a published paper.",
+  "mechanism": "Python port of the Rust bot's simple 3x rule: no volatility target, full TQQQ in an uptrend, BIL otherwise. It shows what the volatility target in Nasdaq Leveraged Trend adds. Matches the Rust backtest with 0.9995 daily-return correlation.",
+  "steps": [],
+  "why": "Hold TQQQ while QQQ is above its 200-day average; hold T-bills below it.",
+  "falsifiers": [
+   "A negative 2024-2026 holdout.",
+   "Full-window CAGR at or below TQQQ's, or a drawdown at or above TQQQ's.",
+   "The edge disappearing at 5-10 bp costs."
+  ],
+  "caveat": ""
+ },
  "provenance_cards": [
   {
    "idea": "quant-trader research program",

@@ -29,6 +29,18 @@
  "decision": "External homebuilder-rotation family; full-window holdout.",
  "rules": [],
  "papers": [],
+ "brief": {
+  "origin": "No external paper is linked. This is an internal research hypothesis: the rule was generated and tested inside this project, so its origin is the research record below, not a published paper.",
+  "mechanism": "Hold TQQQ when homebuilders (XHB) lead the broad market (SPY) over 60 sessions; otherwise BIL.",
+  "steps": [],
+  "why": "Hold TQQQ when homebuilders (XHB) lead the broad market (SPY) over 60 sessions; otherwise BIL.",
+  "falsifiers": [
+   "Dev CAGR <=5% or fewer than 100 full fills.",
+   "No positive plateau.",
+   "Jaccard overlap >0.70 with an existing winner."
+  ],
+  "caveat": ""
+ },
  "provenance_cards": [
   {
    "idea": "quant-trader research program",

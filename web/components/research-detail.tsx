@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useEffect, useMemo, useState } from "react";
+import { memo, useEffect, useMemo, useState, type ReactNode } from "react";
 import {
   Brush,
   CartesianGrid,
@@ -55,6 +55,14 @@ export type Detail = {
   decision: string;
   rules: string[];
   papers: Paper[];
+  brief?: {
+    origin: string;
+    mechanism: string;
+    steps: string[];
+    why: string;
+    falsifiers: string[];
+    caveat?: string;
+  };
   provenance_cards: ProvenanceCard[];
   rejected_sources: RejectedSource[];
   report_md: string;
@@ -316,30 +324,43 @@ function CodePanel({
 function ProvenancePanel({ detail }: { detail: Detail }) {
   const cards = detail.provenance_cards ?? [];
   const rejected = detail.rejected_sources ?? [];
-
-  if (!cards.length && !rejected.length) {
-    return detail.provenance_md ? (
-      <section className="panel p-5">
-        <div className="eyebrow">Provenance</div>
-        <h2 className="mt-1 text-lg font-semibold text-zinc-100">Paper → rule</h2>
-        <p className="mt-2 max-w-3xl text-[11px] leading-relaxed text-zinc-500">
-          The source mapping is in the report section below. Rows marked “own test” are not from a
-          paper; they were chosen in the backtest.
-        </p>
-        <Markdown>{detail.provenance_md}</Markdown>
-      </section>
-    ) : null;
-  }
+  const linked = cards.filter((item) => Boolean(item.url)).length;
+  const internal = cards.length - linked;
 
   return (
     <section className="panel p-5">
       <div className="eyebrow">Provenance</div>
-      <h2 className="mt-1 text-lg font-semibold text-zinc-100">Idea → source</h2>
+      <h2 className="mt-1 text-lg font-semibold text-zinc-100">
+        Where each part comes from
+      </h2>
       <p className="mt-2 max-w-3xl text-[11px] leading-relaxed text-zinc-500">
-        Which paper or page inspired each rule, and what was tested and rejected. An “own test”
-        entry means the idea came from the backtest itself, not an external paper. A paper
-        supporting a component does not prove this exact strategy.
+        Which paper or internal test supports each rule. A paper supporting a component does not
+        prove this exact strategy. “Internal test” means the rule came from the research process,
+        not an external paper.
       </p>
+
+      <div className="mt-3 flex flex-wrap gap-2 text-[10px] uppercase tracking-[0.1em]">
+        <span className="rounded-full border border-sky-300/20 bg-sky-300/[0.06] px-2 py-0.5 text-sky-200">
+          {linked} linked paper{linked === 1 ? "" : "s"}
+        </span>
+        <span className="rounded-full border border-amber-300/20 bg-amber-300/[0.06] px-2 py-0.5 text-amber-200">
+          {internal} internal / own-test
+        </span>
+      </div>
+
+      {!cards.length ? (
+        <div className="mt-4 rounded-xl border border-dashed border-white/10 p-4 text-[11px] leading-relaxed text-zinc-500">
+          {detail.provenance_md
+            ? "No structured source cards were saved. The original provenance notes are reproduced below; citations without a URL are literature references, not linked papers."
+            : "No component-level source mapping was saved by the original research agent. This strategy is an internal hypothesis; the rules and report are not an external replication."}
+        </div>
+      ) : null}
+
+      {!cards.length && detail.provenance_md ? (
+        <div className="mt-4">
+          <Markdown>{detail.provenance_md}</Markdown>
+        </div>
+      ) : null}
 
       <div className="mt-4 grid gap-3 lg:grid-cols-2">
         {cards.map((item, index) => (
@@ -487,6 +508,89 @@ function DecisionPanel({ detail }: { detail: Detail }) {
   );
 }
 
+function BriefCard({
+  index,
+  label,
+  children,
+}: {
+  index: number;
+  label: string;
+  children: ReactNode;
+}) {
+  return (
+    <div className="rounded-xl border border-white/[0.06] bg-white/[0.015] p-4">
+      <div className="flex items-center gap-2">
+        <span className="flex h-5 w-5 items-center justify-center rounded-full border border-white/10 text-[10px] text-zinc-400">
+          {index}
+        </span>
+        <div className="text-[10px] uppercase tracking-[0.12em] text-zinc-500">{label}</div>
+      </div>
+      <div className="mt-2 text-[12.5px] leading-relaxed text-zinc-300">{children}</div>
+    </div>
+  );
+}
+
+function ResearchBrief({ detail }: { detail: Detail }) {
+  const brief = detail.brief;
+  if (!brief) return null;
+  const steps = (brief.steps ?? []).filter(Boolean).slice(0, 6);
+  const falsifiers = (brief.falsifiers ?? []).filter(Boolean).slice(0, 6);
+
+  return (
+    <section className="panel p-5">
+      <div className="eyebrow">Research brief</div>
+      <h2 className="mt-1 text-lg font-semibold text-zinc-100">
+        The idea, the mechanism and the evidence
+      </h2>
+      <p className="mt-2 max-w-3xl text-[11px] leading-relaxed text-zinc-500">
+        Read this first: where the rule came from, how each part is meant to work, why it might
+        survive, and what evidence would prove it wrong.
+      </p>
+      <div className="mt-5 grid items-start gap-4 md:grid-cols-2">
+        <BriefCard index={1} label="Where the idea came from">
+          <p>{brief.origin}</p>
+        </BriefCard>
+        <BriefCard index={2} label="How it works, part by part">
+          <p>{brief.mechanism}</p>
+          {steps.length ? (
+            <ol className="mt-3 space-y-2">
+              {steps.map((step, stepIndex) => (
+                <li key={`${step}-${stepIndex}`} className="flex gap-2">
+                  <span className="mt-0.5 text-[10px] tabular text-zinc-500">
+                    {stepIndex + 1}.
+                  </span>
+                  <span>{step}</span>
+                </li>
+              ))}
+            </ol>
+          ) : null}
+        </BriefCard>
+        <BriefCard index={3} label="Why it could work">
+          <p>{brief.why}</p>
+        </BriefCard>
+        <BriefCard index={4} label="What would falsify it">
+          {falsifiers.length ? (
+            <ul className="space-y-2">
+              {falsifiers.map((item, itemIndex) => (
+                <li key={`${item}-${itemIndex}`} className="flex gap-2">
+                  <span className="mt-1 h-1 w-1 shrink-0 rounded-full bg-zinc-500" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>No separate falsifiers were saved for this strategy.</p>
+          )}
+        </BriefCard>
+      </div>
+      <p className="mt-4 text-[11px] leading-relaxed text-zinc-500">
+        Part-by-part source mapping follows in Provenance. A paper supporting a component does not
+        prove this exact rule; where no paper is linked, the idea is an internal hypothesis.
+      </p>
+    </section>
+  );
+}
+
 function PaperPanel({ detail }: { detail: Detail }) {
   const papers = detail.papers ?? [];
   return (
@@ -512,8 +616,8 @@ function PaperPanel({ detail }: { detail: Detail }) {
         </div>
       ) : (
         <p className="mt-3 text-[12px] leading-relaxed text-zinc-500">
-          No external paper links were extracted for this strategy. The provenance cards below are
-          the authoritative mapping.
+          No external paper is linked for this strategy. Its idea is documented as an internal
+          research hypothesis in the report below; no external paper is implied.
         </p>
       )}
       <a
@@ -568,7 +672,9 @@ export function ResearchDetail({ detail, embedded = false }: { detail: Detail; e
           {detail.status ? <Pill>{detail.status}</Pill> : null}
           {detail.assessment.verdict ? <Pill>{detail.assessment.verdict}</Pill> : null}
           <span className="text-[11px] text-zinc-500">
-            {(detail.papers ?? []).length} cited sources
+            {(detail.papers ?? []).length
+              ? `${(detail.papers ?? []).length} linked paper${(detail.papers ?? []).length === 1 ? "" : "s"}`
+              : "no linked paper · internal hypothesis"}
           </span>
           <span className="text-[11px] text-zinc-500">
             {detail.window ?? "2016-2026"} · 1 bp
@@ -592,6 +698,17 @@ export function ResearchDetail({ detail, embedded = false }: { detail: Detail; e
         <Metric label="Window" value={detail.window === "2016-2023" ? "2016-23" : "2016-26"} tone="text-zinc-200" />
       </section>
 
+      {detail.brief?.caveat ? (
+        <div className="rounded-xl border border-amber-300/20 bg-amber-300/[0.05] p-4">
+          <div className="text-[10px] uppercase tracking-[0.14em] text-amber-200/80">
+            Caveat
+          </div>
+          <p className="mt-2 text-[12.5px] leading-relaxed text-zinc-300">
+            {detail.brief.caveat}
+          </p>
+        </div>
+      ) : null}
+
       {detail.archive ? (
         <div className="panel-soft p-4 text-[12px] leading-relaxed text-zinc-400">
           This is a development-only or below-bar strategy. It is kept in the
@@ -600,6 +717,8 @@ export function ResearchDetail({ detail, embedded = false }: { detail: Detail; e
       ) : null}
 
       {detail.has_curve === false ? null : <CurveChart slug={detail.slug} />}
+
+      <ResearchBrief detail={detail} />
 
       <section className="grid items-start gap-5 lg:grid-cols-[1.05fr_0.95fr]">
         <DecisionPanel detail={detail} />

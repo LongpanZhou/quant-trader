@@ -29,6 +29,23 @@
  "decision": "At 09:35, a positive gap plus a positive first five minutes, or at 10:00 a first-30-minute gain above 0.5%, buys TQQQ; an 8% close-based trailing stop exits, otherwise the position is closed at 15:59. No overnight position.",
  "rules": [],
  "papers": [],
+ "brief": {
+  "origin": "No external paper is linked. This is an internal research hypothesis: the rule was generated and tested inside this project, so its origin is the research record below, not a published paper.",
+  "mechanism": "At 09:35, a positive gap plus a positive first five minutes, or at 10:00 a first-30-minute gain above 0.5%, buys TQQQ; an 8% close-based trailing stop exits, otherwise the position is closed at 15:59. No overnight position.",
+  "steps": [
+   "At 09:35 ET: if QQQ opened above the prior close by more than 0.25% and the first five-minute return is positive, buy TQQQ at the 09:35 open.",
+   "Otherwise at 10:00 ET: if the first 30-minute QQQ return is above 0.50%, buy TQQQ at the 10:00 open.",
+   "Exit on an 8% close-based trailing stop, or at the 15:59 open otherwise.",
+   "Flat overnight; BIL when no signal."
+  ],
+  "why": "Buys TQQQ on a strong opening drive and exits at the close; flat overnight.",
+  "falsifiers": [
+   "A negative 2024-2026 holdout.",
+   "Full-window CAGR at or below TQQQ's, or a drawdown at or above TQQQ's.",
+   "The edge disappearing at 5-10 bp costs."
+  ],
+  "caveat": ""
+ },
  "provenance_cards": [],
  "rejected_sources": [],
  "report_md": "# Opening-drive intraday (day-only) — report\n\n## Verdict\n\n**Full-window pass, 1 bp only.** The day-only opening-drive strategy earns\n**40.97% CAGR / 49.82% max DD / 1.08 Sharpe** over 2016-2026 daily-close marks,\nabove the TQQQ 37.54% bar with a lower drawdown. The 2024-2026 holdout earns\n32.55% CAGR / 49.82% DD / 0.93 Sharpe.\n\n## Development\n\n| Cost | CAGR | Max DD | Sharpe |\n|---|---:|---:|---:|\n| 1 bp | 44.12% | 46.72% | 1.13 |\n| 5 bp | 19.52% | 50.82% | 0.65 |\n| 10 bp | -5.42% | 63.94% | 0.05 |\n\nThe strategy trades almost every session, so the 5 bp and 10 bp results are far\nbelow the bar. The 1 bp headline is the only version that clears it.\n\n## Mechanism and family\n\nThe signal is intraday price action: a positive gap plus a positive first five\nminutes, or a strong first 30 minutes. The position is closed at 15:59, so the\nbook is flat overnight. No daily trend, volatility or drawdown state is used.\n\n## Robustness\n\n- The 10:00 opening-drive cell is a local ridge; nearby decision times and\n  thresholds are weaker, and the surface is not a broad plateau.\n- The strategy is highly cost-sensitive: it is a 1 bp-only candidate.\n- The full-window pass depends on the 2024-2026 holdout, which is positive but\n  weaker than the development period.\n\n## How this differs from existing work\n\nThis is a day-only version of the opening-drive microstructure strategy. It\ndoes not use the old 165-day base, a daily trend filter, a volatility regime or\nan overnight position. It is a separate family from the session-timing\nstrategy, which holds through the overnight and opening drive.\n",

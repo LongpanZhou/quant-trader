@@ -29,6 +29,20 @@
  "decision": "When up-volume minus down-volume is unusually skewed, buy TQQQ for the next session; BIL otherwise. A distinct volume-asymmetry family with low correlation to the winners; active but below the full CAGR bar.",
  "rules": [],
  "papers": [],
+ "brief": {
+  "origin": "No external paper is linked. This is an internal research hypothesis: the rule was generated and tested inside this project, so its origin is the research record below, not a published paper.",
+  "mechanism": "When up-volume minus down-volume is unusually skewed, buy TQQQ for the next session; BIL otherwise. A distinct volume-asymmetry family with low correlation to the winners; active but below the full CAGR bar.",
+  "steps": [],
+  "why": "QQQ up/down volume asymmetry below its prior-60-session 40th percentile.",
+  "falsifiers": [
+   "The price-only or breadth control earning as much would mean the volume asymmetry adds nothing.",
+   "The volume-level or realized-vol control earning as much would mean the family is a volume/volatility proxy, not a skew signal.",
+   "The continuation sign earning as much would mean the fragility direction is wrong.",
+   "A random-day placebo matching the real result would mean the edge is calendar drift.",
+   "A stale signal keeping the result would mean the same-day volume is irrelevant."
+  ],
+  "caveat": "1. 2020 dependence. Ex-2020 CAGR is 34.16%, below the 36.72% bar. The headline above-TQQQ claim depends on the 2020 rebound. The strategy is still positive and high-Sharpe without it, but the margin is thin. 2. Reversal overlap. The signal is a volume-weighted breadth measure. The same-day price/return correlation is 0.476, and the correlation with family-short-reversal is 0.450. The price-only control (9.78%) and the equal-weight breadth control (31.22%) show that volume weighting adds materially, but this is not an independent factor. It passes the 0.70 gate. 3. Cost sensitivity. At 5 bp CAGR is 31.45% (below the bar); at 10 bp it is 19.33%. Turnover is 7,237x initial equity over 8 years (~900x/yr). A real implementation with market impact above the flat-bps model would erode the edge. 4. 2018 loss. The only negative year is 2018 (-8.3%), with a 62% drawdown in the price-only control but a 34.8% max DD in the strategy. A sustained choppy market is the weak regime. 5. TQQQ 3x. The book is 100% TQQQ on 38% of days. The 2% band and 1 bp cost model do not capture a gap through a stop; there is no stop. The QQQ execution variant has a much lower drawdown (12.84%) and the same Sharpe (1.12), which is the conservative implementation. 6. Volume data. QQQ minute volume is unadjusted for splits, but the signal is a within-day ratio, so splits cancel. The 2016-2020 archive has occasiona"
+ },
  "provenance_cards": [
   {
    "idea": "quant-trader research program",

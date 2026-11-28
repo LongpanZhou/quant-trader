@@ -29,6 +29,18 @@
  "decision": "Python port of the Rust bot's live rule. On each daily close, if QQQ is above its 165-day average the book holds a QQQ/TQQQ blend sized to a 40% annual volatility budget (20-day realised volatility, at most 3x); otherwise it holds BIL. Trades at the next open. Matches the Rust backtest with 0.998 daily-return correlation.",
  "rules": [],
  "papers": [],
+ "brief": {
+  "origin": "No external paper is linked. This is an internal research hypothesis: the rule was generated and tested inside this project, so its origin is the research record below, not a published paper.",
+  "mechanism": "Python port of the Rust bot's live rule. On each daily close, if QQQ is above its 165-day average the book holds a QQQ/TQQQ blend sized to a 40% annual volatility budget (20-day realised volatility, at most 3x); otherwise it holds BIL. Trades at the next open. Matches the Rust backtest with 0.998 daily-return correlation.",
+  "steps": [],
+  "why": "QQQ above its 165-day average: a QQQ/TQQQ blend sized to 40% volatility. Below it: T-bills.",
+  "falsifiers": [
+   "A negative 2024-2026 holdout.",
+   "Full-window CAGR at or below TQQQ's, or a drawdown at or above TQQQ's.",
+   "The edge disappearing at 5-10 bp costs."
+  ],
+  "caveat": ""
+ },
  "provenance_cards": [
   {
    "idea": "quant-trader research program",

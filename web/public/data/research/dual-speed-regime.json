@@ -29,6 +29,28 @@
  "decision": "The original round-2 strategy was the shared 165-day QQQ regime plus a 60-minute QQQ EMA(40) crossover and a 4% minute stop, with the fast filter armed by QQQ's prior 20-day SMA. The only genuinely new component was the 60-minute EMA crossover: a fast trend signal that exits earlier than a daily gate and re-enters on a reclaim.",
  "rules": [],
  "papers": [],
+ "brief": {
+  "origin": "The idea is adapted from Own prior work: research/agents2/dual-speed-regime/report.md (round 2); Gao, Han, Li & Zhou (2018), Market Intraday Momentum, Journal of Financial Economics 129(2), 394-414; Lou, Polk & Skouras (2019), A Tug of War: Overnight versus Intraday Expected Returns.",
+  "mechanism": "Session-aligned 60-minute bars: 09:30-10:29, 10:30-11:29, ..., 14:30-15:29, 15:30-15:59. Half days use their actual last bar.",
+  "steps": [
+   "EMA_fast = EMA(10) of QQQ 60-minute closes.",
+   "EMA_slow = EMA(30) of QQQ 60-minute closes.",
+   "spread = EMA_fast / EMA_slow - 1.",
+   "Long TQQQ only when spread > 0, between the 10:29 and 14:29 bar closes.",
+   "Size: 100% TQQQ if spread > +0.30%, otherwise 50% TQQQ; the remainder is BIL.",
+   "Exit when spread < 0, on the ATR stop, or at the 15:29 bar close."
+  ],
+  "why": "QQQ's 60-minute EMA cross measures intraday trend persistence; hold TQQQ only while that trend is up and flat overnight.",
+  "falsifiers": [
+   "Development correlation with the 165-day baseline >= 0.60.",
+   "Development CAGR < 5% or Sharpe < 0.40 at 5 bp.",
+   "The timing overlay fails to beat \"long TQQQ every intraday session 10:30-15:30\" on Sharpe or drawdown — i.e. the 60-minute EMA adds nothing over intraday buy-and-hold.",
+   "The edge is concentrated in 2020 or one sub-period; 2016-19 or 2022-23 is negative.",
+   "A random or lagged-EMA placebo with matched exposure/turnover performs as well.",
+   "The 10 bp result is negative, or the 5 bp Sharpe is below 0.30."
+  ],
+  "caveat": ""
+ },
  "provenance_cards": [
   {
    "idea": "60-minute EMA crossover as the new idea",

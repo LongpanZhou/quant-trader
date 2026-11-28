@@ -29,6 +29,18 @@
  "decision": "When sector dispersion is low (broad macro-driven move), buy TQQQ; when dispersion is high, hold BIL.",
  "rules": [],
  "papers": [],
+ "brief": {
+  "origin": "No external paper is linked. This is an internal research hypothesis: the rule was generated and tested inside this project, so its origin is the research record below, not a published paper.",
+  "mechanism": "When sector dispersion is low (broad macro-driven move), buy TQQQ; when dispersion is high, hold BIL.",
+  "steps": [],
+  "why": "When sector dispersion is low, the market is moving on broad macro factors; buy TQQQ. When dispersion is high, hold BIL.",
+  "falsifiers": [
+   "Full CAGR <=5% or fewer than 100 full fills (or 30 events).",
+   "Signal Jaccard >0.70 against an existing winner.",
+   "Raw daily-return correlation >0.70 against an existing winner."
+  ],
+  "caveat": "Full CAGR is below the TQQQ bar; this is an active research family, not a winner. The 2024-2026 holdout is reported exactly as run; it is not used to tune parameters. External daily series are committed under data/external/."
+ },
  "provenance_cards": [
   {
    "idea": "quant-trader research program",

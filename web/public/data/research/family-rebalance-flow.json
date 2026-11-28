@@ -34,6 +34,23 @@
   "No trend SMA, no drawdown/vol regime as a signal, no relative strength, no"
  ],
  "papers": [],
+ "brief": {
+  "origin": "No external paper is linked. This is an internal research hypothesis: the rule was generated and tested inside this project, so its origin is the research record below, not a published paper.",
+  "mechanism": "A mechanical flow strategy: after a big QQQ up day whose last 30 minutes are also up, TQQQ closes with forced rebalancing demand and tends to reverse; the strategy sits in BIL for the next session, otherwise holds a 50%-vol-target TQQQ position.",
+  "steps": [
+   "Decision at the 16:00 close (15:59 bar), filled at the next open.",
+   "The 50% vol target is a disclosed sizing overlay, not the claimed edge.",
+   "sigma is warmed with 2015 TQQQ daily closes, so the rule is live on",
+   "No trend SMA, no drawdown/vol regime as a signal, no relative strength, no"
+  ],
+  "why": "Goes to BIL after a large up day with a strong last 30 minutes, when leveraged-ETF rebalancing is most likely to reverse.",
+  "falsifiers": [
+   "A negative 2024-2026 holdout.",
+   "Full-window CAGR at or below TQQQ's, or a drawdown at or above TQQQ's.",
+   "The edge disappearing at 5-10 bp costs."
+  ],
+  "caveat": "1. The flow is inferred, not measured. We do not observe TQQQ's AUM, swap notional, or the actual closing-auction trades. The signal is the index move and the closing-window move, which the rebalance formula maps to a flow. The mechanism is consistent with the data, not directly proven. 2. The close-to-open reversal is not captured. With next-open fills the strategy holds through the gap and harvests the post-open continuation. The event-study t-stat is -1.50, not the -3 or better that the raw close-to-open story would suggest. 3. This is TQQQ beta. Correlation 0.872, mean weight 78%, and a 43.8% monthly win rate. It is not a diversifier and not market-neutral. 4. The vol target is a disclosed overlay. The flow overlay is incremental (+9.87 pp CAGR, -9.36 pp DD over vol-target-only), but the vol target contributes a large part of the risk reduction. A reader who rejects vol targeting should look at the flow-only row (57.52% / 75.60%), which has a worse drawdown. 5. The threshold is a pilot choice. The plateau is broad (0.75-2.5% all pass), but the centre is not the grid maximum. The exact 1.25% and the zero last-30-minute line are natural choices, not uniquely identified. 6. The sample is one bull/bear cycle. 176 signal days, 96 months. The placebo p = 0.02 is supportive but the p99 draw is 56.11%, above the real 51.57% daily approximation. A different cycle with different clos"
+ },
  "provenance_cards": [
   {
    "idea": "quant-trader research program",

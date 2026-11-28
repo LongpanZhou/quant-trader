@@ -32,8 +32,9 @@ export default function StrategyLibraryPage() {
               <span className="text-emerald-200">Same standard.</span>
             </h1>
             <p className="mt-5 max-w-2xl text-[15px] leading-relaxed text-zinc-400">
-              {researchCount} verified strategies on the same 2016-2026 window, with the same
-              costs and metrics. No groups, no pass/fail labels - just the ranking.
+              {researchCount} verified strategies with the same rules, costs and metrics.
+              Set any start and end date, and every card recomputes its CAGR, drawdown and
+              Sharpe for that exact window.
             </p>
           </div>
         </section>

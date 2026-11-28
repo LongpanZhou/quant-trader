@@ -50,6 +50,28 @@
    "url": "https://doi.org/10.1016/j.jfineco.2018.05.009"
   }
  ],
+ "brief": {
+  "origin": "The idea is adapted from Berkman, Koch, Tuttle & Zhang (2012), Paying Attention, JFQA 47(4); Heston, Korajczyk & Sadka (2010), Intraday Patterns in the Cross-Section of Stock Returns, JF 65(4); Lou, Polk & Skouras (2019), A Tug of War, JFE.",
+  "mechanism": "Universe: TQQQ long (3× QQQ), cash. BIL only as a pre-registered variant. Clock: one decision per session at 15:58 ET. Entry at the open of the session's last 1-minute bar (~15:59), exit at the open of the next session's 32nd bar (~10:01). Holding period ≈ 17 hours. Half days use the same bar offsets, so the entry is the half-day close. Signal 1 (closing pressure): c30 = QQQ log return from the 15:29 close to the 15:58 close, i.e. the last 30 minutes before the entry. z = c30 / median(|c30|, previous 20 sessions). Signal 2 (risk state): v = annualised stdev of the previous 10 completed block log returns; m = median of v over the previous 60 sessions.",
+  "steps": [
+   "Universe: TQQQ long (3× QQQ), cash. BIL only as a pre-registered variant.",
+   "Clock: one decision per session at 15:58 ET. Entry at the open of the session's last 1-minute bar (~15:59), exit at the open of the next session's 32nd bar (~10:01). Holding period ≈ 17 hours. Half days use the same bar offsets, so the entry is the half-day close.",
+   "Signal 1 (closing pressure): c30 = QQQ log return from the 15:29 close to the 15:58 close, i.e. the last 30 minutes before the entry. z = c30 / median(|c30|, previous 20 sessions).",
+   "Signal 2 (risk state): v = annualised stdev of the previous 10 completed block log returns; m = median of v over the previous 60 sessions.",
+   "Gate: on iff sign(c30) == close_sign (default −1), |c30| >= 0.5 · median(|c30|, previous 20 sessions) (the closing move must be at least half a typical one, so noise does not trigger a trade), and v <= 1.5 m, and both statistics exist.",
+   "Size: min(1, 0.40 / v) when the gate is on, else 0. 0.40 is roughly the block's own median annualised vol, so a normal-vol night gets size ≈ 1 and a 2× vol night gets ≈ 0.5. The magnitude of c30 is used only as the entry threshold, not as a continuous size, to keep the number of fitted continuous parameters small."
+  ],
+  "why": "The overnight+first-30m block pays because it settles the previous session's closing pressure, so it should be held selectively after a sold close rather than every night.",
+  "falsifiers": [
+   "F1 sign and size. Mean block log return after c30 < 0 must exceed the mean after c30 >= 0 by at least 5 bp/night, two-sample t ≥ 1.5. If the sign is reversed, the \"sold close reverses overnight\" mechanism is wrong. One re-specification to the opposite sign is allowed (c30 > 0, variant V4); if that also fails, retire.",
+   "F2 conditioning must pay. V1 (conditioning only, size fixed at 1) must beat V0 (unconditional, size fixed at 1) on dev CAGR at 1 bp. Comparing V1 with V0 keeps size out of it, so the test isolates the conditioning. If V1 does not beat V0, the closing condition adds nothing and the remainder is the old residue → retired_overlay_only.",
+   "F3 risk. Dev max DD ≤ 45%, Sharpe ≥ 0.70 at 1 bp.",
+   "F4 stability. The conditional sign must hold in at least 2 of the 3 dev sub-periods (2016–19, 2020–21, 2022–23).",
+   "F5 placebo. 200 random night selections with the same number of active nights must produce a mean dev CAGR below the real strategy, p < 0.10.",
+   "F6 independence. Daily-return correlation with the rebuilt 165-day baseline < 0.60 on dev. Expected 0.35–0.55. If ≥ 0.60 the design fails the brief even if profitable."
+  ],
+  "caveat": ""
+ },
  "provenance_cards": [
   {
    "idea": "Positive overnight returns followed by intraday reversal, driven by a temporarily inflated opening price",

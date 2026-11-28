@@ -29,6 +29,18 @@
  "decision": "When developed markets lag the US (EFA/SPY 60-session change in its bottom half), buy TQQQ; otherwise BIL.",
  "rules": [],
  "papers": [],
+ "brief": {
+  "origin": "No external paper is linked. This is an internal research hypothesis: the rule was generated and tested inside this project, so its origin is the research record below, not a published paper.",
+  "mechanism": "When developed markets lag the US (EFA/SPY 60-session change in its bottom half), buy TQQQ; otherwise BIL.",
+  "steps": [],
+  "why": "When developed markets lag the US (EFA/SPY 60-session change in its bottom half), US growth leadership supports TQQQ. Otherwise hold BIL.",
+  "falsifiers": [
+   "Full CAGR <=5% or fewer than 100 full fills (or 30 events).",
+   "Signal Jaccard >0.70 against an existing winner.",
+   "Raw daily-return correlation >0.70 against an existing winner."
+  ],
+  "caveat": "The full result is below the TQQQ CAGR bar; this is an active research family, not a winner. The 2024-2026 holdout is reported above exactly as run; it is not used to tune the parameters. External daily series are committed under data/external/."
+ },
  "provenance_cards": [
   {
    "idea": "quant-trader research program",

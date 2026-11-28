@@ -29,6 +29,18 @@
  "decision": "When gold miners lag bullion over 20 sessions, buy TQQQ contrarian; otherwise BIL.",
  "rules": [],
  "papers": [],
+ "brief": {
+  "origin": "No external paper is linked. This is an internal research hypothesis: the rule was generated and tested inside this project, so its origin is the research record below, not a published paper.",
+  "mechanism": "When gold miners lag bullion over 20 sessions, buy TQQQ contrarian; otherwise BIL.",
+  "steps": [],
+  "why": "When gold miners (GDX) lag bullion (GLD) over 20 sessions, defensive demand is concentrated in the metal rather than in miner equities. That miner stress is treated as a fear signal: buy TQQQ contrarian for the next session. Otherwise hold BIL. This is a precious-metals stress gate, not a sector rotation and not the removed gold safe-haven family. The signal is the miner/metal ratio, not the gold price.",
+  "falsifiers": [
+   "Full CAGR <=5% or fewer than 100 full fills (or 30 events).",
+   "Signal Jaccard >0.70 against an existing winner.",
+   "Raw daily-return correlation >0.70 against an existing winner."
+  ],
+  "caveat": "Full CAGR is below the TQQQ bar; this is an active research family, not a winner. The 65.72% drawdown is high; the strategy is a diversifier, not a core holding. The 2024-2026 holdout is reported exactly as run; it is not used to tune the parameters."
+ },
  "provenance_cards": [
   {
    "idea": "quant-trader research program",
