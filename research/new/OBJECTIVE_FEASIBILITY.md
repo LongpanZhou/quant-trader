@@ -63,3 +63,22 @@ gate differs.
 
 This is an evidence-based trade-off, not a claim that a strictly uncorrelated
 >62.21% strategy exists.
+
+## Decision (2026-11-28)
+
+The gate-level definition is accepted and `close-location` is retained as the
+ratio-froth beater. Supporting evidence:
+
+- Beta to TQQQ 0.592; R² 0.597; alpha after beta +31.91%/yr (t=3.25).
+- Residual correlation with `family-short-reversal` is only **0.289** after
+  removing TQQQ beta; with the other seven winners it is −0.249 to 0.006.
+- Alpha after all eight winners jointly is **+24.79%/yr (t=2.54)**.
+- On the 977 days when short-reversal is in BIL, close-location earns
+  **+38.22 bp/day (96.3% annualised)**; on short-reversal risk-on days it earns
+  +18.18 bp/day (45.8%).
+- Raw correlation remains 0.77, driven by common TQQQ beta. Returns do overlap
+  with ratio-froth's risk-on days; that caveat is disclosed.
+
+Consequence: the final 20 additions keep a 66.23% CAGR beater, all 20 have
+Jaccard ≤0.66, and 19 of 20 have raw correlation ≤0.69. The only remaining
+>0.70 name is the beater itself, which is the minimum possible exception.

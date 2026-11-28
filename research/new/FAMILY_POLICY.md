@@ -37,4 +37,6 @@ records and do not affect the one-winner count.
    above 0.70 were replaced on 2026-11-28. Every non-beater addition is now at
    or below 0.69 raw correlation. Close-location is the only ratio-froth
    beater; its raw correlation is 0.77, its Jaccard is 0.47, and its residual
-   alpha is +37.8%/yr at t=2.80.
+   alpha is +37.8%/yr at t=2.80. The gate-level definition was accepted on
+   2026-11-28: beta decomposition shows 0.289 residual correlation with
+   short-reversal and +24.79%/yr alpha after all eight winners.

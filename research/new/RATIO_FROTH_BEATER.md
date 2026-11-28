@@ -45,3 +45,15 @@ sleeve, its 10 bp CAGR fell to **40.42%**, and its residual alpha after
 `vol-scaled-crash-stop` was t=1.54. It was removed from the published set for
 overlap; it is a qualified, cost-fragile tail-hedge result, not the clean
 long-only winner.
+
+
+## Overlap decision (2026-11-28)
+
+close-location is retained under the gate-level definition. Its raw
+correlation with amily-short-reversal is 0.773, but 59.7% of its variance is
+TQQQ beta; residual correlation is 0.289, and its alpha after all eight
+existing winners jointly is +24.79%/yr (t=2.54). On the 977 days when
+short-reversal is in BIL it earns +38.22 bp/day (96.3% annualised). It is the
+only strategy above ratio-froth's 62.21% CAGR, so retaining it is the only way
+to satisfy the beater clause. See FAMILY_GATE_AUDIT.md and
+OBJECTIVE_FEASIBILITY.md.
