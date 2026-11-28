@@ -124,6 +124,75 @@ python research/new/family_overlap_audit.py
 matches its published curve. `family_overlap_audit.py` reruns the 20×9
 correlation/Jaccard/alpha audit.
 
+## Website
+
+The dashboard is a dark research portal with a mint accent, built with Next.js
+and Recharts. It has four main views:
+
+| View | Route | What it shows |
+|---|---|---|
+| **Home** | `/` | Hero, library counts, runnable presets, and research cards |
+| **All strategies** | `/compare` | One normalized growth chart, log/linear toggle, family filter, above-TQQQ/above-QQQ filters |
+| **Research library** | `/research` | Every verified strategy as a card with CAGR, max drawdown and Sharpe |
+| **Backtest lab** | `/lab` | Strategy selector, editable presets, decision process, equity curve, custom-strategy entry |
+
+Each research card opens a detail page at `/research/<slug>` with metrics, the
+equity curve, the decision process, the audit assessment, and the code.
+
+### Screenshots
+
+**Home — one catalog for runnable presets and research**
+
+<img src="docs/screenshots/home.png" alt="Home: strategy library with runnable presets and research cards" width="900">
+
+**All strategies — one graph, 46 curves, 44 strategies**
+
+<img src="docs/screenshots/compare.png" alt="All strategies: one normalized growth chart with filters" width="900">
+
+**Research library — every strategy, same standard**
+
+<img src="docs/screenshots/research.png" alt="Research library: 44 verified strategy cards with CAGR, drawdown and Sharpe" width="900">
+
+**Regime-switch detail — the beater's research page**
+
+<img src="docs/screenshots/regime-switch.png" alt="Regime-switch detail page with 63.6% CAGR, 31.2% drawdown and 1.57 Sharpe" width="900">
+
+**Backtest lab — select, inspect and rerun**
+
+<img src="docs/screenshots/lab.png" alt="Backtest lab: strategy selector, decision process and equity curve" width="900">
+
+### Run the website
+
+```bash
+cd web
+npm install
+npm run dev
+# open http://localhost:3000
+```
+
+Production build:
+
+```bash
+cd web
+npm run build
+npm run start
+# http://localhost:3000
+```
+
+The site reads precomputed JSON from `web/public/data/`. If you change the
+research library, regenerate it with:
+
+```bash
+python research/export_compare_full.py
+python research/export_research_rebuild.py
+python research/export_web_catalog.py
+python research/export_research_detail.py
+```
+
+The home page shows 47 cards: 3 editable Rust presets plus 44 research
+strategies. The compare page shows 46 curves: the 44 strategies plus TQQQ and
+QQQ benchmarks.
+
 ## Data
 
 - The 1-minute QQQ/TQQQ/BIL panel lives under `data/` and is **not committed**
