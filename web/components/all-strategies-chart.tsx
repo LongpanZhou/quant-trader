@@ -476,19 +476,7 @@ export function AllStrategiesChart() {
         metric.cagr > bench.cagr &&
         (nextFamily === "all" || (metric.family ?? "other") === nextFamily),
     );
-    if (key === "tqqq") {
-      // One strategy per family: keep the highest-CAGR name in each family.
-      const best = new Map<string, Metric>();
-      [...matches]
-        .sort((a, b) => b.cagr - a.cagr)
-        .forEach((metric) => {
-          const key = metric.family ?? "other";
-          if (!best.has(key)) best.set(key, metric);
-        });
-      best.forEach((metric) => keep.add(metric.id));
-    } else {
-      matches.forEach((metric) => keep.add(metric.id));
-    }
+    matches.forEach((metric) => keep.add(metric.id));
     setHidden(new Set(data.series.filter((curve) => !keep.has(curve.id)).map((curve) => curve.id)));
   };
 
@@ -574,7 +562,7 @@ export function AllStrategiesChart() {
               Above TQQQ
             </button>
             <span className="text-[10px] text-zinc-500">
-              highest above-TQQQ name per family
+all strategies above TQQQ
             </span>
             <button
               onClick={() => filterAbove("qqq")}
