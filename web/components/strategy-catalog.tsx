@@ -7,9 +7,7 @@ import { Pill } from "./ui";
 type CatalogItem = {
   id: string;
   slug: string;
-  kind: "preset" | "research" | "blend";
   name: string;
-  group: string;
   status: string;
   tagline: string;
   summary: string;
@@ -19,24 +17,17 @@ type CatalogItem = {
   dd?: number;
   sharpe?: number;
   href: string;
-  runnable: boolean;
+  /** Has a bot.toml: the Rust bot trades it and the lab can rerun it with new settings. */
+  adjustable: boolean;
   accent: string;
   tags: string[];
-  papersCount: number;
-  provenanceCount: number;
 };
 
-const FILTERS = ["All", "Runnable", "Research", "Leader", "Fragile", "Negative"] as const;
+const FILTERS = ["All", "Adjustable"] as const;
 type Filter = (typeof FILTERS)[number];
 
 const TONE: Record<string, "green" | "blue" | "amber" | "red" | "neutral"> = {
-  Leader: "green",
-  Verified: "green",
-  Runnable: "green",
-  Alternative: "blue",
-  Blend: "blue",
-  Fragile: "amber",
-  Negative: "red",
+  Adjustable: "green",
 };
 
 export function StrategyCatalog() {
@@ -44,7 +35,7 @@ export function StrategyCatalog() {
   const [filter, setFilter] = useState<Filter>("All");
 
   useEffect(() => {
-    fetch("/data/catalog/strategies.json?v=2026-11-28-44c")
+    fetch("/data/catalog/strategies.json?v=2026-11-28-47")
       .then((response) => response.json() as Promise<{ strategies: CatalogItem[] }>)
       .then((payload) => setItems(payload.strategies))
       .catch(() => setItems([]));
@@ -53,17 +44,14 @@ export function StrategyCatalog() {
   const filtered = useMemo(() => {
     if (!items) return [];
     if (filter === "All") return items;
-    if (filter === "Runnable") return items.filter((item) => item.runnable);
-    if (filter === "Research") return items.filter((item) => item.kind !== "preset");
-    return items.filter((item) => item.status === filter);
+    return items.filter((item) => item.adjustable);
   }, [items, filter]);
 
   if (!items) {
     return <div className="h-[280px] animate-pulse rounded-2xl bg-white/[0.02]" />;
   }
 
-  const presets = items.filter((item) => item.runnable).length;
-  const research = items.length - presets;
+  const adjustable = items.filter((item) => item.adjustable).length;
 
   return (
     <div>
@@ -84,7 +72,7 @@ export function StrategyCatalog() {
           ))}
         </div>
         <div className="text-[11px] text-zinc-500">
-          {items.length} strategies · {presets} runnable · {research} research
+          {items.length} strategies · {adjustable} adjustable in the lab
         </div>
       </div>
 
@@ -95,12 +83,11 @@ export function StrategyCatalog() {
             href={item.href}
             className="group panel flex flex-col overflow-hidden transition hover:border-white/20"
           >
-            <div className="h-[3px] w-full" style={{ background: item.accent }} />
             <div className="flex flex-1 flex-col p-5">
               <div className="flex items-center justify-between gap-2">
                 <Pill tone={TONE[item.status] ?? "neutral"}>{item.status}</Pill>
                 <span className="text-[10px] uppercase tracking-[0.12em] text-zinc-600">
-                  {item.group}
+                  {item.window === "2016-2026" ? "2016-2026" : "10y / 5y"}
                 </span>
               </div>
               <h3 className="mt-3 text-[1.25rem] font-semibold leading-tight text-zinc-100">
@@ -109,16 +96,6 @@ export function StrategyCatalog() {
               <p className="mt-2 min-h-[42px] text-[12px] leading-relaxed text-zinc-400">
                 {item.tagline}
               </p>
-              <div className="mt-3 flex flex-wrap gap-1.5">
-                <span className="rounded-md border border-white/[0.07] bg-white/[0.02] px-1.5 py-0.5 text-[9px] uppercase tracking-[0.1em] text-zinc-500">
-                  {item.runnable ? "Editable preset" : "Precomputed research"}
-                </span>
-                {item.provenanceCount > 0 ? (
-                  <span className="rounded-md border border-white/[0.07] bg-white/[0.02] px-1.5 py-0.5 text-[9px] uppercase tracking-[0.1em] text-zinc-500">
-                    {item.provenanceCount} sources
-                  </span>
-                ) : null}
-              </div>
               <div className="mt-4 grid grid-cols-2 gap-3 border-t border-white/[0.06] pt-3">
                 {item.window === "2016-2026" ? (
                   <>
@@ -137,7 +114,7 @@ export function StrategyCatalog() {
                 )}
               </div>
               <div className="mt-4 flex items-center justify-between text-[10px] text-zinc-500">
-                <span>{item.runnable ? "Run and edit" : "Open research"}</span>
+                <span>{item.adjustable ? "Adjust and rerun" : "Results, rules and code"}</span>
                 <span className="transition group-hover:text-zinc-200">Open →</span>
               </div>
             </div>
