@@ -114,3 +114,17 @@ ealized-skew | 0.74 | mtum-spy | 0.67 | 0.57 | 34.06% | 22.99% |
 Result: every non-beater addition is now at or below 0.69 raw correlation.
 close-location (0.77) is the only exception, and it is the only ratio-froth
 beater. Winner count is 14; the site remains 43 strategies / 45 curves.
+
+
+## Final pass: close-location out of the 20
+
+Close-location (0.77 raw correlation with short-reversal) was removed from
+the 20 independent families and retained as the aggressive sleeve of the
+regime-switch overlay. Gold-miner stress replaced it:
+
+| Removed | Corr | Added | Corr | Jaccard | Full CAGR | Holdout CAGR |
+|---|---:|---|---:|---:|---:|---:|
+| close-location | 0.77 | gold-miner-stress | 0.693 | 0.537 | 24.04% | 25.90% |
+
+Result: all 20 independent additions are at or below 0.70 raw correlation and
+0.66 Jaccard. The beater is the separate regime-switch overlay.

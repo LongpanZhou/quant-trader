@@ -37,7 +37,9 @@ the full and holdout results are the out-of-sample checks. Turnover is high
 ## Raw CAGR component: `family-close-location`
 
 A long-only TQQQ strategy that buys after a close in the bottom tenth of the
-QQQ intraday range and holds five sessions. No synthetic short.
+QQQ intraday range and holds five sessions. No synthetic short. It is no
+longer one of the 20 published independent families; it is retained as the
+regime-switch overlay's aggressive sleeve.
 
 | Full 2016-2026, daily-close | `family-close-location` | `ratio-froth` |
 |---|---:|---:|

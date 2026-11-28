@@ -1,13 +1,13 @@
 [
  {
-  "new": "family-close-location",
-  "max_corr": 0.7725966653054451,
-  "corr_against": "family-short-reversal",
-  "max_alpha": 0.3782389438629948,
-  "alpha_t": 2.7974530721189588,
+  "new": "family-gold-miner-stress",
+  "max_corr": 0.692720917993792,
+  "corr_against": "relative-value-tqqq",
+  "max_alpha": 0.10457620046568027,
+  "alpha_t": 0.745878268901403,
   "alpha_against": "family-intraday-microstructure-day",
-  "max_jaccard": 0.47085201793721976,
-  "overlap_against": "family-short-reversal"
+  "max_jaccard": 0.5374953823420761,
+  "overlap_against": "family-session-timing"
  },
  {
   "new": "family-volume-skew",

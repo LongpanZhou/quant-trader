@@ -39,6 +39,9 @@ KINDS = {
     "qual_spy": dict(look=60, low=0.45, high=0.55, flip=True),
     "mtum_spy": dict(look=60, low=0.45, high=0.55, flip=False),
     "hyg_spy": dict(look=20, low=0.45, high=0.55, flip=False),
+    "gdx_gld": dict(look=20, low=0.45, high=0.55, flip=True),
+    "slv_gld": dict(look=20, low=0.45, high=0.55, flip=False),
+    "gold_miner_stress": dict(look=20, low=0.45, high=0.55, flip=False),
 }
 GRID_LOOKS = {
     "skew_change": (10, 20, 40),
@@ -48,6 +51,9 @@ GRID_LOOKS = {
     "qual_spy": (40, 60, 90),
     "mtum_spy": (40, 60, 90),
     "hyg_spy": (10, 20, 40),
+    "gdx_gld": (10, 20, 40),
+    "slv_gld": (10, 20, 40),
+    "gold_miner_stress": (10, 20, 40),
 }
 
 
@@ -76,6 +82,15 @@ def raw_signal(ts, kind, look):
     if kind == "hyg_spy":
         d = external.align(ts, ["HYG", "SPY"])
         return np.log(d["HYG"] / d["SPY"]).diff(int(look))
+    if kind == "gdx_gld":
+        d = external.align(ts, ["GDX", "GLD"])
+        return np.log(d["GDX"] / d["GLD"]).diff(int(look))
+    if kind == "gold_miner_stress":
+        d = external.align(ts, ["GDX", "GLD"])
+        return np.log(d["GDX"] / d["GLD"]).diff(int(look))
+    if kind == "slv_gld":
+        d = external.align(ts, ["SLV", "GLD"])
+        return np.log(d["SLV"] / d["GLD"]).diff(int(look))
     raise KeyError(kind)
 
 

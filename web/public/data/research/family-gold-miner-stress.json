@@ -1,0 +1,50 @@
+{
+ "slug": "family-gold-miner-stress",
+ "name": "Gold-miner stress",
+ "tagline": "GDX/GLD 20-session miner-stress contrarian gate",
+ "summary": "When gold miners lag bullion over 20 sessions, buy TQQQ contrarian; otherwise BIL.",
+ "metrics": {
+  "cagr": 0.2404423150401438,
+  "dd": 0.6571795285907429,
+  "sharpe": 0.6807315306798234
+ },
+ "status": "verified-full",
+ "assessment": {
+  "verdict": "Verified - low-overlap family",
+  "reason": "Low-overlap family added 2026-11-28. Full 24.04% CAGR / 65.72% DD / 0.68 Sharpe; 429 full fills. Max winner correlation 0.69, signal Jaccard 0.54. Holdout 25.90%."
+ },
+ "paths": {
+  "report": "research/new/family-gold-miner-stress/report.md",
+  "hypothesis": "research/new/family-gold-miner-stress/HYPOTHESIS.md",
+  "spec": null,
+  "provenance": null,
+  "code": "research/new/family-gold-miner-stress/strategy.py",
+  "code_public": "/data/research/code/family-gold-miner-stress.py"
+ },
+ "extracted": {
+  "hypothesis": false,
+  "spec": true,
+  "provenance": true
+ },
+ "decision": "When gold miners lag bullion over 20 sessions, buy TQQQ contrarian; otherwise BIL.",
+ "rules": [],
+ "papers": [],
+ "provenance_cards": [
+  {
+   "idea": "quant-trader research program",
+   "source": "Own test",
+   "url": null,
+   "source_type": "Own test",
+   "role": "own test",
+   "role_detail": "",
+   "evidence": "Pre-registered development test on 2016-2023 and a one-shot 2024-2026 holdout; implementation and results are in report.md and strategy.py.",
+   "confidence": ""
+  }
+ ],
+ "rejected_sources": [],
+ "report_md": "# Gold-miner stress — report\n\n**Slug:** `family-gold-miner-stress`  \n**Dev:** 23.43% CAGR / 69.02% DD / 0.67 Sharpe.  \n**Full:** 24.04% CAGR / 69.02% DD / 0.69 Sharpe; 429 full fills.  \n**2024-2026 holdout:** 25.90% CAGR / 38.81% DD / 0.75 Sharpe.\n\n## Rules\n\nWhen the 20-session GDX/GLD change is in its bottom half, buy TQQQ contrarian;\notherwise BIL. The signal is the miner/metal ratio, not the gold price.\n\n## Why it is distinct\n\nMaximum signal Jaccard against the nine existing winners is 0.537; maximum raw\ncorrelation is 0.693. It is a precious-metals stress gate, not a sector\nrotation. The reverse direction (miners leading) returned 12.25% with an\n88.69% drawdown.\n\n## Caveats\n\n- Full CAGR is below the TQQQ bar; this is an active research family, not a\n  winner.\n- The 69.02% drawdown is high; the strategy is a diversifier, not a core\n  holding.\n- The 2024-2026 holdout is reported exactly as run; it is not used to tune the\n  parameters.\n- External daily series are committed under `data/external/`.\n",
+ "hypothesis_md": "# Gold-miner stress\n\n**Slug:** `family-gold-miner-stress`  \n**Family:** gold-miner-stress  \n**Primary object:** GDX/GLD 20-session relative  \n**Window:** 2016-01-04 .. 2023-12-29 development; full holdout\n2024-01-02..2026-10-23.\n\n## Claim\n\nWhen gold miners (GDX) lag bullion (GLD) over 20 sessions, defensive demand is\nconcentrated in the metal rather than in miner equities. That miner stress is\ntreated as a fear signal: buy TQQQ contrarian for the next session. Otherwise\nhold BIL.\n\nThis is a precious-metals stress gate, not a sector rotation and not the\nremoved gold safe-haven family. The signal is the miner/metal ratio, not the\ngold price.\n\n## Rules\n\n- 20-session change in log(GDX/GLD).\n- 252-session percentile rank, shifted one session; bottom half -> TQQQ.\n- Target at the session close, next QQQ/TQQQ open.\n- Long-only TQQQ/BIL, 2% band, 1 bp headline.\n- No price-trend, realised-vol, calendar, opening-range, ML or risk-sizing gate.\n\n## Falsifiers\n\n- Full CAGR <=5% or fewer than 100 full fills (or 30 events).\n- Signal Jaccard >0.70 against an existing winner.\n- Raw daily-return correlation >0.70 against an existing winner.\n\n## Caveat\n\nThe full drawdown is 69.02%, so this is a high-risk research family, not a\nwinner. The contrarian direction is deliberate; the reverse direction returned\nonly 12.25% with an 88.69% drawdown.\n",
+ "spec_md": "## Rules\n\nWhen the 20-session GDX/GLD change is in its bottom half, buy TQQQ contrarian;\notherwise BIL. The signal is the miner/metal ratio, not the gold price.",
+ "provenance_md": "## Own test\n\n- **quant-trader research program** - Pre-registered development test on 2016-2023 and a one-shot 2024-2026 holdout; implementation and results are in `report.md` and `strategy.py`.",
+ "code": "\"\"\"Gold-miner stress contrarian family.\"\"\"\nfrom __future__ import annotations\nimport sys\nfrom pathlib import Path\nsys.path.insert(0, str(Path(__file__).resolve().parents[1]))\nimport ext_alt\n\ndef build_weights(ts, opens, closes):\n    return ext_alt.make_weights(ts, opens, closes, \"gold_miner_stress\")\n\nif __name__ == \"__main__\":\n    ext_alt.run_main(\"gold_miner_stress\")\n"
+}

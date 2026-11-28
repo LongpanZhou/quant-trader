@@ -5,7 +5,7 @@ daily-return correlation between two long-TQQQ strategies is dominated by
 common TQQQ beta; the gate question is whether the strategy adds return beyond
 the existing winner.
 
-## The beater: `family-close-location`
+## The overlay's aggressive sleeve: `family-close-location`
 
 | Statistic | Value |
 |---|---:|
@@ -33,10 +33,11 @@ short-reversal copy. Its returns do overlap with ratio-froth's risk-on days;
 that is the remaining caveat, and it is why close-location is not claimed as a
 zero-correlation strategy.
 
-**Decision (2026-11-28):** retain `close-location` under the gate-level
-definition. It is the only strategy above ratio-froth's 62.21% CAGR, its
-Jaccard is 0.47, and its alpha survives all eight existing winners jointly at
-t=2.54. The 0.77 raw correlation is treated as a TQQQ-beta artifact.
+**Decision (2026-11-28):** close-location is no longer one of the 20
+independent families. It is retained only as the aggressive sleeve of the
+regime-switch overlay. The 0.77 raw correlation is treated as a TQQQ-beta
+artifact; the overlay itself is the beater at 63.59% CAGR / 31.40% DD /
+1.58 Sharpe.
 
 ## Seven replacements
 
@@ -51,16 +52,18 @@ t=2.54. The 0.77 raw correlation is treated as a TQQQ-beta artifact.
 | `style-rotation` | 0.71 | `sector-dispersion` | 0.64 | 0.55 |
 
 Every non-beater addition is now at or below 0.69 raw correlation and 0.66
-signal Jaccard. The only exception is the beater above.
+signal Jaccard. No non-beater addition exceeds 0.70 raw correlation;
+close-location is retained only inside the regime-switch overlay.
 
 ## Final 20 gates
 
-Kept: close-location, volume-skew, change-point, Hurst persistence,
+Kept: gold-miner stress, volume-skew, change-point, Hurst persistence,
 sector rotation, breadth, crypto risk appetite, rates volatility,
 energy rotation, yen carry, homebuilder, financials, retail,
 SKEW tail-risk, EFA/SPY, QUAL/SPY, HYG/SPY, MTUM/SPY, breakeven,
 sector dispersion.
 
-The final site set is 44 strategies / 46 curves / 15 winners. The additional
-winner is amily-regime-switch, a disclosed composite overlay, not one of
-the 20 independent families.
+The final site set is 44 strategies / 46 curves / 14 winners. The additional
+winner is `family-regime-switch`, a disclosed composite overlay, not one of
+the 20 independent families. Its aggressive sleeve is the close-location
+strategy, which is no longer one of the 20.

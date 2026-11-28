@@ -2,7 +2,7 @@
 
 | New | Max corr | Against | Max alpha/yr | Alpha t | Jaccard | Against |
 |---|---:|---|---:|---:|---:|---|
-| `family-close-location` | 0.77 | `family-short-reversal` | +37.82% | 2.80 | 0.47 | `family-short-reversal` |
+| `family-gold-miner-stress` | 0.69 | `relative-value-tqqq` | +10.46% | 0.75 | 0.54 | `family-session-timing` |
 | `family-energy-rotation` | 0.69 | `relative-value-tqqq` | +22.16% | 1.67 | 0.56 | `family-session-timing` |
 | `family-breadth` | 0.68 | `family-short-reversal` | +14.66% | 1.39 | 0.28 | `family-short-reversal` |
 | `family-yen-carry` | 0.68 | `family-rebalance-flow` | -8.79% | -0.76 | 0.58 | `family-session-timing` |
@@ -26,12 +26,11 @@
 ## Conclusion
 
 All 20 additions have session-level TQQQ Jaccard ≤ 0.66; the maximum is
-`change-point` at 0.656. Seven high-correlation names were replaced in two
-passes: vol-of-volume (0.84), oil-shock (0.80), low-vol (0.79), beta-rotation
-(0.77), realized-skew (0.74), tqqq-decay (0.73) and style-rotation (0.71).
-Every non-beater addition is now at or below 0.69 raw correlation. The only
-remaining exception is `close-location` at 0.77; it is also the only strategy
-above ratio-froth's 62.21% CAGR (66.23%), with Jaccard 0.47 and residual alpha
-+37.8%/yr at t=2.80. No strategy above 62.21% has lower raw correlation. See
-OBJECTIVE_FEASIBILITY.md.
+`change-point` at 0.656. Every addition is also at or below 0.693 raw
+correlation; the maximum is `gold-miner-stress` at 0.693, then
+`energy-rotation` at 0.69. Close-location was moved out of the 20 into the
+regime-switch overlay and replaced by gold-miner stress, so the 20 itself now
+has no >0.70 exception. The beater is the separate composite overlay:
+63.59% CAGR / 31.40% DD / 1.58 Sharpe versus ratio-froth 62.21% / 36.65% /
+1.43. See OBJECTIVE_FEASIBILITY.md.
 

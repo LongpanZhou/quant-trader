@@ -86,34 +86,6 @@
    "provenanceCount": 0
   },
   {
-   "id": "research:family-close-location",
-   "slug": "family-close-location",
-   "kind": "research",
-   "name": "Close-location value",
-   "group": "Strategy",
-   "status": "Strategy",
-   "tagline": "Close-at-low five-session reversal",
-   "summary": "The stated bar is TQQQ 36.72% CAGR / 82.29% max DD / 0.82 Sharpe. The local 1-minute benchmark is 36.15% / 82.29% / 0.80. The primary clears both at 1 bp, 5 bp and 10 bp.",
-   "window": "2016-2026",
-   "cagr": 0.6623490393764775,
-   "dd": 0.6276124709291508,
-   "sharpe": 1.2603890946795673,
-   "metrics": {
-    "cagr10": 0.6623490393764775,
-    "dd10": 0.6276124709291508,
-    "cagr5": 0.6623490393764775,
-    "dd5": 0.6276124709291508
-   },
-   "href": "/research/family-close-location",
-   "runnable": false,
-   "accent": "#9ae6a5",
-   "tags": [
-    "2016-2026"
-   ],
-   "papersCount": 0,
-   "provenanceCount": 0
-  },
-  {
    "id": "research:family-regime-switch",
    "slug": "family-regime-switch",
    "kind": "research",
@@ -889,6 +861,34 @@
     "dd5": 0.5888929037439536
    },
    "href": "/research/family-homebuilder-rotation",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
+   "id": "research:family-gold-miner-stress",
+   "slug": "family-gold-miner-stress",
+   "kind": "research",
+   "name": "Gold-miner stress",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "GDX/GLD 20-session miner-stress contrarian gate",
+   "summary": "When gold miners lag bullion over 20 sessions, buy TQQQ contrarian; otherwise BIL.",
+   "window": "2016-2026",
+   "cagr": 0.2404423150401438,
+   "dd": 0.6571795285907429,
+   "sharpe": 0.6807315306798234,
+   "metrics": {
+    "cagr10": 0.2404423150401438,
+    "dd10": 0.6571795285907429,
+    "cagr5": 0.2404423150401438,
+    "dd5": 0.6571795285907429
+   },
+   "href": "/research/family-gold-miner-stress",
    "runnable": false,
    "accent": "#9ae6a5",
    "tags": [

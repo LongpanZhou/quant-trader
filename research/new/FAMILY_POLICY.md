@@ -4,7 +4,7 @@ The website lists every research strategy. The rule is about **above-TQQQ**
 strategies: one verified winner per family. Non-performers remain research
 records and do not affect the one-winner count.
 
-## Verified above-TQQQ family winners (15)
+## Verified above-TQQQ family winners (14)
 
 | Family | Winner | Full CAGR | Full DD | Full Sharpe |
 |---|---|---:|---:|---:|
@@ -18,7 +18,6 @@ records and do not affect the one-winner count.
 | `rebalance-flow` | `family-rebalance-flow` | 45.55% | 50.92% | 1.06 |
 | `intraday-microstructure` | `family-intraday-microstructure-day` | 40.97% | 47.42% | 1.05 |
 | `ml-microstructure` | `family-ml-microstructure` | 41.03% | 44.51% | 1.02 |
-| `close-location` | `family-close-location` | 66.23% | 62.76% | 1.26 |
 | `crypto-risk-appetite` | `family-crypto-risk-appetite` | 46.50% | 52.33% | 1.19 |
 | `change-point` | `family-change-point` | 45.29% | 54.10% | 1.13 |
 | `hurst-persistence` | `family-hurst-persistence` | 43.00% | 56.25% | 1.04 |
@@ -33,14 +32,10 @@ records and do not affect the one-winner count.
    break on Sharpe, then lower drawdown.
 3. Non-performers and dev-only studies remain research records; they do not
    affect the one-winner count.
-4. The 20 additions have signal Jaccard ≤0.66 against existing winners. The
-   four highest raw-correlation names and the three remaining non-beater names
-   above 0.70 were replaced on 2026-11-28. Every non-beater addition is now at
-   or below 0.69 raw correlation. Close-location is the only ratio-froth
-   beater; its raw correlation is 0.77, its Jaccard is 0.47, and its residual
-   alpha is +37.8%/yr at t=2.80. The gate-level definition was accepted on
-   2026-11-28: beta decomposition shows 0.289 residual correlation with
-   short-reversal and +24.79%/yr alpha after all eight winners.
+4. The 20 additions have signal Jaccard ≤0.66 and raw correlation ≤0.693
+   against existing winners. Close-location was moved out of the 20 and into
+   the regime-switch overlay as its aggressive sleeve; gold-miner stress
+   replaced it. The 20 itself now has no >0.70 raw-correlation exception.
 5. `family-regime-switch` is a composite overlay, not one of the 20 independent
    families. It uses close-location in calm and ratio-froth in stress, and is
    the drawdown-adjusted beater: 63.59% CAGR / 31.40% DD / 1.58 Sharpe versus

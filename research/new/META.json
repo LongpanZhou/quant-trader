@@ -153,16 +153,6 @@
    "visible": true
   },
   {
-   "slug": "family-close-location",
-   "name": "Close-location value",
-   "tagline": "Close-at-low five-session reversal",
-   "summary": "The stated bar is TQQQ 36.72% CAGR / 82.29% max DD / 0.82 Sharpe. The local 1-minute benchmark is 36.15% / 82.29% / 0.80. The primary clears both at 1 bp, 5 bp and 10 bp.",
-   "verdict": "Verified - new family",
-   "reason": "Full 66.23% CAGR / 62.76% DD / 1.26 Sharpe; 653 fills; above the TQQQ bar.",
-   "family": "close-location",
-   "visible": true
-  },
-  {
    "slug": "family-change-point",
    "name": "Change-point regime",
    "tagline": "Online structural-break detection",
@@ -360,6 +350,16 @@
    "verdict": "Verified - regime-switch beater",
    "reason": "Composite overlay added 2026-11-28: close-location in calm (QQQ > 150-session MA and VIX <=25), ratio-froth in stress. Full 63.59% CAGR / 31.40% DD / 1.58 Sharpe; 735 fills. Beats ratio-froth on CAGR, DD, Sharpe and CAGR/DD; 1/5/10 bp 63.59/59.19/53.87 vs 62.21/56.62/50.67. Holdout 38.70% / 25.38% / 1.13. Not one of the 20 independent families.",
    "family": "regime-switch",
+   "visible": true
+  },
+  {
+   "slug": "family-gold-miner-stress",
+   "name": "Gold-miner stress",
+   "tagline": "GDX/GLD 20-session miner-stress contrarian gate",
+   "summary": "When gold miners lag bullion over 20 sessions, buy TQQQ contrarian; otherwise BIL.",
+   "verdict": "Verified - low-overlap family",
+   "reason": "Low-overlap family added 2026-11-28. Full 24.04% CAGR / 65.72% DD / 0.68 Sharpe; 429 full fills. Max winner correlation 0.69, signal Jaccard 0.54. Holdout 25.90%.",
+   "family": "gold-miner-stress",
    "visible": true
   }
  ],

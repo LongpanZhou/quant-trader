@@ -1103,30 +1103,6 @@
    "source": "research/new/family-ml-microstructure/report.md"
   },
   {
-   "slug": "family-close-location",
-   "name": "Close-location value",
-   "family": "close-location",
-   "tagline": "Close-at-low five-session reversal",
-   "summary": "The stated bar is TQQQ 36.72% CAGR / 82.29% max DD / 0.82 Sharpe. The local 1-minute benchmark is 36.15% / 82.29% / 0.80. The primary clears both at 1 bp, 5 bp and 10 bp.",
-   "dev": {
-    "cagr": 0.7932868484219533,
-    "max_dd": 0.6276124709291508,
-    "sharpe": 1.3791679252509272
-   },
-   "full": {
-    "cagr": 0.6623490393764775,
-    "max_dd": 0.6276124709291508,
-    "sharpe": 1.2603890946795673
-   },
-   "above_tqqq": true,
-   "dev_above_tqqq": null,
-   "status": "verified-full",
-   "visible": true,
-   "family_winner": true,
-   "note": "New family added 2026-11-28. Full 66.23% CAGR / 62.76% DD / 1.26 Sharpe; 653 full fills. One-shot 2024-2026 holdout. ",
-   "source": "research/new/family-close-location/report.md"
-  },
-  {
    "slug": "family-change-point",
    "name": "Change-point regime",
    "family": "change-point",
@@ -1605,6 +1581,30 @@
    "family_winner": true,
    "note": "Composite overlay added 2026-11-28: close-location in calm (QQQ > 150-session MA and VIX <=25), ratio-froth in stress. Full 63.59% CAGR / 31.40% DD / 1.58 Sharpe; 735 fills. Beats ratio-froth on CAGR, DD, Sharpe and CAGR/DD; 1/5/10 bp 63.59/59.19/53.87 vs 62.21/56.62/50.67. Holdout 38.70% / 25.38% / 1.13. Not one of the 20 independent families.",
    "source": "research/new/family-regime-switch/report.md"
+  },
+  {
+   "slug": "family-gold-miner-stress",
+   "name": "Gold-miner stress",
+   "family": "gold-miner-stress",
+   "tagline": "GDX/GLD 20-session miner-stress contrarian gate",
+   "summary": "When gold miners lag bullion over 20 sessions, buy TQQQ contrarian; otherwise BIL.",
+   "dev": {
+    "cagr": 0.23432272554496558,
+    "max_dd": 0.6571795285907429,
+    "sharpe": 0.6708813630835374
+   },
+   "full": {
+    "cagr": 0.2404423150401438,
+    "max_dd": 0.6571795285907429,
+    "sharpe": 0.6807315306798234
+   },
+   "above_tqqq": false,
+   "dev_above_tqqq": null,
+   "status": "verified-full",
+   "visible": true,
+   "family_winner": false,
+   "note": "Low-overlap family added 2026-11-28. Full 24.04% CAGR / 65.72% DD / 0.68 Sharpe; 429 full fills. Max winner correlation 0.69, signal Jaccard 0.54. Holdout 25.90%.",
+   "source": "research/new/family-gold-miner-stress/report.md"
   }
  ],
  "winner_policy": "One verified-full above-TQQQ winner per family, selected by full-window CAGR. ratio-froth and vol-scaled-crash-stop are now verified-full via clean reruns and audits; the previous fast-trend-vol / vol-term-structure remain verified research records but are not family winners."

@@ -3,15 +3,6 @@
  "window": "2016-2026",
  "strategies": [
   {
-   "slug": "family-close-location",
-   "name": "Close-location value",
-   "tagline": "Close-at-low five-session reversal",
-   "summary": "The stated bar is TQQQ 36.72% CAGR / 82.29% max DD / 0.82 Sharpe. The local 1-minute benchmark is 36.15% / 82.29% / 0.80. The primary clears both at 1 bp, 5 bp and 10 bp.",
-   "cagr": 0.6623490393764775,
-   "dd": 0.6276124709291508,
-   "sharpe": 1.2603890946795673
-  },
-  {
    "slug": "family-regime-switch",
    "name": "Trend/VIX regime switch",
    "tagline": "Close-location in calm, ratio-froth in stress",
@@ -262,6 +253,15 @@
    "cagr": 0.2497474041962453,
    "dd": 0.5888929037439536,
    "sharpe": 0.7512867222586379
+  },
+  {
+   "slug": "family-gold-miner-stress",
+   "name": "Gold-miner stress",
+   "tagline": "GDX/GLD 20-session miner-stress contrarian gate",
+   "summary": "When gold miners lag bullion over 20 sessions, buy TQQQ contrarian; otherwise BIL.",
+   "cagr": 0.2404423150401438,
+   "dd": 0.6571795285907429,
+   "sharpe": 0.6807315306798234
   },
   {
    "slug": "event-risk-overlay",
