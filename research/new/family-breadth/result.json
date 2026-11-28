@@ -1,0 +1,357 @@
+{
+ "slug": "family-breadth",
+ "family": "breadth",
+ "primary_object": "RSP/SPY 20/60-day relative-return z-score",
+ "dev": {
+  "cagr": 0.3562273177663877,
+  "total_return": 10.39157926990688,
+  "max_drawdown": 0.6466315644630105,
+  "volatility": 0.3753568330401245,
+  "sharpe": 1.0018700517718964,
+  "sortino": 1.4624286373211202,
+  "exposure": 0.9995012022305213,
+  "fills": 539,
+  "turnover": 2877.0904779081534,
+  "ending_equity": 1139157.9269906878,
+  "years": 7.984312495246787
+ },
+ "windows": {
+  "dev": {
+   "1bp": {
+    "cagr": 0.3562273177663877,
+    "total_return": 10.39157926990688,
+    "max_drawdown": 0.6466315644630105,
+    "volatility": 0.3753568330401245,
+    "sharpe": 1.0018700517718964,
+    "sortino": 1.4624286373211202,
+    "exposure": 0.9995012022305213,
+    "fills": 539,
+    "turnover": 2877.0904779081534,
+    "ending_equity": 1139157.9269906878,
+    "years": 7.984312495246787
+   },
+   "5bp": {
+    "cagr": 0.3200952262080041,
+    "total_return": 8.182270632568581,
+    "max_drawdown": 0.6620136425844105,
+    "volatility": 0.37536687067154006,
+    "sharpe": 0.9296688172546281,
+    "sortino": 1.355065629675576,
+    "exposure": 0.9995012022305213,
+    "fills": 539,
+    "turnover": 2487.111313050966,
+    "ending_equity": 918227.0632568581,
+    "years": 7.984312495246787
+   },
+   "10bp": {
+    "cagr": 0.2762807872853348,
+    "total_return": 6.013064294638919,
+    "max_drawdown": 0.6810592023812614,
+    "volatility": 0.3754603633644856,
+    "sharpe": 0.839322827535148,
+    "sortino": 1.2211071690708886,
+    "exposure": 0.9995012022305213,
+    "fills": 539,
+    "turnover": 2080.147623394748,
+    "ending_equity": 701306.4294638919,
+    "years": 7.984312495246787
+   }
+  }
+ },
+ "window": {
+  "dev": [
+   "2016-01-04",
+   "2023-12-29"
+  ],
+  "holdout": "not loaded"
+ },
+ "benchmark": {
+  "tqqq_panel": {
+   "cagr": 0.3615406632934588,
+   "total_return": 10.752826498520793,
+   "max_drawdown": 0.8229021592363336,
+   "volatility": 0.6654592718640882,
+   "sharpe": 0.8011699599655372,
+   "ending_equity": 1175282.6498520793,
+   "years": 7.984312495246787
+  },
+  "tqqq_published_bar": {
+   "cagr": 0.3672,
+   "max_drawdown": 0.8229,
+   "sharpe": 0.82
+  }
+ },
+ "params": {
+  "windows": [
+   20,
+   60
+  ],
+  "z_window": 252,
+  "min_periods": 120,
+  "tqqq_z": 0.5,
+  "bil_z": -0.5
+ },
+ "stats": {
+  "1bp": {
+   "cagr": 0.3562273177663877,
+   "total_return": 10.39157926990688,
+   "max_drawdown": 0.6466315644630105,
+   "volatility": 0.3753568330401245,
+   "sharpe": 1.0018700517718964,
+   "sortino": 1.4624286373211202,
+   "exposure": 0.9995012022305213,
+   "fills": 539,
+   "turnover": 2877.0904779081534,
+   "ending_equity": 1139157.9269906878,
+   "years": 7.984312495246787
+  },
+  "5bp": {
+   "cagr": 0.3200952262080041,
+   "total_return": 8.182270632568581,
+   "max_drawdown": 0.6620136425844105,
+   "volatility": 0.37536687067154006,
+   "sharpe": 0.9296688172546281,
+   "sortino": 1.355065629675576,
+   "exposure": 0.9995012022305213,
+   "fills": 539,
+   "turnover": 2487.111313050966,
+   "ending_equity": 918227.0632568581,
+   "years": 7.984312495246787
+  },
+  "10bp": {
+   "cagr": 0.2762807872853348,
+   "total_return": 6.013064294638919,
+   "max_drawdown": 0.6810592023812614,
+   "volatility": 0.3754603633644856,
+   "sharpe": 0.839322827535148,
+   "sortino": 1.2211071690708886,
+   "exposure": 0.9995012022305213,
+   "fills": 539,
+   "turnover": 2080.147623394748,
+   "ending_equity": 701306.4294638919,
+   "years": 7.984312495246787
+  }
+ },
+ "events": 270,
+ "activity": {
+  "fills": 539,
+  "events": 270,
+  "fills_per_year": 67.50737778874223,
+  "events_per_year": 33.81631169380409
+ },
+ "yearly": {
+  "2016": 0.1344393734699263,
+  "2017": 0.18801242283426145,
+  "2018": 0.7138909704535563,
+  "2019": 0.6657707329908578,
+  "2020": 2.3298862580015407,
+  "2021": 0.15406021750349974,
+  "2022": -0.5715714603199512,
+  "2023": 0.825368388813043
+ },
+ "subperiods": {
+  "2016-2019": {
+   "cagr": 0.40954222388867034,
+   "max_drawdown": 0.22502772936173887,
+   "sharpe": 1.4373643755049776
+  },
+  "2020-2021": {
+   "cagr": 0.9218511695475178,
+   "max_drawdown": 0.2889671813547139,
+   "sharpe": 1.7844599498866782
+  },
+  "2022-2023": {
+   "cagr": -0.12607311817376132,
+   "max_drawdown": 0.6361698433417028,
+   "sharpe": 0.025973740027789186
+  }
+ },
+ "corr_winners": {
+  "ratio-froth": 0.3762273661424044,
+  "vol-scaled-crash-stop": 0.559664087637716,
+  "relative-value-tqqq": 0.5945981649423424,
+  "fomc-opex-window": 0.5060557408036623,
+  "family-session-timing": 0.5307605163463631,
+  "family-short-reversal": 0.6291531161139227,
+  "family-rebalance-flow": 0.623728894488424,
+  "family-intraday-microstructure-day": 0.48261830660716165,
+  "family-ml-microstructure": 0.5790763129898904
+ },
+ "corr_range": [
+  0.3762273661424044,
+  0.6291531161139227
+ ],
+ "avg_weights": [
+  0.4234592445328032,
+  0.24055666003976142,
+  0.3359840954274354
+ ],
+ "static_avg_weights": {
+  "cagr": 0.20038043673057793,
+  "total_return": 3.2984012633910744,
+  "max_drawdown": 0.42303802865281237,
+  "volatility": 0.251535508167232,
+  "sharpe": 0.8549003712183225,
+  "sortino": 1.194107642974169,
+  "exposure": 0.9951733755597236,
+  "fills": 305,
+  "turnover": 16.105451481403353,
+  "ending_equity": 429840.12633910746,
+  "years": 7.984312495246787
+ },
+ "plateau": [
+  {
+   "cell": {
+    "windows": [
+     20,
+     60
+    ],
+    "tqqq_z": 0.5,
+    "bil_z": -0.5
+   },
+   "cagr": 0.3562273177663877,
+   "max_drawdown": 0.6466315644630105,
+   "sharpe": 1.0018700517718964,
+   "fills": 539,
+   "turnover": 2877.0904779081534
+  },
+  {
+   "cell": {
+    "windows": [
+     20,
+     60
+    ],
+    "tqqq_z": 0.5,
+    "bil_z": -0.75
+   },
+   "cagr": 0.3055487535440433,
+   "max_drawdown": 0.6986074860538516,
+   "sharpe": 0.8949367347699012,
+   "fills": 499,
+   "turnover": 2305.333493032608
+  },
+  {
+   "cell": {
+    "windows": [
+     20,
+     60
+    ],
+    "tqqq_z": 0.75,
+    "bil_z": -0.5
+   },
+   "cagr": 0.38891825078868947,
+   "max_drawdown": 0.5114203509680987,
+   "sharpe": 1.1310275947995223,
+   "fills": 519,
+   "turnover": 2674.2285136363994
+  },
+  {
+   "cell": {
+    "windows": [
+     20,
+     60
+    ],
+    "tqqq_z": 0.75,
+    "bil_z": -0.75
+   },
+   "cagr": 0.3370181143955475,
+   "max_drawdown": 0.5416238074606977,
+   "sharpe": 1.011891175670777,
+   "fills": 479,
+   "turnover": 2046.5987943274283
+  },
+  {
+   "cell": {
+    "windows": [
+     20
+    ],
+    "tqqq_z": 0.5,
+    "bil_z": -0.5
+   },
+   "cagr": 0.37232900386174994,
+   "max_drawdown": 0.6861730526237075,
+   "sharpe": 1.040140958026012,
+   "fills": 683,
+   "turnover": 3400.358489773472
+  },
+  {
+   "cell": {
+    "windows": [
+     20
+    ],
+    "tqqq_z": 0.75,
+    "bil_z": -0.75
+   },
+   "cagr": 0.31429125448094,
+   "max_drawdown": 0.6782340375557969,
+   "sharpe": 0.9658814359398601,
+   "fills": 623,
+   "turnover": 2635.2754029164353
+  },
+  {
+   "cell": {
+    "windows": [
+     60
+    ],
+    "tqqq_z": 0.5,
+    "bil_z": -0.5
+   },
+   "cagr": 0.2990110468277989,
+   "max_drawdown": 0.691013963050998,
+   "sharpe": 0.8610564095256616,
+   "fills": 433,
+   "turnover": 2212.1503669726208
+  },
+  {
+   "cell": {
+    "windows": [
+     60
+    ],
+    "tqqq_z": 0.75,
+    "bil_z": -0.75
+   },
+   "cagr": 0.39777091615600346,
+   "max_drawdown": 0.4456608363604606,
+   "sharpe": 1.1027565662743015,
+   "fills": 467,
+   "turnover": 2978.7401804692145
+  }
+ ],
+ "placebo": {
+  "n": 100,
+  "cagr_p05": -0.011011137596803843,
+  "cagr_p50": 0.16393359198209156,
+  "cagr_p95": 0.34821020420365395,
+  "cagr_percentile_of_real": 0.96,
+  "sharpe_p05": 0.1600577723974247,
+  "sharpe_p50": 0.6036269300438858,
+  "sharpe_p95": 1.1588874514837584,
+  "sharpe_percentile_of_real": 0.9,
+  "dd_p50": 0.5828705177312442
+ },
+ "causality_audit": {
+  "future_value_perturbation": {
+   "n": 25,
+   "pass": 25,
+   "cutoff_sessions_before_decision": 0
+  },
+  "close_to_next_open_mapping": {
+   "n": 25,
+   "pass": 25
+  }
+ },
+ "kill_checks": {
+  "cagr_below_tqqq_bar": true,
+  "drawdown_above_tqqq": false,
+  "cost_10bp_below_bar": true,
+  "placebo_below_90pct": false,
+  "correlation_above_0.95": false,
+  "fewer_than_100_fills": false,
+  "fewer_than_30_events": false,
+  "negative_subperiod": true,
+  "static_blend_matches": false
+ },
+ "verdict": "fail",
+ "timing": "RSP/SPY daily closes through session t; target set at the close of t, filled at the first bar open of t+1; 2% band; long only.",
+ "notes": "RSP and SPY adjusted closes are read from data/external/ and reindexed to the QQQ session calendar.  The development run ends 2023-12-29 and does not load 2024-2026 prices."
+}

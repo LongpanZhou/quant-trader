@@ -42,7 +42,7 @@ export default function LabPage() {
   const researchSlug = isResearch ? selection.slice("research:".length) : "ratio-pairs";
 
   useEffect(() => {
-    fetch("/data/catalog/strategies.json?v=2026-11-28-43v", { cache: "no-store" })
+    fetch("/data/catalog/strategies.json?v=2026-11-28-43x", { cache: "no-store" })
       .then((response) => response.json() as Promise<{ strategies: typeof catalog }>)
       .then((payload) => setCatalog(payload.strategies))
       .catch(() => setCatalog([]));

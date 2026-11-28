@@ -1,0 +1,149 @@
+{
+ "slug": "family-energy-rotation",
+ "family": "energy-rotation",
+ "idea": "Energy-vs-tech leadership as an inflation/commodity-stress signal.",
+ "window": {
+  "dev": [
+   "2016-01-04",
+   "2023-12-29"
+  ],
+  "holdout": "not loaded"
+ },
+ "rules": "XLE/XLK 20-session relative momentum <= 0 -> TQQQ next open; else BIL.",
+ "params": {
+  "look": 20,
+  "deadband": 0.0
+ },
+ "info": {
+  "params": {
+   "look": 20,
+   "deadband": 0.0
+  },
+  "tqqq_exposure": 0.5790258449304175,
+  "signals": 159
+ },
+ "dev": {
+  "1bp": {
+   "cagr": 0.2920799568289745,
+   "max_drawdown": 0.727425881325032,
+   "sharpe": 0.7678195034133611,
+   "sortino": 1.0536276984313224,
+   "volatility": 0.5012976554836038,
+   "exposure": 0.9995012022305213,
+   "turnover": 763.8285759462934,
+   "fills": 319.0,
+   "ending_equity": 773694.0626673333,
+   "years": 7.984312495246787
+  },
+  "5bp": {
+   "cagr": 0.2715949319775328,
+   "max_drawdown": 0.727425881325032,
+   "sharpe": 0.7358271778785805,
+   "sortino": 1.00923853003661,
+   "volatility": 0.501304870016584,
+   "exposure": 0.9995012022305213,
+   "turnover": 708.8209458170027,
+   "fills": 319.0,
+   "ending_equity": 681009.7576042799,
+   "years": 7.984312495246787
+  },
+  "10bp": {
+   "cagr": 0.2464447847785145,
+   "max_drawdown": 0.727425881325032,
+   "sharpe": 0.6958242527317395,
+   "sortino": 0.9537908972567621,
+   "volatility": 0.5013497350374712,
+   "exposure": 0.9995012022305213,
+   "turnover": 646.8167557959962,
+   "fills": 319.0,
+   "ending_equity": 580608.6305448439,
+   "years": 7.984312495246787
+  }
+ },
+ "grid": [
+  {
+   "look": 10,
+   "deadband": 0.0,
+   "cagr": 0.27997152398196734,
+   "max_drawdown": 0.68147197646482,
+   "sharpe": 0.7483648885205434,
+   "sortino": 1.0298207220471476,
+   "volatility": 0.5024862690238927,
+   "exposure": 0.9995012022305213,
+   "turnover": 1405.6978501909032,
+   "fills": 505.0,
+   "ending_equity": 717663.3324006379,
+   "years": 7.984312495246787
+  },
+  {
+   "look": 10,
+   "deadband": 0.01,
+   "cagr": 0.25511136559708114,
+   "max_drawdown": 0.7275531379339899,
+   "sharpe": 0.700587164157619,
+   "sortino": 0.9631040264539302,
+   "volatility": 0.5262948790085865,
+   "exposure": 0.9995012022305213,
+   "turnover": 1154.397523957207,
+   "fills": 465.0,
+   "ending_equity": 613634.8552780718,
+   "years": 7.984312495246787
+  },
+  {
+   "look": 20,
+   "deadband": 0.0,
+   "cagr": 0.2920799568289745,
+   "max_drawdown": 0.727425881325032,
+   "sharpe": 0.7678195034133611,
+   "sortino": 1.0536276984313224,
+   "volatility": 0.5012976554836038,
+   "exposure": 0.9995012022305213,
+   "turnover": 763.8285759462934,
+   "fills": 319.0,
+   "ending_equity": 773694.0626673333,
+   "years": 7.984312495246787
+  },
+  {
+   "look": 20,
+   "deadband": 0.01,
+   "cagr": 0.2765596372987149,
+   "max_drawdown": 0.7274258813250323,
+   "sharpe": 0.7383264435321015,
+   "sortino": 1.0150631006148072,
+   "volatility": 0.5127708029206206,
+   "exposure": 0.9995012022305213,
+   "turnover": 619.925076775132,
+   "fills": 307.0,
+   "ending_equity": 702530.7670006534,
+   "years": 7.984312495246787
+  },
+  {
+   "look": 40,
+   "deadband": 0.0,
+   "cagr": 0.2008574013403701,
+   "max_drawdown": 0.7768263678140985,
+   "sharpe": 0.6175408070146393,
+   "sortino": 0.8557170355503122,
+   "volatility": 0.5175267214289347,
+   "exposure": 0.9995012022305213,
+   "turnover": 328.49894522727584,
+   "fills": 251.0,
+   "ending_equity": 431205.6977331101,
+   "years": 7.984312495246787
+  },
+  {
+   "look": 40,
+   "deadband": 0.01,
+   "cagr": 0.32053298278860787,
+   "max_drawdown": 0.727425881325032,
+   "sharpe": 0.7970274538901694,
+   "sortino": 1.103445369014476,
+   "volatility": 0.5266786284508976,
+   "exposure": 0.9995012022305213,
+   "turnover": 376.3757064997336,
+   "fills": 175.0,
+   "ending_equity": 920661.048869943,
+   "years": 7.984312495246787
+  }
+ ]
+}

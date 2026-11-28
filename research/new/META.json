@@ -213,16 +213,6 @@
    "visible": true
   },
   {
-   "slug": "family-weekday-seasonality",
-   "name": "Weekday seasonality",
-   "tagline": "Day-of-week exposure clock",
-   "summary": "This is a real weekday effect with a cost problem, not a robust above-TQQQ winner. The 10 bp margin is inside the noise of a single dev window. The report recommends the family as a candidate only with a low-cost execution assumption (1-5 bp); at 10 bp it is essentially a tie with TQQQ.",
-   "verdict": "Verified - new family",
-   "reason": "Full 42.84% CAGR / 72.17% DD / 0.90 Sharpe; 1134 fills; above the TQQQ bar.",
-   "family": "weekday-seasonality",
-   "visible": true
-  },
-  {
    "slug": "family-tqqq-decay",
    "name": "TQQQ decay",
    "tagline": "Realized variance-drag timing",
@@ -253,96 +243,6 @@
    "visible": true
   },
   {
-   "slug": "family-kelly-sizing",
-   "name": "Kelly sizing",
-   "tagline": "Fractional-Kelly exposure",
-   "summary": "Average weights are 14.8% QQQ, 64.9% TQQQ, 20.3% BIL. The book is aggressive: it holds TQQQ about two-thirds of the time and uses BIL only when the QQQ Kelly edge turns negative.",
-   "verdict": "Verified - new family",
-   "reason": "Full 35.86% CAGR / 56.86% DD / 0.90 Sharpe; 979 fills; below the TQQQ bar.",
-   "family": "kelly-sizing",
-   "visible": true
-  },
-  {
-   "slug": "family-day-of-month",
-   "name": "Day-of-month seasonality",
-   "tagline": "Day-of-month clock",
-   "summary": "The only input is the session's rank inside its calendar month:",
-   "verdict": "Verified - new family",
-   "reason": "Full 35.29% CAGR / 59.76% DD / 0.88 Sharpe; 1360 fills; below the TQQQ bar.",
-   "family": "day-of-month",
-   "visible": true
-  },
-  {
-   "slug": "family-monthly-seasonality",
-   "name": "Monthly seasonality",
-   "tagline": "Month-of-year seasonal tilt",
-   "summary": "The qualifier is important: the strategy does not beat TQQQ in a typical month. Mean monthly excess is -0.11% (t = -0.19) and it wins only 33.3% of months. It compounds faster because it avoids the 2022 bear market (strategy -68.1% vs TQQQ -79.4%) and because the September exclusion removes four consecutive bad Septembers (2020-2023). The 2016-2019 sub-period lags TQQQ (39.8% vs 49.7%). This is a seasonal risk-reduction tilt, not a monthly alpha.",
-   "verdict": "Verified - new family",
-   "reason": "Full 34.46% CAGR / 72.12% DD / 0.80 Sharpe; 387 fills; below the TQQQ bar.",
-   "family": "monthly-seasonality",
-   "visible": true
-  },
-  {
-   "slug": "family-volume-clock",
-   "name": "Volume-clock overnight",
-   "tagline": "Midday volume acceleration state",
-   "summary": "The strategy is an overnight TQQQ position gated by a volume-acceleration state measured at 13:00 ET:",
-   "verdict": "Verified - new family",
-   "reason": "Full 29.65% CAGR / 26.69% DD / 1.23 Sharpe; 1614 fills; below the TQQQ bar.",
-   "family": "volume-clock",
-   "visible": true
-  },
-  {
-   "slug": "family-dynamic-risk-parity",
-   "name": "Dynamic risk parity",
-   "tagline": "Rolling risk-contribution allocation",
-   "summary": "There are 251 fills across 126 independent fill days, so the activity floor is met. Average weights are 75.8% QQQ, 24.2% TQQQ, 0.0% BIL. Turnover is only 18x over eight years: the allocator is almost static.",
-   "verdict": "Verified - new family",
-   "reason": "Full 26.21% CAGR / 50.59% DD / 0.87 Sharpe; 319 fills; below the TQQQ bar.",
-   "family": "dynamic-risk-parity",
-   "visible": true
-  },
-  {
-   "slug": "family-quarter-end-flow",
-   "name": "Quarter-end flow",
-   "tagline": "Quarter-end rebalancing window",
-   "summary": "For each calendar quarter, the window is:",
-   "verdict": "Verified - new family",
-   "reason": "Full 25.50% CAGR / 52.00% DD / 0.82 Sharpe; 1333 fills; below the TQQQ bar.",
-   "family": "quarter-end-flow",
-   "visible": true
-  },
-  {
-   "slug": "family-cpi-nfp-release",
-   "name": "CPI/NFP release",
-   "tagline": "Macro release-window drift",
-   "summary": "The important honesty check: the CPI-day edge is not intraday. The CPI session's open-to-close return is only +3.9 bp (t = 0.13); the +81.9 bp open-to-open comes almost entirely from the close-to-next-open gap (~+78 bp). Because the proxy is fixed at calendar day 12 and the actual CPI release is usually a few days later, the overnight may be capturing the actual release morning. The strategy is still ex-ante and tradable, but the \"release-day drift\" label is too strong; it is a mid-month overnight window. NFP, which has an actual fixed release date (first Friday), shows no edge. That asymmetry is the main reason the family is rejected.",
-   "verdict": "Verified - new family",
-   "reason": "Full 9.97% CAGR / 25.06% DD / 0.74 Sharpe; 521 fills; below the TQQQ bar.",
-   "family": "cpi-nfp-release",
-   "visible": true
-  },
-  {
-   "slug": "family-gap-continuation",
-   "name": "Gap continuation",
-   "tagline": "Opening gap continuation",
-   "summary": "Development window 2016-01-04 .. 2023-12-29, 1-minute marks, next-open fills, 2% band, long-only, weights >= 0, sum <= 1. The panel is requested with end=2023-12-29; no 2024-2026 bar is used. The only data inputs are the shared QQQ/TQQQ/BIL panel; the signal itself uses QQQ open/close, and the position is TQQQ.",
-   "verdict": "Verified - new family",
-   "reason": "Full 6.63% CAGR / 44.74% DD / 0.53 Sharpe; 412 fills; below the TQQQ bar.",
-   "family": "gap-continuation",
-   "visible": true
-  },
-  {
-   "slug": "family-range-compression",
-   "name": "Range compression",
-   "tagline": "NR7 intraday range compression, then a three-session TQQQ expansion hold.",
-   "summary": "A session whose QQQ range is the narrowest of the prior seven precedes an expansion. Buy TQQQ at the next open and hold three sessions; BIL otherwise. Active but below the TQQQ full-window CAGR bar.",
-   "verdict": "Verified - new family, below bar",
-   "reason": "Full 16.55% CAGR / 67.90% DD / 0.60 Sharpe; 973 fills.",
-   "family": "range-compression",
-   "visible": true
-  },
-  {
    "slug": "family-volume-skew",
    "name": "Volume skew",
    "tagline": "QQQ up/down volume asymmetry below its prior-60-session 40th percentile.",
@@ -350,6 +250,106 @@
    "verdict": "Verified - new family, below bar",
    "reason": "Full 34.39% CAGR / 46.36% DD / 1.03 Sharpe; 2,124 fills; independent volume-asymmetry signal.",
    "family": "volume-skew",
+   "visible": true
+  },
+  {
+   "slug": "family-vix-term-structure",
+   "name": "VIX term structure",
+   "tagline": "Implied-vol curve contango/backwardation",
+   "summary": "The pass is not clean. The 2022 calendar year is -55.9%; the max drawdown is a 63.3% peak-to-trough fall from 2021-11-19 to 2022-06-16 on session-end marks (65.45% intraday). The term-structure signal did not anticipate the slow 2022 bear market: it reacted to vol spikes, re-entered on calm, and was whipsawed through the H1 2022 bear rallies. The edge is a handful of large regime calls (2018, 2020, 2022 relative), not a consistent monthly timing rule. It should go to a one-shot holdout only as a diversifying regime overlay, not as a crash shield.",
+   "verdict": "Verified - new external family",
+   "reason": "Full 38.68% CAGR / 63.30% DD / 0.93 Sharpe; 241 fills; above the TQQQ bar.",
+   "family": "vix-term-structure",
+   "visible": true
+  },
+  {
+   "slug": "family-credit-spread",
+   "name": "Credit risk appetite",
+   "tagline": "HYG/IEF credit-spread impulse",
+   "summary": "This is a clean negative result, not a dead strategy. The mechanism is rejected.",
+   "verdict": "Verified - new external family",
+   "reason": "Full 33.17% CAGR / 76.44% DD / 0.84 Sharpe; 183 fills; below the TQQQ bar.",
+   "family": "credit-spread",
+   "visible": true
+  },
+  {
+   "slug": "family-sector-rotation",
+   "name": "Growth/defensive rotation",
+   "tagline": "XLK/XLU sector leadership",
+   "summary": "New sector-rotation family; full-window holdout.",
+   "verdict": "Verified - new external family",
+   "reason": "Full 29.86% CAGR / 44.79% DD / 0.94 Sharpe; 719 fills; below the TQQQ bar.",
+   "family": "sector-rotation",
+   "visible": true
+  },
+  {
+   "slug": "family-breadth",
+   "name": "Equal-weight breadth",
+   "tagline": "RSP/SPY breadth",
+   "summary": "New breadth family; full-window holdout.",
+   "verdict": "Verified - new external family",
+   "reason": "Full 34.21% CAGR / 63.62% DD / 0.92 Sharpe; 743 fills; below the TQQQ bar.",
+   "family": "breadth",
+   "visible": true
+  },
+  {
+   "slug": "family-crypto-risk-appetite",
+   "name": "Crypto risk appetite",
+   "tagline": "BTC momentum risk appetite",
+   "summary": "New crypto-risk-appetite family; full-window holdout.",
+   "verdict": "Verified - new external family",
+   "reason": "Full 46.50% CAGR / 52.02% DD / 1.18 Sharpe; 293 fills; above the TQQQ bar.",
+   "family": "crypto-risk-appetite",
+   "visible": true
+  },
+  {
+   "slug": "family-small-cap-relative",
+   "name": "Small-cap relative",
+   "tagline": "IWM/QQQ small-cap leadership",
+   "summary": "New small-cap-relative family; full-window holdout.",
+   "verdict": "Verified - new external family",
+   "reason": "Full 47.02% CAGR / 76.84% DD / 1.00 Sharpe; 511 fills; above the TQQQ bar.",
+   "family": "small-cap-relative",
+   "visible": true
+  },
+  {
+   "slug": "family-international-relative",
+   "name": "International relative",
+   "tagline": "EEM/QQQ global risk appetite",
+   "summary": "New international-relative family; full-window holdout.",
+   "verdict": "Verified - new external family",
+   "reason": "Full 48.44% CAGR / 56.69% DD / 1.04 Sharpe; 359 fills; above the TQQQ bar.",
+   "family": "international-relative",
+   "visible": true
+  },
+  {
+   "slug": "family-rates-volatility",
+   "name": "Rates volatility",
+   "tagline": "MOVE rates-vol regime",
+   "summary": "New rates-volatility family; full-window holdout.",
+   "verdict": "Verified - new external family",
+   "reason": "Full 38.80% CAGR / 41.94% DD / 1.06 Sharpe; 355 fills; above the TQQQ bar.",
+   "family": "rates-volatility",
+   "visible": true
+  },
+  {
+   "slug": "family-copper-gold",
+   "name": "Copper/gold",
+   "tagline": "CPER/GLD growth vs defensive",
+   "summary": "New copper-gold family; full-window holdout.",
+   "verdict": "Verified - new external family",
+   "reason": "Full 28.60% CAGR / 72.61% DD / 0.76 Sharpe; 347 fills; below the TQQQ bar.",
+   "family": "copper-gold",
+   "visible": true
+  },
+  {
+   "slug": "family-energy-rotation",
+   "name": "Energy rotation",
+   "tagline": "XLE/XLK energy-vs-tech leadership",
+   "summary": "New energy-rotation family; full-window holdout.",
+   "verdict": "Verified - new external family",
+   "reason": "Full 36.48% CAGR / 69.89% DD / 0.90 Sharpe; 447 fills; below the TQQQ bar.",
+   "family": "energy-rotation",
    "visible": true
   }
  ],

@@ -1,0 +1,50 @@
+{
+ "slug": "family-breadth",
+ "name": "Equal-weight breadth",
+ "tagline": "RSP/SPY breadth",
+ "summary": "New breadth family; full-window holdout.",
+ "metrics": {
+  "cagr": 0.34205260338363885,
+  "dd": 0.6362344976121757,
+  "sharpe": 0.9227543633330384
+ },
+ "status": "verified-full",
+ "assessment": {
+  "verdict": "Verified - new external family",
+  "reason": "Full 34.21% CAGR / 63.62% DD / 0.92 Sharpe; 743 fills; below the TQQQ bar."
+ },
+ "paths": {
+  "report": "research/new/family-breadth/report.md",
+  "hypothesis": "research/new/family-breadth/HYPOTHESIS.md",
+  "spec": null,
+  "provenance": null,
+  "code": "research/new/family-breadth/strategy.py",
+  "code_public": "/data/research/code/family-breadth.py"
+ },
+ "extracted": {
+  "hypothesis": false,
+  "spec": true,
+  "provenance": true
+ },
+ "decision": "New breadth family; full-window holdout.",
+ "rules": [],
+ "papers": [],
+ "provenance_cards": [
+  {
+   "idea": "quant-trader research program",
+   "source": "Own test",
+   "url": null,
+   "source_type": "Own test",
+   "role": "own test",
+   "role_detail": "",
+   "evidence": "Pre-registered development test on 2016-2023 and a one-shot 2024-2026 holdout; implementation and results are in report.md and strategy.py.",
+   "confidence": ""
+  }
+ ],
+ "rejected_sources": [],
+ "report_md": "# RSP/SPY equal-weight breadth — report\n\n**Slug:** `family-breadth`  \n**Dev:** 35.63% CAGR / 63.62% DD / 0.98 Sharpe.  \n**Full:** 34.21% CAGR / 63.62% DD / 0.92 Sharpe; 743 full fills.  \n\n## Rules\n\nWhen equal-weight RSP is leading cap-weight SPY, breadth is broad and TQQQ is held; when it lags, hold BIL.\n\n## Caveats\n\n- This is a cross-asset signal, not a price-trend or calendar variant.\n- The external series ends 2026-09-21; the final panel weeks carry the last signal state.\n- Full-window results are daily-close; the headline is 1 bp.\n",
+ "hypothesis_md": "# RSP/SPY equal-weight breadth\n\n**Slug:** `family-breadth`  \n**Family:** breadth  \n**Window:** 2016-01-04 .. 2023-12-29 development; full holdout 2024-01-02..2026-10-23.  \n\n## Claim\n\nWhen equal-weight RSP is leading cap-weight SPY, breadth is broad and TQQQ is held; when it lags, hold BIL.\n\n## Rules\n\n- Signal uses the external daily series through the prior close.\n- Target is written at the session close and filled at the next QQQ/TQQQ open.\n- Long-only TQQQ/BIL, weights >=0, sum <=1, 2% band, 1 bp headline.\n- No 100-250 day price trend gate, vol target, drawdown event, calendar clock, opening range/close flow, ML or relative-strength ratio gate.\n\n## Falsifiers\n\n- Dev CAGR <=5% or fewer than 100 full fills.\n- No positive plateau/placebo.\n- Correlation above 0.70 with an existing winner.\n",
+ "spec_md": "## Rules\n\nWhen equal-weight RSP is leading cap-weight SPY, breadth is broad and TQQQ is held; when it lags, hold BIL.",
+ "provenance_md": "## Own test\n\n- **quant-trader research program** - Pre-registered development test on 2016-2023 and a one-shot 2024-2026 holdout; implementation and results are in `report.md` and `strategy.py`.",
+ "code": "\"\"\"family-breadth -- equal-weight vs cap-weight breadth times TQQQ.\n\nPrimary object: the RSP/SPY relative return.  When equal-weight RSP keeps up\nwith or beats cap-weight SPY, the rally is broad and the strategy holds TQQQ.\nWhen SPY pulls away from RSP, breadth is narrowing and the strategy holds QQQ\nin the neutral band and BIL when narrowing is severe.\n\nThe signal is the average of the 20-day and 60-day relative-return z-scores,\neach z-scored against its own trailing 252-session distribution.\n\nDecision clock: RSP/SPY closes are 16:00 ET, the same session close used for\nthe decision; the target is filled at the next session's first bar open.\nLong only, weights sum to 1, 2% band.\n\nRun ``python strategy.py`` from this directory to regenerate ``result.json``.\n\"\"\"\nfrom __future__ import annotations\n\nimport sys\nfrom pathlib import Path\n\nimport numpy as np\nimport pandas as pd\n\nsys.path.insert(0, str(Path(__file__).resolve().parents[1]))\nimport ext_harness as H\n\nSLUG = \"family-breadth\"\nFAMILY = \"breadth\"\nPRIMARY = \"RSP/SPY 20/60-day relative-return z-score\"\n\nEND = H.END\n\nPARAMS = {\n    \"windows\": (20, 60),\n    \"z_window\": 252,\n    \"min_periods\": 120,\n    \"tqqq_z\": 0.50,\n    \"bil_z\": -0.50,\n}\n\n# 8-cell sensitivity grid: the primary, three threshold neighbours at the\n# 20/60 blend, and the 20-only / 60-only alternatives at two settings.\nPLATEAU = [\n    {\"windows\": (20, 60), \"tqqq_z\": 0.50, \"bil_z\": -0.50},\n    {\"windows\": (20, 60), \"tqqq_z\": 0.50, \"bil_z\": -0.75},\n    {\"windows\": (20, 60), \"tqqq_z\": 0.75, \"bil_z\": -0.50},\n    {\"windows\": (20, 60), \"tqqq_z\": 0.75, \"bil_z\": -0.75},\n    {\"windows\": (20,), \"tqqq_z\": 0.50, \"bil_z\": -0.50},\n    {\"windows\": (20,), \"tqqq_z\": 0.75, \"bil_z\": -0.75},\n    {\"windows\": (60,), \"tqqq_z\": 0.50, \"bil_z\": -0.50},\n    {\"windows\": (60,), \"tqqq_z\": 0.75, \"bil_z\": -0.75},\n]\n\n\ndef _score(ext: pd.DataFrame, windows) -> pd.Series:\n    rel = np.log(ext[\"RSP\"]) - np.log(ext[\"SPY\"])\n    parts = [H.rolling_z(rel.diff(int(w)), PARAMS[\"z_window\"],\n                         PARAMS[\"min_periods\"])\n             for w in windows]\n    return sum(parts) / len(parts)\n\n\ndef make_targets(ext: pd.DataFrame, params: dict | None = None) -> np.ndarray:\n    p = dict(PARAMS)\n    if params:\n        p.update(params)\n    s = _score(ext, p[\"windows\"])\n    return H.state_weights(s, float(p[\"tqqq_z\"]), float(p[\"bil_z\"]))\n\n\ndef _limit(end):\n    return pd.Timestamp(end) if end is not None else pd.Timestamp(END)\n\n\ndef _check_window(ts, limit) -> None:\n    last = pd.Timestamp(ts[-1])\n    if last.tzinfo is not None:\n        last = last.tz_localize(None)\n    if last.normalize() > limit:\n        raise ValueError(\n            \"panel extends past the development window \"\n            f\"{limit.date()}; 2024-2026 is not loaded\")\n\n\ndef build_weights(ts, opens, closes, params: dict | None = None,\n                  end=None) -> np.ndarray:\n    \"\"\"Minute weights; targets at session close t fill at t+1's open.\"\"\"\n    limit = _limit(end)\n    _check_window(ts, limit)\n    ext = H.aligned(ts, [\"RSP\", \"SPY\"], end=limit)\n    return H.to_minutes(ts, make_targets(ext, params))\n\n\ndef main() -> None:\n    ts, o, c = H.load_panel()\n    ext = H.aligned(ts, [\"RSP\", \"SPY\"])\n    targets = make_targets(ext)\n    ev = H.evaluate(ts, o, c, targets, n_placebo=100)\n    st = ev[\"stats\"][\"1bp\"]\n    kills = H.kill_checks(ev)\n    plateau = H.plateau(ts, o, c,\n                        lambda p: make_targets(ext, p), PLATEAU)\n    causality = {\n        \"future_value_perturbation\": H.perturb_audit(\n            ext, make_targets, cutoff_offset=0),\n        \"close_to_next_open_mapping\": H.mapping_audit(ts, targets),\n    }\n    i = H.bt.start_index(ts, H.START)\n    bench = H.bt.benchmark(c[i:, 1], ts[i:], H.BARS_PER_YEAR)\n    payload = {\n        \"slug\": SLUG,\n        \"family\": FAMILY,\n        \"primary_object\": PRIMARY,\n        \"dev\": st,\n        \"windows\": {\"dev\": {\"1bp\": ev[\"stats\"][\"1bp\"],\n                            \"5bp\": ev[\"stats\"][\"5bp\"],\n                            \"10bp\": ev[\"stats\"][\"10bp\"]}},\n        \"window\": {\"dev\": [H.START, H.END], \"holdout\": \"not loaded\"},\n        \"benchmark\": {\n            \"tqqq_panel\": bench,\n            \"tqqq_published_bar\": H.TQQQ_BAR,\n        },\n        \"params\": {k: (list(v) if isinstance(v, tuple) else v)\n                   for k, v in PARAMS.items()},\n        \"stats\": ev[\"stats\"],\n        \"events\": ev[\"events\"],\n        \"activity\": {\"fills\": st[\"fills\"], \"events\": ev[\"events\"],\n                     \"fills_per_year\": st[\"fills\"] / st[\"years\"],\n                     \"events_per_year\": ev[\"events\"] / st[\"years\"]},\n        \"yearly\": ev[\"yearly\"],\n        \"subperiods\": ev[\"subperiods\"],\n        \"corr_winners\": ev[\"corr_winners\"],\n        \"corr_range\": [min(ev[\"corr_winners\"].values()),\n                       max(ev[\"corr_winners\"].values())],\n        \"avg_weights\": ev[\"avg_weights\"],\n        \"static_avg_weights\": ev[\"static_avg_weights\"],\n        \"plateau\": plateau,\n        \"placebo\": ev[\"placebo\"],\n        \"causality_audit\": causality,\n        \"kill_checks\": kills,\n        \"verdict\": \"dev_pass\" if not any(kills.values()) else \"fail\",\n        \"timing\": (\"RSP/SPY daily closes through session t; target set at the \"\n                   \"close of t, filled at the first bar open of t+1; 2% band; \"\n                   \"long only.\"),\n        \"notes\": (\"RSP and SPY adjusted closes are read from data/external/ \"\n                  \"and reindexed to the QQQ session calendar.  The development \"\n                  \"run ends 2023-12-29 and does not load 2024-2026 prices.\"),\n    }\n    H.write_result(Path(__file__).with_name(\"result.json\"), payload)\n    print(f\"{SLUG}: {H.summary_line(st)}\")\n    print(\"  10bp:\", H.summary_line(ev[\"stats\"][\"10bp\"]))\n    print(\"  corr range\", payload[\"corr_range\"], \"verdict\", payload[\"verdict\"])\n    print(\"  kills\", [k for k, v in kills.items() if v])\n\n\nif __name__ == \"__main__\":\n    main()\n"
+}

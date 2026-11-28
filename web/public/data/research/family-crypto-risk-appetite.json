@@ -1,0 +1,50 @@
+{
+ "slug": "family-crypto-risk-appetite",
+ "name": "Crypto risk appetite",
+ "tagline": "BTC momentum risk appetite",
+ "summary": "New crypto-risk-appetite family; full-window holdout.",
+ "metrics": {
+  "cagr": 0.4650144942518337,
+  "dd": 0.5202003167296143,
+  "sharpe": 1.176235974730921
+ },
+ "status": "verified-full",
+ "assessment": {
+  "verdict": "Verified - new external family",
+  "reason": "Full 46.50% CAGR / 52.02% DD / 1.18 Sharpe; 293 fills; above the TQQQ bar."
+ },
+ "paths": {
+  "report": "research/new/family-crypto-risk-appetite/report.md",
+  "hypothesis": "research/new/family-crypto-risk-appetite/HYPOTHESIS.md",
+  "spec": null,
+  "provenance": null,
+  "code": "research/new/family-crypto-risk-appetite/strategy.py",
+  "code_public": "/data/research/code/family-crypto-risk-appetite.py"
+ },
+ "extracted": {
+  "hypothesis": false,
+  "spec": true,
+  "provenance": true
+ },
+ "decision": "New crypto-risk-appetite family; full-window holdout.",
+ "rules": [],
+ "papers": [],
+ "provenance_cards": [
+  {
+   "idea": "quant-trader research program",
+   "source": "Own test",
+   "url": null,
+   "source_type": "Own test",
+   "role": "own test",
+   "role_detail": "",
+   "evidence": "Pre-registered development test on 2016-2023 and a one-shot 2024-2026 holdout; implementation and results are in report.md and strategy.py.",
+   "confidence": ""
+  }
+ ],
+ "rejected_sources": [],
+ "report_md": "# BTC risk appetite — report\n\n**Slug:** `family-crypto-risk-appetite`  \n**Dev:** 53.66% CAGR / 52.02% DD / 1.26 Sharpe.  \n**Full:** 46.50% CAGR / 52.02% DD / 1.18 Sharpe; 293 full fills.  \n\n## Rules\n\nWhen BTC-USD momentum is positive, global risk appetite supports TQQQ; otherwise hold BIL.\n\n## Caveats\n\n- This is a cross-asset signal, not a price-trend or calendar variant.\n- The external series ends 2026-09-21; the final panel weeks carry the last signal state.\n- Full-window results are daily-close; the headline is 1 bp.\n",
+ "hypothesis_md": "# BTC risk appetite\n\n**Slug:** `family-crypto-risk-appetite`  \n**Family:** crypto-risk-appetite  \n**Window:** 2016-01-04 .. 2023-12-29 development; full holdout 2024-01-02..2026-10-23.  \n\n## Claim\n\nWhen BTC-USD momentum is positive, global risk appetite supports TQQQ; otherwise hold BIL.\n\n## Rules\n\n- Signal uses the external daily series through the prior close.\n- Target is written at the session close and filled at the next QQQ/TQQQ open.\n- Long-only TQQQ/BIL, weights >=0, sum <=1, 2% band, 1 bp headline.\n- No 100-250 day price trend gate, vol target, drawdown event, calendar clock, opening range/close flow, ML or relative-strength ratio gate.\n\n## Falsifiers\n\n- Dev CAGR <=5% or fewer than 100 full fills.\n- No positive plateau/placebo.\n- Correlation above 0.70 with an existing winner.\n",
+ "spec_md": "## Rules\n\nWhen BTC-USD momentum is positive, global risk appetite supports TQQQ; otherwise hold BIL.",
+ "provenance_md": "## Own test\n\n- **quant-trader research program** - Pre-registered development test on 2016-2023 and a one-shot 2024-2026 holdout; implementation and results are in `report.md` and `strategy.py`.",
+ "code": "\"\"\"family-crypto-risk-appetite -- BTC trend as an external risk-appetite switch.\n\nPrimary object: BTC-USD's 20/60-day price momentum.  Bitcoin is a 24/7,\nhigh-beta risk asset whose trend is not a QQQ price trend.  When BTC momentum\nis positive the strategy holds TQQQ; when it is negative it holds BIL.  There\nis no crypto trading and no crypto position: BTC is only a daily signal series.\n\nCausality: Yahoo's BTC-USD daily bar for date d closes at 00:00 UTC of d+1,\nwhich is after the 16:00 ET US equity close.  The signal therefore uses BTC\ncloses lagged by one QQQ session, so a target set at the close of session t\nonly uses BTC information that was already available before that close.  The\ntarget is filled at t+1's first bar open.\n\nRun ``python strategy.py`` from this directory to regenerate ``result.json``.\n\"\"\"\nfrom __future__ import annotations\n\nimport sys\nfrom pathlib import Path\n\nimport numpy as np\nimport pandas as pd\n\nsys.path.insert(0, str(Path(__file__).resolve().parents[1]))\nimport ext_harness as H\n\nSLUG = \"family-crypto-risk-appetite\"\nFAMILY = \"crypto-risk-appetite\"\nPRIMARY = \"BTC-USD 20/60-day momentum z-score, one-session lag\"\n\nEND = H.END\n\nPARAMS = {\n    \"windows\": (20, 60),\n    \"z_window\": 252,\n    \"min_periods\": 120,\n    \"btc_lag\": 1,\n    \"tqqq_z\": 0.0,\n    \"bil_z\": 0.0,\n}\n\n# 8-cell sensitivity grid: the primary, three threshold neighbours at the\n# 20/60 blend, and the 20-only / 60-only alternatives at two settings.\nPLATEAU = [\n    {\"windows\": (20, 60), \"tqqq_z\": 0.00, \"bil_z\": 0.00},\n    {\"windows\": (20, 60), \"tqqq_z\": 0.00, \"bil_z\": -0.25},\n    {\"windows\": (20, 60), \"tqqq_z\": 0.25, \"bil_z\": 0.00},\n    {\"windows\": (20, 60), \"tqqq_z\": 0.25, \"bil_z\": -0.25},\n    {\"windows\": (20,), \"tqqq_z\": 0.00, \"bil_z\": 0.00},\n    {\"windows\": (20,), \"tqqq_z\": 0.25, \"bil_z\": -0.25},\n    {\"windows\": (60,), \"tqqq_z\": 0.00, \"bil_z\": 0.00},\n    {\"windows\": (60,), \"tqqq_z\": 0.25, \"bil_z\": -0.25},\n]\n\n\ndef _score(ext: pd.DataFrame, params: dict) -> pd.Series:\n    btc = np.log(ext[\"BTC-USD\"]).shift(int(params[\"btc_lag\"]))\n    parts = [H.rolling_z(btc.diff(int(w)), params[\"z_window\"],\n                         params[\"min_periods\"])\n             for w in params[\"windows\"]]\n    return sum(parts) / len(parts)\n\n\ndef make_targets(ext: pd.DataFrame, params: dict | None = None) -> np.ndarray:\n    p = dict(PARAMS)\n    if params:\n        p.update(params)\n    s = _score(ext, p)\n    return H.state_weights(s, float(p[\"tqqq_z\"]), float(p[\"bil_z\"]))\n\n\ndef _limit(end):\n    return pd.Timestamp(end) if end is not None else pd.Timestamp(END)\n\n\ndef _check_window(ts, limit) -> None:\n    last = pd.Timestamp(ts[-1])\n    if last.tzinfo is not None:\n        last = last.tz_localize(None)\n    if last.normalize() > limit:\n        raise ValueError(\n            \"panel extends past the development window \"\n            f\"{limit.date()}; 2024-2026 is not loaded\")\n\n\ndef build_weights(ts, opens, closes, params: dict | None = None,\n                  end=None) -> np.ndarray:\n    \"\"\"Minute weights; targets at session close t fill at t+1's open.\"\"\"\n    limit = _limit(end)\n    _check_window(ts, limit)\n    ext = H.aligned(ts, [\"BTC-USD\"], end=limit)\n    return H.to_minutes(ts, make_targets(ext, params))\n\n\ndef main() -> None:\n    ts, o, c = H.load_panel()\n    ext = H.aligned(ts, [\"BTC-USD\"])\n    targets = make_targets(ext)\n    ev = H.evaluate(ts, o, c, targets, n_placebo=100)\n    st = ev[\"stats\"][\"1bp\"]\n    kills = H.kill_checks(ev)\n    plateau = H.plateau(ts, o, c,\n                        lambda p: make_targets(ext, p), PLATEAU)\n    causality = {\n        \"future_value_perturbation\": H.perturb_audit(\n            ext, make_targets, cutoff_offset=1),\n        \"close_to_next_open_mapping\": H.mapping_audit(ts, targets),\n    }\n    i = H.bt.start_index(ts, H.START)\n    bench = H.bt.benchmark(c[i:, 1], ts[i:], H.BARS_PER_YEAR)\n    payload = {\n        \"slug\": SLUG,\n        \"family\": FAMILY,\n        \"primary_object\": PRIMARY,\n        \"dev\": st,\n        \"windows\": {\"dev\": {\"1bp\": ev[\"stats\"][\"1bp\"],\n                            \"5bp\": ev[\"stats\"][\"5bp\"],\n                            \"10bp\": ev[\"stats\"][\"10bp\"]}},\n        \"window\": {\"dev\": [H.START, H.END], \"holdout\": \"not loaded\"},\n        \"benchmark\": {\n            \"tqqq_panel\": bench,\n            \"tqqq_published_bar\": H.TQQQ_BAR,\n        },\n        \"params\": {k: (list(v) if isinstance(v, tuple) else v)\n                   for k, v in PARAMS.items()},\n        \"stats\": ev[\"stats\"],\n        \"events\": ev[\"events\"],\n        \"activity\": {\"fills\": st[\"fills\"], \"events\": ev[\"events\"],\n                     \"fills_per_year\": st[\"fills\"] / st[\"years\"],\n                     \"events_per_year\": ev[\"events\"] / st[\"years\"]},\n        \"yearly\": ev[\"yearly\"],\n        \"subperiods\": ev[\"subperiods\"],\n        \"corr_winners\": ev[\"corr_winners\"],\n        \"corr_range\": [min(ev[\"corr_winners\"].values()),\n                       max(ev[\"corr_winners\"].values())],\n        \"avg_weights\": ev[\"avg_weights\"],\n        \"static_avg_weights\": ev[\"static_avg_weights\"],\n        \"plateau\": plateau,\n        \"placebo\": ev[\"placebo\"],\n        \"causality_audit\": causality,\n        \"kill_checks\": kills,\n        \"verdict\": \"dev_pass\" if not any(kills.values()) else \"fail\",\n        \"timing\": (\"BTC daily closes lagged one QQQ session (Yahoo BTC bars \"\n                   \"close after the US equity close); target set at the close \"\n                   \"of t, filled at the first bar open of t+1; 2% band; long \"\n                   \"only; no crypto position.\"),\n        \"notes\": (\"BTC-USD adjusted closes are read from data/external/ and \"\n                  \"reindexed to the QQQ session calendar.  The development run \"\n                  \"ends 2023-12-29 and does not load 2024-2026 prices.\"),\n    }\n    H.write_result(Path(__file__).with_name(\"result.json\"), payload)\n    print(f\"{SLUG}: {H.summary_line(st)}\")\n    print(\"  10bp:\", H.summary_line(ev[\"stats\"][\"10bp\"]))\n    print(\"  corr range\", payload[\"corr_range\"], \"verdict\", payload[\"verdict\"])\n    print(\"  kills\", [k for k, v in kills.items() if v])\n\n\nif __name__ == \"__main__\":\n    main()\n"
+}

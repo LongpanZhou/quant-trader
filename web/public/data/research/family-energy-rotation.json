@@ -1,0 +1,50 @@
+{
+ "slug": "family-energy-rotation",
+ "name": "Energy rotation",
+ "tagline": "XLE/XLK energy-vs-tech leadership",
+ "summary": "New energy-rotation family; full-window holdout.",
+ "metrics": {
+  "cagr": 0.3648214527298852,
+  "dd": 0.6989160359593212,
+  "sharpe": 0.8963920562277656
+ },
+ "status": "verified-full",
+ "assessment": {
+  "verdict": "Verified - new external family",
+  "reason": "Full 36.48% CAGR / 69.89% DD / 0.90 Sharpe; 447 fills; below the TQQQ bar."
+ },
+ "paths": {
+  "report": "research/new/family-energy-rotation/report.md",
+  "hypothesis": "research/new/family-energy-rotation/HYPOTHESIS.md",
+  "spec": null,
+  "provenance": null,
+  "code": "research/new/family-energy-rotation/strategy.py",
+  "code_public": "/data/research/code/family-energy-rotation.py"
+ },
+ "extracted": {
+  "hypothesis": false,
+  "spec": true,
+  "provenance": true
+ },
+ "decision": "New energy-rotation family; full-window holdout.",
+ "rules": [],
+ "papers": [],
+ "provenance_cards": [
+  {
+   "idea": "quant-trader research program",
+   "source": "Own test",
+   "url": null,
+   "source_type": "Own test",
+   "role": "own test",
+   "role_detail": "",
+   "evidence": "Pre-registered development test on 2016-2023 and a one-shot 2024-2026 holdout; implementation and results are in report.md and strategy.py.",
+   "confidence": ""
+  }
+ ],
+ "rejected_sources": [],
+ "report_md": "# XLE/XLK energy-vs-tech leadership — report\n\n**Slug:** `family-energy-rotation`  \n**Dev:** 29.21% CAGR / 69.89% DD / 0.77 Sharpe.  \n**Full:** 36.48% CAGR / 69.89% DD / 0.90 Sharpe; 447 full fills.  \n\n## Rules\n\nWhen energy leads technology, treat it as inflation/commodity stress and hold BIL; otherwise TQQQ.\n\n## Caveats\n\n- This is a cross-asset signal, not a price-trend or calendar variant.\n- The external series ends 2026-09-21; the final panel weeks carry the last signal state.\n- Full-window results are daily-close; the headline is 1 bp.\n",
+ "hypothesis_md": "# XLE/XLK energy-vs-tech leadership\n\n**Slug:** `family-energy-rotation`  \n**Family:** energy-rotation  \n**Window:** 2016-01-04 .. 2023-12-29 development; full holdout 2024-01-02..2026-10-23.  \n\n## Claim\n\nWhen energy leads technology, treat it as inflation/commodity stress and hold BIL; otherwise TQQQ.\n\n## Rules\n\n- Signal uses the external daily series through the prior close.\n- Target is written at the session close and filled at the next QQQ/TQQQ open.\n- Long-only TQQQ/BIL, weights >=0, sum <=1, 2% band, 1 bp headline.\n- No 100-250 day price trend gate, vol target, drawdown event, calendar clock, opening range/close flow, ML or relative-strength ratio gate.\n\n## Falsifiers\n\n- Dev CAGR <=5% or fewer than 100 full fills.\n- No positive plateau/placebo.\n- Correlation above 0.70 with an existing winner.\n",
+ "spec_md": "## Rules\n\nWhen energy leads technology, treat it as inflation/commodity stress and hold BIL; otherwise TQQQ.",
+ "provenance_md": "## Own test\n\n- **quant-trader research program** - Pre-registered development test on 2016-2023 and a one-shot 2024-2026 holdout; implementation and results are in `report.md` and `strategy.py`.",
+ "code": "\"\"\"Energy-vs-tech rotation: XLE/XLK relative momentum as an inflation signal.\n\nDevelopment window only.  Signal at session d close; TQQQ at d+1 open.\nIf energy is leading technology over 20 sessions, treat it as inflation/commodity\nstress and hold BIL; otherwise hold TQQQ.\n\"\"\"\nfrom __future__ import annotations\n\nimport json\nimport sys\nfrom pathlib import Path\n\nimport numpy as np\n\nROOT = Path(__file__).resolve().parents[3]\nsys.path.insert(0, str(ROOT / \"research\"))\nimport bt  # noqa: E402\nimport external  # noqa: E402\n\nDEV_START, DEV_END = \"2016-01-04\", \"2023-12-29\"\nBPY = 252 * 390\nOUT = Path(__file__).resolve().parent\nPARAMS = dict(look=20, deadband=0.0)\n\n\ndef build_weights(ts, o, c, params=None):\n    p = dict(PARAMS)\n    if params:\n        p.update(params)\n    d = external.align(ts, [\"XLE\", \"XLK\"])\n    ratio = d[\"XLE\"] / d[\"XLK\"]\n    mom = ratio / ratio.shift(int(p[\"look\"])) - 1.0\n    state = np.zeros(len(d))\n    state[mom.to_numpy() <= float(p[\"deadband\"])] = 1.0\n    targets = np.zeros((len(d), 3))\n    targets[:, 1] = state\n    targets[:, 2] = 1.0 - state\n    w = external.daily_targets_to_weights(ts, targets)\n    info = {\"params\": p, \"tqqq_exposure\": float(state.mean()),\n            \"signals\": int((np.diff(state) != 0).sum())}\n    return w, info\n\n\ndef run(w, ts, o, c, bps):\n    r = bt.run(ts, o, c, w, DEV_START, band=0.02, slippage_bps=bps)\n    s = bt.stats(r, BPY)\n    return {k: float(s[k]) for k in (\"cagr\", \"max_drawdown\", \"sharpe\", \"sortino\",\n                                    \"volatility\", \"exposure\", \"turnover\", \"fills\",\n                                    \"ending_equity\", \"years\")}\n\n\ndef main():\n    ts, o, c = bt.panel((\"QQQ\", \"TQQQ\", \"BIL\"), DEV_START, DEV_END, \"1min\", warmup_days=0)\n    w, info = build_weights(ts, o, c)\n    out = {\"slug\": \"family-energy-rotation\", \"family\": \"energy-rotation\",\n           \"idea\": \"Energy-vs-tech leadership as an inflation/commodity-stress signal.\",\n           \"window\": {\"dev\": [DEV_START, DEV_END], \"holdout\": \"not loaded\"},\n           \"rules\": \"XLE/XLK 20-session relative momentum <= 0 -> TQQQ next open; else BIL.\",\n           \"params\": info[\"params\"], \"info\": info,\n           \"dev\": {f\"{b}bp\": run(w, ts, o, c, b) for b in (1, 5, 10)}}\n    out[\"grid\"] = []\n    for look in (10, 20, 40):\n        for band in (0.0, 0.01):\n            ww, _ = build_weights(ts, o, c, dict(look=look, deadband=band))\n            out[\"grid\"].append({\"look\": look, \"deadband\": band, **run(ww, ts, o, c, 1)})\n    (OUT / \"result.json\").write_text(json.dumps(out, indent=1), encoding=\"utf-8\")\n    s = out[\"dev\"][\"1bp\"]\n    print(f\"dev {s['cagr']*100:.2f}% CAGR {s['max_drawdown']*100:.2f}% DD \"\n          f\"{s['sharpe']:.2f} Sharpe fills {int(s['fills'])}\")\n\n\nif __name__ == \"__main__\":\n    main()\n"
+}
