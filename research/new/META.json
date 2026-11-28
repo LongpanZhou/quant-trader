@@ -183,16 +183,6 @@
    "visible": true
   },
   {
-   "slug": "family-autocorrelation-regime",
-   "name": "Autocorrelation regime",
-   "tagline": "Time-varying serial dependence",
-   "summary": "Execution: research/bt.py, 1-minute marks, next-open fills, 2% band, long-only, weights \u2265 0, row sum \u2264 1. Flat is BIL. Headline 1 bp.",
-   "verdict": "Verified - new family",
-   "reason": "Full 48.29% CAGR / 64.23% DD / 1.00 Sharpe; 793 fills; above the TQQQ bar.",
-   "family": "autocorrelation-regime",
-   "visible": true
-  },
-  {
    "slug": "family-vol-of-volume",
    "name": "Volatility of volume",
    "tagline": "Volume-dispersion state",
@@ -350,6 +340,16 @@
    "verdict": "Verified - new family, below bar",
    "reason": "Full 16.55% CAGR / 67.90% DD / 0.60 Sharpe; 973 fills.",
    "family": "range-compression",
+   "visible": true
+  },
+  {
+   "slug": "family-volume-skew",
+   "name": "Volume skew",
+   "tagline": "QQQ up/down volume asymmetry below its prior-60-session 40th percentile.",
+   "summary": "When up-volume minus down-volume is unusually skewed, buy TQQQ for the next session; BIL otherwise. A distinct volume-asymmetry family with low correlation to the winners; active but below the full CAGR bar.",
+   "verdict": "Verified - new family, below bar",
+   "reason": "Full 34.39% CAGR / 46.36% DD / 1.03 Sharpe; 2,124 fills; independent volume-asymmetry signal.",
+   "family": "volume-skew",
    "visible": true
   }
  ],

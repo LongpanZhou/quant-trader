@@ -22,7 +22,6 @@ family.
 | `tail-hedge-overlay` | `family-tail-hedge-overlay` | 66.38% | 38.20% | 1.37 |
 | `close-location` | `family-close-location` | 66.23% | 62.76% | 1.26 |
 | `policy-liquidity` | `family-policy-liquidity` | 56.13% | 75.23% | 1.08 |
-| `autocorrelation-regime` | `family-autocorrelation-regime` | 48.29% | 64.23% | 1.00 |
 | `vol-of-volume` | `family-vol-of-volume` | 45.56% | 70.00% | 1.09 |
 | `change-point` | `family-change-point` | 45.29% | 54.10% | 1.13 |
 | `hurst-persistence` | `family-hurst-persistence` | 43.00% | 56.25% | 1.04 |
@@ -31,11 +30,12 @@ family.
 | `realized-skew` | `family-realized-skew` | 38.83% | 53.98% | 0.97 |
 | `beta-rotation` | `family-beta-rotation` | 37.70% | 59.60% | 1.03 |
 
-**New-family note:** 20 new research families were added on 2026-11-28. Eleven
-clear the full bar and are winners. Nine are active but below the bar:
-Kelly sizing, day-of-month, monthly seasonality, volume clock, range
-compression, dynamic risk parity, quarter-end flow, CPI/NFP, and gap
-continuation. None is a duplicate of the ten original families.
+**New-family note:** 20 new research families were added on 2026-11-28. Ten
+clear the full bar and are winners. Ten are active but below the bar:
+volume skew, Kelly sizing, day-of-month, monthly seasonality, volume clock,
+range compression, dynamic risk parity, quarter-end flow, CPI/NFP, and gap
+continuation. Autocorrelation was removed after its reversal overlap was
+identified.
 
 ## Verification notes
 

@@ -1175,30 +1175,6 @@
    "source": "research/new/family-policy-liquidity/report.md"
   },
   {
-   "slug": "family-autocorrelation-regime",
-   "name": "Autocorrelation regime",
-   "family": "autocorrelation-regime",
-   "tagline": "Time-varying serial dependence",
-   "summary": "Execution: research/bt.py, 1-minute marks, next-open fills, 2% band, long-only, weights \u2265 0, row sum \u2264 1. Flat is BIL. Headline 1 bp.",
-   "dev": {
-    "cagr": 0.5004617987276958,
-    "max_dd": 0.6423045992663711,
-    "sharpe": 1.0030634599832882
-   },
-   "full": {
-    "cagr": 0.48291400915420124,
-    "max_dd": 0.6423045992663711,
-    "sharpe": 1.0018263898529993
-   },
-   "above_tqqq": true,
-   "dev_above_tqqq": null,
-   "status": "verified-full",
-   "visible": true,
-   "family_winner": true,
-   "note": "New family added 2026-11-28. Full 48.29% CAGR / 64.23% DD / 1.00 Sharpe; 793 full fills. One-shot 2024-2026 holdout. ",
-   "source": "research/new/family-autocorrelation-regime/report.md"
-  },
-  {
    "slug": "family-vol-of-volume",
    "name": "Volatility of volume",
    "family": "vol-of-volume",
@@ -1581,6 +1557,30 @@
    "family_winner": false,
    "note": "New family added 2026-11-28. Full 16.55% CAGR / 67.90% DD / 0.60 Sharpe; 973 full fills. One-shot 2024-2026 holdout 13.56%.",
    "source": "research/new/family-range-compression/report.md"
+  },
+  {
+   "slug": "family-volume-skew",
+   "name": "Volume skew",
+   "family": "volume-skew",
+   "tagline": "QQQ up/down volume asymmetry below its prior-60-session 40th percentile.",
+   "summary": "When up-volume minus down-volume is unusually skewed, buy TQQQ for the next session; BIL otherwise. A distinct volume-asymmetry family with low correlation to the winners; active but below the full CAGR bar.",
+   "dev": {
+    "cagr": 0.4202287738207724,
+    "max_dd": 0.32980724536639716,
+    "sharpe": 1.2119861329863713
+   },
+   "full": {
+    "cagr": 0.34390739057174313,
+    "max_dd": 0.4636365186057386,
+    "sharpe": 1.0313117201844226
+   },
+   "above_tqqq": false,
+   "dev_above_tqqq": null,
+   "status": "verified-full",
+   "visible": true,
+   "family_winner": false,
+   "note": "New family added 2026-11-28. Full 34.39% CAGR / 46.36% DD / 1.03 Sharpe; 2,124 full fills. Max correlation with existing winners 0.51.",
+   "source": "research/new/family-volume-skew/report.md"
   }
  ],
  "winner_policy": "One verified-full above-TQQQ winner per family, selected by full-window CAGR. ratio-froth and vol-scaled-crash-stop are now verified-full via clean reruns and audits; the previous fast-trend-vol / vol-term-structure remain verified research records but are not family winners."

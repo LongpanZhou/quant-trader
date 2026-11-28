@@ -11,7 +11,7 @@ that beats `ratio-froth` (full 62.21% CAGR / 36.65% DD / 1.43 Sharpe).
 | 1 | `tail-hedge-overlay` | 66.38% | 38.20% | 1.37 | 5,325 | yes |
 | 2 | `close-location` | **66.23%** | 62.76% | 1.26 | 653 | yes |
 | 3 | `policy-liquidity` | 56.13% | 75.23% | 1.08 | 439 | yes |
-| 4 | `autocorrelation-regime` | 48.29% | 64.23% | 1.00 | 793 | yes |
+| 4 | `volume-skew` | 34.39% | 46.36% | 1.03 | 2,124 | no |
 | 5 | `vol-of-volume` | 45.56% | 70.00% | 1.09 | 1,921 | yes |
 | 6 | `change-point` | 45.29% | 54.10% | 1.13 | 229 | yes |
 | 7 | `hurst-persistence` | 43.00% | 56.25% | 1.04 | 437 | yes |
@@ -48,9 +48,9 @@ second, qualified result.
 - `family-lead-lag-spillover` was not added: the orthogonalized residual has
   t = -0.84 and the result is common-factor short-term reversal, not an
   independent family. It was replaced by `family-range-compression`.
-- `family-autocorrelation-regime` is numerically above the bar, but its agent
-  found the edge is a short-reversal variant (0.765 correlation with
-  `family-short-reversal`); it is kept as an above-bar research record with
-  that family-purity caveat, not claimed as cleanly orthogonal.
+- `family-autocorrelation-regime` was removed from the published 20: although
+  numerically above bar, its agent found the edge is a short-reversal variant
+  (0.765 correlation). It is replaced by `family-volume-skew`, whose maximum
+  correlation with the existing winners is 0.51.
 
 All 20 active entries have at least 100 full-window fills; the minimum is 225.
