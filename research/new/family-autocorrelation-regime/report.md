@@ -236,8 +236,8 @@ destroys the alignment with returns. 300 draws each, 1 bp.
 ## 8. Correlation with the current family winners
 
 Daily-return Pearson correlation over 2016-2023 (2,010 overlapping days). The
-archived curves also contain 2024-2026 values; they were truncated to
-2023-12-29 before any return was computed, and no 2024+ value was inspected.
+archived curves also contain 2024-2026 values; only the development prefix is
+parsed, and the 2024+ numbers are never converted to floats or inspected.
 
 | Winner | Correlation |
 |---|---:|
@@ -379,10 +379,10 @@ current evidence does not support either.
   warmup uses 2015 daily closes from the local Yahoo file. The boundary return
   differs from the official daily close by about 7 bp (15:59 vs 16:00 mark),
   which is immaterial for a 120-day autocorrelation.
-- **Archived curves.** The winner-correlation block reads the archived full
-  curves and truncates at 2023-12-29 before computing anything. The 2024-2026
-  values are not used or inspected. The dev slices reproduce the published dev
-  CAGRs to within about 0.2 pp.
+- **Archived curves.** The winner-correlation block parses the archived
+  curves only up to 2023-12-29 (the dates are read, then the first `n` values;
+  the 2024-2026 numbers are never converted to floats). The dev slices
+  reproduce the published dev CAGRs to within about 0.2 pp.
 - **Multiple testing.** The primary is the best cell of the dev scan. The
   plateau and placebo reduce, but do not eliminate, the selection risk. A
   holdout is the only clean test; this study did not run one.

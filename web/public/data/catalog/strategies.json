@@ -814,34 +814,6 @@
    "provenanceCount": 0
   },
   {
-   "id": "research:family-lead-lag-spillover",
-   "slug": "family-lead-lag-spillover",
-   "kind": "research",
-   "name": "SPY\u2192QQQ spillover",
-   "group": "Strategy",
-   "status": "Strategy",
-   "tagline": "Cross-market lead-lag residual",
-   "summary": "The hypothesis has two layers:",
-   "window": "2016-2026",
-   "cagr": 0.27605494383270757,
-   "dd": 0.30919186698062995,
-   "sharpe": 0.894344348555544,
-   "metrics": {
-    "cagr10": 0.27605494383270757,
-    "dd10": 0.30919186698062995,
-    "cagr5": 0.27605494383270757,
-    "dd5": 0.30919186698062995
-   },
-   "href": "/research/family-lead-lag-spillover",
-   "runnable": false,
-   "accent": "#9ae6a5",
-   "tags": [
-    "2016-2026"
-   ],
-   "papersCount": 0,
-   "provenanceCount": 0
-  },
-  {
    "id": "research:intraday-seasonality",
    "slug": "intraday-seasonality",
    "kind": "research",
@@ -1001,6 +973,34 @@
     "dd5": 0.31778000954771257
    },
    "href": "/research/time-of-day",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
+   "id": "research:family-range-compression",
+   "slug": "family-range-compression",
+   "kind": "research",
+   "name": "Range compression",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "NR7 intraday range compression, then a three-session TQQQ expansion hold.",
+   "summary": "A session whose QQQ range is the narrowest of the prior seven precedes an expansion. Buy TQQQ at the next open and hold three sessions; BIL otherwise. Active but below the TQQQ full-window CAGR bar.",
+   "window": "2016-2026",
+   "cagr": 0.16547937168246296,
+   "dd": 0.6790322426245557,
+   "sharpe": 0.604117259403743,
+   "metrics": {
+    "cagr10": 0.16547937168246296,
+    "dd10": 0.6790322426245557,
+    "cagr5": 0.16547937168246296,
+    "dd5": 0.6790322426245557
+   },
+   "href": "/research/family-range-compression",
    "runnable": false,
    "accent": "#9ae6a5",
    "tags": [

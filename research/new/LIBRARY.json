@@ -1463,30 +1463,6 @@
    "source": "research/new/family-volume-clock/report.md"
   },
   {
-   "slug": "family-lead-lag-spillover",
-   "name": "SPY\u2192QQQ spillover",
-   "family": "lead-lag-spillover",
-   "tagline": "Cross-market lead-lag residual",
-   "summary": "The hypothesis has two layers:",
-   "dev": {
-    "cagr": 0.29917300025580285,
-    "max_dd": 0.30919186698062995,
-    "sharpe": 0.9532255436485074
-   },
-   "full": {
-    "cagr": 0.27605494383270757,
-    "max_dd": 0.30919186698062995,
-    "sharpe": 0.894344348555544
-   },
-   "above_tqqq": false,
-   "dev_above_tqqq": null,
-   "status": "verified-full",
-   "visible": true,
-   "family_winner": false,
-   "note": "New family added 2026-11-28. Full 27.61% CAGR / 30.92% DD / 0.89 Sharpe; 2013 full fills. One-shot 2024-2026 holdout. Novelty test failed: the residual is not significant and the result is common-factor short-term reversal; included as a below-bar research record, not a family winner.",
-   "source": "research/new/family-lead-lag-spillover/report.md"
-  },
-  {
    "slug": "family-dynamic-risk-parity",
    "name": "Dynamic risk parity",
    "family": "dynamic-risk-parity",
@@ -1581,6 +1557,30 @@
    "family_winner": false,
    "note": "New family added 2026-11-28. Full 6.63% CAGR / 44.74% DD / 0.53 Sharpe; 412 full fills. One-shot 2024-2026 holdout. ",
    "source": "research/new/family-gap-continuation/report.md"
+  },
+  {
+   "slug": "family-range-compression",
+   "name": "Range compression",
+   "family": "range-compression",
+   "tagline": "NR7 intraday range compression, then a three-session TQQQ expansion hold.",
+   "summary": "A session whose QQQ range is the narrowest of the prior seven precedes an expansion. Buy TQQQ at the next open and hold three sessions; BIL otherwise. Active but below the TQQQ full-window CAGR bar.",
+   "dev": {
+    "cagr": 0.1802759150718971,
+    "max_dd": 0.6790322426245557,
+    "sharpe": 0.6232489576421988
+   },
+   "full": {
+    "cagr": 0.16547937168246296,
+    "max_dd": 0.6790322426245557,
+    "sharpe": 0.604117259403743
+   },
+   "above_tqqq": false,
+   "dev_above_tqqq": null,
+   "status": "verified-full",
+   "visible": true,
+   "family_winner": false,
+   "note": "New family added 2026-11-28. Full 16.55% CAGR / 67.90% DD / 0.60 Sharpe; 973 full fills. One-shot 2024-2026 holdout 13.56%.",
+   "source": "research/new/family-range-compression/report.md"
   }
  ],
  "winner_policy": "One verified-full above-TQQQ winner per family, selected by full-window CAGR. ratio-froth and vol-scaled-crash-stop are now verified-full via clean reruns and audits; the previous fast-trend-vol / vol-term-structure remain verified research records but are not family winners."

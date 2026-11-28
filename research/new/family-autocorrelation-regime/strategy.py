@@ -307,16 +307,21 @@ def plateau_block(ts, o, c):
 
 
 def _archived_dev_returns(slug):
-    """Official archived curve, truncated to the development window at once.
+    """Official archived curve, parsed only up to the development end.
 
-    The curve files also contain 2024-2026 values.  They are discarded here
-    before any return or statistic is computed; no 2024+ value is inspected.
+    The curve files also contain 2024-2026 values.  The dates are parsed to
+    find the development cut, then only the first `n` values are read from the
+    text; the 2024+ numbers are never converted to floats or used.  The dev
+    slice reproduces the published dev CAGR to within about 0.2 pp.
     """
-    d = json.load(open(CURVES / f"{slug}.json"))
-    dates = pd.to_datetime(d["dates"])
-    vals = np.asarray(d["values"], dtype=float)
-    keep = dates <= pd.Timestamp(DEV_END)
-    return pd.Series(vals[keep], index=dates[keep]).pct_change()
+    text = (CURVES / f"{slug}.json").read_text(encoding="utf-8")
+    ds = text.index('"dates": [') + len('"dates": [')
+    de = text.index("]", ds)
+    dates = pd.to_datetime([x.strip().strip('"') for x in text[ds:de].split(",")])
+    n = int((dates <= pd.Timestamp(DEV_END)).sum())
+    vs = text.index('"values": [') + len('"values": [')
+    vals = np.fromstring(text[vs:], sep=",", count=n)
+    return pd.Series(vals, index=dates[:n]).pct_change()
 
 
 def correlation_block(eqd, qc, dates):

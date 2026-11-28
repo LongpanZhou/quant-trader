@@ -23,7 +23,7 @@ that beats `ratio-froth` (full 62.21% CAGR / 36.65% DD / 1.43 Sharpe).
 | 13 | `day-of-month` | 35.29% | 59.80% | 0.90 | 1,360 | no |
 | 14 | `monthly-seasonality` | 34.46% | 72.12% | 0.81 | 387 | no |
 | 15 | `volume-clock` | 29.65% | 26.69% | 1.24 | 1,614 | no |
-| 16 | `lead-lag-spillover` | 27.61% | 30.90% | 0.88 | 2,013 | no |
+| 16 | `range-compression` | 16.55% | 67.90% | 0.60 | 973 | no |
 | 17 | `dynamic-risk-parity` | 26.21% | 50.60% | 0.89 | 319 | no |
 | 18 | `quarter-end-flow` | 25.50% | 52.00% | 0.83 | 1,333 | no |
 | 19 | `cpi-nfp-release` | 9.97% | 25.10% | 0.68 | 521 | no |
@@ -45,9 +45,8 @@ second, qualified result.
 - `family-lunch-reversal`: -6.96% dev CAGR; falsified.
 - `family-power-hour-momentum`: 4.44% dev, below the 5% full-window floor.
 - `family-vwap-reversion`: -19.08% dev; falsified.
-- `family-lead-lag-spillover` is included at #16 but the independent-family
-  test failed: the orthogonalized residual has t = -0.84 and the result is
-  common-factor short-term reversal. It is a below-bar research record, not a
-  winner.
+- `family-lead-lag-spillover` was not added: the orthogonalized residual has
+  t = -0.84 and the result is common-factor short-term reversal, not an
+  independent family. It was replaced by `family-range-compression`.
 
 All 20 active entries have at least 100 full-window fills; the minimum is 225.

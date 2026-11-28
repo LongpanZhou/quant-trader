@@ -237,15 +237,6 @@
    "sharpe": 1.2319336886997603
   },
   {
-   "slug": "family-lead-lag-spillover",
-   "name": "SPY\u2192QQQ spillover",
-   "tagline": "Cross-market lead-lag residual",
-   "summary": "The hypothesis has two layers:",
-   "cagr": 0.27605494383270757,
-   "dd": 0.30919186698062995,
-   "sharpe": 0.894344348555544
-  },
-  {
    "slug": "intraday-seasonality",
    "name": "Close-flow exhaustion",
    "tagline": "QQQ down more than 1% by the close forces leveraged-ETF selling into the close; buy the closing print and own the one-session reversal.",
@@ -298,6 +289,15 @@
    "cagr": 0.1720686466450867,
    "dd": 0.31778000954771257,
    "sharpe": 0.8901603484581297
+  },
+  {
+   "slug": "family-range-compression",
+   "name": "Range compression",
+   "tagline": "NR7 intraday range compression, then a three-session TQQQ expansion hold.",
+   "summary": "A session whose QQQ range is the narrowest of the prior seven precedes an expansion. Buy TQQQ at the next open and hold three sessions; BIL otherwise. Active but below the TQQQ full-window CAGR bar.",
+   "cagr": 0.16547937168246296,
+   "dd": 0.6790322426245557,
+   "sharpe": 0.604117259403743
   },
   {
    "slug": "ml-classifier",

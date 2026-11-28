@@ -33,8 +33,8 @@ family.
 
 **New-family note:** 20 new research families were added on 2026-11-28. Eleven
 clear the full bar and are winners. Nine are active but below the bar:
-Kelly sizing, day-of-month, monthly seasonality, volume clock, lead-lag
-spillover, dynamic risk parity, quarter-end flow, CPI/NFP, and gap
+Kelly sizing, day-of-month, monthly seasonality, volume clock, range
+compression, dynamic risk parity, quarter-end flow, CPI/NFP, and gap
 continuation. None is a duplicate of the ten original families.
 
 ## Verification notes

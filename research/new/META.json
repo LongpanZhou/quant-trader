@@ -303,16 +303,6 @@
    "visible": true
   },
   {
-   "slug": "family-lead-lag-spillover",
-   "name": "SPY\u2192QQQ spillover",
-   "tagline": "Cross-market lead-lag residual",
-   "summary": "The hypothesis has two layers:",
-   "verdict": "Verified - new family",
-   "reason": "Full 27.61% CAGR / 30.92% DD / 0.89 Sharpe; 2013 fills; below the TQQQ bar.",
-   "family": "lead-lag-spillover",
-   "visible": true
-  },
-  {
    "slug": "family-dynamic-risk-parity",
    "name": "Dynamic risk parity",
    "tagline": "Rolling risk-contribution allocation",
@@ -350,6 +340,16 @@
    "verdict": "Verified - new family",
    "reason": "Full 6.63% CAGR / 44.74% DD / 0.53 Sharpe; 412 fills; below the TQQQ bar.",
    "family": "gap-continuation",
+   "visible": true
+  },
+  {
+   "slug": "family-range-compression",
+   "name": "Range compression",
+   "tagline": "NR7 intraday range compression, then a three-session TQQQ expansion hold.",
+   "summary": "A session whose QQQ range is the narrowest of the prior seven precedes an expansion. Buy TQQQ at the next open and hold three sessions; BIL otherwise. Active but below the TQQQ full-window CAGR bar.",
+   "verdict": "Verified - new family, below bar",
+   "reason": "Full 16.55% CAGR / 67.90% DD / 0.60 Sharpe; 973 fills.",
+   "family": "range-compression",
    "visible": true
   }
  ],
