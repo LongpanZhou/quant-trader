@@ -434,7 +434,7 @@ export function AllStrategiesChart() {
   const [hovered, setHovered] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch("/data/compare/all.min.json?v=2026-11-28-44b")
+    fetch("/data/compare/all.min.json?v=2026-11-28-44c")
       .then((response) => {
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         return response.json();

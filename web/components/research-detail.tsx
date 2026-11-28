@@ -108,7 +108,7 @@ export const CurveChart = memo(function CurveChart({ slug }: { slug: string }) {
   useEffect(() => {
     const controller = new AbortController();
     setPayload(null);
-    fetch(`/data/compare/curves/${encodeURIComponent(slug)}.json?v=2026-11-28-44b`, {
+    fetch(`/data/compare/curves/${encodeURIComponent(slug)}.json?v=2026-11-28-44c`, {
       signal: controller.signal,
     })
       .then((response) => {
