@@ -20,13 +20,13 @@ import bt  # noqa: E402
 import run_holdout as R  # noqa: E402
 
 NEW_SLUGS = [
-    "family-close-location", "family-volume-skew", "family-vol-of-volume",
-    "family-change-point", "family-hurst-persistence", "family-tqqq-decay",
-    "family-realized-skew", "family-beta-rotation", "family-sector-rotation",
-    "family-breadth", "family-crypto-risk-appetite", "family-rates-volatility",
-    "family-energy-rotation", "family-oil-shock", "family-style-rotation",
-    "family-yen-carry", "family-lowvol-rotation", "family-homebuilder-rotation",
-    "family-financials-rotation", "family-retail-rotation",
+    "family-close-location", "family-volume-skew", "family-change-point",
+    "family-hurst-persistence", "family-tqqq-decay", "family-realized-skew",
+    "family-sector-rotation", "family-breadth", "family-crypto-risk-appetite",
+    "family-rates-volatility", "family-energy-rotation", "family-style-rotation",
+    "family-yen-carry", "family-homebuilder-rotation", "family-financials-rotation",
+    "family-retail-rotation", "family-skew-change", "family-efa-spy",
+    "family-qual-spy", "family-hyg-spy",
 ]
 EXISTING = [
     "ratio-froth", "vol-scaled-crash-stop", "relative-value-tqqq",
@@ -133,13 +133,17 @@ def main():
         "",
         "## Conclusion",
         "",
-        "All 20 additions have session-level TQQQ Jaccard ≤ 0.663; the maximum is",
-        "`oil-shock` at 0.663, then `change-point` at 0.656. The former high-overlap",
-        "names (policy-liquidity 0.87, VIX term structure 0.81, credit spread 0.73)",
-        "were replaced. Close-location is the only strategy above ratio-froth's",
-        "62.21% CAGR (66.23%); its Jaccard is 0.47 and residual alpha is +37.8%/yr",
-        "at t=2.80, but its raw return correlation is 0.77. No strategy above",
-        "62.21% has lower raw correlation. See OBJECTIVE_FEASIBILITY.md.",
+        "All 20 additions have session-level TQQQ Jaccard ≤ 0.66; the maximum is",
+        "`change-point` at 0.656. The four highest raw-correlation names were",
+        "replaced: vol-of-volume (0.84), oil-shock (0.80), low-vol (0.79) and",
+        "beta-rotation (0.77) are now skew-change (0.60), EFA/SPY (0.60),",
+        "QUAL/SPY (0.61) and HYG/SPY (0.63). The remaining >0.70 names are",
+        "realized-skew (0.74), tqqq-decay (0.73), style-rotation (0.71) and",
+        "close-location (0.77); each has residual alpha t>=1.77 and Jaccard",
+        "<=0.61. Close-location is the only strategy above ratio-froth's 62.21%",
+        "CAGR (66.23%); its Jaccard is 0.47 and residual alpha is +37.8%/yr at",
+        "t=2.80. No strategy above 62.21% has lower raw correlation. See",
+        "OBJECTIVE_FEASIBILITY.md.",
         "",
     ]
     (NEW / "FAMILY_OVERLAP_AUDIT.md").write_text("\n".join(lines) + "\n", encoding="utf-8")

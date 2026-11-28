@@ -48,15 +48,6 @@
    "sharpe": 0.9826642885844419
   },
   {
-   "slug": "family-oil-shock",
-   "name": "Oil shock",
-   "tagline": "USO energy shock",
-   "summary": "External oil-shock family; one-shot full holdout.",
-   "cagr": 0.4695454919334021,
-   "dd": 0.6007188383483317,
-   "sharpe": 0.9676122696504671
-  },
-  {
    "slug": "family-crypto-risk-appetite",
    "name": "Crypto risk appetite",
    "tagline": "BTC momentum risk appetite",
@@ -73,15 +64,6 @@
    "cagr": 0.4625915827166389,
    "dd": 0.41417213608723935,
    "sharpe": 1.1636275786064603
-  },
-  {
-   "slug": "family-vol-of-volume",
-   "name": "Volatility of volume",
-   "tagline": "Volume-dispersion state",
-   "summary": "The primary object is the dispersion of minute volume, measured as the Shannon entropy of the 1-minute QQQ volume shares over the closing hour:",
-   "cagr": 0.4555715167361749,
-   "dd": 0.7004183851208732,
-   "sharpe": 1.074624682626839
   },
   {
    "slug": "family-rebalance-flow",
@@ -192,15 +174,6 @@
    "sharpe": 0.915686635936342
   },
   {
-   "slug": "family-beta-rotation",
-   "name": "Beta rotation",
-   "tagline": "QQQ/SPY beta regime",
-   "summary": "There are 151 fills across 76 independent fill days (the activity floor is 100 fills or 30 events). Average weights are 69.0% QQQ, 27.9% TQQQ, 3.1% BIL.",
-   "cagr": 0.3769799217420813,
-   "dd": 0.596266106305434,
-   "sharpe": 1.007125816838063
-  },
-  {
    "slug": "family-energy-rotation",
    "name": "Energy rotation",
    "tagline": "XLE/XLK energy-vs-tech leadership",
@@ -208,6 +181,24 @@
    "cagr": 0.3648214527298852,
    "dd": 0.6989160359593212,
    "sharpe": 0.8963920562277656
+  },
+  {
+   "slug": "family-efa-spy",
+   "name": "Developed-market relative",
+   "tagline": "EFA/SPY developed-market leadership",
+   "summary": "When developed markets lag the US (EFA/SPY 60-session change in its bottom half), buy TQQQ; otherwise BIL.",
+   "cagr": 0.35587502103742064,
+   "dd": 0.5922345837615999,
+   "sharpe": 0.9139778904400119
+  },
+  {
+   "slug": "family-qual-spy",
+   "name": "Quality factor leadership",
+   "tagline": "QUAL/SPY quality-factor leadership",
+   "summary": "When the quality factor lags the broad market (QUAL/SPY 60-session change in its bottom half), buy TQQQ; otherwise BIL.",
+   "cagr": 0.35033441703925594,
+   "dd": 0.5426421549492829,
+   "sharpe": 0.9052321346774828
   },
   {
    "slug": "family-volume-skew",
@@ -235,6 +226,15 @@
    "cagr": 0.3360082702948668,
    "dd": 0.5392569079845981,
    "sharpe": 0.8953409885502899
+  },
+  {
+   "slug": "family-skew-change",
+   "name": "SKEW tail-risk impulse",
+   "tagline": "CBOE SKEW 20-session change as a contrarian tail-risk gate",
+   "summary": "When tail-risk hedging demand is rising (SKEW 20-session change in its top half), buy TQQQ; otherwise BIL.",
+   "cagr": 0.3219627227872712,
+   "dd": 0.543259796845558,
+   "sharpe": 0.8971269221924456
   },
   {
    "slug": "family-sector-rotation",
@@ -291,6 +291,15 @@
    "sharpe": 1.1340444026468461
   },
   {
+   "slug": "family-hyg-spy",
+   "name": "Credit-equity risk appetite",
+   "tagline": "HYG/SPY high-yield credit leadership",
+   "summary": "When high-yield credit leads equities (HYG/SPY 20-session change in its top half), buy TQQQ; otherwise BIL.",
+   "cagr": 0.1936833465856398,
+   "dd": 0.7799808326851819,
+   "sharpe": 0.6496437015470999
+  },
+  {
    "slug": "family-yen-carry",
    "name": "Yen carry",
    "tagline": "USDJPY carry/safe-haven impulse",
@@ -334,15 +343,6 @@
    "cagr": 0.14654800584623517,
    "dd": 0.6355113529285439,
    "sharpe": 0.6119122198650161
-  },
-  {
-   "slug": "family-lowvol-rotation",
-   "name": "Low-vol rotation",
-   "tagline": "USMV/SPY defensive-vs-market leadership",
-   "summary": "External lowvol-rotation family; full-window holdout.",
-   "cagr": 0.13312367046089446,
-   "dd": 0.7095491403152666,
-   "sharpe": 0.5054453130609082
   },
   {
    "slug": "intraday-mean-reversion",

@@ -17,8 +17,10 @@ ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "data" / "external"
 SYMBOLS = [
     "^VIX", "^VIX3M", "^TNX", "^IRX", "^TYX", "^FVX", "^MOVE",
-    "TLT", "IEF", "SHY", "HYG", "LQD", "UUP", "GLD", "USO", "CPER",
+    "^SKEW", "^VVIX",
+    "TLT", "IEF", "SHY", "HYG", "LQD", "TIP", "UUP", "GLD", "USO", "CPER",
     "XLU", "XLK", "XLE", "XLF", "IWM", "EEM", "EFA", "RSP", "SPY",
+    "QUAL", "MTUM", "GDX", "SLV", "SMH", "XBI", "XHB", "XRT",
     "BTC-USD", "JPY=X",
 ]
 P1, P2 = 1420070400, 1790000000  # 2015-01-01 .. 2026-10

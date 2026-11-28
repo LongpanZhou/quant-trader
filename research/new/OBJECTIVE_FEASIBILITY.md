@@ -14,41 +14,51 @@ Full table: `FAMILY_OVERLAP_AUDIT.md` / `.json`.
 
 ## Final audit
 
-**All 20 additions have signal Jaccard ≤ 0.663.** The maximum is
-`oil-shock` at 0.663; `change-point` is second at 0.656, and the remaining 18
-are ≤ 0.611. The three former high-overlap names
-(policy-liquidity, VIX term structure, credit spread) were replaced by
-homebuilder, financials and retail rotation.
+**All 20 additions have signal Jaccard ≤ 0.66.** The maximum is
+`change-point` at 0.656. The four highest raw-correlation names were replaced
+on 2026-11-28:
 
-| Statistic | Worst remaining |
-|---|---:|
-| Signal Jaccard | **0.663** (`oil-shock`) |
-| Raw correlation | **0.84** (`vol-of-volume` vs relative-value) |
-| Raw correlation of the ratio beater | **0.77** (`close-location` vs short-reversal) |
-| Close-location Jaccard | **0.47** |
-| Close-location residual alpha | **+37.8%/yr, t=2.80** |
+| Removed | Corr | Replaced by | Corr | Jaccard |
+|---|---:|---|---:|---:|
+| `vol-of-volume` | 0.84 | `skew-change` | 0.60 | 0.48 |
+| `oil-shock` | 0.80 | `efa-spy` | 0.60 | 0.44 |
+| `lowvol-rotation` | 0.79 | `qual-spy` | 0.61 | 0.49 |
+| `beta-rotation` | 0.77 | `hyg-spy` | 0.63 | 0.54 |
+
+The replacement gates are CBOE SKEW tail-risk pricing, EFA/SPY developed-market
+relative, QUAL/SPY quality-factor leadership, and HYG/SPY credit-equity risk
+appetite. Pairwise correlations among them are 0.38–0.61; pairwise Jaccard is
+0.27–0.40.
+
+The remaining raw correlations above 0.70 are all above-bar winners with
+significant residual alpha:
+
+| Family | Max corr | Against | Alpha / yr | Alpha t | Jaccard |
+|---|---:|---|---:|---:|---:|
+| `close-location` | 0.77 | short-reversal | +37.82% | 2.80 | 0.47 |
+| `realized-skew` | 0.74 | relative-value | +22.15% | 1.77 | 0.56 |
+| `tqqq-decay` | 0.73 | rebalance-flow | +24.95% | 2.39 | 0.53 |
+| `style-rotation` | 0.71 | relative-value | +24.39% | 1.80 | 0.61 |
 
 ## The ratio-froth conflict
 
-The only full-window candidates above ratio-froth's **62.21%** CAGR are:
+The only full-window candidate above ratio-froth's **62.21%** CAGR is
+`close-location` at **66.23%**. Its Jaccard is **0.47**, its residual alpha is
+**+37.8%/yr at t=2.80**, and its raw correlation is 0.77.
 
-- `close-location`: **66.23%**, Jaccard **0.47**, alpha +37.8%/yr, t=2.80,
-  raw correlation 0.77;
-- the removed `tail-hedge-overlay`: 66.38%, raw correlation 0.85 with
-  `vol-scaled-crash-stop`.
-
-Every independent external family tops out lower: oil 46.95%, crypto 46.50%,
-rates 38.80%, style 37.98%. Returns above 62% require high TQQQ beta; that
-mechanically raises raw correlation with the existing high-beta winners even
-when the entry gate differs.
+Every genuinely low-correlation external family tops out lower: crypto 46.50%,
+rates 38.80%, style 37.98%, EFA/SPY 35.59%, QUAL/SPY 35.03%. The removed oil
+family reached 46.95% but had 0.80 raw correlation. Returns above 62% require
+high TQQQ beta; that mechanically raises raw correlation with the existing
+high-beta winners even when the entry gate differs.
 
 ## Verdict
 
-- **Gate-level view:** all 20 have Jaccard ≤0.663, and close-location's 0.47
-  signal overlap plus +37.8%/yr residual alpha supports a distinct CLV gate.
-  The objective is met under this definition.
+- **Gate-level view:** all 20 have Jaccard ≤0.66; the four highest raw
+  correlations were replaced. All remaining >0.70 names have positive residual
+  alpha (t≥1.77) and Jaccard ≤0.61. The objective is met under this definition.
 - **Strict raw-return view:** close-location's 0.77 correlation fails a
   zero-correlation test. No strategy above 62.21% has lower raw correlation.
 
-This is an evidence-based trade-off, not a claim that a strictly
-uncorrelated >62.21% strategy exists.
+This is an evidence-based trade-off, not a claim that a strictly uncorrelated
+>62.21% strategy exists.

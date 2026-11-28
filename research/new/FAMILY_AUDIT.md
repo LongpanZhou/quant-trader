@@ -80,3 +80,20 @@ TQQQ-decay, realized-skew and beta-rotation.
 They are retained because they are the only two candidates that beat
 
 atio-froth on full CAGR; removing them would remove the ratio-froth result.
+
+
+## 2026-11-28 low-correlation replacement
+
+The four highest raw-correlation additions were replaced with gates from
+unused data dimensions:
+
+| Removed | Corr | Added | Corr | Jaccard | Full CAGR | Holdout CAGR |
+|---|---:|---|---:|---:|---:|---:|
+| ol-of-volume | 0.84 | skew-change | 0.60 | 0.48 | 32.19% | 4.00% |
+| oil-shock | 0.80 | efa-spy | 0.60 | 0.44 | 35.59% | 37.16% |
+| lowvol-rotation | 0.79 | qual-spy | 0.61 | 0.49 | 35.03% | 10.85% |
+| eta-rotation | 0.77 | hyg-spy | 0.63 | 0.54 | 19.37% | 12.79% |
+
+Primary objects: CBOE SKEW tail-risk pricing, EFA/SPY developed-market
+relative, QUAL/SPY quality-factor leadership, HYG/SPY credit-equity risk
+appetite. Pairwise correlations 0.38-0.61; pairwise Jaccard 0.27-0.40.

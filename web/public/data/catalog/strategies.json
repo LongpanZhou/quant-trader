@@ -226,34 +226,6 @@
    "provenanceCount": 0
   },
   {
-   "id": "research:family-oil-shock",
-   "slug": "family-oil-shock",
-   "kind": "research",
-   "name": "Oil shock",
-   "group": "Strategy",
-   "status": "Strategy",
-   "tagline": "USO energy shock",
-   "summary": "External oil-shock family; one-shot full holdout.",
-   "window": "2016-2026",
-   "cagr": 0.4695454919334021,
-   "dd": 0.6007188383483317,
-   "sharpe": 0.9676122696504671,
-   "metrics": {
-    "cagr10": 0.4695454919334021,
-    "dd10": 0.6007188383483317,
-    "cagr5": 0.4695454919334021,
-    "dd5": 0.6007188383483317
-   },
-   "href": "/research/family-oil-shock",
-   "runnable": false,
-   "accent": "#9ae6a5",
-   "tags": [
-    "2016-2026"
-   ],
-   "papersCount": 0,
-   "provenanceCount": 0
-  },
-  {
    "id": "research:family-crypto-risk-appetite",
    "slug": "family-crypto-risk-appetite",
    "kind": "research",
@@ -301,34 +273,6 @@
     "dd5": 0.41417213608723935
    },
    "href": "/research/family-session-timing",
-   "runnable": false,
-   "accent": "#9ae6a5",
-   "tags": [
-    "2016-2026"
-   ],
-   "papersCount": 0,
-   "provenanceCount": 0
-  },
-  {
-   "id": "research:family-vol-of-volume",
-   "slug": "family-vol-of-volume",
-   "kind": "research",
-   "name": "Volatility of volume",
-   "group": "Strategy",
-   "status": "Strategy",
-   "tagline": "Volume-dispersion state",
-   "summary": "The primary object is the dispersion of minute volume, measured as the Shannon entropy of the 1-minute QQQ volume shares over the closing hour:",
-   "window": "2016-2026",
-   "cagr": 0.4555715167361749,
-   "dd": 0.7004183851208732,
-   "sharpe": 1.074624682626839,
-   "metrics": {
-    "cagr10": 0.4555715167361749,
-    "dd10": 0.7004183851208732,
-    "cagr5": 0.4555715167361749,
-    "dd5": 0.7004183851208732
-   },
-   "href": "/research/family-vol-of-volume",
    "runnable": false,
    "accent": "#9ae6a5",
    "tags": [
@@ -674,34 +618,6 @@
    "provenanceCount": 0
   },
   {
-   "id": "research:family-beta-rotation",
-   "slug": "family-beta-rotation",
-   "kind": "research",
-   "name": "Beta rotation",
-   "group": "Strategy",
-   "status": "Strategy",
-   "tagline": "QQQ/SPY beta regime",
-   "summary": "There are 151 fills across 76 independent fill days (the activity floor is 100 fills or 30 events). Average weights are 69.0% QQQ, 27.9% TQQQ, 3.1% BIL.",
-   "window": "2016-2026",
-   "cagr": 0.3769799217420813,
-   "dd": 0.596266106305434,
-   "sharpe": 1.007125816838063,
-   "metrics": {
-    "cagr10": 0.3769799217420813,
-    "dd10": 0.596266106305434,
-    "cagr5": 0.3769799217420813,
-    "dd5": 0.596266106305434
-   },
-   "href": "/research/family-beta-rotation",
-   "runnable": false,
-   "accent": "#9ae6a5",
-   "tags": [
-    "2016-2026"
-   ],
-   "papersCount": 0,
-   "provenanceCount": 0
-  },
-  {
    "id": "research:family-energy-rotation",
    "slug": "family-energy-rotation",
    "kind": "research",
@@ -721,6 +637,62 @@
     "dd5": 0.6989160359593212
    },
    "href": "/research/family-energy-rotation",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
+   "id": "research:family-efa-spy",
+   "slug": "family-efa-spy",
+   "kind": "research",
+   "name": "Developed-market relative",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "EFA/SPY developed-market leadership",
+   "summary": "When developed markets lag the US (EFA/SPY 60-session change in its bottom half), buy TQQQ; otherwise BIL.",
+   "window": "2016-2026",
+   "cagr": 0.35587502103742064,
+   "dd": 0.5922345837615999,
+   "sharpe": 0.9139778904400119,
+   "metrics": {
+    "cagr10": 0.35587502103742064,
+    "dd10": 0.5922345837615999,
+    "cagr5": 0.35587502103742064,
+    "dd5": 0.5922345837615999
+   },
+   "href": "/research/family-efa-spy",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
+   "id": "research:family-qual-spy",
+   "slug": "family-qual-spy",
+   "kind": "research",
+   "name": "Quality factor leadership",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "QUAL/SPY quality-factor leadership",
+   "summary": "When the quality factor lags the broad market (QUAL/SPY 60-session change in its bottom half), buy TQQQ; otherwise BIL.",
+   "window": "2016-2026",
+   "cagr": 0.35033441703925594,
+   "dd": 0.5426421549492829,
+   "sharpe": 0.9052321346774828,
+   "metrics": {
+    "cagr10": 0.35033441703925594,
+    "dd10": 0.5426421549492829,
+    "cagr5": 0.35033441703925594,
+    "dd5": 0.5426421549492829
+   },
+   "href": "/research/family-qual-spy",
    "runnable": false,
    "accent": "#9ae6a5",
    "tags": [
@@ -805,6 +777,34 @@
     "dd5": 0.5392569079845981
    },
    "href": "/research/family-financials-rotation",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
+   "id": "research:family-skew-change",
+   "slug": "family-skew-change",
+   "kind": "research",
+   "name": "SKEW tail-risk impulse",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "CBOE SKEW 20-session change as a contrarian tail-risk gate",
+   "summary": "When tail-risk hedging demand is rising (SKEW 20-session change in its top half), buy TQQQ; otherwise BIL.",
+   "window": "2016-2026",
+   "cagr": 0.3219627227872712,
+   "dd": 0.543259796845558,
+   "sharpe": 0.8971269221924456,
+   "metrics": {
+    "cagr10": 0.3219627227872712,
+    "dd10": 0.543259796845558,
+    "cagr5": 0.3219627227872712,
+    "dd5": 0.543259796845558
+   },
+   "href": "/research/family-skew-change",
    "runnable": false,
    "accent": "#9ae6a5",
    "tags": [
@@ -982,6 +982,34 @@
    "provenanceCount": 0
   },
   {
+   "id": "research:family-hyg-spy",
+   "slug": "family-hyg-spy",
+   "kind": "research",
+   "name": "Credit-equity risk appetite",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "HYG/SPY high-yield credit leadership",
+   "summary": "When high-yield credit leads equities (HYG/SPY 20-session change in its top half), buy TQQQ; otherwise BIL.",
+   "window": "2016-2026",
+   "cagr": 0.1936833465856398,
+   "dd": 0.7799808326851819,
+   "sharpe": 0.6496437015470999,
+   "metrics": {
+    "cagr10": 0.1936833465856398,
+    "dd10": 0.7799808326851819,
+    "cagr5": 0.1936833465856398,
+    "dd5": 0.7799808326851819
+   },
+   "href": "/research/family-hyg-spy",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
    "id": "research:family-yen-carry",
    "slug": "family-yen-carry",
    "kind": "research",
@@ -1113,34 +1141,6 @@
     "dd5": 0.6355113529285439
    },
    "href": "/research/intraday-momentum",
-   "runnable": false,
-   "accent": "#9ae6a5",
-   "tags": [
-    "2016-2026"
-   ],
-   "papersCount": 0,
-   "provenanceCount": 0
-  },
-  {
-   "id": "research:family-lowvol-rotation",
-   "slug": "family-lowvol-rotation",
-   "kind": "research",
-   "name": "Low-vol rotation",
-   "group": "Strategy",
-   "status": "Strategy",
-   "tagline": "USMV/SPY defensive-vs-market leadership",
-   "summary": "External lowvol-rotation family; full-window holdout.",
-   "window": "2016-2026",
-   "cagr": 0.13312367046089446,
-   "dd": 0.7095491403152666,
-   "sharpe": 0.5054453130609082,
-   "metrics": {
-    "cagr10": 0.13312367046089446,
-    "dd10": 0.7095491403152666,
-    "cagr5": 0.13312367046089446,
-    "dd5": 0.7095491403152666
-   },
-   "href": "/research/family-lowvol-rotation",
    "runnable": false,
    "accent": "#9ae6a5",
    "tags": [

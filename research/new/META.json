@@ -163,16 +163,6 @@
    "visible": true
   },
   {
-   "slug": "family-vol-of-volume",
-   "name": "Volatility of volume",
-   "tagline": "Volume-dispersion state",
-   "summary": "The primary object is the dispersion of minute volume, measured as the Shannon entropy of the 1-minute QQQ volume shares over the closing hour:",
-   "verdict": "Verified - new family",
-   "reason": "Full 45.56% CAGR / 70.04% DD / 1.07 Sharpe; 1921 fills; above the TQQQ bar.",
-   "family": "vol-of-volume",
-   "visible": true
-  },
-  {
    "slug": "family-change-point",
    "name": "Change-point regime",
    "tagline": "Online structural-break detection",
@@ -210,16 +200,6 @@
    "verdict": "Verified - new family",
    "reason": "Full 38.83% CAGR / 53.98% DD / 0.95 Sharpe; 439 fills; above the TQQQ bar.",
    "family": "realized-skew",
-   "visible": true
-  },
-  {
-   "slug": "family-beta-rotation",
-   "name": "Beta rotation",
-   "tagline": "QQQ/SPY beta regime",
-   "summary": "There are 151 fills across 76 independent fill days (the activity floor is 100 fills or 30 events). Average weights are 69.0% QQQ, 27.9% TQQQ, 3.1% BIL.",
-   "verdict": "Verified - new family",
-   "reason": "Full 37.70% CAGR / 59.63% DD / 1.01 Sharpe; 225 fills; above the TQQQ bar.",
-   "family": "beta-rotation",
    "visible": true
   },
   {
@@ -283,16 +263,6 @@
    "visible": true
   },
   {
-   "slug": "family-oil-shock",
-   "name": "Oil shock",
-   "tagline": "USO energy shock",
-   "summary": "External oil-shock family; one-shot full holdout.",
-   "verdict": "Verified - external family",
-   "reason": "External family added 2026-11-28. Full 46.95% CAGR / 60.07% DD / 0.97 Sharpe; 349 full fills.",
-   "family": "oil-shock",
-   "visible": true
-  },
-  {
    "slug": "family-style-rotation",
    "name": "Style rotation",
    "tagline": "IWF/IWD growth-vs-value leadership",
@@ -310,16 +280,6 @@
    "verdict": "Verified - external family",
    "reason": "External family added 2026-11-28. Full 18.21% CAGR / 71.47% DD / 0.59 Sharpe; 399 full fills.",
    "family": "yen-carry",
-   "visible": true
-  },
-  {
-   "slug": "family-lowvol-rotation",
-   "name": "Low-vol rotation",
-   "tagline": "USMV/SPY defensive-vs-market leadership",
-   "summary": "External lowvol-rotation family; full-window holdout.",
-   "verdict": "Verified - external family",
-   "reason": "External family added 2026-11-28. Full 13.31% CAGR / 70.95% DD / 0.51 Sharpe; 295 full fills.",
-   "family": "lowvol-rotation",
    "visible": true
   },
   {
@@ -350,6 +310,46 @@
    "verdict": "Verified - external family",
    "reason": "External family added 2026-11-28. Full 27.82% CAGR / 55.22% DD / 0.90 Sharpe; 329 full fills.",
    "family": "retail-rotation",
+   "visible": true
+  },
+  {
+   "slug": "family-skew-change",
+   "name": "SKEW tail-risk impulse",
+   "tagline": "CBOE SKEW 20-session change as a contrarian tail-risk gate",
+   "summary": "When tail-risk hedging demand is rising (SKEW 20-session change in its top half), buy TQQQ; otherwise BIL.",
+   "verdict": "Verified - low-overlap family",
+   "reason": "Low-overlap family added 2026-11-28. Full 32.20% CAGR / 54.33% DD / 0.90 Sharpe; 577 full fills. Max winner correlation <=0.63, signal Jaccard <=0.55.",
+   "family": "skew-change",
+   "visible": true
+  },
+  {
+   "slug": "family-efa-spy",
+   "name": "Developed-market relative",
+   "tagline": "EFA/SPY developed-market leadership",
+   "summary": "When developed markets lag the US (EFA/SPY 60-session change in its bottom half), buy TQQQ; otherwise BIL.",
+   "verdict": "Verified - low-overlap family",
+   "reason": "Low-overlap family added 2026-11-28. Full 35.59% CAGR / 59.22% DD / 0.91 Sharpe; 165 full fills. Max winner correlation <=0.63, signal Jaccard <=0.55.",
+   "family": "efa-spy",
+   "visible": true
+  },
+  {
+   "slug": "family-qual-spy",
+   "name": "Quality factor leadership",
+   "tagline": "QUAL/SPY quality-factor leadership",
+   "summary": "When the quality factor lags the broad market (QUAL/SPY 60-session change in its bottom half), buy TQQQ; otherwise BIL.",
+   "verdict": "Verified - low-overlap family",
+   "reason": "Low-overlap family added 2026-11-28. Full 35.03% CAGR / 54.26% DD / 0.91 Sharpe; 217 full fills. Max winner correlation <=0.63, signal Jaccard <=0.55.",
+   "family": "qual-spy",
+   "visible": true
+  },
+  {
+   "slug": "family-hyg-spy",
+   "name": "Credit-equity risk appetite",
+   "tagline": "HYG/SPY high-yield credit leadership",
+   "summary": "When high-yield credit leads equities (HYG/SPY 20-session change in its top half), buy TQQQ; otherwise BIL.",
+   "verdict": "Verified - low-overlap family",
+   "reason": "Low-overlap family added 2026-11-28. Full 19.37% CAGR / 78.00% DD / 0.65 Sharpe; 383 full fills. Max winner correlation <=0.63, signal Jaccard <=0.55.",
+   "family": "hyg-spy",
    "visible": true
   }
  ],

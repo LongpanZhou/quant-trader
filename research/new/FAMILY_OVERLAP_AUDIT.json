@@ -20,16 +20,6 @@
   "overlap_against": "family-rebalance-flow"
  },
  {
-  "new": "family-vol-of-volume",
-  "max_corr": 0.8363523436002802,
-  "corr_against": "relative-value-tqqq",
-  "max_alpha": 0.21735514176145687,
-  "alpha_t": 1.935246618804227,
-  "alpha_against": "family-intraday-microstructure-day",
-  "max_jaccard": 0.5900111815132315,
-  "overlap_against": "family-session-timing"
- },
- {
   "new": "family-change-point",
   "max_corr": 0.6773162853938512,
   "corr_against": "family-rebalance-flow",
@@ -67,16 +57,6 @@
   "alpha_t": 1.769259037964779,
   "alpha_against": "family-intraday-microstructure-day",
   "max_jaccard": 0.558955223880597,
-  "overlap_against": "family-session-timing"
- },
- {
-  "new": "family-beta-rotation",
-  "max_corr": 0.7724914048756274,
-  "corr_against": "family-rebalance-flow",
-  "max_alpha": 0.1607641740318969,
-  "alpha_t": 1.6198834449655526,
-  "alpha_against": "family-intraday-microstructure-day",
-  "max_jaccard": 0.27276105536975104,
   "overlap_against": "family-session-timing"
  },
  {
@@ -130,16 +110,6 @@
   "overlap_against": "family-session-timing"
  },
  {
-  "new": "family-oil-shock",
-  "max_corr": 0.7958086655213269,
-  "corr_against": "relative-value-tqqq",
-  "max_alpha": 0.2100818424671386,
-  "alpha_t": 1.4712310106804554,
-  "alpha_against": "family-intraday-microstructure-day",
-  "max_jaccard": 0.6633296255098258,
-  "overlap_against": "family-session-timing"
- },
- {
   "new": "family-style-rotation",
   "max_corr": 0.7119458529681671,
   "corr_against": "relative-value-tqqq",
@@ -157,16 +127,6 @@
   "alpha_t": -0.7644215496285981,
   "alpha_against": "vol-scaled-crash-stop",
   "max_jaccard": 0.5762648809523809,
-  "overlap_against": "family-session-timing"
- },
- {
-  "new": "family-lowvol-rotation",
-  "max_corr": 0.7876457756826306,
-  "corr_against": "family-short-reversal",
-  "max_alpha": -0.1468647971507243,
-  "alpha_t": -1.427913048024592,
-  "alpha_against": "family-short-reversal",
-  "max_jaccard": 0.5161883738042679,
   "overlap_against": "family-session-timing"
  },
  {
@@ -197,6 +157,46 @@
   "alpha_t": 1.8688823811849065,
   "alpha_against": "family-intraday-microstructure-day",
   "max_jaccard": 0.3705640642510273,
+  "overlap_against": "family-session-timing"
+ },
+ {
+  "new": "family-skew-change",
+  "max_corr": 0.5990329245456972,
+  "corr_against": "relative-value-tqqq",
+  "max_alpha": 0.19628696918573843,
+  "alpha_t": 1.7332977541584482,
+  "alpha_against": "family-intraday-microstructure-day",
+  "max_jaccard": 0.47652757078986585,
+  "overlap_against": "family-session-timing"
+ },
+ {
+  "new": "family-efa-spy",
+  "max_corr": 0.5967413825573428,
+  "corr_against": "family-short-reversal",
+  "max_alpha": 0.17886813177488822,
+  "alpha_t": 1.5843676488591034,
+  "alpha_against": "relative-value-tqqq",
+  "max_jaccard": 0.4413844436174172,
+  "overlap_against": "family-session-timing"
+ },
+ {
+  "new": "family-qual-spy",
+  "max_corr": 0.6101216927334567,
+  "corr_against": "family-short-reversal",
+  "max_alpha": 0.17101035535836454,
+  "alpha_t": 1.4669922086824296,
+  "alpha_against": "family-intraday-microstructure-day",
+  "max_jaccard": 0.48668639053254437,
+  "overlap_against": "family-session-timing"
+ },
+ {
+  "new": "family-hyg-spy",
+  "max_corr": 0.626059057592653,
+  "corr_against": "family-rebalance-flow",
+  "max_alpha": 0.1175824818264717,
+  "alpha_t": 1.039656785925002,
+  "alpha_against": "family-intraday-microstructure-day",
+  "max_jaccard": 0.5386049981350243,
   "overlap_against": "family-session-timing"
  }
 ]

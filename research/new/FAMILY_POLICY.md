@@ -4,7 +4,7 @@ The website lists every research strategy. The rule is about **above-TQQQ**
 strategies: one verified winner per family. Non-performers remain research
 records and do not affect the one-winner count.
 
-## Verified above-TQQQ family winners (20)
+## Verified above-TQQQ family winners (17)
 
 | Family | Winner | Full CAGR | Full DD | Full Sharpe |
 |---|---|---:|---:|---:|
@@ -19,16 +19,13 @@ records and do not affect the one-winner count.
 | `intraday-microstructure` | `family-intraday-microstructure-day` | 40.97% | 47.42% | 1.05 |
 | `ml-microstructure` | `family-ml-microstructure` | 41.03% | 44.51% | 1.02 |
 | `close-location` | `family-close-location` | 66.23% | 62.76% | 1.26 |
-| `oil-shock` | `family-oil-shock` | 46.95% | 64.46% | 0.97 |
 | `crypto-risk-appetite` | `family-crypto-risk-appetite` | 46.50% | 52.33% | 1.19 |
-| `vol-of-volume` | `family-vol-of-volume` | 45.56% | 70.00% | 1.09 |
 | `change-point` | `family-change-point` | 45.29% | 54.10% | 1.13 |
 | `hurst-persistence` | `family-hurst-persistence` | 43.00% | 56.25% | 1.04 |
 | `tqqq-decay` | `family-tqqq-decay` | 40.00% | 37.60% | 1.09 |
 | `realized-skew` | `family-realized-skew` | 38.83% | 53.98% | 0.97 |
 | `rates-volatility` | `family-rates-volatility` | 38.80% | 43.01% | 1.05 |
 | `style-rotation` | `family-style-rotation` | 37.98% | 69.89% | 0.92 |
-| `beta-rotation` | `family-beta-rotation` | 37.70% | 59.60% | 1.03 |
 
 ## Rules
 
@@ -38,5 +35,9 @@ records and do not affect the one-winner count.
    break on Sharpe, then lower drawdown.
 3. Non-performers and dev-only studies remain research records; they do not
    affect the one-winner count.
-4. The 20 additions have signal Jaccard ≤0.663 against existing winners;
-   close-location is the only ratio-froth beater and has Jaccard 0.47.
+4. The 20 additions have signal Jaccard ≤0.66 against existing winners; the
+   four highest raw-correlation names were replaced on 2026-11-28.
+   Close-location is the only ratio-froth beater; its Jaccard is 0.47 and its
+   residual alpha is +37.8%/yr at t=2.80. The other >0.70 raw-correlation
+   names (realized-skew, tqqq-decay, style-rotation) each have alpha t≥1.77
+   and Jaccard ≤0.61.

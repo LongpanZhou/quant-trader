@@ -1127,30 +1127,6 @@
    "source": "research/new/family-close-location/report.md"
   },
   {
-   "slug": "family-vol-of-volume",
-   "name": "Volatility of volume",
-   "family": "vol-of-volume",
-   "tagline": "Volume-dispersion state",
-   "summary": "The primary object is the dispersion of minute volume, measured as the Shannon entropy of the 1-minute QQQ volume shares over the closing hour:",
-   "dev": {
-    "cagr": 0.46801205964524195,
-    "max_dd": 0.7004183851208732,
-    "sharpe": 1.0903590973378596
-   },
-   "full": {
-    "cagr": 0.4555715167361749,
-    "max_dd": 0.7004183851208732,
-    "sharpe": 1.074624682626839
-   },
-   "above_tqqq": true,
-   "dev_above_tqqq": null,
-   "status": "verified-full",
-   "visible": true,
-   "family_winner": true,
-   "note": "New family added 2026-11-28. Full 45.56% CAGR / 70.04% DD / 1.07 Sharpe; 1921 full fills. One-shot 2024-2026 holdout. ",
-   "source": "research/new/family-vol-of-volume/report.md"
-  },
-  {
    "slug": "family-change-point",
    "name": "Change-point regime",
    "family": "change-point",
@@ -1245,30 +1221,6 @@
    "family_winner": true,
    "note": "New family added 2026-11-28. Full 38.83% CAGR / 53.98% DD / 0.95 Sharpe; 439 full fills. One-shot 2024-2026 holdout. ",
    "source": "research/new/family-realized-skew/report.md"
-  },
-  {
-   "slug": "family-beta-rotation",
-   "name": "Beta rotation",
-   "family": "beta-rotation",
-   "tagline": "QQQ/SPY beta regime",
-   "summary": "There are 151 fills across 76 independent fill days (the activity floor is 100 fills or 30 events). Average weights are 69.0% QQQ, 27.9% TQQQ, 3.1% BIL.",
-   "dev": {
-    "cagr": 0.42963872174357287,
-    "max_dd": 0.4702380949635322,
-    "sharpe": 1.129476120077256
-   },
-   "full": {
-    "cagr": 0.3769799217420813,
-    "max_dd": 0.596266106305434,
-    "sharpe": 1.007125816838063
-   },
-   "above_tqqq": true,
-   "dev_above_tqqq": null,
-   "status": "verified-full",
-   "visible": true,
-   "family_winner": true,
-   "note": "New family added 2026-11-28. Full 37.70% CAGR / 59.63% DD / 1.01 Sharpe; 225 full fills. One-shot 2024-2026 holdout. ",
-   "source": "research/new/family-beta-rotation/report.md"
   },
   {
    "slug": "family-volume-skew",
@@ -1415,30 +1367,6 @@
    "source": "research/new/family-energy-rotation/report.md"
   },
   {
-   "slug": "family-oil-shock",
-   "name": "Oil shock",
-   "family": "oil-shock",
-   "tagline": "USO energy shock",
-   "summary": "External oil-shock family; one-shot full holdout.",
-   "dev": {
-    "cagr": 0.48720169431806837,
-    "max_dd": 0.6007188383483317,
-    "sharpe": 1.0055032278980816
-   },
-   "full": {
-    "cagr": 0.4695454919334021,
-    "max_dd": 0.6007188383483317,
-    "sharpe": 0.9676122696504671
-   },
-   "above_tqqq": true,
-   "dev_above_tqqq": null,
-   "status": "verified-full",
-   "visible": true,
-   "family_winner": true,
-   "note": "External family added 2026-11-28. Full 46.95% CAGR / 60.07% DD / 0.97 Sharpe; 349 full fills.",
-   "source": "research/new/family-oil-shock/report.md"
-  },
-  {
    "slug": "family-style-rotation",
    "name": "Style rotation",
    "family": "style-rotation",
@@ -1485,30 +1413,6 @@
    "family_winner": false,
    "note": "External family added 2026-11-28. Full 18.21% CAGR / 71.47% DD / 0.59 Sharpe; 399 full fills.",
    "source": "research/new/family-yen-carry/report.md"
-  },
-  {
-   "slug": "family-lowvol-rotation",
-   "name": "Low-vol rotation",
-   "family": "lowvol-rotation",
-   "tagline": "USMV/SPY defensive-vs-market leadership",
-   "summary": "External lowvol-rotation family; full-window holdout.",
-   "dev": {
-    "cagr": 0.12782983641037649,
-    "max_dd": 0.7095491403152666,
-    "sharpe": 0.5023455855564799
-   },
-   "full": {
-    "cagr": 0.13312367046089446,
-    "max_dd": 0.7095491403152666,
-    "sharpe": 0.5054453130609082
-   },
-   "above_tqqq": false,
-   "dev_above_tqqq": null,
-   "status": "verified-full",
-   "visible": true,
-   "family_winner": false,
-   "note": "External family added 2026-11-28. Full 13.31% CAGR / 70.95% DD / 0.51 Sharpe; 295 full fills.",
-   "source": "research/new/family-lowvol-rotation/report.md"
   },
   {
    "slug": "family-homebuilder-rotation",
@@ -1581,6 +1485,102 @@
    "family_winner": false,
    "note": "External family added 2026-11-28. Full 27.82% CAGR / 55.22% DD / 0.90 Sharpe; 329 full fills.",
    "source": "research/new/family-retail-rotation/report.md"
+  },
+  {
+   "slug": "family-skew-change",
+   "name": "SKEW tail-risk impulse",
+   "family": "skew-change",
+   "tagline": "CBOE SKEW 20-session change as a contrarian tail-risk gate",
+   "summary": "When tail-risk hedging demand is rising (SKEW 20-session change in its top half), buy TQQQ; otherwise BIL.",
+   "dev": {
+    "cagr": 0.43880081986572694,
+    "max_dd": 0.543259796845558,
+    "sharpe": 1.0810333805800119
+   },
+   "full": {
+    "cagr": 0.3219627227872712,
+    "max_dd": 0.543259796845558,
+    "sharpe": 0.8971269221924456
+   },
+   "above_tqqq": false,
+   "dev_above_tqqq": null,
+   "status": "verified-full",
+   "visible": true,
+   "family_winner": false,
+   "note": "Low-overlap family added 2026-11-28. Full 32.20% CAGR / 54.33% DD / 0.90 Sharpe; 577 full fills. Max winner correlation <=0.63, signal Jaccard <=0.55.",
+   "source": "research/new/family-skew-change/report.md"
+  },
+  {
+   "slug": "family-efa-spy",
+   "name": "Developed-market relative",
+   "family": "efa-spy",
+   "tagline": "EFA/SPY developed-market leadership",
+   "summary": "When developed markets lag the US (EFA/SPY 60-session change in its bottom half), buy TQQQ; otherwise BIL.",
+   "dev": {
+    "cagr": 0.35536761817677376,
+    "max_dd": 0.5021639516208377,
+    "sharpe": 0.92861708825808
+   },
+   "full": {
+    "cagr": 0.35587502103742064,
+    "max_dd": 0.5922345837615999,
+    "sharpe": 0.9139778904400119
+   },
+   "above_tqqq": false,
+   "dev_above_tqqq": null,
+   "status": "verified-full",
+   "visible": true,
+   "family_winner": false,
+   "note": "Low-overlap family added 2026-11-28. Full 35.59% CAGR / 59.22% DD / 0.91 Sharpe; 165 full fills. Max winner correlation <=0.63, signal Jaccard <=0.55.",
+   "source": "research/new/family-efa-spy/report.md"
+  },
+  {
+   "slug": "family-qual-spy",
+   "name": "Quality factor leadership",
+   "family": "qual-spy",
+   "tagline": "QUAL/SPY quality-factor leadership",
+   "summary": "When the quality factor lags the broad market (QUAL/SPY 60-session change in its bottom half), buy TQQQ; otherwise BIL.",
+   "dev": {
+    "cagr": 0.44790044964991527,
+    "max_dd": 0.5426421549492829,
+    "sharpe": 1.0776381941570572
+   },
+   "full": {
+    "cagr": 0.35033441703925594,
+    "max_dd": 0.5426421549492829,
+    "sharpe": 0.9052321346774828
+   },
+   "above_tqqq": false,
+   "dev_above_tqqq": null,
+   "status": "verified-full",
+   "visible": true,
+   "family_winner": false,
+   "note": "Low-overlap family added 2026-11-28. Full 35.03% CAGR / 54.26% DD / 0.91 Sharpe; 217 full fills. Max winner correlation <=0.63, signal Jaccard <=0.55.",
+   "source": "research/new/family-qual-spy/report.md"
+  },
+  {
+   "slug": "family-hyg-spy",
+   "name": "Credit-equity risk appetite",
+   "family": "hyg-spy",
+   "tagline": "HYG/SPY high-yield credit leadership",
+   "summary": "When high-yield credit leads equities (HYG/SPY 20-session change in its top half), buy TQQQ; otherwise BIL.",
+   "dev": {
+    "cagr": 0.21787013266454136,
+    "max_dd": 0.7799808326851819,
+    "sharpe": 0.6881622311360721
+   },
+   "full": {
+    "cagr": 0.1936833465856398,
+    "max_dd": 0.7799808326851819,
+    "sharpe": 0.6496437015470999
+   },
+   "above_tqqq": false,
+   "dev_above_tqqq": null,
+   "status": "verified-full",
+   "visible": true,
+   "family_winner": false,
+   "note": "Low-overlap family added 2026-11-28. Full 19.37% CAGR / 78.00% DD / 0.65 Sharpe; 383 full fills. Max winner correlation <=0.63, signal Jaccard <=0.55.",
+   "source": "research/new/family-hyg-spy/report.md"
   }
  ],
  "winner_policy": "One verified-full above-TQQQ winner per family, selected by full-window CAGR. ratio-froth and vol-scaled-crash-stop are now verified-full via clean reruns and audits; the previous fast-trend-vol / vol-term-structure remain verified research records but are not family winners."

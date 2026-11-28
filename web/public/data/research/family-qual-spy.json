@@ -1,0 +1,50 @@
+{
+ "slug": "family-qual-spy",
+ "name": "Quality factor leadership",
+ "tagline": "QUAL/SPY quality-factor leadership",
+ "summary": "When the quality factor lags the broad market (QUAL/SPY 60-session change in its bottom half), buy TQQQ; otherwise BIL.",
+ "metrics": {
+  "cagr": 0.35033441703925594,
+  "dd": 0.5426421549492829,
+  "sharpe": 0.9052321346774828
+ },
+ "status": "verified-full",
+ "assessment": {
+  "verdict": "Verified - low-overlap family",
+  "reason": "Low-overlap family added 2026-11-28. Full 35.03% CAGR / 54.26% DD / 0.91 Sharpe; 217 full fills. Max winner correlation <=0.63, signal Jaccard <=0.55."
+ },
+ "paths": {
+  "report": "research/new/family-qual-spy/report.md",
+  "hypothesis": "research/new/family-qual-spy/HYPOTHESIS.md",
+  "spec": null,
+  "provenance": null,
+  "code": "research/new/family-qual-spy/strategy.py",
+  "code_public": "/data/research/code/family-qual-spy.py"
+ },
+ "extracted": {
+  "hypothesis": false,
+  "spec": true,
+  "provenance": true
+ },
+ "decision": "When the quality factor lags the broad market (QUAL/SPY 60-session change in its bottom half), buy TQQQ; otherwise BIL.",
+ "rules": [],
+ "papers": [],
+ "provenance_cards": [
+  {
+   "idea": "quant-trader research program",
+   "source": "Own test",
+   "url": null,
+   "source_type": "Own test",
+   "role": "own test",
+   "role_detail": "",
+   "evidence": "Pre-registered development test on 2016-2023 and a one-shot 2024-2026 holdout; implementation and results are in report.md and strategy.py.",
+   "confidence": ""
+  }
+ ],
+ "rejected_sources": [],
+ "report_md": "# Quality factor leadership — report\n\n**Dev:** 44.79% CAGR / 54.26% DD / 1.08 Sharpe.  \n**Full:** 35.03% CAGR / 54.26% DD / 0.91 Sharpe; 217 full fills.  \n**2024-2026 holdout:** 10.85% CAGR / 46.52% DD / 0.45 Sharpe.\n\n## Rules\n\nWhen the quality factor lags the broad market (QUAL/SPY 60-session change in its bottom half), risk appetite favours high-beta growth; buy TQQQ. Otherwise BIL.\n\n## Why it is distinct\n\nThe primary object is the quality factor, not growth/value or low-vol. It is a distinct factor gate with low overlap to style-rotation. Maximum signal Jaccard against the nine existing winners is below 0.56 and maximum raw correlation is below 0.63.\n\n## Caveats\n\n- The full result is below the TQQQ CAGR bar; this is an active research family, not a winner.\n- The 2024-2026 holdout is reported above exactly as run; it is not used to tune the parameters.\n- External daily series are committed under `data/external/`.\n",
+ "hypothesis_md": "# Quality factor leadership\n\n**Slug:** `family-qual-spy`  \n**Family:** qual-spy  \n**Primary object:** QUAL/SPY 60-session leadership  \n**Window:** 2016-01-04 .. 2023-12-29 development; full holdout 2024-01-02..2026-10-23.\n\n## Claim\n\nWhen the quality factor lags the broad market (QUAL/SPY 60-session change in its bottom half), risk appetite favours high-beta growth; buy TQQQ. Otherwise BIL.\n\n## Rules\n\n- Signal uses the external daily series through the prior session; it is lagged one session.\n- Target is written at the session close and filled at the next QQQ/TQQQ open.\n- Long-only TQQQ/BIL, weights >=0, sum <=1, 2% band, 1 bp headline.\n- 252-session percentile rank with a 0.45/0.55 deadband.\n- No price-trend, realised-vol, calendar, opening-range, ML or risk-sizing gate.\n\n## Falsifiers\n\n- Full CAGR <=5% or fewer than 100 full fills (or 30 events).\n- Signal Jaccard >0.70 against an existing winner.\n- Raw daily-return correlation >0.70 against an existing winner.\n\n## Caveat\n\nThe primary object is the quality factor, not growth/value or low-vol. It is a distinct factor gate with low overlap to style-rotation.\n",
+ "spec_md": "## Rules\n\nWhen the quality factor lags the broad market (QUAL/SPY 60-session change in its bottom half), risk appetite favours high-beta growth; buy TQQQ. Otherwise BIL.",
+ "provenance_md": "## Own test\n\n- **quant-trader research program** - Pre-registered development test on 2016-2023 and a one-shot 2024-2026 holdout; implementation and results are in `report.md` and `strategy.py`.",
+ "code": "\"\"\"qual_spy low-overlap external family.\"\"\"\nfrom __future__ import annotations\nimport sys\nfrom pathlib import Path\nsys.path.insert(0, str(Path(__file__).resolve().parents[1]))\nimport ext_alt\n\ndef build_weights(ts, opens, closes):\n    return ext_alt.make_weights(ts, opens, closes, \"qual_spy\")\n\nif __name__ == \"__main__\":\n    ext_alt.run_main(\"qual_spy\")\n"
+}
