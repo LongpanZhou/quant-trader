@@ -7,7 +7,7 @@ No synthetic short, no leverage beyond TQQQ, 653 full-window fills.
 | Full 2016-2026, daily-close | `family-close-location` | `ratio-froth` |
 |---|---:|---:|
 | CAGR | **66.23%** | 62.21% |
-| Max drawdown | 65.98% | **36.65%** |
+| Max drawdown | 62.76% | **36.65%** |
 | Sharpe | 1.26 | **1.43** |
 | Fills | 653 | 619 |
 
@@ -23,7 +23,7 @@ honest claim.
 | 10 bp | **57.43%** | 50.67% |
 
 The CAGR lead survives 5 and 10 bp. The strategy's full-window holdout is
-2024-01-02..2026-10-23: **34.24% CAGR / 51.00% DD / 0.90 Sharpe**, so it is
+2024-01-02..2026-10-23: **34.24% CAGR / 45.48% DD / 0.88 Sharpe**, so it is
 not a holdout blow-up.
 
 ## Verification
@@ -39,8 +39,9 @@ not a holdout blow-up.
 
 ## Second candidate (not the headline)
 
-`family-tail-hedge-overlay` also has a higher full CAGR than `ratio-froth`
-(**66.38%** at 1 bp), but it uses a synthetic constant-notional inverse TQQQ
-sleeve, its 10 bp CAGR falls to **40.42%**, and its correlation with
-`vol-scaled-crash-stop` is 0.85. It is a qualified, cost-fragile tail-hedge
-result, not the clean long-only winner.
+`family-tail-hedge-overlay` also had a higher full CAGR than `ratio-froth`
+(**66.38%** at 1 bp), but it used a synthetic constant-notional inverse TQQQ
+sleeve, its 10 bp CAGR fell to **40.42%**, and its residual alpha after
+`vol-scaled-crash-stop` was t=1.54. It was removed from the published set for
+overlap; it is a qualified, cost-fragile tail-hedge result, not the clean
+long-only winner.
