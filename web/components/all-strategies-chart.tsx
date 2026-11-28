@@ -432,9 +432,11 @@ export function AllStrategiesChart() {
   const [above, setAbove] = useState<"all" | "tqqq" | "qqq">("all");
   const [family, setFamily] = useState<string>("all");
   const [hovered, setHovered] = useState<string | null>(null);
+  const [rangeStart, setRangeStart] = useState("");
+  const [rangeEnd, setRangeEnd] = useState("");
 
   useEffect(() => {
-    fetch("/data/compare/all.min.json?v=2026-11-28-44c")
+    fetch("/data/compare/all.min.json?v=2026-11-28-47")
       .then((response) => {
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         return response.json();
@@ -443,22 +445,74 @@ export function AllStrategiesChart() {
       .catch((reason) => setError(String(reason)));
   }, []);
 
+  useEffect(() => {
+    if (data) {
+      setRangeStart(data.start);
+      setRangeEnd(data.end);
+    }
+  }, [data]);
+
+  const view = useMemo(() => {
+    if (!data) return null;
+    const start = rangeStart || data.start;
+    const end = rangeEnd || data.end;
+    const idx = data.dates
+      .map((date, index) => ({ date, index }))
+      .filter((item) => item.date >= start && item.date <= end);
+    if (idx.length < 2) return null;
+    const dates = idx.map((item) => item.date);
+    const series = data.series.map((curve) => {
+      const raw = idx.map((item) => curve.values[item.index]);
+      const base = raw.find((value): value is number => value != null) ?? 1;
+      return {
+        ...curve,
+        values: raw.map((value) => (value == null ? null : (value / base) * 100)),
+      };
+    });
+    const days = (Date.parse(dates[dates.length - 1]) - Date.parse(dates[0])) / 86_400_000;
+    const years = days / 365.25;
+    const metrics = data.metrics.map((metric) => {
+      const curve = series.find((item) => item.id === metric.id);
+      if (!curve) return metric;
+      const values = curve.values.filter((value): value is number => value != null);
+      if (values.length < 2) return { ...metric, cagr: 0, dd: 0, sharpe: 0 };
+      const first = values[0];
+      const last = values[values.length - 1];
+      const rets = values.slice(1).map((value, index) => value / values[index] - 1);
+      const mean = rets.reduce((sum, value) => sum + value, 0) / rets.length;
+      const sd = Math.sqrt(rets.reduce((sum, value) => sum + (value - mean) ** 2, 0) / rets.length);
+      let peak = -Infinity;
+      let dd = 0;
+      for (const value of values) {
+        peak = Math.max(peak, value);
+        dd = Math.min(dd, value / peak - 1);
+      }
+      return {
+        ...metric,
+        cagr: years > 0 ? (last / first) ** (1 / years) - 1 : 0,
+        dd: Math.abs(dd),
+        sharpe: sd > 0 ? (mean / sd) * Math.sqrt(252) : 0,
+      };
+    });
+    return { dates, series, metrics, start, end };
+  }, [data, rangeStart, rangeEnd]);
+
   const rows = useMemo(() => {
-    if (!data) return [];
-    return data.dates.map((date, index) => {
+    if (!view) return [];
+    return view.dates.map((date, index) => {
       const row: Record<string, string | number | null> = { date };
-      data.series.forEach((curve) => {
+      view.series.forEach((curve) => {
         row[curve.id] = curve.values[index];
       });
       return row;
     });
-  }, [data]);
+  }, [view]);
 
   const ticks = useMemo(() => {
-    if (!data) return [];
+    if (!view) return [];
     const out: string[] = [];
     let lastYear = "";
-    data.dates.forEach((date) => {
+    view.dates.forEach((date) => {
       const year = date.slice(0, 4);
       if (year !== lastYear && (out.length === 0 || Number(year) % 2 === 0)) {
         out.push(date);
@@ -466,52 +520,52 @@ export function AllStrategiesChart() {
       }
     });
     return out;
-  }, [data]);
+  }, [view]);
 
   const metricById = useMemo(() => {
     const map = new Map<string, Metric>();
-    (data?.metrics ?? []).forEach((metric) => map.set(metric.id, metric));
+    (view?.metrics ?? []).forEach((metric) => map.set(metric.id, metric));
     return map;
-  }, [data]);
+  }, [view]);
 
   const colorById = useMemo(() => {
     const map: Record<string, string> = {};
-    (data?.series ?? []).forEach((curve) => {
+    (view?.series ?? []).forEach((curve) => {
       map[curve.id] = curve.color;
     });
     return map;
-  }, [data]);
+  }, [view]);
 
   const families = useMemo(() => {
     const set = new Set<string>();
-    (data?.metrics ?? []).forEach((metric) => {
+    (view?.metrics ?? []).forEach((metric) => {
       if (!metric.benchmark) set.add(metric.family ?? "other");
     });
     return [...set].sort();
-  }, [data]);
+  }, [view]);
 
   const inFamily = (id: string) =>
     family === "all" || (metricById.get(id)?.family ?? "other") === family;
 
   const legendSeries = useMemo(() => {
-    if (!data) return [];
-    return data.series.filter(
+    if (!view) return [];
+    return view.series.filter(
       (curve) => curve.id === "tqqq" || curve.id === "qqq" || inFamily(curve.id),
     );
-  }, [data, family, metricById]);
+  }, [view, family, metricById]);
 
   const visible = useMemo(
     () =>
-      data?.series.filter(
+      view?.series.filter(
         (curve) =>
           curve.id === "tqqq" || curve.id === "qqq" || (inFamily(curve.id) && !hidden.has(curve.id)),
       ) ?? [],
-    [data, family, hidden, metricById],
+    [view, family, hidden, metricById],
   );
   const visibleIds = useMemo(() => new Set(visible.map((curve) => curve.id)), [visible]);
   const visibleMetrics = useMemo(
-    () => (data?.metrics ?? []).filter((metric) => visibleIds.has(metric.id)),
-    [data, visibleIds],
+    () => (view?.metrics ?? []).filter((metric) => visibleIds.has(metric.id)),
+    [view, visibleIds],
   );
 
   const toggle = (id: string) => {
@@ -531,11 +585,11 @@ export function AllStrategiesChart() {
   };
 
   const showTop = () => {
-    if (!data) return;
+    if (!view) return;
     setAbove("all");
     setHovered(null);
     const top = new Set(
-      data.metrics
+      view.metrics
         .filter((metric) => !metric.benchmark && (family === "all" || (metric.family ?? "other") === family))
         .sort((a, b) => b.cagr - a.cagr)
         .slice(0, 6)
@@ -543,27 +597,27 @@ export function AllStrategiesChart() {
     );
     top.add("tqqq");
     top.add("qqq");
-    setHidden(new Set(data.series.filter((curve) => !top.has(curve.id)).map((curve) => curve.id)));
+    setHidden(new Set(view.series.filter((curve) => !top.has(curve.id)).map((curve) => curve.id)));
   };
 
   const applyAbove = (key: "all" | "tqqq" | "qqq", nextFamily: string) => {
     setAbove(key);
     setHovered(null);
-    if (!data || key === "all") {
+    if (!view || key === "all") {
       setHidden(new Set());
       return;
     }
-    const bench = data.metrics.find((metric) => metric.id === key && metric.benchmark);
+    const bench = view.metrics.find((metric) => metric.id === key && metric.benchmark);
     if (!bench) return;
     const keep = new Set<string>(["tqqq", "qqq"]);
-    const matches = data.metrics.filter(
+    const matches = view.metrics.filter(
       (metric) =>
         !metric.benchmark &&
         metric.cagr > bench.cagr &&
         (nextFamily === "all" || (metric.family ?? "other") === nextFamily),
     );
     matches.forEach((metric) => keep.add(metric.id));
-    setHidden(new Set(data.series.filter((curve) => !keep.has(curve.id)).map((curve) => curve.id)));
+    setHidden(new Set(view.series.filter((curve) => !keep.has(curve.id)).map((curve) => curve.id)));
   };
 
   const filterAbove = (key: "all" | "tqqq" | "qqq") => applyAbove(key, family);
@@ -594,7 +648,11 @@ export function AllStrategiesChart() {
     return <div className="panel h-[420px] animate-pulse bg-white/[0.02]" />;
   }
 
-  const strategyCount = data.metrics.filter((metric) => !metric.benchmark).length;
+  if (!view) {
+    return <div className="panel p-6 text-[12px] text-rose-200">Start date must be before end date.</div>;
+  }
+
+  const strategyCount = view.metrics.filter((metric) => !metric.benchmark).length;
 
   return (
     <div className="space-y-8">
@@ -606,10 +664,34 @@ export function AllStrategiesChart() {
               Growth of $100  -  normalized  -  1 bp costs
             </h2>
             <p className="mt-1 text-[11px] text-zinc-500">
-              {data.start} to {data.end} - {data.series.length} curves - {strategyCount} strategies + TQQQ/QQQ
+              {view.start} to {view.end} - {view.series.length} curves - {strategyCount} strategies + TQQQ/QQQ
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-2">
+            <label className="flex items-center gap-1.5 rounded-full border border-white/10 bg-black/20 px-2.5 py-1 text-[10px] text-zinc-500">
+              <span className="uppercase tracking-[0.12em]">Start</span>
+              <input
+                type="date"
+                min={data.start}
+                max={data.end}
+                value={rangeStart || data.start}
+                onChange={(event) => setRangeStart(event.target.value)}
+                className="bg-transparent text-[10px] text-zinc-200 outline-none"
+                aria-label="Compare start date"
+              />
+            </label>
+            <label className="flex items-center gap-1.5 rounded-full border border-white/10 bg-black/20 px-2.5 py-1 text-[10px] text-zinc-500">
+              <span className="uppercase tracking-[0.12em]">End</span>
+              <input
+                type="date"
+                min={data.start}
+                max={data.end}
+                value={rangeEnd || data.end}
+                onChange={(event) => setRangeEnd(event.target.value)}
+                className="bg-transparent text-[10px] text-zinc-200 outline-none"
+                aria-label="Compare end date"
+              />
+            </label>
             <div className="flex rounded-lg border border-white/10 bg-black/20 p-0.5">
               {(["linear", "log"] as const).map((option) => (
                 <button
@@ -678,7 +760,7 @@ export function AllStrategiesChart() {
 
         <div className="mb-2 flex flex-wrap items-center justify-between gap-2 text-[10px] text-zinc-500">
           <span>
-            Showing {visible.length} of {data.series.length} curves
+            Showing {visible.length} of {view.series.length} curves
             {family !== "all" ? ` in ${family}` : ""}
           </span>
           <span>Hover a line or row to highlight it</span>
