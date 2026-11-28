@@ -4,6 +4,7 @@ import path from "node:path";
 import { notFound } from "next/navigation";
 import { ResearchDetail, type Detail } from "@/components/research-detail";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
+import { StrategyTestLink } from "@/components/strategy-test-link";
 
 // One page per research strategy. The strategy is defined by its Python
 // record; no bot dashboard or trend-filter controls are rendered here.
@@ -47,7 +48,10 @@ export default function Page({ params }: { params: { slug: string } }) {
       <div className="pointer-events-none fixed inset-0 grid-lines opacity-40" />
       <SiteHeader mode="catalog" />
       <main className="relative mx-auto max-w-[1180px] px-5 pb-20 lg:px-8">
-        <section className="pt-10">
+        <section className="pt-8">
+          <StrategyTestLink slug={params.slug} />
+        </section>
+        <section className="pt-6">
           <ResearchDetail detail={detail} />
         </section>
       </main>

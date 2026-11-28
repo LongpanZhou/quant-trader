@@ -61,6 +61,16 @@ export default function LabPage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const qSlug = params.get("slug");
+    const qStart = params.get("start");
+    const qEnd = params.get("end");
+    if (qSlug && /^[a-z0-9-]{2,80}$/.test(qSlug)) setSlug(qSlug);
+    if (qStart && qStart >= START && qStart < END) setStart(qStart);
+    if (qEnd && qEnd <= END && qEnd > START) setEnd(qEnd);
+  }, []);
+
+  useEffect(() => {
     fetch("/data/research/rebuild.json")
       .then((r) => r.json())
       .then((d: { strategies: StrategyRow[] }) => {
