@@ -9,8 +9,8 @@ The repository has two layers:
 - **Paper-trading engine** — Rust execution/backtest engine, TOML configs, and
   a Next.js dashboard.
 - **Research library** — Python research on 1-minute QQQ/TQQQ/BIL data,
-  cross-asset daily signals, frozen development windows, one-shot holds, and
-  overlap audits.
+  cross-asset daily signals, frozen development windows, one-shot holdouts,
+  and overlap audits.
 
 ## Current status
 
