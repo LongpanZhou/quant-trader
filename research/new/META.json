@@ -303,26 +303,6 @@
    "visible": true
   },
   {
-   "slug": "family-small-cap-relative",
-   "name": "Small-cap relative",
-   "tagline": "IWM/QQQ small-cap leadership",
-   "summary": "New small-cap-relative family; full-window holdout.",
-   "verdict": "Verified - new external family",
-   "reason": "Full 47.02% CAGR / 76.84% DD / 1.00 Sharpe; 511 fills; above the TQQQ bar.",
-   "family": "small-cap-relative",
-   "visible": true
-  },
-  {
-   "slug": "family-international-relative",
-   "name": "International relative",
-   "tagline": "EEM/QQQ global risk appetite",
-   "summary": "New international-relative family; full-window holdout.",
-   "verdict": "Verified - new external family",
-   "reason": "Full 48.44% CAGR / 56.69% DD / 1.04 Sharpe; 359 fills; above the TQQQ bar.",
-   "family": "international-relative",
-   "visible": true
-  },
-  {
    "slug": "family-rates-volatility",
    "name": "Rates volatility",
    "tagline": "MOVE rates-vol regime",
@@ -333,16 +313,6 @@
    "visible": true
   },
   {
-   "slug": "family-copper-gold",
-   "name": "Copper/gold",
-   "tagline": "CPER/GLD growth vs defensive",
-   "summary": "New copper-gold family; full-window holdout.",
-   "verdict": "Verified - new external family",
-   "reason": "Full 28.60% CAGR / 72.61% DD / 0.76 Sharpe; 347 fills; below the TQQQ bar.",
-   "family": "copper-gold",
-   "visible": true
-  },
-  {
    "slug": "family-energy-rotation",
    "name": "Energy rotation",
    "tagline": "XLE/XLK energy-vs-tech leadership",
@@ -350,6 +320,36 @@
    "verdict": "Verified - new external family",
    "reason": "Full 36.48% CAGR / 69.89% DD / 0.90 Sharpe; 447 fills; below the TQQQ bar.",
    "family": "energy-rotation",
+   "visible": true
+  },
+  {
+   "slug": "family-dollar-regime",
+   "name": "Dollar regime",
+   "tagline": "UUP dollar impulse",
+   "summary": "External dollar-regime family; one-shot full holdout.",
+   "verdict": "Verified - external family",
+   "reason": "External family added 2026-11-28. Full 41.46% CAGR / 71.49% DD / 0.89 Sharpe; 131 full fills.",
+   "family": "dollar-regime",
+   "visible": true
+  },
+  {
+   "slug": "family-gold-safe-haven",
+   "name": "Gold safe-haven",
+   "tagline": "GLD/QQQ safe-haven demand",
+   "summary": "External gold-safe-haven family; one-shot full holdout.",
+   "verdict": "Verified - external family",
+   "reason": "External family added 2026-11-28. Full 42.69% CAGR / 74.73% DD / 0.89 Sharpe; 121 full fills.",
+   "family": "gold-safe-haven",
+   "visible": true
+  },
+  {
+   "slug": "family-oil-shock",
+   "name": "Oil shock",
+   "tagline": "USO energy shock",
+   "summary": "External oil-shock family; one-shot full holdout.",
+   "verdict": "Verified - external family",
+   "reason": "External family added 2026-11-28. Full 46.95% CAGR / 60.07% DD / 0.97 Sharpe; 349 full fills.",
+   "family": "oil-shock",
    "visible": true
   }
  ],

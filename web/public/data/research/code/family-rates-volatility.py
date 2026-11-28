@@ -155,11 +155,22 @@ def main() -> None:
     bench_tqqq = ca.bt.benchmark(c[:, 1][i0:], ts[i0:], ca.BARS_PER_YEAR)
     bench_qqq = ca.bt.benchmark(c[:, 0][i0:], ts[i0:], ca.BARS_PER_YEAR)
     max_corr_slug = max(primary_ev["corr_winners"], key=primary_ev["corr_winners"].get)
+    cut_tests = [ca.cut_test(ts, o, c, lambda a, b, d: build_weights(a, b, d))]
 
     payload = {
         "slug": SLUG,
         "family": FAMILY,
         "primary_object": PRIMARY_OBJECT,
+        "status": "passed" if (st["cagr"] > ca.TQQQ_BAR_CAGR
+                              and st["max_drawdown"] < ca.TQQQ_BAR_DD) else "negative_result",
+        "passed": bool(st["cagr"] > ca.TQQQ_BAR_CAGR
+                       and st["max_drawdown"] < ca.TQQQ_BAR_DD),
+        "exploratory": True,
+        "exploratory_reason": (
+            "The primary cell was chosen after daily-bar diagnostics on the "
+            "development window; the 8-cell grid is a robustness probe, not a "
+            "clean out-of-sample pre-registration."
+        ),
         "hypothesis": (
             "A calm rates-volatility regime (MOVE below its 252-session median) "
             "is risk-on for long-duration growth equity, so hold TQQQ; a rates-vol "
@@ -192,6 +203,7 @@ def main() -> None:
         "plateau": {"cells": len(GRID), "pass_cells": int(n_pass),
                     "share": float(n_pass / len(GRID))},
         "kill_checks": kills,
+        "cut_tests": cut_tests,
         "verdict": "dev_pass" if not any(kills.values()) else "fail",
         "notes": [
             "MOVE's daily close is used through session k; the target is written "

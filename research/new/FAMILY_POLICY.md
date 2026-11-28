@@ -4,7 +4,7 @@ The website lists every research strategy. The rule is about **above-TQQQ**
 strategies: one verified winner per family. Non-performers remain research
 records and do not affect the one-winner count.
 
-## Verified above-TQQQ family winners (23)
+## Verified above-TQQQ family winners (24)
 
 | Family | Winner | Full CAGR | Full DD | Full Sharpe |
 |---|---|---:|---:|---:|
@@ -21,8 +21,9 @@ records and do not affect the one-winner count.
 | `tail-hedge-overlay` | `family-tail-hedge-overlay` | 66.38% | 38.20% | 1.37 |
 | `close-location` | `family-close-location` | 66.23% | 62.76% | 1.26 |
 | `policy-liquidity` | `family-policy-liquidity` | 56.13% | 75.23% | 1.08 |
-| `international-relative` | `family-international-relative` | 48.44% | 60.93% | 1.06 |
-| `small-cap-relative` | `family-small-cap-relative` | 47.02% | 78.08% | 1.01 |
+| `oil-shock` | `family-oil-shock` | 46.95% | 64.46% | 0.97 |
+| `gold-safe-haven` | `family-gold-safe-haven` | 42.69% | 74.90% | 0.89 |
+| `dollar-regime` | `family-dollar-regime` | 41.45% | 72.11% | 0.90 |
 | `crypto-risk-appetite` | `family-crypto-risk-appetite` | 46.50% | 52.33% | 1.19 |
 | `vol-of-volume` | `family-vol-of-volume` | 45.56% | 70.00% | 1.09 |
 | `change-point` | `family-change-point` | 45.29% | 54.10% | 1.13 |

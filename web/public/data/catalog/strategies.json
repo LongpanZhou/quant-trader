@@ -282,53 +282,25 @@
    "provenanceCount": 0
   },
   {
-   "id": "research:family-international-relative",
-   "slug": "family-international-relative",
+   "id": "research:family-oil-shock",
+   "slug": "family-oil-shock",
    "kind": "research",
-   "name": "International relative",
+   "name": "Oil shock",
    "group": "Strategy",
    "status": "Strategy",
-   "tagline": "EEM/QQQ global risk appetite",
-   "summary": "New international-relative family; full-window holdout.",
+   "tagline": "USO energy shock",
+   "summary": "External oil-shock family; one-shot full holdout.",
    "window": "2016-2026",
-   "cagr": 0.48435921596312026,
-   "dd": 0.5669404914800068,
-   "sharpe": 1.0409143524476159,
+   "cagr": 0.4695454919334021,
+   "dd": 0.6007188383483317,
+   "sharpe": 0.9676122696504671,
    "metrics": {
-    "cagr10": 0.48435921596312026,
-    "dd10": 0.5669404914800068,
-    "cagr5": 0.48435921596312026,
-    "dd5": 0.5669404914800068
+    "cagr10": 0.4695454919334021,
+    "dd10": 0.6007188383483317,
+    "cagr5": 0.4695454919334021,
+    "dd5": 0.6007188383483317
    },
-   "href": "/research/family-international-relative",
-   "runnable": false,
-   "accent": "#9ae6a5",
-   "tags": [
-    "2016-2026"
-   ],
-   "papersCount": 0,
-   "provenanceCount": 0
-  },
-  {
-   "id": "research:family-small-cap-relative",
-   "slug": "family-small-cap-relative",
-   "kind": "research",
-   "name": "Small-cap relative",
-   "group": "Strategy",
-   "status": "Strategy",
-   "tagline": "IWM/QQQ small-cap leadership",
-   "summary": "New small-cap-relative family; full-window holdout.",
-   "window": "2016-2026",
-   "cagr": 0.470236820917177,
-   "dd": 0.7683963869119131,
-   "sharpe": 0.9958238911910235,
-   "metrics": {
-    "cagr10": 0.470236820917177,
-    "dd10": 0.7683963869119131,
-    "cagr5": 0.470236820917177,
-    "dd5": 0.7683963869119131
-   },
-   "href": "/research/family-small-cap-relative",
+   "href": "/research/family-oil-shock",
    "runnable": false,
    "accent": "#9ae6a5",
    "tags": [
@@ -534,6 +506,34 @@
    "provenanceCount": 0
   },
   {
+   "id": "research:family-gold-safe-haven",
+   "slug": "family-gold-safe-haven",
+   "kind": "research",
+   "name": "Gold safe-haven",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "GLD/QQQ safe-haven demand",
+   "summary": "External gold-safe-haven family; one-shot full holdout.",
+   "window": "2016-2026",
+   "cagr": 0.42694718355703376,
+   "dd": 0.7473374497591969,
+   "sharpe": 0.8880186860035495,
+   "metrics": {
+    "cagr10": 0.42694718355703376,
+    "dd10": 0.7473374497591969,
+    "cagr5": 0.42694718355703376,
+    "dd5": 0.7473374497591969
+   },
+   "href": "/research/family-gold-safe-haven",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
    "id": "research:vol-term-structure",
    "slug": "vol-term-structure",
    "kind": "research",
@@ -553,6 +553,34 @@
     "dd5": 0.35795913584596806
    },
    "href": "/research/vol-term-structure",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
+   "id": "research:family-dollar-regime",
+   "slug": "family-dollar-regime",
+   "kind": "research",
+   "name": "Dollar regime",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "UUP dollar impulse",
+   "summary": "External dollar-regime family; one-shot full holdout.",
+   "window": "2016-2026",
+   "cagr": 0.41455173290892167,
+   "dd": 0.7148701919837473,
+   "sharpe": 0.8930733122165264,
+   "metrics": {
+    "cagr10": 0.41455173290892167,
+    "dd10": 0.7148701919837473,
+    "cagr5": 0.41455173290892167,
+    "dd5": 0.7148701919837473
+   },
+   "href": "/research/family-dollar-regime",
    "runnable": false,
    "accent": "#9ae6a5",
    "tags": [
@@ -917,34 +945,6 @@
     "dd5": 0.44789171186205445
    },
    "href": "/research/family-sector-rotation",
-   "runnable": false,
-   "accent": "#9ae6a5",
-   "tags": [
-    "2016-2026"
-   ],
-   "papersCount": 0,
-   "provenanceCount": 0
-  },
-  {
-   "id": "research:family-copper-gold",
-   "slug": "family-copper-gold",
-   "kind": "research",
-   "name": "Copper/gold",
-   "group": "Strategy",
-   "status": "Strategy",
-   "tagline": "CPER/GLD growth vs defensive",
-   "summary": "New copper-gold family; full-window holdout.",
-   "window": "2016-2026",
-   "cagr": 0.28604412123652345,
-   "dd": 0.7261339018426971,
-   "sharpe": 0.759019222035907,
-   "metrics": {
-    "cagr10": 0.28604412123652345,
-    "dd10": 0.7261339018426971,
-    "cagr5": 0.28604412123652345,
-    "dd5": 0.7261339018426971
-   },
-   "href": "/research/family-copper-gold",
    "runnable": false,
    "accent": "#9ae6a5",
    "tags": [

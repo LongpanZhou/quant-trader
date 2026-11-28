@@ -62,21 +62,29 @@ def load_panel():
 
 
 def local_daily(symbol: str) -> pd.Series:
-    """Local Yahoo daily adjusted close, truncated at DEV_END."""
+    """Local Yahoo daily adjusted close.
+
+    The full series is returned; `daily_panel` only takes rows strictly before
+    the passed panel's first session plus rows on that panel's session
+    calendar, so a development panel cannot see a 2024+ value.
+    """
     df = pd.read_parquet(bt.DATA_DIR / f"{symbol}-1d-yahoo.parquet")
     df["date"] = pd.to_datetime(df["date"]).dt.normalize()
     s = df.set_index("date")["adjclose"].astype(float).sort_index()
     s = s[~s.index.duplicated(keep="last")]
-    return s[s.index <= pd.Timestamp(DEV_END)]
+    return s
 
 
 def daily_panel(ts: pd.DatetimeIndex, symbols: list[str]) -> pd.DataFrame:
     """External daily closes plus a pre-panel warmup, aligned to sessions.
 
     The returned frame contains (a) external rows strictly before the first
-    QQQ session, used only to warm up rolling features, and (b) one row per
-    QQQ session.  QQQ itself comes from the local daily archive because it is
-    the execution calendar.  Rows after DEV_END are dropped.
+    session of the *passed panel*, used only to warm up rolling features, and
+    (b) one row per session of that panel.  No future row can enter: `live` is
+    reindexed to the panel's session calendar and `hist` is strictly before
+    its first session.  The caller decides the panel end.  `main()` passes the
+    development panel (end 2023-12-29); a separate one-shot holdout can pass a
+    longer panel, but this study never does.
     """
     idx = external.session_index(ts)
     ext_syms = [s for s in symbols if s != "QQQ"]
@@ -91,12 +99,10 @@ def daily_panel(ts: pd.DatetimeIndex, symbols: list[str]) -> pd.DataFrame:
         live["QQQ"] = q.reindex(idx).ffill()
 
     if len(hist):
-        hist = hist.loc[(hist.index < idx[0]) & (hist.index <= pd.Timestamp(DEV_END))]
+        hist = hist.loc[hist.index < idx[0]]
         hist = hist.loc[hist.index >= idx[0] - pd.Timedelta(days=730)]
     out = pd.concat([hist, live]).sort_index()
     out = out[~out.index.duplicated(keep="last")]
-    if len(out):
-        out = out.loc[out.index <= pd.Timestamp(DEV_END)]
     return out
 
 
@@ -429,7 +435,10 @@ def render_report(result: dict, narrative: dict) -> str:
     lines.append(f"**Slug:** `{result['agent']}`  ")
     lines.append(f"**Development window:** {result['window']['dev'][0]} .. "
                  f"{result['window']['dev'][1]}  ")
-    lines.append("**Status:** dev-only; the 2024–2026 holdout was not loaded.")
+    lines.append("**Status:** dev-only; no 2024–2026 result was computed in this "
+                 "study.  The development panel ends 2023-12-29.  `build_weights` "
+                 "accepts a longer panel for a separate one-shot holdout, but no "
+                 "such run is part of this report.")
     lines.append("")
     lines.append("## 1. Hypothesis")
     lines.append("")

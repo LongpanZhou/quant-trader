@@ -1,0 +1,651 @@
+{
+ "agent": "family-oil-shock",
+ "family": "oil shock",
+ "idea": "A 5% five-session USO impulse flags an energy/inflation shock; hold BIL for five sessions, otherwise hold TQQQ.",
+ "hypothesis": "Fast oil spikes raise input costs and inflation expectations, pressure long-duration growth equity and invite a policy response; the shock is short-lived, so a fixed five-session de-risk captures it.",
+ "external": [
+  "USO"
+ ],
+ "universe": [
+  "QQQ",
+  "TQQQ",
+  "BIL"
+ ],
+ "window": {
+  "dev": [
+   "2016-01-04",
+   "2023-12-29"
+  ],
+  "holdout": "not computed in this study (dev panel ends 2023-12-29)"
+ },
+ "execution": {
+  "engine": "research/bt.py",
+  "marks": "1min",
+  "fills": "next session 09:30 open",
+  "band": 0.02,
+  "headline_bps": 1.0,
+  "also_bps": [
+   5.0,
+   10.0
+  ],
+  "long_only": true,
+  "weight_cap": 1.0,
+  "idle": "BIL"
+ },
+ "params": {
+  "W": 5,
+  "THR": 0.05,
+  "HOLD": 5
+ },
+ "rules": {
+  "o5": "log(USO[k] / USO[k-5])",
+  "event": "o5 > +5.0%",
+  "risk_off": "event in the last 5 sessions -> BIL 1.0",
+  "risk_on": "otherwise -> TQQQ 1.0",
+  "decision": "session-k close, fill session-k+1 open",
+  "no": "no QQQ 100-250d trend gate, vol target, drawdown event, calendar clock, opening range/close flow, ML, or ratio gate"
+ },
+ "bars": 781880,
+ "sessions": 2012,
+ "windows": {
+  "1bp": {
+   "cagr": 0.48714701812189,
+   "max_drawdown": 0.6445518502314587,
+   "sharpe": 1.002022748099327,
+   "sortino": 1.3844794701652283,
+   "volatility": 0.5512434262015039,
+   "exposure": 0.9995012022305213,
+   "fills": 349,
+   "turnover": 2067.5228772020782,
+   "ending_equity": 2377537.8217403316,
+   "years": 7.984312495246787,
+   "daily_vol": 0.5480568595229468,
+   "daily_sharpe": 1.005253196008627,
+   "tqqq_exposure": 0.6687522381951194,
+   "bil_exposure": 0.33075024300404154,
+   "qqq_exposure": 0.0,
+   "days": 2012,
+   "start": "2016-01-04",
+   "end": "2023-12-29"
+  },
+  "5bp": {
+   "cagr": 0.46137132583385343,
+   "max_drawdown": 0.6445518502314587,
+   "sharpe": 0.9701768866063015,
+   "sortino": 1.3398166267644358,
+   "volatility": 0.5512731537549778,
+   "exposure": 0.9995012022305213,
+   "fills": 349,
+   "turnover": 1870.101145998854,
+   "ending_equity": 2067759.2418158792,
+   "years": 7.984312495246787,
+   "daily_vol": 0.5481280241631439,
+   "daily_sharpe": 0.9732369159462454,
+   "tqqq_exposure": 0.6687522381951194,
+   "bil_exposure": 0.33075024300404154,
+   "qqq_exposure": 0.0,
+   "days": 2012,
+   "start": "2016-01-04",
+   "end": "2023-12-29"
+  },
+  "10bp": {
+   "cagr": 0.4297790707733542,
+   "max_drawdown": 0.6445518502314587,
+   "sharpe": 0.9303500672331142,
+   "sortino": 1.2840240035092692,
+   "volatility": 0.5513458976989561,
+   "exposure": 0.9995012022305213,
+   "fills": 349,
+   "turnover": 1652.2650638902182,
+   "ending_equity": 1736663.6017908854,
+   "years": 7.984312495246787,
+   "daily_vol": 0.5482495608258072,
+   "daily_sharpe": 0.9332086235000191,
+   "tqqq_exposure": 0.6687522381951194,
+   "bil_exposure": 0.33075024300404154,
+   "qqq_exposure": 0.0,
+   "days": 2012,
+   "start": "2016-01-04",
+   "end": "2023-12-29"
+  }
+ },
+ "benchmarks": {
+  "tqqq_buy_hold": {
+   "cagr": 0.36152361155523893,
+   "max_drawdown": 0.8229021592363336,
+   "sharpe": 0.8011510649133299,
+   "sortino": 1.1216624921505678,
+   "volatility": 0.6654593070297561,
+   "exposure": 0.9999987210313603,
+   "fills": 1,
+   "turnover": 1.0,
+   "ending_equity": 1175165.1333387455,
+   "years": 7.984312495246787
+  }
+ },
+ "bar": {
+  "cagr": 0.3672,
+  "max_drawdown": 0.8229,
+  "sharpe": 0.82
+ },
+ "activity": {
+  "state_switches": 174,
+  "tqqq_entries": 88,
+  "tqqq_exits": 87,
+  "tqqq_runs": 88,
+  "tqqq_hold_sessions": 1346,
+  "tqqq_exposure": 0.668986083499006,
+  "bil_exposure": 0.33101391650099404,
+  "qqq_exposure": 0.0,
+  "avg_hold_sessions": 15.295454545454545,
+  "median_hold_sessions": 10.0,
+  "max_hold_sessions": 74,
+  "min_hold_sessions": 1,
+  "independent_events": 174,
+  "fills": 349,
+  "activity_floor_pass": true
+ },
+ "plateau": [
+  {
+   "params": {
+    "W": 5,
+    "THR": 0.02,
+    "HOLD": 5
+   },
+   "cagr": 0.418636544449533,
+   "max_drawdown": 0.6445518502314587,
+   "sharpe": 1.0085815091003187,
+   "sortino": 1.3930882217178056,
+   "fills": 435,
+   "turnover": 1679.2606308604616,
+   "tqqq_exposure": 0.3566915639228526,
+   "passes_bar": true
+  },
+  {
+   "params": {
+    "W": 5,
+    "THR": 0.03,
+    "HOLD": 5
+   },
+   "cagr": 0.3814585480727122,
+   "max_drawdown": 0.6445518502314587,
+   "sharpe": 0.9107938232909348,
+   "sortino": 1.2555387217020684,
+   "fills": 439,
+   "turnover": 1423.3091183617648,
+   "tqqq_exposure": 0.46293548882181407,
+   "passes_bar": true
+  },
+  {
+   "params": {
+    "W": 5,
+    "THR": 0.04,
+    "HOLD": 5
+   },
+   "cagr": 0.55803882283633,
+   "max_drawdown": 0.6445518502314587,
+   "sharpe": 1.1230030268686741,
+   "sortino": 1.5552279992655214,
+   "fills": 409,
+   "turnover": 2876.2884837536167,
+   "tqqq_exposure": 0.5619685885302093,
+   "passes_bar": true
+  },
+  {
+   "params": {
+    "W": 5,
+    "THR": 0.05,
+    "HOLD": 5
+   },
+   "cagr": 0.48714701812189,
+   "max_drawdown": 0.6445518502314587,
+   "sharpe": 1.002022748099327,
+   "sortino": 1.3844794701652283,
+   "fills": 349,
+   "turnover": 2067.5228772020782,
+   "tqqq_exposure": 0.6687522381951194,
+   "passes_bar": true
+  },
+  {
+   "params": {
+    "W": 5,
+    "THR": 0.06,
+    "HOLD": 5
+   },
+   "cagr": 0.5564358289516953,
+   "max_drawdown": 0.6445518502314587,
+   "sharpe": 1.062896270473791,
+   "sortino": 1.476171932289554,
+   "fills": 277,
+   "turnover": 2325.556569741714,
+   "tqqq_exposure": 0.7608008901621732,
+   "passes_bar": true
+  },
+  {
+   "params": {
+    "W": 5,
+    "THR": 0.05,
+    "HOLD": 3
+   },
+   "cagr": 0.473173395176975,
+   "max_drawdown": 0.6736296292343158,
+   "sharpe": 0.9578245430483908,
+   "sortino": 1.3285348219131012,
+   "fills": 373,
+   "turnover": 2241.729549934393,
+   "tqqq_exposure": 0.7598032946232158,
+   "passes_bar": true
+  },
+  {
+   "params": {
+    "W": 5,
+    "THR": 0.05,
+    "HOLD": 4
+   },
+   "cagr": 0.5369038858370272,
+   "max_drawdown": 0.6548635052949967,
+   "sharpe": 1.0444606777125651,
+   "sortino": 1.4482077977529384,
+   "fills": 361,
+   "turnover": 2532.7385892812526,
+   "tqqq_exposure": 0.7134151020616974,
+   "passes_bar": true
+  },
+  {
+   "params": {
+    "W": 5,
+    "THR": 0.05,
+    "HOLD": 7
+   },
+   "cagr": 0.5026252647689504,
+   "max_drawdown": 0.6445518502314587,
+   "sharpe": 1.0515804887976439,
+   "sortino": 1.4489368502489277,
+   "fills": 299,
+   "turnover": 1815.5462443237723,
+   "tqqq_exposure": 0.5854517317235381,
+   "passes_bar": true
+  }
+ ],
+ "plateau_summary": {
+  "cells": 8,
+  "passes": 8,
+  "primary_pass": true,
+  "cagr_min": 0.3814585480727122,
+  "cagr_max": 0.55803882283633
+ },
+ "extra_checks": {
+  "rejected always-on oil state": {
+   "W=20, THR=5%": {
+    "cagr": 0.3299557390697081,
+    "max_drawdown": 0.7316497427251221,
+    "sharpe": 0.7890666561234574,
+    "sortino": 1.1030786378330788,
+    "volatility": 0.573616970410679,
+    "exposure": 0.9995012022305213,
+    "fills": 397,
+    "turnover": 1093.934560947884,
+    "ending_equity": 974439.3347609702,
+    "years": 7.984312495246787,
+    "daily_vol": 0.582289121451696,
+    "daily_sharpe": 0.7860139609208594,
+    "tqqq_exposure": 0.6519875172660766,
+    "bil_exposure": 0.34751496393308434,
+    "qqq_exposure": 0.0,
+    "days": 2012,
+    "start": "2016-01-04",
+    "end": "2023-12-29"
+   },
+   "W=20, THR=6%": {
+    "cagr": 0.32940701485952806,
+    "max_drawdown": 0.727425881325032,
+    "sharpe": 0.7843675443124064,
+    "sortino": 1.0969359370372533,
+    "volatility": 0.5847098135245031,
+    "exposure": 0.9995012022305213,
+    "fills": 333,
+    "turnover": 920.201317281148,
+    "ending_equity": 971233.9247429032,
+    "years": 7.984312495246787,
+    "daily_vol": 0.593249736873089,
+    "daily_sharpe": 0.7820658797571735,
+    "tqqq_exposure": 0.6971491789021333,
+    "bil_exposure": 0.30235330229702767,
+    "qqq_exposure": 0.0,
+    "days": 2012,
+    "start": "2016-01-04",
+    "end": "2023-12-29"
+   },
+   "W=20, THR=8%": {
+    "cagr": 0.4573940445779625,
+    "max_drawdown": 0.727425881325032,
+    "sharpe": 0.9319011942630322,
+    "sortino": 1.3034851920027,
+    "volatility": 0.6024885125576273,
+    "exposure": 0.9995012022305213,
+    "fills": 309,
+    "turnover": 1545.8084809659797,
+    "ending_equity": 2023251.2123103112,
+    "years": 7.984312495246787,
+    "daily_vol": 0.611958030761761,
+    "daily_sharpe": 0.9275630628733805,
+    "tqqq_exposure": 0.7792218754796132,
+    "bil_exposure": 0.22028060571954775,
+    "qqq_exposure": 0.0,
+    "days": 2012,
+    "start": "2016-01-04",
+    "end": "2023-12-29"
+   },
+   "W=20, THR=10%": {
+    "cagr": 0.3532024027437093,
+    "max_drawdown": 0.7430153776698396,
+    "sharpe": 0.8027011592723309,
+    "sortino": 1.120686031459506,
+    "volatility": 0.6205061156015881,
+    "exposure": 0.9995012022305213,
+    "fills": 289,
+    "turnover": 1160.4573404291568,
+    "ending_equity": 1119028.9652418068,
+    "years": 7.984312495246787,
+    "daily_vol": 0.6318921947540207,
+    "daily_sharpe": 0.8005884883223545,
+    "tqqq_exposure": 0.8545403386708957,
+    "bil_exposure": 0.1449621425282652,
+    "qqq_exposure": 0.0,
+    "days": 2012,
+    "start": "2016-01-04",
+    "end": "2023-12-29"
+   },
+   "W=20, THR=12%": {
+    "cagr": 0.35756180972542584,
+    "max_drawdown": 0.727425881325032,
+    "sharpe": 0.8036543557643995,
+    "sortino": 1.1230583539471612,
+    "volatility": 0.635483887528912,
+    "exposure": 0.9995012022305213,
+    "fills": 217,
+    "turnover": 1052.6900506472186,
+    "ending_equity": 1148138.3670640807,
+    "years": 7.984312495246787,
+    "daily_vol": 0.6473946307003242,
+    "daily_sharpe": 0.8018041559919779,
+    "tqqq_exposure": 0.9091791579270476,
+    "bil_exposure": 0.09032332327211337,
+    "qqq_exposure": 0.0,
+    "days": 2012,
+    "start": "2016-01-04",
+    "end": "2023-12-29"
+   },
+   "W=10, THR=8%": {
+    "cagr": 0.47016646313409005,
+    "max_drawdown": 0.727425881325032,
+    "sharpe": 0.9297448511415756,
+    "sortino": 1.3001871169582855,
+    "volatility": 0.6349814642029027,
+    "exposure": 0.9995012022305213,
+    "fills": 285,
+    "turnover": 1728.9700887919664,
+    "ending_equity": 2169234.6332363244,
+    "years": 7.984312495246787,
+    "daily_vol": 0.6454261365679325,
+    "daily_sharpe": 0.9263323345877744,
+    "tqqq_exposure": 0.8969790760730547,
+    "bil_exposure": 0.1025234051261063,
+    "qqq_exposure": 0.0,
+    "days": 2012,
+    "start": "2016-01-04",
+    "end": "2023-12-29"
+   },
+   "W=15, THR=8%": {
+    "cagr": 0.34712545531781935,
+    "max_drawdown": 0.7274258813250322,
+    "sharpe": 0.7959914768377335,
+    "sortino": 1.109241967896325,
+    "volatility": 0.6191439907016978,
+    "exposure": 0.9995012022305213,
+    "fills": 309,
+    "turnover": 1177.740931633766,
+    "ending_equity": 1079528.8469208607,
+    "years": 7.984312495246787,
+    "daily_vol": 0.6283876112673452,
+    "daily_sharpe": 0.7948506875544071,
+    "tqqq_exposure": 0.8325932368138333,
+    "bil_exposure": 0.16690924438532767,
+    "qqq_exposure": 0.0,
+    "days": 2012,
+    "start": "2016-01-04",
+    "end": "2023-12-29"
+   },
+   "W=30, THR=8%": {
+    "cagr": 0.2854914616290658,
+    "max_drawdown": 0.738217234090246,
+    "sharpe": 0.7276049139695577,
+    "sortino": 1.0116089885812882,
+    "volatility": 0.5821455008666555,
+    "exposure": 0.9995012022305213,
+    "fills": 341,
+    "turnover": 1172.7742135506674,
+    "ending_equity": 742749.8064939401,
+    "years": 7.984312495246787,
+    "daily_vol": 0.5876194721408604,
+    "daily_sharpe": 0.7274045862186572,
+    "tqqq_exposure": 0.7193661431421702,
+    "bil_exposure": 0.28013633805699084,
+    "qqq_exposure": 0.0,
+    "days": 2012,
+    "start": "2016-01-04",
+    "end": "2023-12-29"
+   }
+  }
+ },
+ "subperiods": {
+  "2016-2019": {
+   "cagr": 0.35325348439716997,
+   "max_drawdown": 0.5065052828072014,
+   "sharpe": 0.9122404087560025,
+   "sortino": 1.2777668171992442,
+   "volatility": 0.43865965827622594,
+   "exposure": 0.9990017150024317,
+   "fills": 149,
+   "turnover": 296.86963833078676,
+   "ending_equity": 334329.7302607213,
+   "years": 3.989788196821051,
+   "daily_vol": 0.4343041168441118,
+   "daily_sharpe": 0.9158480946887885,
+   "tqqq_exposure": 0.7159367240893849,
+   "bil_exposure": 0.2830675506181688,
+   "qqq_exposure": 0.0,
+   "days": 1006,
+   "start": "2016-01-04",
+   "end": "2019-12-31"
+  },
+  "2020-2021": {
+   "cagr": 0.6135147689619802,
+   "max_drawdown": 0.6445518502314587,
+   "sharpe": 1.0345800327413293,
+   "sortino": 1.394013193993749,
+   "volatility": 0.7208374645576539,
+   "exposure": 0.9999949072352908,
+   "fills": 91,
+   "turnover": 118.2877042902142,
+   "ending_equity": 259923.94017792423,
+   "years": 1.9966328237888813,
+   "daily_vol": 0.7028169268238341,
+   "daily_sharpe": 1.0326269616345127,
+   "tqqq_exposure": 0.6394220730608026,
+   "bil_exposure": 0.3605779269391975,
+   "qqq_exposure": 0.0,
+   "days": 505,
+   "start": "2020-01-02",
+   "end": "2021-12-31"
+  },
+  "2022-2023": {
+   "cagr": 0.6379943231172296,
+   "max_drawdown": 0.4039064153227979,
+   "sharpe": 1.1665126454736334,
+   "sortino": 1.6556801978226394,
+   "volatility": 0.5563748920167533,
+   "exposure": 0.9999948679260776,
+   "fills": 111,
+   "turnover": 154.28758651768672,
+   "ending_equity": 266413.4432177497,
+   "years": 1.9856814206403528,
+   "daily_vol": 0.5753321073691197,
+   "daily_sharpe": 1.1474887981495454,
+   "tqqq_exposure": 0.603706383786752,
+   "bil_exposure": 0.39629361621324793,
+   "qqq_exposure": 0.0,
+   "days": 501,
+   "start": "2022-01-03",
+   "end": "2023-12-29"
+  }
+ },
+ "yearly": {
+  "2016": {
+   "strategy": -0.04359051649496226,
+   "tqqq": 0.1862965538814476
+  },
+  "2017": {
+   "strategy": 1.052405344102028,
+   "tqqq": 1.1834653995188278
+  },
+  "2018": {
+   "strategy": 0.11408905663270508,
+   "tqqq": -0.19583753693794803
+  },
+  "2019": {
+   "strategy": 0.5287908649705402,
+   "tqqq": 1.331055753396933
+  },
+  "2020": {
+   "strategy": 0.2988847030833559,
+   "tqqq": 1.0961179967465502
+  },
+  "2021": {
+   "strategy": 1.0549721155795426,
+   "tqqq": 0.8296958963840777
+  },
+  "2022": {
+   "strategy": 0.02383896697259269,
+   "tqqq": -0.7906535076278614
+  },
+  "2023": {
+   "strategy": 1.6022214143390414,
+   "tqqq": 1.9836611885152622
+  }
+ },
+ "corr_tqqq": {
+  "corr": 0.8169999527828885,
+  "beta": 0.6618640925544866
+ },
+ "corr_winners": {
+  "ratio-froth": {
+   "corr": 0.5284629982417238,
+   "n": 2011
+  },
+  "vol-scaled-crash-stop": {
+   "corr": 0.6563922279323962,
+   "n": 2011
+  },
+  "relative-value-tqqq": {
+   "corr": 0.7393078017106307,
+   "n": 2011
+  },
+  "fomc-opex-window": {
+   "corr": 0.5095705367853411,
+   "n": 2011
+  },
+  "family-session-timing": {
+   "corr": 0.5876354074446204,
+   "n": 2011
+  },
+  "family-short-reversal": {
+   "corr": 0.7475145250395662,
+   "n": 2011
+  },
+  "family-rebalance-flow": {
+   "corr": 0.7178989255712896,
+   "n": 2011
+  },
+  "family-intraday-microstructure-day": {
+   "corr": 0.5022244088298832,
+   "n": 2011
+  },
+  "family-ml-microstructure": {
+   "corr": 0.7003514829447657,
+   "n": 2011
+  }
+ },
+ "corr_summary": {
+  "min": 0.5022244088298832,
+  "max": 0.7475145250395662,
+  "mean": 0.6321509238333575,
+  "max_slug": "family-short-reversal"
+ },
+ "placebo": {
+  "shift_target": {
+   "n": 100,
+   "mean": 0.22107041135552738,
+   "median": 0.22154836344934892,
+   "p5": 0.06010589327695886,
+   "p95": 0.41640155186900213,
+   "min": -0.07853542289334381,
+   "max": 0.49240085347013784,
+   "true": 0.48714701812189,
+   "percentile": 0.98,
+   "p_one_sided": 0.0297029702970297
+  },
+  "shift_feature": {
+   "n": 100,
+   "mean": 0.21847141670716677,
+   "median": 0.2137695218494875,
+   "p5": 0.012515463834909372,
+   "p95": 0.42032206771668723,
+   "min": -0.14440063274325565,
+   "max": 0.4725184367384878,
+   "true": 0.48714701812189,
+   "percentile": 1.0,
+   "p_one_sided": 0.009900990099009901
+  }
+ },
+ "drawdown": {
+  "depth": 0.6445518502314587,
+  "peak": "2020-03-03 10:03:00-05:00",
+  "trough": "2020-03-23 11:45:00-04:00",
+  "recovery": "2020-09-01 15:58:00-04:00"
+ },
+ "kill_criteria": [
+  {
+   "rule": "Activity floor: >=100 full fills or >=30 independent events",
+   "observed": "349 fills; 174 state switches",
+   "triggered": false
+  },
+  {
+   "rule": "No three-way dev improvement over TQQQ buy & hold",
+   "observed": "CAGR 48.71% vs 36.15%; DD 64.46% vs 82.29%; Sharpe 1.00 vs 0.80",
+   "triggered": false
+  },
+  {
+   "rule": "Plateau: >=5 of 8 local cells clear the three-way dev bar",
+   "observed": "8/8 cells pass",
+   "triggered": false
+  },
+  {
+   "rule": "Placebo: one-sided p <= 0.20 for at least one circular-shift null",
+   "observed": "target p=0.030; feature p=0.010",
+   "triggered": false
+  },
+  {
+   "rule": "Redundancy: maximum correlation with an existing winner <= 0.85",
+   "observed": "0.748 (family-short-reversal)",
+   "triggered": false
+  },
+  {
+   "rule": "Subperiod: no negative-CAGR development subperiod",
+   "observed": "none",
+   "triggered": false
+  }
+ ],
+ "status": "dev-only",
+ "verdict": "Dev pass at 1 bp: CAGR 48.71%, DD 64.46%, Sharpe 1.00, 349 fills, 8/8 plateau cells.  The five-session oil-shock event is the most robust of the four external families: all three subperiods are positive, the threshold/hold plateau is broad, and drawdown is lower than the TQQQ book.  Caveats: the 2020 crash is still a large drawdown, turnover is high, and correlation with `family-short-reversal` is 0.748.  Promote to a dev candidate, not a verified winner."
+}

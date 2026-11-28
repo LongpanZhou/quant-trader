@@ -9,10 +9,11 @@ The four strategies use external daily series for the signal and the local
     * ``research/external.daily_targets_to_weights`` performs that mapping, so
       every bar inside session ``k`` carries the target set at ``k-1``'s close.
 
-External parquet files are read with a date filter so the 2024-2026 holdout is
-never materialised.  QQQ's daily signal leg comes from the local Yahoo daily
-file (also filtered); the QQQ/TQQQ/BIL execution prices come from the 1-minute
-panel.
+External parquet files are read with a date filter tied to the panel's last
+session.  A development panel ending 2023-12-29 therefore never materialises
+2024-2026 rows; a later replay panel extends the bound to its own end.  QQQ's
+daily signal leg comes from the local Yahoo daily file (also filtered); the
+QQQ/TQQQ/BIL execution prices come from the 1-minute panel.
 
 Only plumbing lives here; each ``strategy.py`` owns its signal.
 """
@@ -96,6 +97,9 @@ def daily_frame(ts, symbols: list[str]) -> pd.DataFrame:
     The frame starts at 2015-01-02 so a 252-session normalisation is already
     warm at the first development session.  QQQ comes from the local Yahoo
     daily file; the other legs come from ``data/external``.
+
+    The read bound follows the panel: 2023-12-29 for the development panel, or
+    the panel's own last session for a later replay.
     """
     sess = session_index(ts)
     end = pd.Timestamp(FULL_END) if sess[-1] > pd.Timestamp(END) else DEV_END

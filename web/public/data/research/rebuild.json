@@ -66,22 +66,13 @@
    "sharpe": 0.9826642885844419
   },
   {
-   "slug": "family-international-relative",
-   "name": "International relative",
-   "tagline": "EEM/QQQ global risk appetite",
-   "summary": "New international-relative family; full-window holdout.",
-   "cagr": 0.48435921596312026,
-   "dd": 0.5669404914800068,
-   "sharpe": 1.0409143524476159
-  },
-  {
-   "slug": "family-small-cap-relative",
-   "name": "Small-cap relative",
-   "tagline": "IWM/QQQ small-cap leadership",
-   "summary": "New small-cap-relative family; full-window holdout.",
-   "cagr": 0.470236820917177,
-   "dd": 0.7683963869119131,
-   "sharpe": 0.9958238911910235
+   "slug": "family-oil-shock",
+   "name": "Oil shock",
+   "tagline": "USO energy shock",
+   "summary": "External oil-shock family; one-shot full holdout.",
+   "cagr": 0.4695454919334021,
+   "dd": 0.6007188383483317,
+   "sharpe": 0.9676122696504671
   },
   {
    "slug": "family-crypto-risk-appetite",
@@ -147,6 +138,15 @@
    "sharpe": 1.0500413963031756
   },
   {
+   "slug": "family-gold-safe-haven",
+   "name": "Gold safe-haven",
+   "tagline": "GLD/QQQ safe-haven demand",
+   "summary": "External gold-safe-haven family; one-shot full holdout.",
+   "cagr": 0.42694718355703376,
+   "dd": 0.7473374497591969,
+   "sharpe": 0.8880186860035495
+  },
+  {
    "slug": "vol-term-structure",
    "name": "Volatility term structure",
    "tagline": "Splits TQQQ exposure between a 165-day trend sleeve and a RV20/RV60 term-structure sleeve, with an acute-spike kill switch.",
@@ -154,6 +154,15 @@
    "cagr": 0.4248092715440892,
    "dd": 0.35795913584596806,
    "sharpe": 1.1509971557524818
+  },
+  {
+   "slug": "family-dollar-regime",
+   "name": "Dollar regime",
+   "tagline": "UUP dollar impulse",
+   "summary": "External dollar-regime family; one-shot full holdout.",
+   "cagr": 0.41455173290892167,
+   "dd": 0.7148701919837473,
+   "sharpe": 0.8930733122165264
   },
   {
    "slug": "family-ml-microstructure",
@@ -271,15 +280,6 @@
    "cagr": 0.2986214478144329,
    "dd": 0.44789171186205445,
    "sharpe": 0.9423807591618618
-  },
-  {
-   "slug": "family-copper-gold",
-   "name": "Copper/gold",
-   "tagline": "CPER/GLD growth vs defensive",
-   "summary": "New copper-gold family; full-window holdout.",
-   "cagr": 0.28604412123652345,
-   "dd": 0.7261339018426971,
-   "sharpe": 0.759019222035907
   },
   {
    "slug": "intraday-seasonality",

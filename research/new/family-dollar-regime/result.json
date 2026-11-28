@@ -1,0 +1,477 @@
+{
+ "agent": "family-dollar-regime",
+ "family": "dollar regime",
+ "idea": "A 60-session UUP appreciation above 3% flags a global dollar funding shock; hold BIL, otherwise hold TQQQ.",
+ "hypothesis": "Broad dollar strength tightens global financial conditions and is negative for long-duration US growth equity; dollar weakness is a risk-on tailwind.",
+ "external": [
+  "UUP"
+ ],
+ "universe": [
+  "QQQ",
+  "TQQQ",
+  "BIL"
+ ],
+ "window": {
+  "dev": [
+   "2016-01-04",
+   "2023-12-29"
+  ],
+  "holdout": "not computed in this study (dev panel ends 2023-12-29)"
+ },
+ "execution": {
+  "engine": "research/bt.py",
+  "marks": "1min",
+  "fills": "next session 09:30 open",
+  "band": 0.02,
+  "headline_bps": 1.0,
+  "also_bps": [
+   5.0,
+   10.0
+  ],
+  "long_only": true,
+  "weight_cap": 1.0,
+  "idle": "BIL"
+ },
+ "params": {
+  "W": 60,
+  "THR": 0.03
+ },
+ "rules": {
+  "u60": "log(UUP[k] / UUP[k-60])",
+  "risk_on": "u60 <= +3.0% -> TQQQ 1.0",
+  "risk_off": "u60 > +3.0% -> BIL 1.0",
+  "decision": "session-k close, fill session-k+1 open",
+  "no": "no QQQ 100-250d trend gate, vol target, drawdown event, calendar clock, opening range/close flow, ML, or ratio gate"
+ },
+ "bars": 781880,
+ "sessions": 2012,
+ "windows": {
+  "1bp": {
+   "cagr": 0.41236385610786996,
+   "max_drawdown": 0.721111704037301,
+   "sharpe": 0.9032423503853638,
+   "sortino": 1.2428326218365453,
+   "volatility": 0.5592988585278147,
+   "exposure": 0.9995012022305213,
+   "fills": 131,
+   "turnover": 682.0721316133059,
+   "ending_equity": 1574782.1080275013,
+   "years": 7.984312495246787,
+   "daily_vol": 0.5659172146278747,
+   "daily_sharpe": 0.8998638026507044,
+   "tqqq_exposure": 0.7989397349976979,
+   "bil_exposure": 0.20056274620146314,
+   "qqq_exposure": 0.0,
+   "days": 2012,
+   "start": "2016-01-04",
+   "end": "2023-12-29"
+  },
+  "5bp": {
+   "cagr": 0.40312506645059787,
+   "max_drawdown": 0.7224471603367248,
+   "sharpe": 0.8914519482271035,
+   "sortino": 1.22622439129315,
+   "volatility": 0.5593619422997301,
+   "exposure": 0.9995012022305213,
+   "fills": 131,
+   "turnover": 659.8155905113397,
+   "ending_equity": 1494388.4105105093,
+   "years": 7.984312495246787,
+   "daily_vol": 0.5659210174081071,
+   "daily_sharpe": 0.8882703651811662,
+   "tqqq_exposure": 0.7989397349976979,
+   "bil_exposure": 0.20056274620146314,
+   "qqq_exposure": 0.0,
+   "days": 2012,
+   "start": "2016-01-04",
+   "end": "2023-12-29"
+  },
+  "10bp": {
+   "cagr": 0.3916615524802458,
+   "max_drawdown": 0.7241074923661474,
+   "sharpe": 0.8767105628139985,
+   "sortino": 1.2054683361459086,
+   "volatility": 0.5594537230118471,
+   "exposure": 0.9995012022305213,
+   "fills": 131,
+   "turnover": 633.1706134708124,
+   "ending_equity": 1399643.2321611692,
+   "years": 7.984312495246787,
+   "daily_vol": 0.565938338873889,
+   "daily_sharpe": 0.8737724055285817,
+   "tqqq_exposure": 0.7989397349976979,
+   "bil_exposure": 0.20056274620146314,
+   "qqq_exposure": 0.0,
+   "days": 2012,
+   "start": "2016-01-04",
+   "end": "2023-12-29"
+  }
+ },
+ "benchmarks": {
+  "tqqq_buy_hold": {
+   "cagr": 0.36152361155523893,
+   "max_drawdown": 0.8229021592363336,
+   "sharpe": 0.8011510649133299,
+   "sortino": 1.1216624921505678,
+   "volatility": 0.6654593070297561,
+   "exposure": 0.9999987210313603,
+   "fills": 1,
+   "turnover": 1.0,
+   "ending_equity": 1175165.1333387455,
+   "years": 7.984312495246787
+  }
+ },
+ "bar": {
+  "cagr": 0.3672,
+  "max_drawdown": 0.8229,
+  "sharpe": 0.82
+ },
+ "activity": {
+  "state_switches": 65,
+  "tqqq_entries": 33,
+  "tqqq_exits": 32,
+  "tqqq_runs": 33,
+  "tqqq_hold_sessions": 1608,
+  "tqqq_exposure": 0.7992047713717694,
+  "bil_exposure": 0.20079522862823063,
+  "qqq_exposure": 0.0,
+  "avg_hold_sessions": 48.72727272727273,
+  "median_hold_sessions": 13.0,
+  "max_hold_sessions": 321,
+  "min_hold_sessions": 1,
+  "independent_events": 65,
+  "fills": 131,
+  "activity_floor_pass": true
+ },
+ "plateau": [
+  {
+   "params": {
+    "W": 60,
+    "THR": 0.02
+   },
+   "cagr": 0.3642260188201947,
+   "max_drawdown": 0.6433001338592763,
+   "sharpe": 0.868323514087574,
+   "sortino": 1.1909506200259146,
+   "fills": 255,
+   "turnover": 962.7210810432148,
+   "tqqq_exposure": 0.6826789277126925,
+   "passes_bar": false
+  },
+  {
+   "params": {
+    "W": 60,
+    "THR": 0.025
+   },
+   "cagr": 0.3802540083405954,
+   "max_drawdown": 0.6456881721712919,
+   "sharpe": 0.8769642257470582,
+   "sortino": 1.206645362380608,
+   "fills": 207,
+   "turnover": 864.3098835317436,
+   "tqqq_exposure": 0.7495178288228372,
+   "passes_bar": true
+  },
+  {
+   "params": {
+    "W": 60,
+    "THR": 0.03
+   },
+   "cagr": 0.41236385610786996,
+   "max_drawdown": 0.721111704037301,
+   "sharpe": 0.9032423503853638,
+   "sortino": 1.2428326218365453,
+   "fills": 131,
+   "turnover": 682.0721316133059,
+   "tqqq_exposure": 0.7989397349976979,
+   "passes_bar": true
+  },
+  {
+   "params": {
+    "W": 60,
+    "THR": 0.035
+   },
+   "cagr": 0.3986003185683289,
+   "max_drawdown": 0.7165558790132196,
+   "sharpe": 0.8763497958989824,
+   "sortino": 1.2088991601629075,
+   "fills": 109,
+   "turnover": 491.9430518528824,
+   "tqqq_exposure": 0.8363316621476441,
+   "passes_bar": true
+  },
+  {
+   "params": {
+    "W": 60,
+    "THR": 0.04
+   },
+   "cagr": 0.40282490206948496,
+   "max_drawdown": 0.7165558790132196,
+   "sharpe": 0.872979476365938,
+   "sortino": 1.2117613983445785,
+   "fills": 101,
+   "turnover": 508.2868839262176,
+   "tqqq_exposure": 0.8690233795467335,
+   "passes_bar": true
+  },
+  {
+   "params": {
+    "W": 20,
+    "THR": 0.03
+   },
+   "cagr": 0.3578390615716658,
+   "max_drawdown": 0.7753886744637815,
+   "sharpe": 0.8064790446708026,
+   "sortino": 1.1187625019505478,
+   "fills": 133,
+   "turnover": 698.5946508443932,
+   "tqqq_exposure": 0.9430974062515987,
+   "passes_bar": false
+  },
+  {
+   "params": {
+    "W": 40,
+    "THR": 0.03
+   },
+   "cagr": 0.3807861099430918,
+   "max_drawdown": 0.7165558790132196,
+   "sharpe": 0.843809362625394,
+   "sortino": 1.1699248745869084,
+   "fills": 153,
+   "turnover": 667.5006950874114,
+   "tqqq_exposure": 0.8643052642349209,
+   "passes_bar": true
+  },
+  {
+   "params": {
+    "W": 80,
+    "THR": 0.03
+   },
+   "cagr": 0.4511739655882774,
+   "max_drawdown": 0.6727218566115579,
+   "sharpe": 0.9638260774949704,
+   "sortino": 1.3341771855469509,
+   "fills": 213,
+   "turnover": 1016.3510999199345,
+   "tqqq_exposure": 0.7355450964342354,
+   "passes_bar": true
+  }
+ ],
+ "plateau_summary": {
+  "cells": 8,
+  "passes": 6,
+  "primary_pass": true,
+  "cagr_min": 0.3578390615716658,
+  "cagr_max": 0.4511739655882774
+ },
+ "subperiods": {
+  "2016-2019": {
+   "cagr": 0.546943260918304,
+   "max_drawdown": 0.5305023727282148,
+   "sharpe": 1.189721727498289,
+   "sortino": 1.692559531983136,
+   "volatility": 0.4553420762152857,
+   "exposure": 0.9990017150024317,
+   "fills": 63,
+   "turnover": 183.9194373851195,
+   "ending_equity": 570115.2581418975,
+   "years": 3.989788196821051,
+   "daily_vol": 0.4657178882114311,
+   "daily_sharpe": 1.1733138534244965,
+   "tqqq_exposure": 0.8336652417641488,
+   "bil_exposure": 0.1653390329434049,
+   "qqq_exposure": 0.0,
+   "days": 1006,
+   "start": "2016-01-04",
+   "end": "2019-12-31"
+  },
+  "2020-2021": {
+   "cagr": 0.35483189480861244,
+   "max_drawdown": 0.721111704037301,
+   "sharpe": 0.7913656124802962,
+   "sortino": 1.0484499023031755,
+   "volatility": 0.7503956568533909,
+   "exposure": 0.9999949072352908,
+   "fills": 41,
+   "turnover": 52.35265242536275,
+   "ending_equity": 183369.34879767432,
+   "years": 1.9966328237888813,
+   "daily_vol": 0.7609612464442456,
+   "daily_sharpe": 0.7797387829089112,
+   "tqqq_exposure": 0.9017452904658352,
+   "bil_exposure": 0.0982547095341648,
+   "qqq_exposure": 0.0,
+   "days": 505,
+   "start": "2020-01-02",
+   "end": "2021-12-31"
+  },
+  "2022-2023": {
+   "cagr": 0.2035303881003614,
+   "max_drawdown": 0.6380879125276819,
+   "sharpe": 0.6163837394094098,
+   "sortino": 0.8765012876859215,
+   "volatility": 0.5211548781355797,
+   "exposure": 0.9999948679260776,
+   "fills": 29,
+   "turnover": 19.11852658995393,
+   "ending_equity": 144464.8163477358,
+   "years": 1.9856814206403528,
+   "daily_vol": 0.5178689057893424,
+   "daily_sharpe": 0.6009259319561123,
+   "tqqq_exposure": 0.6257178488398947,
+   "bil_exposure": 0.3742821511601053,
+   "qqq_exposure": 0.0,
+   "days": 501,
+   "start": "2022-01-03",
+   "end": "2023-12-29"
+  }
+ },
+ "yearly": {
+  "2016": {
+   "strategy": 0.5285471411508904,
+   "tqqq": 0.1862965538814476
+  },
+  "2017": {
+   "strategy": 0.9580594910812505,
+   "tqqq": 1.1834653995188278
+  },
+  "2018": {
+   "strategy": -0.22035189471318728,
+   "tqqq": -0.19583753693794803
+  },
+  "2019": {
+   "strategy": 1.443201670624748,
+   "tqqq": 1.331055753396933
+  },
+  "2020": {
+   "strategy": 0.30552422108257593,
+   "tqqq": 1.0961179967465502
+  },
+  "2021": {
+   "strategy": 0.44235466196172024,
+   "tqqq": 0.8296958963840777
+  },
+  "2022": {
+   "strategy": -0.4859464402276876,
+   "tqqq": -0.7906535076278614
+  },
+  "2023": {
+   "strategy": 1.8535956904474862,
+   "tqqq": 1.9836611885152622
+  }
+ },
+ "corr_tqqq": {
+  "corr": 0.8422754315743515,
+  "beta": 0.7045765893805428
+ },
+ "corr_winners": {
+  "ratio-froth": {
+   "corr": 0.6399789171954344,
+   "n": 2011
+  },
+  "vol-scaled-crash-stop": {
+   "corr": 0.6947748121971565,
+   "n": 2011
+  },
+  "relative-value-tqqq": {
+   "corr": 0.8358771132502028,
+   "n": 2011
+  },
+  "fomc-opex-window": {
+   "corr": 0.5567495166057513,
+   "n": 2011
+  },
+  "family-session-timing": {
+   "corr": 0.6182930994256282,
+   "n": 2011
+  },
+  "family-short-reversal": {
+   "corr": 0.7184063367013008,
+   "n": 2011
+  },
+  "family-rebalance-flow": {
+   "corr": 0.7811772816895585,
+   "n": 2011
+  },
+  "family-intraday-microstructure-day": {
+   "corr": 0.5021849722774849,
+   "n": 2011
+  },
+  "family-ml-microstructure": {
+   "corr": 0.7640279079595853,
+   "n": 2011
+  }
+ },
+ "corr_summary": {
+  "min": 0.5021849722774849,
+  "max": 0.8358771132502028,
+  "mean": 0.6790522174780114,
+  "max_slug": "relative-value-tqqq"
+ },
+ "placebo": {
+  "shift_target": {
+   "n": 100,
+   "mean": 0.2714805388661844,
+   "median": 0.2737770319629307,
+   "p5": 0.1269736501229171,
+   "p95": 0.431692122678813,
+   "min": 0.07247393577294425,
+   "max": 0.5965263763152255,
+   "true": 0.41236385610786996,
+   "percentile": 0.92,
+   "p_one_sided": 0.0891089108910891
+  },
+  "shift_feature": {
+   "n": 100,
+   "mean": 0.27192401640954883,
+   "median": 0.26424512800402267,
+   "p5": 0.1251992968507021,
+   "p95": 0.44840720505302445,
+   "min": 0.046836874435214115,
+   "max": 0.548499611902318,
+   "true": 0.41236385610786996,
+   "percentile": 0.9,
+   "p_one_sided": 0.10891089108910891
+  }
+ },
+ "drawdown": {
+  "depth": 0.721111704037301,
+  "peak": "2020-02-19 14:44:00-05:00",
+  "trough": "2020-04-13 11:08:00-04:00",
+  "recovery": "2021-01-20 09:30:00-05:00"
+ },
+ "kill_criteria": [
+  {
+   "rule": "Activity floor: >=100 full fills or >=30 independent events",
+   "observed": "131 fills; 65 state switches",
+   "triggered": false
+  },
+  {
+   "rule": "No three-way dev improvement over TQQQ buy & hold",
+   "observed": "CAGR 41.24% vs 36.15%; DD 72.11% vs 82.29%; Sharpe 0.90 vs 0.80",
+   "triggered": false
+  },
+  {
+   "rule": "Plateau: >=5 of 8 local cells clear the three-way dev bar",
+   "observed": "6/8 cells pass",
+   "triggered": false
+  },
+  {
+   "rule": "Placebo: one-sided p <= 0.20 for at least one circular-shift null",
+   "observed": "target p=0.089; feature p=0.109",
+   "triggered": false
+  },
+  {
+   "rule": "Redundancy: maximum correlation with an existing winner <= 0.85",
+   "observed": "0.836 (relative-value-tqqq)",
+   "triggered": false
+  },
+  {
+   "rule": "Subperiod: no negative-CAGR development subperiod",
+   "observed": "none",
+   "triggered": false
+  }
+ ],
+ "status": "dev-only",
+ "verdict": "Dev pass at 1 bp: CAGR 41.24%, DD 72.11%, Sharpe 0.90, 131 fills.  The dollar impulse clears the three-way dev bar and 6/8 plateau cells.  It is not a clean independent winner: correlation with `relative-value-tqqq` is 0.836, the 2022-23 subperiod is only 20.4%, and the 2.0-2.5% threshold cells fail.  Promote to a dev candidate; do not call it verified until the one-shot 2024-2026 holdout."
+}

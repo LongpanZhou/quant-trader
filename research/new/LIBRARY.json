@@ -1463,54 +1463,6 @@
    "source": "research/new/family-crypto-risk-appetite/report.md"
   },
   {
-   "slug": "family-small-cap-relative",
-   "name": "Small-cap relative",
-   "family": "small-cap-relative",
-   "tagline": "IWM/QQQ small-cap leadership",
-   "summary": "New small-cap-relative family; full-window holdout.",
-   "dev": {
-    "cagr": 0.45404553287038607,
-    "max_dd": 0.7683963869119131,
-    "sharpe": 0.9771102336657665
-   },
-   "full": {
-    "cagr": 0.470236820917177,
-    "max_dd": 0.7683963869119131,
-    "sharpe": 0.9958238911910235
-   },
-   "above_tqqq": true,
-   "dev_above_tqqq": null,
-   "status": "verified-full",
-   "visible": true,
-   "family_winner": true,
-   "note": "External-data family added 2026-11-28. Full 47.02% CAGR / 76.84% DD / 1.00 Sharpe; 511 full fills. One-shot 2024-2026 holdout.",
-   "source": "research/new/family-small-cap-relative/report.md"
-  },
-  {
-   "slug": "family-international-relative",
-   "name": "International relative",
-   "family": "international-relative",
-   "tagline": "EEM/QQQ global risk appetite",
-   "summary": "New international-relative family; full-window holdout.",
-   "dev": {
-    "cagr": 0.511248041480219,
-    "max_dd": 0.5302777027060321,
-    "sharpe": 1.0869216464518243
-   },
-   "full": {
-    "cagr": 0.48435921596312026,
-    "max_dd": 0.5669404914800068,
-    "sharpe": 1.0409143524476159
-   },
-   "above_tqqq": true,
-   "dev_above_tqqq": null,
-   "status": "verified-full",
-   "visible": true,
-   "family_winner": true,
-   "note": "External-data family added 2026-11-28. Full 48.44% CAGR / 56.69% DD / 1.04 Sharpe; 359 full fills. One-shot 2024-2026 holdout.",
-   "source": "research/new/family-international-relative/report.md"
-  },
-  {
    "slug": "family-rates-volatility",
    "name": "Rates volatility",
    "family": "rates-volatility",
@@ -1535,30 +1487,6 @@
    "source": "research/new/family-rates-volatility/report.md"
   },
   {
-   "slug": "family-copper-gold",
-   "name": "Copper/gold",
-   "family": "copper-gold",
-   "tagline": "CPER/GLD growth vs defensive",
-   "summary": "New copper-gold family; full-window holdout.",
-   "dev": {
-    "cagr": 0.3274832259604348,
-    "max_dd": 0.7261339018426971,
-    "sharpe": 0.8155805135728267
-   },
-   "full": {
-    "cagr": 0.28604412123652345,
-    "max_dd": 0.7261339018426971,
-    "sharpe": 0.759019222035907
-   },
-   "above_tqqq": false,
-   "dev_above_tqqq": null,
-   "status": "verified-full",
-   "visible": true,
-   "family_winner": false,
-   "note": "External-data family added 2026-11-28. Full 28.60% CAGR / 72.61% DD / 0.76 Sharpe; 347 full fills. One-shot 2024-2026 holdout.",
-   "source": "research/new/family-copper-gold/report.md"
-  },
-  {
    "slug": "family-energy-rotation",
    "name": "Energy rotation",
    "family": "energy-rotation",
@@ -1581,6 +1509,78 @@
    "family_winner": false,
    "note": "External-data family added 2026-11-28. Full 36.48% CAGR / 69.89% DD / 0.90 Sharpe; 447 full fills. One-shot 2024-2026 holdout.",
    "source": "research/new/family-energy-rotation/report.md"
+  },
+  {
+   "slug": "family-dollar-regime",
+   "name": "Dollar regime",
+   "family": "dollar-regime",
+   "tagline": "UUP dollar impulse",
+   "summary": "External dollar-regime family; one-shot full holdout.",
+   "dev": {
+    "cagr": 0.4124090318636522,
+    "max_dd": 0.7148701919837473,
+    "sharpe": 0.900087621533074
+   },
+   "full": {
+    "cagr": 0.41455173290892167,
+    "max_dd": 0.7148701919837473,
+    "sharpe": 0.8930733122165264
+   },
+   "above_tqqq": true,
+   "dev_above_tqqq": null,
+   "status": "verified-full",
+   "visible": true,
+   "family_winner": true,
+   "note": "External family added 2026-11-28. Full 41.46% CAGR / 71.49% DD / 0.89 Sharpe; 131 full fills.",
+   "source": "research/new/family-dollar-regime/report.md"
+  },
+  {
+   "slug": "family-gold-safe-haven",
+   "name": "Gold safe-haven",
+   "family": "gold-safe-haven",
+   "tagline": "GLD/QQQ safe-haven demand",
+   "summary": "External gold-safe-haven family; one-shot full holdout.",
+   "dev": {
+    "cagr": 0.42917903511191,
+    "max_dd": 0.7473374497591969,
+    "sharpe": 0.891683759984824
+   },
+   "full": {
+    "cagr": 0.42694718355703376,
+    "max_dd": 0.7473374497591969,
+    "sharpe": 0.8880186860035495
+   },
+   "above_tqqq": true,
+   "dev_above_tqqq": null,
+   "status": "verified-full",
+   "visible": true,
+   "family_winner": true,
+   "note": "External family added 2026-11-28. Full 42.69% CAGR / 74.73% DD / 0.89 Sharpe; 121 full fills.",
+   "source": "research/new/family-gold-safe-haven/report.md"
+  },
+  {
+   "slug": "family-oil-shock",
+   "name": "Oil shock",
+   "family": "oil-shock",
+   "tagline": "USO energy shock",
+   "summary": "External oil-shock family; one-shot full holdout.",
+   "dev": {
+    "cagr": 0.48720169431806837,
+    "max_dd": 0.6007188383483317,
+    "sharpe": 1.0055032278980816
+   },
+   "full": {
+    "cagr": 0.4695454919334021,
+    "max_dd": 0.6007188383483317,
+    "sharpe": 0.9676122696504671
+   },
+   "above_tqqq": true,
+   "dev_above_tqqq": null,
+   "status": "verified-full",
+   "visible": true,
+   "family_winner": true,
+   "note": "External family added 2026-11-28. Full 46.95% CAGR / 60.07% DD / 0.97 Sharpe; 349 full fills.",
+   "source": "research/new/family-oil-shock/report.md"
   }
  ],
  "winner_policy": "One verified-full above-TQQQ winner per family, selected by full-window CAGR. ratio-froth and vol-scaled-crash-stop are now verified-full via clean reruns and audits; the previous fast-trend-vol / vol-term-structure remain verified research records but are not family winners."
