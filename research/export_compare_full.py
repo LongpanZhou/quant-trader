@@ -18,10 +18,7 @@ VISIBLE = [s for s in META["strategies"] if s.get("visible", True)]
 LIBRARY = json.loads((NEW / "LIBRARY.json").read_text(encoding="utf-8"))
 FAMILY = {s["slug"]: s.get("family", "other") for s in LIBRARY["strategies"]}
 FAMILY_WINNERS = {
-    "ratio-froth", "vol-scaled-crash-stop", "relative-value-tqqq",
-    "fomc-opex-window", "family-session-timing",
-    "family-short-reversal", "family-rebalance-flow",
-    "family-intraday-microstructure-day", "family-ml-microstructure",
+    s["slug"] for s in LIBRARY["strategies"] if s.get("family_winner")
 }
 OUT = ROOT / "web" / "public" / "data" / "compare" / "all.json"
 START, END = "2016-01-04", "2026-10-23"
@@ -62,7 +59,8 @@ PALETTE = [
     "#a78bfa", "#e879f9", "#fca5a5", "#fdba74", "#fde047", "#bef264",
     "#6ee7b7", "#d8b4fe", "#fda4af", "#7dd3fc", "#f9a8d4", "#fcd34d",
     "#86efac", "#c7d2fe", "#fca5a5", "#f0abfc", "#a5b4fc", "#fde68a",
-    "#99f6e4", "#fecaca", "#ddd6fe", "#bbf7d0",
+    "#99f6e4", "#fecaca", "#ddd6fe", "#bbf7d0", "#fbcfe8", "#bfdbfe",
+    "#fed7aa", "#d9f99d", "#a7f3d0", "#e9d5ff", "#fecdd3", "#bae6fd",
 ]
 for _s in VISIBLE:
     NAMES[_s["slug"]] = _s["name"]
@@ -129,7 +127,8 @@ def main():
     strategy_i = 0
     for key in frame.columns:
         is_bench = key in ("tqqq", "qqq")
-        color = "#71717a" if key == "tqqq" else "#a1a1aa" if key == "qqq" else PALETTE[strategy_i]
+        color = ("#71717a" if key == "tqqq" else "#a1a1aa" if key == "qqq"
+                 else PALETTE[strategy_i % len(PALETTE)])
         if not is_bench:
             strategy_i += 1
         series.append({

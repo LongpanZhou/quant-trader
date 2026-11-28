@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-27",
+ "generated": "2026-11-28",
  "window": "2016-01-04 to 2026-10-23",
  "bar": {
   "cagr": 0.3754,
@@ -1101,6 +1101,486 @@
    "family_winner": true,
    "note": "Full 41.16% / 45.93% DD / 1.03 Sharpe, holdout 20.45%; audit exact. Dev 49.81% at 1 bp, 48.46% at 5 bp, 46.79% at 10 bp - the most cost-robust of the six new families.",
    "source": "research/new/family-ml-microstructure/report.md"
+  },
+  {
+   "slug": "family-tail-hedge-overlay",
+   "name": "Tail-hedge overlay",
+   "family": "tail-hedge-overlay",
+   "tagline": "Fast-crash synthetic inverse hedge",
+   "summary": "The bt.stats invested fraction is 100% because both TQQQ and the synthetic inverse are invested assets. The useful exposure split is mean TQQQ 86.35%, mean inverse 13.65%, mean BIL 0%. The inverse is held on 27.3% of bars; there are 742 trigger sessions out of 2,012 (36.9%). The mean hedge weight while active is 50%.",
+   "dev": {
+    "cagr": 0.9060292715659302,
+    "max_dd": 0.38200356528820767,
+    "sharpe": 1.608420670681423
+   },
+   "full": {
+    "cagr": 0.6638359589899234,
+    "max_dd": 0.38200356528820767,
+    "sharpe": 1.3146340972232886
+   },
+   "above_tqqq": true,
+   "dev_above_tqqq": null,
+   "status": "verified-full",
+   "visible": true,
+   "family_winner": true,
+   "note": "New family added 2026-11-28. Full 66.38% CAGR / 38.20% DD / 1.31 Sharpe; 5325 full fills. One-shot 2024-2026 holdout. ",
+   "source": "research/new/family-tail-hedge-overlay/report.md"
+  },
+  {
+   "slug": "family-close-location",
+   "name": "Close-location value",
+   "family": "close-location",
+   "tagline": "Close-at-low five-session reversal",
+   "summary": "The stated bar is TQQQ 36.72% CAGR / 82.29% max DD / 0.82 Sharpe. The local 1-minute benchmark is 36.15% / 82.29% / 0.80. The primary clears both at 1 bp, 5 bp and 10 bp.",
+   "dev": {
+    "cagr": 0.7932868484219533,
+    "max_dd": 0.6276124709291508,
+    "sharpe": 1.3791679252509272
+   },
+   "full": {
+    "cagr": 0.6623490393764775,
+    "max_dd": 0.6276124709291508,
+    "sharpe": 1.2603890946795673
+   },
+   "above_tqqq": true,
+   "dev_above_tqqq": null,
+   "status": "verified-full",
+   "visible": true,
+   "family_winner": true,
+   "note": "New family added 2026-11-28. Full 66.23% CAGR / 62.76% DD / 1.26 Sharpe; 653 full fills. One-shot 2024-2026 holdout. ",
+   "source": "research/new/family-close-location/report.md"
+  },
+  {
+   "slug": "family-policy-liquidity",
+   "name": "Policy liquidity",
+   "family": "policy-liquidity",
+   "tagline": "Short-rate/T-bill liquidity regime",
+   "summary": "The pass is not clean. The 2022-2023 subperiod is -2.99% CAGR with a 74.37% drawdown; the max drawdown is only 5.6 pp better than TQQQ; 2020 and 2022 together contribute more than 100% of the net log excess; the 2020 P&L is a single-event outcome; and the off-run hit rate is only 20% (the edge is a few large crisis exits, not a consistent timing rule). The strategy is a short-rate liquidity-stress overlay, not an all-weather policy-liquidity regime. It should go to a one-shot holdout only as a crisis-alpha candidate, not be promoted on development alone.",
+   "dev": {
+    "cagr": 0.5777400014048153,
+    "max_dd": 0.7522583618426831,
+    "sharpe": 1.1045244667327132
+   },
+   "full": {
+    "cagr": 0.5613161552124286,
+    "max_dd": 0.7522583618426831,
+    "sharpe": 1.072500865150404
+   },
+   "above_tqqq": true,
+   "dev_above_tqqq": null,
+   "status": "verified-full",
+   "visible": true,
+   "family_winner": true,
+   "note": "New family added 2026-11-28. Full 56.13% CAGR / 75.23% DD / 1.07 Sharpe; 439 full fills. One-shot 2024-2026 holdout. ",
+   "source": "research/new/family-policy-liquidity/report.md"
+  },
+  {
+   "slug": "family-autocorrelation-regime",
+   "name": "Autocorrelation regime",
+   "family": "autocorrelation-regime",
+   "tagline": "Time-varying serial dependence",
+   "summary": "Execution: research/bt.py, 1-minute marks, next-open fills, 2% band, long-only, weights \u2265 0, row sum \u2264 1. Flat is BIL. Headline 1 bp.",
+   "dev": {
+    "cagr": 0.5004617987276958,
+    "max_dd": 0.6423045992663711,
+    "sharpe": 1.0030634599832882
+   },
+   "full": {
+    "cagr": 0.48291400915420124,
+    "max_dd": 0.6423045992663711,
+    "sharpe": 1.0018263898529993
+   },
+   "above_tqqq": true,
+   "dev_above_tqqq": null,
+   "status": "verified-full",
+   "visible": true,
+   "family_winner": true,
+   "note": "New family added 2026-11-28. Full 48.29% CAGR / 64.23% DD / 1.00 Sharpe; 793 full fills. One-shot 2024-2026 holdout. ",
+   "source": "research/new/family-autocorrelation-regime/report.md"
+  },
+  {
+   "slug": "family-vol-of-volume",
+   "name": "Volatility of volume",
+   "family": "vol-of-volume",
+   "tagline": "Volume-dispersion state",
+   "summary": "The primary object is the dispersion of minute volume, measured as the Shannon entropy of the 1-minute QQQ volume shares over the closing hour:",
+   "dev": {
+    "cagr": 0.46801205964524195,
+    "max_dd": 0.7004183851208732,
+    "sharpe": 1.0903590973378596
+   },
+   "full": {
+    "cagr": 0.4555715167361749,
+    "max_dd": 0.7004183851208732,
+    "sharpe": 1.074624682626839
+   },
+   "above_tqqq": true,
+   "dev_above_tqqq": null,
+   "status": "verified-full",
+   "visible": true,
+   "family_winner": true,
+   "note": "New family added 2026-11-28. Full 45.56% CAGR / 70.04% DD / 1.07 Sharpe; 1921 full fills. One-shot 2024-2026 holdout. ",
+   "source": "research/new/family-vol-of-volume/report.md"
+  },
+  {
+   "slug": "family-change-point",
+   "name": "Change-point regime",
+   "family": "change-point",
+   "tagline": "Online structural-break detection",
+   "summary": "The stated bar is TQQQ 36.72% CAGR / 82.29% max DD / 0.82 Sharpe. The local 1-minute benchmark is 36.15% / 82.29% / 0.80. The primary clears both at 1 bp, 5 bp and 10 bp, with a materially lower drawdown and lower volatility.",
+   "dev": {
+    "cagr": 0.514898516884519,
+    "max_dd": 0.5409739695081073,
+    "sharpe": 1.249882719783533
+   },
+   "full": {
+    "cagr": 0.45293742387586544,
+    "max_dd": 0.5409739695081073,
+    "sharpe": 1.1364352461246676
+   },
+   "above_tqqq": true,
+   "dev_above_tqqq": null,
+   "status": "verified-full",
+   "visible": true,
+   "family_winner": true,
+   "note": "New family added 2026-11-28. Full 45.29% CAGR / 54.10% DD / 1.14 Sharpe; 229 full fills. One-shot 2024-2026 holdout. ",
+   "source": "research/new/family-change-point/report.md"
+  },
+  {
+   "slug": "family-hurst-persistence",
+   "name": "Hurst persistence",
+   "family": "hurst-persistence",
+   "tagline": "Hurst/variance-ratio regime",
+   "summary": "The stated bar is TQQQ 36.72% CAGR / 82.29% max DD / 0.82 Sharpe on daily closes. The local 1-minute bt.benchmark TQQQ is 36.15% / 82.29% / 0.80; the 0.57 pp difference is a mark-convention difference. The primary clears both at 1 bp, 5 bp and 10 bp.",
+   "dev": {
+    "cagr": 0.5313242747646012,
+    "max_dd": 0.5625289246942228,
+    "sharpe": 1.167051986990069
+   },
+   "full": {
+    "cagr": 0.430036508310808,
+    "max_dd": 0.5625289246942228,
+    "sharpe": 1.0500413963031756
+   },
+   "above_tqqq": true,
+   "dev_above_tqqq": null,
+   "status": "verified-full",
+   "visible": true,
+   "family_winner": true,
+   "note": "New family added 2026-11-28. Full 43.00% CAGR / 56.25% DD / 1.05 Sharpe; 437 full fills. One-shot 2024-2026 holdout. ",
+   "source": "research/new/family-hurst-persistence/report.md"
+  },
+  {
+   "slug": "family-weekday-seasonality",
+   "name": "Weekday seasonality",
+   "family": "weekday-seasonality",
+   "tagline": "Day-of-week exposure clock",
+   "summary": "This is a real weekday effect with a cost problem, not a robust above-TQQQ winner. The 10 bp margin is inside the noise of a single dev window. The report recommends the family as a candidate only with a low-cost execution assumption (1-5 bp); at 10 bp it is essentially a tie with TQQQ.",
+   "dev": {
+    "cagr": 0.4328294545296809,
+    "max_dd": 0.7216821842454266,
+    "sharpe": 0.8967830627176091
+   },
+   "full": {
+    "cagr": 0.4284386715180568,
+    "max_dd": 0.7216821842454266,
+    "sharpe": 0.8963016025714363
+   },
+   "above_tqqq": true,
+   "dev_above_tqqq": null,
+   "status": "verified-full",
+   "visible": true,
+   "family_winner": true,
+   "note": "New family added 2026-11-28. Full 42.84% CAGR / 72.17% DD / 0.90 Sharpe; 1134 full fills. One-shot 2024-2026 holdout. ",
+   "source": "research/new/family-weekday-seasonality/report.md"
+  },
+  {
+   "slug": "family-tqqq-decay",
+   "name": "TQQQ decay",
+   "family": "tqqq-decay",
+   "tagline": "Realized variance-drag timing",
+   "summary": "There are 209 fills across 105 independent fill days. Average weights are 13.2% QQQ, 50.4% TQQQ, 36.4% BIL \u2014 the strategy spends about a third of the sample in cash and half in TQQQ.",
+   "dev": {
+    "cagr": 0.4548460204339928,
+    "max_dd": 0.35380378139501434,
+    "sharpe": 1.178175868224331
+   },
+   "full": {
+    "cagr": 0.39999358404755636,
+    "max_dd": 0.37614770700583844,
+    "sharpe": 1.0917995252102342
+   },
+   "above_tqqq": true,
+   "dev_above_tqqq": null,
+   "status": "verified-full",
+   "visible": true,
+   "family_winner": true,
+   "note": "New family added 2026-11-28. Full 40.00% CAGR / 37.61% DD / 1.09 Sharpe; 329 full fills. One-shot 2024-2026 holdout. ",
+   "source": "research/new/family-tqqq-decay/report.md"
+  },
+  {
+   "slug": "family-realized-skew",
+   "name": "Realized skew",
+   "family": "realized-skew",
+   "tagline": "Intraday realized skewness",
+   "summary": "The stated bar is TQQQ 36.72% CAGR / 82.29% max DD / 0.82 Sharpe. The local 1-minute benchmark is 36.15% / 82.29% / 0.80.",
+   "dev": {
+    "cagr": 0.4066725916696907,
+    "max_dd": 0.5398041890228424,
+    "sharpe": 0.9690702839980431
+   },
+   "full": {
+    "cagr": 0.38828022346177593,
+    "max_dd": 0.5398041890228424,
+    "sharpe": 0.9489063682773773
+   },
+   "above_tqqq": true,
+   "dev_above_tqqq": null,
+   "status": "verified-full",
+   "visible": true,
+   "family_winner": true,
+   "note": "New family added 2026-11-28. Full 38.83% CAGR / 53.98% DD / 0.95 Sharpe; 439 full fills. One-shot 2024-2026 holdout. ",
+   "source": "research/new/family-realized-skew/report.md"
+  },
+  {
+   "slug": "family-beta-rotation",
+   "name": "Beta rotation",
+   "family": "beta-rotation",
+   "tagline": "QQQ/SPY beta regime",
+   "summary": "There are 151 fills across 76 independent fill days (the activity floor is 100 fills or 30 events). Average weights are 69.0% QQQ, 27.9% TQQQ, 3.1% BIL.",
+   "dev": {
+    "cagr": 0.42963872174357287,
+    "max_dd": 0.4702380949635322,
+    "sharpe": 1.129476120077256
+   },
+   "full": {
+    "cagr": 0.3769799217420813,
+    "max_dd": 0.596266106305434,
+    "sharpe": 1.007125816838063
+   },
+   "above_tqqq": true,
+   "dev_above_tqqq": null,
+   "status": "verified-full",
+   "visible": true,
+   "family_winner": true,
+   "note": "New family added 2026-11-28. Full 37.70% CAGR / 59.63% DD / 1.01 Sharpe; 225 full fills. One-shot 2024-2026 holdout. ",
+   "source": "research/new/family-beta-rotation/report.md"
+  },
+  {
+   "slug": "family-kelly-sizing",
+   "name": "Kelly sizing",
+   "family": "kelly-sizing",
+   "tagline": "Fractional-Kelly exposure",
+   "summary": "Average weights are 14.8% QQQ, 64.9% TQQQ, 20.3% BIL. The book is aggressive: it holds TQQQ about two-thirds of the time and uses BIL only when the QQQ Kelly edge turns negative.",
+   "dev": {
+    "cagr": 0.3938947964082067,
+    "max_dd": 0.5685764522337928,
+    "sharpe": 0.9700939923223929
+   },
+   "full": {
+    "cagr": 0.35857912748932796,
+    "max_dd": 0.5685764522337928,
+    "sharpe": 0.903207355145455
+   },
+   "above_tqqq": false,
+   "dev_above_tqqq": null,
+   "status": "verified-full",
+   "visible": true,
+   "family_winner": false,
+   "note": "New family added 2026-11-28. Full 35.86% CAGR / 56.86% DD / 0.90 Sharpe; 979 full fills. One-shot 2024-2026 holdout. ",
+   "source": "research/new/family-kelly-sizing/report.md"
+  },
+  {
+   "slug": "family-day-of-month",
+   "name": "Day-of-month seasonality",
+   "family": "day-of-month",
+   "tagline": "Day-of-month clock",
+   "summary": "The only input is the session's rank inside its calendar month:",
+   "dev": {
+    "cagr": 0.38459337308328156,
+    "max_dd": 0.5975723742356736,
+    "sharpe": 0.918606594639265
+   },
+   "full": {
+    "cagr": 0.35292172059110083,
+    "max_dd": 0.5975723742356736,
+    "sharpe": 0.8829158628421213
+   },
+   "above_tqqq": false,
+   "dev_above_tqqq": null,
+   "status": "verified-full",
+   "visible": true,
+   "family_winner": false,
+   "note": "New family added 2026-11-28. Full 35.29% CAGR / 59.76% DD / 0.88 Sharpe; 1360 full fills. One-shot 2024-2026 holdout. ",
+   "source": "research/new/family-day-of-month/report.md"
+  },
+  {
+   "slug": "family-monthly-seasonality",
+   "name": "Monthly seasonality",
+   "family": "monthly-seasonality",
+   "tagline": "Month-of-year seasonal tilt",
+   "summary": "The qualifier is important: the strategy does not beat TQQQ in a typical month. Mean monthly excess is -0.11% (t = -0.19) and it wins only 33.3% of months. It compounds faster because it avoids the 2022 bear market (strategy -68.1% vs TQQQ -79.4%) and because the September exclusion removes four consecutive bad Septembers (2020-2023). The 2016-2019 sub-period lags TQQQ (39.8% vs 49.7%). This is a seasonal risk-reduction tilt, not a monthly alpha.",
+   "dev": {
+    "cagr": 0.41036538286904145,
+    "max_dd": 0.7211602474704744,
+    "sharpe": 0.8811901485295117
+   },
+   "full": {
+    "cagr": 0.3445658523232511,
+    "max_dd": 0.7211602474704744,
+    "sharpe": 0.8041401553861585
+   },
+   "above_tqqq": false,
+   "dev_above_tqqq": null,
+   "status": "verified-full",
+   "visible": true,
+   "family_winner": false,
+   "note": "New family added 2026-11-28. Full 34.46% CAGR / 72.12% DD / 0.80 Sharpe; 387 full fills. One-shot 2024-2026 holdout. ",
+   "source": "research/new/family-monthly-seasonality/report.md"
+  },
+  {
+   "slug": "family-volume-clock",
+   "name": "Volume-clock overnight",
+   "family": "volume-clock",
+   "tagline": "Midday volume acceleration state",
+   "summary": "The strategy is an overnight TQQQ position gated by a volume-acceleration state measured at 13:00 ET:",
+   "dev": {
+    "cagr": 0.3725361803136138,
+    "max_dd": 0.20835080029894026,
+    "sharpe": 1.4694673414052337
+   },
+   "full": {
+    "cagr": 0.2964880066021889,
+    "max_dd": 0.2669029251153544,
+    "sharpe": 1.2319336886997603
+   },
+   "above_tqqq": false,
+   "dev_above_tqqq": null,
+   "status": "verified-full",
+   "visible": true,
+   "family_winner": false,
+   "note": "New family added 2026-11-28. Full 29.65% CAGR / 26.69% DD / 1.23 Sharpe; 1614 full fills. One-shot 2024-2026 holdout. ",
+   "source": "research/new/family-volume-clock/report.md"
+  },
+  {
+   "slug": "family-lead-lag-spillover",
+   "name": "SPY\u2192QQQ spillover",
+   "family": "lead-lag-spillover",
+   "tagline": "Cross-market lead-lag residual",
+   "summary": "The hypothesis has two layers:",
+   "dev": {
+    "cagr": 0.29917300025580285,
+    "max_dd": 0.30919186698062995,
+    "sharpe": 0.9532255436485074
+   },
+   "full": {
+    "cagr": 0.27605494383270757,
+    "max_dd": 0.30919186698062995,
+    "sharpe": 0.894344348555544
+   },
+   "above_tqqq": false,
+   "dev_above_tqqq": null,
+   "status": "verified-full",
+   "visible": true,
+   "family_winner": false,
+   "note": "New family added 2026-11-28. Full 27.61% CAGR / 30.92% DD / 0.89 Sharpe; 2013 full fills. One-shot 2024-2026 holdout. Novelty test failed: the residual is not significant and the result is common-factor short-term reversal; included as a below-bar research record, not a family winner.",
+   "source": "research/new/family-lead-lag-spillover/report.md"
+  },
+  {
+   "slug": "family-dynamic-risk-parity",
+   "name": "Dynamic risk parity",
+   "family": "dynamic-risk-parity",
+   "tagline": "Rolling risk-contribution allocation",
+   "summary": "There are 251 fills across 126 independent fill days, so the activity floor is met. Average weights are 75.8% QQQ, 24.2% TQQQ, 0.0% BIL. Turnover is only 18x over eight years: the allocator is almost static.",
+   "dev": {
+    "cagr": 0.2538896428396662,
+    "max_dd": 0.505911047069052,
+    "sharpe": 0.8418045947385233
+   },
+   "full": {
+    "cagr": 0.26214422183234554,
+    "max_dd": 0.505911047069052,
+    "sharpe": 0.8727263860698147
+   },
+   "above_tqqq": false,
+   "dev_above_tqqq": null,
+   "status": "verified-full",
+   "visible": true,
+   "family_winner": false,
+   "note": "New family added 2026-11-28. Full 26.21% CAGR / 50.59% DD / 0.87 Sharpe; 319 full fills. One-shot 2024-2026 holdout. ",
+   "source": "research/new/family-dynamic-risk-parity/report.md"
+  },
+  {
+   "slug": "family-quarter-end-flow",
+   "name": "Quarter-end flow",
+   "family": "quarter-end-flow",
+   "tagline": "Quarter-end rebalancing window",
+   "summary": "For each calendar quarter, the window is:",
+   "dev": {
+    "cagr": 0.25704569109450404,
+    "max_dd": 0.5200438240328384,
+    "sharpe": 0.8134007210807616
+   },
+   "full": {
+    "cagr": 0.25504614404258197,
+    "max_dd": 0.5200438240328384,
+    "sharpe": 0.8182869327709982
+   },
+   "above_tqqq": false,
+   "dev_above_tqqq": null,
+   "status": "verified-full",
+   "visible": true,
+   "family_winner": false,
+   "note": "New family added 2026-11-28. Full 25.50% CAGR / 52.00% DD / 0.82 Sharpe; 1333 full fills. One-shot 2024-2026 holdout. ",
+   "source": "research/new/family-quarter-end-flow/report.md"
+  },
+  {
+   "slug": "family-cpi-nfp-release",
+   "name": "CPI/NFP release",
+   "family": "cpi-nfp-release",
+   "tagline": "Macro release-window drift",
+   "summary": "The important honesty check: the CPI-day edge is not intraday. The CPI session's open-to-close return is only +3.9 bp (t = 0.13); the +81.9 bp open-to-open comes almost entirely from the close-to-next-open gap (~+78 bp). Because the proxy is fixed at calendar day 12 and the actual CPI release is usually a few days later, the overnight may be capturing the actual release morning. The strategy is still ex-ante and tradable, but the \"release-day drift\" label is too strong; it is a mid-month overnight window. NFP, which has an actual fixed release date (first Friday), shows no edge. That asymmetry is the main reason the family is rejected.",
+   "dev": {
+    "cagr": 0.10138866052461126,
+    "max_dd": 0.25057922918118014,
+    "sharpe": 0.7125515885765968
+   },
+   "full": {
+    "cagr": 0.09970776695406847,
+    "max_dd": 0.25057922918118014,
+    "sharpe": 0.7372719077923001
+   },
+   "above_tqqq": false,
+   "dev_above_tqqq": null,
+   "status": "verified-full",
+   "visible": true,
+   "family_winner": false,
+   "note": "New family added 2026-11-28. Full 9.97% CAGR / 25.06% DD / 0.74 Sharpe; 521 full fills. One-shot 2024-2026 holdout. ",
+   "source": "research/new/family-cpi-nfp-release/report.md"
+  },
+  {
+   "slug": "family-gap-continuation",
+   "name": "Gap continuation",
+   "family": "gap-continuation",
+   "tagline": "Opening gap continuation",
+   "summary": "Development window 2016-01-04 .. 2023-12-29, 1-minute marks, next-open fills, 2% band, long-only, weights >= 0, sum <= 1. The panel is requested with end=2023-12-29; no 2024-2026 bar is used. The only data inputs are the shared QQQ/TQQQ/BIL panel; the signal itself uses QQQ open/close, and the position is TQQQ.",
+   "dev": {
+    "cagr": 0.11251268594136254,
+    "max_dd": 0.1490852671866103,
+    "sharpe": 0.8712369236797626
+   },
+   "full": {
+    "cagr": 0.06625642775843787,
+    "max_dd": 0.44736013747953207,
+    "sharpe": 0.527255271946234
+   },
+   "above_tqqq": false,
+   "dev_above_tqqq": null,
+   "status": "verified-full",
+   "visible": true,
+   "family_winner": false,
+   "note": "New family added 2026-11-28. Full 6.63% CAGR / 44.74% DD / 0.53 Sharpe; 412 full fills. One-shot 2024-2026 holdout. ",
+   "source": "research/new/family-gap-continuation/report.md"
   }
  ],
  "winner_policy": "One verified-full above-TQQQ winner per family, selected by full-window CAGR. ratio-froth and vol-scaled-crash-stop are now verified-full via clean reruns and audits; the previous fast-trend-vol / vol-term-structure remain verified research records but are not family winners."

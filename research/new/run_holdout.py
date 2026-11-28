@@ -36,6 +36,8 @@ def load(slug: str):
     spec = importlib.util.spec_from_file_location("new_" + slug.replace("-", "_"), path)
     mod = importlib.util.module_from_spec(spec)
     sys.modules[spec.name] = mod
+    # Some new-family strategies keep a local harness.py next to strategy.py.
+    sys.path.insert(0, str(path.parent))
     spec.loader.exec_module(mod)
     return mod
 

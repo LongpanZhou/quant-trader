@@ -1,0 +1,404 @@
+{
+  "agent": "family-close-location",
+  "family": "close location value",
+  "idea": "A close pinned at the session low marks forced selling / inventory imbalance; the next sessions mean-revert. TQQQ is the long instrument and BIL is the flat asset.",
+  "hypothesis": "QQQ closes in the bottom tenth of its intraday range are followed by positive next-open TQQQ returns over the next five sessions.",
+  "universe": [
+    "QQQ",
+    "TQQQ",
+    "BIL"
+  ],
+  "window": {
+    "dev": [
+      "2016-01-04",
+      "2023-12-29"
+    ],
+    "holdout": "not loaded"
+  },
+  "execution": {
+    "engine": "research/bt.py",
+    "marks": "1min",
+    "fills": "next open",
+    "band": 0.02,
+    "headline_bps": 1.0,
+    "also_bps": [
+      5.0,
+      10.0
+    ],
+    "weight_cap": 1.0,
+    "long_only": true,
+    "exposure_state": "TQQQ 1.0 while the CLV event is on, BIL 1.0 otherwise"
+  },
+  "params": {
+    "clv_thr": -0.8,
+    "hold": 5
+  },
+  "info": {
+    "params": {
+      "clv_thr": -0.8,
+      "hold": 5
+    },
+    "signal_days": 226,
+    "events": 226,
+    "tqqq_exposure": 0.45794239525246844,
+    "episodes": 125,
+    "episode_stats": {
+      "n": 125,
+      "mean": 0.04383601050929405,
+      "median": 0.058588639115804364,
+      "win": 0.736,
+      "t": 4.603018277722774,
+      "bootstrap_p": 0.0,
+      "ci95_low": 0.02475048141260324,
+      "ci95_high": 0.06190358523316467,
+      "worst": -0.346578408271615,
+      "best": 0.2916957734655514
+    },
+    "event_forward": {
+      "n": 226,
+      "mean": 0.029229822256686737,
+      "median": 0.037955850413678216,
+      "win": 0.6504424778761062,
+      "t": 4.310194007778359,
+      "bootstrap_p": 0.0,
+      "ci95_low": 0.01603904236773656,
+      "ci95_high": 0.042396820092552724,
+      "worst": -0.42002365400636665,
+      "best": 0.3186949659175027
+    }
+  },
+  "windows": {
+    "dev": {
+      "1bp": {
+        "cagr": 0.7932155510459649,
+        "max_drawdown": 0.6597570991292492,
+        "sharpe": 1.3687562320135975,
+        "sortino": 1.9525395887608579,
+        "volatility": 0.5329102955018775,
+        "fills": 501,
+        "turnover": 12911.457889193363,
+        "ending_equity": 10594515.747731728,
+        "tqqq_exposure": 0.45794239525246844
+      },
+      "5bp": {
+        "cagr": 0.7487674052535265,
+        "max_drawdown": 0.6640844545501894,
+        "sharpe": 1.321724472831962,
+        "sortino": 1.8837981354144624,
+        "volatility": 0.5327600407054425,
+        "fills": 501,
+        "turnover": 11106.664194631607,
+        "ending_equity": 8670587.7890465,
+        "tqqq_exposure": 0.45794239525246844
+      },
+      "10bp": {
+        "cagr": 0.6947533365206404,
+        "max_drawdown": 0.6694163375770181,
+        "sharpe": 1.2628239188038093,
+        "sortino": 1.7979113481842266,
+        "volatility": 0.532625717232661,
+        "fills": 501,
+        "turnover": 9220.160351662114,
+        "ending_equity": 6749286.618204503,
+        "tqqq_exposure": 0.45794239525246844
+      }
+    }
+  },
+  "benchmarks": {
+    "tqqq": {
+      "cagr": 0.3615406632934588,
+      "total_return": 10.752826498520793,
+      "max_drawdown": 0.8229021592363336,
+      "volatility": 0.6654592718640882,
+      "sharpe": 0.8011699599655372,
+      "ending_equity": 1175282.6498520793,
+      "years": 7.984312495246787,
+      "note": "1-minute marks; the task bar is 36.72% / 82.29% / 0.82 on daily closes."
+    },
+    "qqq": {
+      "cagr": 0.18912874422247206,
+      "total_return": 2.9870424941803697,
+      "max_drawdown": 0.3730047872557426,
+      "volatility": 0.2201773147609827,
+      "sharpe": 0.8999556826271142,
+      "ending_equity": 398704.249418037,
+      "years": 7.984312495246787
+    }
+  },
+  "yearly": {
+    "2016": {
+      "strategy": 0.6499817924294979,
+      "benchmark": 0.19864262661415033
+    },
+    "2017": {
+      "strategy": 0.3973712951569006,
+      "benchmark": 1.1454004749279192
+    },
+    "2018": {
+      "strategy": 0.47458182118962844,
+      "benchmark": -0.20761930070677803
+    },
+    "2019": {
+      "strategy": 1.2767209933583499,
+      "benchmark": 1.4822913617582225
+    },
+    "2020": {
+      "strategy": 2.698481674924749,
+      "benchmark": 1.041403713646452
+    },
+    "2021": {
+      "strategy": 1.0552507046912858,
+      "benchmark": 0.8105368933493498
+    },
+    "2022": {
+      "strategy": -0.4984287913571246,
+      "benchmark": -0.7938942799960799
+    },
+    "2023": {
+      "strategy": 2.57066901220775,
+      "benchmark": 1.9204706377461225
+    }
+  },
+  "grid": [
+    {
+      "name": "1 clv -0.60 h5",
+      "params": {
+        "clv_thr": -0.6,
+        "hold": 5
+      },
+      "cagr": 0.6126727559312519,
+      "max_drawdown": 0.7773941107822779,
+      "sharpe": 1.1052745186568464,
+      "sortino": 1.5523091047885778,
+      "volatility": 0.5967071973695965,
+      "fills": 511,
+      "turnover": 8098.7078998557745,
+      "ending_equity": 4540609.050546554,
+      "tqqq_exposure": 0.6395700107433365
+    },
+    {
+      "name": "2 clv -0.70 h5",
+      "params": {
+        "clv_thr": -0.7,
+        "hold": 5
+      },
+      "cagr": 0.7859668792435501,
+      "max_drawdown": 0.7210684930800382,
+      "sharpe": 1.3218130687628893,
+      "sortino": 1.8749107539663006,
+      "volatility": 0.5600155445440373,
+      "fills": 511,
+      "turnover": 13384.096894840992,
+      "ending_equity": 10257368.072993167,
+      "tqqq_exposure": 0.5590116130352484
+    },
+    {
+      "name": "3 primary clv -0.80 h5",
+      "params": {
+        "clv_thr": -0.8,
+        "hold": 5
+      },
+      "cagr": 0.7932155510459649,
+      "max_drawdown": 0.6597570991292492,
+      "sharpe": 1.3687562320135975,
+      "sortino": 1.9525395887608579,
+      "volatility": 0.5329102955018775,
+      "fills": 501,
+      "turnover": 12911.457889193363,
+      "ending_equity": 10594515.747731728,
+      "tqqq_exposure": 0.45794239525246844
+    },
+    {
+      "name": "4 clv -0.90 h5",
+      "params": {
+        "clv_thr": -0.9,
+        "hold": 5
+      },
+      "cagr": 0.5159511749203007,
+      "max_drawdown": 0.5518153517943177,
+      "sharpe": 1.1376264387724007,
+      "sortino": 1.6320456050001229,
+      "volatility": 0.4616620879930847,
+      "fills": 401,
+      "turnover": 4377.080623027126,
+      "ending_equity": 2771068.1807503104,
+      "tqqq_exposure": 0.31160664040517727
+    },
+    {
+      "name": "5 clv -0.80 h3",
+      "params": {
+        "clv_thr": -0.8,
+        "hold": 3
+      },
+      "cagr": 0.6171956941711978,
+      "max_drawdown": 0.570340994938829,
+      "sharpe": 1.2753024716113328,
+      "sortino": 1.8133910455576705,
+      "volatility": 0.4636651318260679,
+      "fills": 653,
+      "turnover": 8636.752691283047,
+      "ending_equity": 4643288.2694747215,
+      "tqqq_exposure": 0.30572722156852716
+    },
+    {
+      "name": "6 clv -0.80 h4",
+      "params": {
+        "clv_thr": -0.8,
+        "hold": 4
+      },
+      "cagr": 0.5957443568430447,
+      "max_drawdown": 0.7164119688287351,
+      "sharpe": 1.185667824394205,
+      "sortino": 1.68504941532463,
+      "volatility": 0.5037017119661549,
+      "fills": 577,
+      "turnover": 7924.704087933151,
+      "ending_equity": 4173712.6937889406,
+      "tqqq_exposure": 0.38634445183404104
+    },
+    {
+      "name": "7 clv -0.80 h6",
+      "params": {
+        "clv_thr": -0.8,
+        "hold": 6
+      },
+      "cagr": 0.6013685906104891,
+      "max_drawdown": 0.7476723822367399,
+      "sharpe": 1.1268815174515785,
+      "sortino": 1.5931668867119122,
+      "volatility": 0.5599731062897179,
+      "fills": 419,
+      "turnover": 5303.562451807787,
+      "ending_equity": 4292620.4416751675,
+      "tqqq_exposure": 0.5198342456642963
+    },
+    {
+      "name": "8 clv -0.80 h8",
+      "params": {
+        "clv_thr": -0.8,
+        "hold": 8
+      },
+      "cagr": 0.48723109727743186,
+      "max_drawdown": 0.8119837856507001,
+      "sharpe": 0.9742544747257698,
+      "sortino": 1.3723742456600758,
+      "volatility": 0.5882827260236164,
+      "fills": 323,
+      "turnover": 2993.685545790684,
+      "ending_equity": 2378611.279955876,
+      "tqqq_exposure": 0.6175819818898041
+    }
+  ],
+  "cuts": {
+    "2016-2019": {
+      "cagr": 0.6516515459374066,
+      "max_drawdown": 0.35377687925317935,
+      "sharpe": 1.597407581782403,
+      "sortino": 2.3182956783377344,
+      "volatility": 0.3548369777304029,
+      "fills": 205,
+      "turnover": 599.6150375923222,
+      "ending_equity": 739352.8384696875,
+      "tqqq_exposure": 0.37576611663421133
+    },
+    "2020-2021": {
+      "cagr": 1.807646091383536,
+      "max_drawdown": 0.6295640369619733,
+      "sharpe": 1.8278839946267806,
+      "sortino": 2.5585162866394127,
+      "volatility": 0.7030288565183596,
+      "fills": 137,
+      "turnover": 530.7395197641341,
+      "ending_equity": 783335.0953592702,
+      "tqqq_exposure": 0.4826424857246373
+    },
+    "2022-2023": {
+      "cagr": 0.35653488185708615,
+      "max_drawdown": 0.6597570991292492,
+      "sharpe": 0.8005772849518292,
+      "sortino": 1.1578467513027513,
+      "volatility": 0.6250993422837857,
+      "fills": 157,
+      "turnover": 140.35635231344514,
+      "ending_equity": 183064.07765485038,
+      "tqqq_exposure": 0.5987257216025671
+    },
+    "ex2020": {
+      "cagr": 0.5202768347519162,
+      "max_drawdown": 0.659757099129249,
+      "sharpe": 1.1999088739472028,
+      "sortino": 1.7437887027255503,
+      "volatility": 0.4258154658051375,
+      "fills": 429,
+      "turnover": 3641.896240496059,
+      "ending_equity": 2834833.2042551753,
+      "tqqq_exposure": 0.3921138793676779
+    },
+    "ex2022": {
+      "cagr": 0.9196716964163811,
+      "max_drawdown": 0.6295640369619734,
+      "sharpe": 1.662423450398254,
+      "sortino": 2.3653070056130785,
+      "volatility": 0.4575162798849769,
+      "fills": 433,
+      "turnover": 14194.664124236126,
+      "ending_equity": 18254610.439786535,
+      "tqqq_exposure": 0.379132347674835
+    }
+  },
+  "placebo": {
+    "real_cagr": 0.7932155510459649,
+    "signal_days": 226,
+    "shift": {
+      "n_draws": 100,
+      "mean_cagr": 0.200665255474381,
+      "std_cagr": 0.1156355999955508,
+      "p95_cagr": 0.38118147155769266,
+      "max_cagr": 0.4373610028610515,
+      "p_value": 0.0,
+      "note": "circular shift of the daily target vector; preserves exposure, event count and clustering."
+    },
+    "random_entry": {
+      "n_draws": 100,
+      "mean_cagr": 0.15505415732008265,
+      "std_cagr": 0.13597692809381412,
+      "p95_cagr": 0.38543523398067925,
+      "max_cagr": 0.5518629111306801,
+      "p_value": 0.0,
+      "mean_exposure": 0.44817278866322197,
+      "note": "same number of event days drawn uniformly; destroys timing and clustering."
+    }
+  },
+  "corr_winners": {
+    "ratio-froth": 0.42543348109477014,
+    "vol-scaled-crash-stop": 0.5339359238408301,
+    "relative-value-tqqq": 0.651973017430048,
+    "fomc-opex-window": 0.4602682170657143,
+    "family-session-timing": 0.5544139365451075,
+    "family-short-reversal": 0.789316797374133,
+    "family-rebalance-flow": 0.6103687556936781,
+    "family-intraday-microstructure-day": 0.45044380505098147,
+    "family-ml-microstructure": 0.6355240132222952,
+    "TQQQ": 0.7892471911744136
+  },
+  "corr_tqqq": 0.7892471911744136,
+  "precut": {
+    "cut": "2020-03-12 11:07 America/New_York",
+    "bars_compared": 409376,
+    "max_abs_weight_diff": 0.0
+  },
+  "kill_criteria": [
+    "dev 1 bp CAGR <= 36.72% or dev max drawdown >= 82.29%",
+    "fewer than 5 of the 8 pre-registered grid cells clear the same bar",
+    "10 bp CAGR <= 36.72%",
+    "shift-placebo p > 0.05",
+    "random-entry placebo p > 0.05",
+    "ex-2020 CAGR <= 20%",
+    "daily-return correlation to family-short-reversal > 0.85",
+    "fewer than 100 fills or fewer than 30 independent events",
+    "pre-cut max weight difference > 1e-12",
+    "event-forward 5-session t <= 1.5 (CLV reversal absent at the event level)"
+  ],
+  "status": "dev_pass",
+  "grid_cells_above_bar": 8
+}

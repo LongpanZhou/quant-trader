@@ -1,0 +1,174 @@
+{
+  "strategy": "policy-liquidity-short-rate",
+  "directory": "research/new/family-policy-liquidity",
+  "window": {
+    "start": "2016-01-04",
+    "end": "2023-12-29",
+    "marks": "1min",
+    "fills": "next session 09:30 open, 2% band",
+    "idle": "BIL"
+  },
+  "rules": {
+    "y20": "annualised 20-session BIL total-return slope",
+    "y60": "annualised 60-session BIL total-return slope",
+    "dy60": "y60 - y60.shift(60)",
+    "front": "y20 - y60",
+    "low": "y60 < 1.00% -> risk-on",
+    "high": "y60 >= 4.00% -> risk-on",
+    "tightening": "1.00% <= y60 < 4.00% and dy60 >= 0.40% -> risk-off",
+    "stress": "1.00% <= y60 < 4.00% and front >= 0.15% -> risk-off",
+    "stable": "otherwise -> risk-on",
+    "decision": "15:59 close, executed at next session 09:30 open",
+    "no": "moving-average trend, volatility target, drawdown event, calendar window, opening range, ML, relative strength"
+  },
+  "dev": {
+    "1bp": {
+      "cagr": 0.579700711226125,
+      "max_drawdown": 0.7667642956522223,
+      "sharpe": 1.1181964981879675,
+      "sortino": 1.5894738553588745,
+      "volatility": 0.5418390105128642,
+      "exposure": 0.9999987210313603,
+      "turnover": 1413.9435411168465,
+      "fills": 361,
+      "ending_equity": 3850200.6775303003,
+      "years": 7.984312495246787
+    },
+    "5bp": {
+      "cagr": 0.5513879075530674,
+      "max_drawdown": 0.7667642956522223,
+      "sharpe": 1.0847847528321046,
+      "sortino": 1.5411003551533888,
+      "volatility": 0.5417597843051691,
+      "exposure": 0.9999987210313603,
+      "turnover": 1302.878332847823,
+      "fills": 361,
+      "ending_equity": 3332508.6744524483,
+      "years": 7.984312495246787
+    },
+    "10bp": {
+      "cagr": 0.5167094575869162,
+      "max_drawdown": 0.7667642956522223,
+      "sharpe": 1.0429712330256053,
+      "sortino": 1.480641609503098,
+      "volatility": 0.5416985778649314,
+      "exposure": 0.9999987210313603,
+      "turnover": 1179.5346599129641,
+      "fills": 361,
+      "ending_equity": 2782154.550683074,
+      "years": 7.984312495246787
+    }
+  },
+  "benchmark_tqqq": {
+    "cagr": 0.36152361155523893,
+    "max_drawdown": 0.8229021592363336,
+    "sharpe": 0.8011510649133299,
+    "sortino": 1.1216624921505678,
+    "volatility": 0.6654593070297561,
+    "exposure": 0.9999987210313603,
+    "turnover": 1.0,
+    "fills": 1,
+    "ending_equity": 1175165.1333387455,
+    "years": 7.984312495246787
+  },
+  "exposure_tqqq": 0.8543817465595743,
+  "exposure_bil": 0.14561825344042564,
+  "trade_stats": {
+    "entries_state": 90,
+    "exits_state": 90,
+    "tqqq_buys": 91,
+    "tqqq_sells": 90,
+    "avg_on_run_sessions": 18.89010989010989,
+    "median_on_run_sessions": 2.0,
+    "on_sessions": 1719,
+    "on_fraction": 0.8543737574552683,
+    "first_tqqq_buy": "2016-01-04 09:31:00-05:00",
+    "last_tqqq_buy": "2023-03-10 09:30:00-05:00",
+    "last_tqqq_sell": "2023-03-09 09:30:00-05:00",
+    "final_state": "risk_on"
+  },
+  "subperiods": {
+    "2016_2019": {
+      "start": "2016-01-04",
+      "end": "2019-12-31",
+      "cagr": 0.4960451518094595,
+      "max_drawdown": 0.360823476196507,
+      "sharpe": 1.1430069985744635,
+      "total_return": 3.9872703872472455
+    },
+    "2020_2021": {
+      "start": "2020-01-02",
+      "end": "2021-12-31",
+      "cagr": 1.7444216505720789,
+      "max_drawdown": 0.35975612883302754,
+      "sharpe": 1.8822862146124768,
+      "total_return": 6.500687193139559
+    },
+    "2022_2023": {
+      "start": "2022-01-03",
+      "end": "2023-12-29",
+      "cagr": -0.029907143816386594,
+      "max_drawdown": 0.7437215345947372,
+      "sharpe": 0.2801245485605884,
+      "total_return": -0.058489472475386606
+    }
+  },
+  "yearly": {
+    "2016": {
+      "strategy": 0.1862965538814476,
+      "benchmark": 0.1862965538814476
+    },
+    "2017": {
+      "strategy": 1.1999487144877117,
+      "benchmark": 1.1296022387355191
+    },
+    "2018": {
+      "strategy": -0.0007353994063150626,
+      "benchmark": -0.2352392790445227
+    },
+    "2019": {
+      "strategy": 0.7736299837951806,
+      "benchmark": 1.3047583908023346
+    },
+    "2020": {
+      "strategy": 3.099417399340914,
+      "benchmark": 0.9982374677191261
+    },
+    "2021": {
+      "strategy": 0.9088089050398849,
+      "benchmark": 0.9088089050398851
+    },
+    "2022": {
+      "strategy": -0.5878307045431949,
+      "benchmark": -0.7970480995639474
+    },
+    "2023": {
+      "strategy": 1.2842819675857928,
+      "benchmark": 2.048926455333064
+    }
+  },
+  "state_counts": {
+    "risk_on_sessions": 1719,
+    "risk_off_sessions": 293
+  },
+  "daily_crosscheck": {
+    "1bp": {
+      "cagr": 0.5753468783256401,
+      "max_drawdown": 0.7522583618426831,
+      "sharpe": 1.101728479059912,
+      "sortino": 1.551993441664784,
+      "volatility": 0.5537641848056619,
+      "exposure": 0.9995029821073559,
+      "turnover": 1382.6838985203221,
+      "fills": 361,
+      "ending_equity": 3765019.7105616108,
+      "years": 7.983572895277208
+    }
+  },
+  "bar": {
+    "cagr": 0.3672,
+    "max_drawdown": 0.8229,
+    "sharpe": 0.82
+  },
+  "passed_dev_bar": true
+}

@@ -1,0 +1,328 @@
+{
+ "slug": "family-kelly-sizing",
+ "family": "kelly-sizing",
+ "primary_object": "rolling Kelly fraction from QQQ/TQQQ mean, variance, skew and kurtosis (fourth-order log-growth expansion)",
+ "dev": {
+  "cagr": 0.39385191648907525,
+  "total_return": 13.17329065065301,
+  "max_drawdown": 0.5707591548620441,
+  "volatility": 0.44473838659571,
+  "sharpe": 0.9730653456337719,
+  "sortino": 1.3662849227519136,
+  "exposure": 0.9994999232618816,
+  "fills": 686,
+  "turnover": 450.3143086273969,
+  "ending_equity": 1417329.065065301,
+  "years": 7.984312495246787
+ },
+ "windows": {
+  "dev": {
+   "1bp": {
+    "cagr": 0.39385191648907525,
+    "total_return": 13.17329065065301,
+    "max_drawdown": 0.5707591548620441,
+    "volatility": 0.44473838659571,
+    "sharpe": 0.9730653456337719,
+    "sortino": 1.3662849227519136,
+    "exposure": 0.9994999232618816,
+    "fills": 686,
+    "turnover": 450.3143086273969,
+    "ending_equity": 1417329.065065301,
+    "years": 7.984312495246787
+   },
+   "5bp": {
+    "cagr": 0.38605639250807555,
+    "total_return": 12.552612240396309,
+    "max_drawdown": 0.5712754243744909,
+    "volatility": 0.4447400713779811,
+    "sharpe": 0.9604072893475673,
+    "sortino": 1.3484494443670436,
+    "exposure": 0.9994999232618816,
+    "fills": 690,
+    "turnover": 437.716233220529,
+    "ending_equity": 1355261.224039631,
+    "years": 7.984312495246787
+   },
+   "10bp": {
+    "cagr": 0.3760740424793334,
+    "total_return": 11.792619339899378,
+    "max_drawdown": 0.5719196054732205,
+    "volatility": 0.44477145820650354,
+    "sharpe": 0.9440609295792497,
+    "sortino": 1.3254312415239857,
+    "exposure": 0.9994999232618816,
+    "fills": 688,
+    "turnover": 421.716103842552,
+    "ending_equity": 1279261.9339899379,
+    "years": 7.984312495246787
+   }
+  }
+ },
+ "window": {
+  "dev": [
+   "2016-01-04",
+   "2023-12-29"
+  ],
+  "holdout": "not loaded"
+ },
+ "benchmark": {
+  "tqqq_panel": {
+   "cagr": 0.3581,
+   "max_drawdown": 0.823,
+   "sharpe": 0.8
+  },
+  "tqqq_published_bar": {
+   "cagr": 0.3672,
+   "max_drawdown": 0.8229,
+   "sharpe": 0.82
+  }
+ },
+ "params": {
+  "windows": [
+   126,
+   168,
+   210
+  ],
+  "kappa": 0.9,
+  "tqqq_cap": 1.0,
+  "grid_points": 201
+ },
+ "stats": {
+  "1bp": {
+   "cagr": 0.39385191648907525,
+   "total_return": 13.17329065065301,
+   "max_drawdown": 0.5707591548620441,
+   "volatility": 0.44473838659571,
+   "sharpe": 0.9730653456337719,
+   "sortino": 1.3662849227519136,
+   "exposure": 0.9994999232618816,
+   "fills": 686,
+   "turnover": 450.3143086273969,
+   "ending_equity": 1417329.065065301,
+   "years": 7.984312495246787
+  },
+  "5bp": {
+   "cagr": 0.38605639250807555,
+   "total_return": 12.552612240396309,
+   "max_drawdown": 0.5712754243744909,
+   "volatility": 0.4447400713779811,
+   "sharpe": 0.9604072893475673,
+   "sortino": 1.3484494443670436,
+   "exposure": 0.9994999232618816,
+   "fills": 690,
+   "turnover": 437.716233220529,
+   "ending_equity": 1355261.224039631,
+   "years": 7.984312495246787
+  },
+  "10bp": {
+   "cagr": 0.3760740424793334,
+   "total_return": 11.792619339899378,
+   "max_drawdown": 0.5719196054732205,
+   "volatility": 0.44477145820650354,
+   "sharpe": 0.9440609295792497,
+   "sortino": 1.3254312415239857,
+   "exposure": 0.9994999232618816,
+   "fills": 688,
+   "turnover": 421.716103842552,
+   "ending_equity": 1279261.9339899379,
+   "years": 7.984312495246787
+  }
+ },
+ "events": 329,
+ "yearly": {
+  "2016": 0.23413469692053734,
+  "2017": 1.0394984437025387,
+  "2018": -0.13870168456725918,
+  "2019": 0.3811159016114023,
+  "2020": 0.9620043435791881,
+  "2021": 0.8473330423029284,
+  "2022": -0.3944406760117851,
+  "2023": 0.941896436000345
+ },
+ "subperiods": {
+  "2016-2019": {
+   "cagr": 0.3400481273906537,
+   "max_drawdown": 0.45789079473633354,
+   "sharpe": 19.66968981638868
+  },
+  "2020-2021": {
+   "cagr": 0.868549541627474,
+   "max_drawdown": 0.5685764522337928,
+   "sharpe": 25.539166552115603
+  },
+  "2022-2023": {
+   "cagr": 0.08507127131807168,
+   "max_drawdown": 0.4222027727243026,
+   "sharpe": 8.115080099346862
+  }
+ },
+ "corr_winners": {
+  "ratio-froth": 0.7889651490579377,
+  "vol-scaled-crash-stop": 0.688996247551609,
+  "relative-value-tqqq": 0.8900770795622688,
+  "fomc-opex-window": 0.5373488805665338,
+  "family-session-timing": 0.5821762623737806,
+  "family-short-reversal": 0.6525121485881133,
+  "family-rebalance-flow": 0.7885578304002668,
+  "family-intraday-microstructure-day": 0.47164038730953084,
+  "family-ml-microstructure": 0.7461943757102462
+ },
+ "corr_range": [
+  0.47164038730953084,
+  0.8900770795622688
+ ],
+ "avg_weights": [
+  0.1480211232604378,
+  0.6486985586481145,
+  0.20328031809145128
+ ],
+ "static_avg_weights": {
+  "cagr": 0.3044840959310824,
+  "total_return": 7.3502477749269985,
+  "max_drawdown": 0.6711476523097033,
+  "volatility": 0.46186505610576317,
+  "sharpe": 0.8098871617394687,
+  "sortino": 1.1327630629285859,
+  "exposure": 0.9915655245101866,
+  "fills": 450,
+  "turnover": 37.56905891308689,
+  "ending_equity": 835024.7774926999,
+  "years": 7.984312495246787
+ },
+ "plateau": [
+  {
+   "cell": {
+    "windows": [
+     126
+    ],
+    "kappa": 0.8
+   },
+   "cagr": 0.3482774482161979,
+   "max_drawdown": 0.5439296949861321,
+   "sharpe": 0.939168859195289,
+   "fills": 477,
+   "turnover": 477.0197718248594
+  },
+  {
+   "cell": {
+    "windows": [
+     126
+    ],
+    "kappa": 0.9
+   },
+   "cagr": 0.3635941370349245,
+   "max_drawdown": 0.5731250724535232,
+   "sharpe": 0.9293172996931574,
+   "fills": 417,
+   "turnover": 518.0094620129493
+  },
+  {
+   "cell": {
+    "windows": [
+     168
+    ],
+    "kappa": 0.8
+   },
+   "cagr": 0.35660390088553484,
+   "max_drawdown": 0.529263052352128,
+   "sharpe": 0.9497343842218892,
+   "fills": 556,
+   "turnover": 496.7496687718888
+  },
+  {
+   "cell": {
+    "windows": [
+     168
+    ],
+    "kappa": 0.9
+   },
+   "cagr": 0.3748407865219636,
+   "max_drawdown": 0.5586857691074465,
+   "sharpe": 0.9434755462169964,
+   "fills": 498,
+   "turnover": 546.037291649551
+  },
+  {
+   "cell": {
+    "windows": [
+     210
+    ],
+    "kappa": 0.8
+   },
+   "cagr": 0.3182004776758691,
+   "max_drawdown": 0.5678571475138126,
+   "sharpe": 0.8636126904528949,
+   "fills": 690,
+   "turnover": 336.3559788524279
+  },
+  {
+   "cell": {
+    "windows": [
+     210
+    ],
+    "kappa": 0.9
+   },
+   "cagr": 0.33151445309735506,
+   "max_drawdown": 0.5990687558498607,
+   "sharpe": 0.8563044786216347,
+   "fills": 628,
+   "turnover": 376.09811912209625
+  },
+  {
+   "cell": {
+    "windows": [
+     126,
+     168,
+     210
+    ],
+    "kappa": 0.8
+   },
+   "cagr": 0.3734501711834761,
+   "max_drawdown": 0.541834857005242,
+   "sharpe": 0.9771179818102825,
+   "fills": 722,
+   "turnover": 402.007528342791
+  },
+  {
+   "cell": {
+    "windows": [
+     126,
+     168,
+     210
+    ],
+    "kappa": 0.9
+   },
+   "cagr": 0.39385191648907525,
+   "max_drawdown": 0.5707591548620441,
+   "sharpe": 0.9730653456337719,
+   "fills": 686,
+   "turnover": 450.3143086273969
+  }
+ ],
+ "placebo": {
+  "n": 100,
+  "cagr_p05": 0.14213953911228208,
+  "cagr_p50": 0.23245236284117643,
+  "cagr_p95": 0.552565312452907,
+  "cagr_percentile_of_real": 0.88,
+  "sharpe_p05": 0.5210917810855187,
+  "sharpe_p50": 0.6629543071226243,
+  "sharpe_p95": 1.1559849108319127,
+  "sharpe_percentile_of_real": 0.9,
+  "dd_p50": 0.7489330696600327
+ },
+ "kill_checks": {
+  "cagr_below_published_tqqq_bar": 0.0,
+  "drawdown_above_tqqq": false,
+  "cost_10bp_below_bar": 0.0,
+  "placebo_below_90pct": true,
+  "correlation_above_0.95": false,
+  "fewer_than_100_fills": false,
+  "fewer_than_30_events": false,
+  "negative_subperiod": false,
+  "static_blend_matches": 0.0
+ },
+ "verdict": "fail",
+ "timing": "Moments use daily simple returns through session t; target executed at the first bar open of t+1; 2% band.",
+ "notes": "The Kelly fraction is the maximiser of a fourth-order log-growth expansion on the empirical overlay sample, so skew and kurtosis enter explicitly. Fractional cap 0.9 and a hard 100% TQQQ weight cap. No 2024-2026 rows are read."
+}

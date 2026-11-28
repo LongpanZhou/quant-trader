@@ -86,6 +86,62 @@
    "provenanceCount": 0
   },
   {
+   "id": "research:family-tail-hedge-overlay",
+   "slug": "family-tail-hedge-overlay",
+   "kind": "research",
+   "name": "Tail-hedge overlay",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "Fast-crash synthetic inverse hedge",
+   "summary": "The bt.stats invested fraction is 100% because both TQQQ and the synthetic inverse are invested assets. The useful exposure split is mean TQQQ 86.35%, mean inverse 13.65%, mean BIL 0%. The inverse is held on 27.3% of bars; there are 742 trigger sessions out of 2,012 (36.9%). The mean hedge weight while active is 50%.",
+   "window": "2016-2026",
+   "cagr": 0.6638359589899234,
+   "dd": 0.38200356528820767,
+   "sharpe": 1.3146340972232886,
+   "metrics": {
+    "cagr10": 0.6638359589899234,
+    "dd10": 0.38200356528820767,
+    "cagr5": 0.6638359589899234,
+    "dd5": 0.38200356528820767
+   },
+   "href": "/research/family-tail-hedge-overlay",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
+   "id": "research:family-close-location",
+   "slug": "family-close-location",
+   "kind": "research",
+   "name": "Close-location value",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "Close-at-low five-session reversal",
+   "summary": "The stated bar is TQQQ 36.72% CAGR / 82.29% max DD / 0.82 Sharpe. The local 1-minute benchmark is 36.15% / 82.29% / 0.80. The primary clears both at 1 bp, 5 bp and 10 bp.",
+   "window": "2016-2026",
+   "cagr": 0.6623490393764775,
+   "dd": 0.6276124709291508,
+   "sharpe": 1.2603890946795673,
+   "metrics": {
+    "cagr10": 0.6623490393764775,
+    "dd10": 0.6276124709291508,
+    "cagr5": 0.6623490393764775,
+    "dd5": 0.6276124709291508
+   },
+   "href": "/research/family-close-location",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
    "id": "research:ratio-froth",
    "slug": "ratio-froth",
    "kind": "research",
@@ -105,6 +161,34 @@
     "dd5": 0.3665052096417841
    },
    "href": "/research/ratio-froth",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
+   "id": "research:family-policy-liquidity",
+   "slug": "family-policy-liquidity",
+   "kind": "research",
+   "name": "Policy liquidity",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "Short-rate/T-bill liquidity regime",
+   "summary": "The pass is not clean. The 2022-2023 subperiod is -2.99% CAGR with a 74.37% drawdown; the max drawdown is only 5.6 pp better than TQQQ; 2020 and 2022 together contribute more than 100% of the net log excess; the 2020 P&L is a single-event outcome; and the off-run hit rate is only 20% (the edge is a few large crisis exits, not a consistent timing rule). The strategy is a short-rate liquidity-stress overlay, not an all-weather policy-liquidity regime. It should go to a one-shot holdout only as a crisis-alpha candidate, not be promoted on development alone.",
+   "window": "2016-2026",
+   "cagr": 0.5613161552124286,
+   "dd": 0.7522583618426831,
+   "sharpe": 1.072500865150404,
+   "metrics": {
+    "cagr10": 0.5613161552124286,
+    "dd10": 0.7522583618426831,
+    "cagr5": 0.5613161552124286,
+    "dd5": 0.7522583618426831
+   },
+   "href": "/research/family-policy-liquidity",
    "runnable": false,
    "accent": "#9ae6a5",
    "tags": [
@@ -198,6 +282,34 @@
    "provenanceCount": 0
   },
   {
+   "id": "research:family-autocorrelation-regime",
+   "slug": "family-autocorrelation-regime",
+   "kind": "research",
+   "name": "Autocorrelation regime",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "Time-varying serial dependence",
+   "summary": "Execution: research/bt.py, 1-minute marks, next-open fills, 2% band, long-only, weights \u2265 0, row sum \u2264 1. Flat is BIL. Headline 1 bp.",
+   "window": "2016-2026",
+   "cagr": 0.48291400915420124,
+   "dd": 0.6423045992663711,
+   "sharpe": 1.0018263898529993,
+   "metrics": {
+    "cagr10": 0.48291400915420124,
+    "dd10": 0.6423045992663711,
+    "cagr5": 0.48291400915420124,
+    "dd5": 0.6423045992663711
+   },
+   "href": "/research/family-autocorrelation-regime",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
    "id": "research:family-session-timing",
    "slug": "family-session-timing",
    "kind": "research",
@@ -217,6 +329,34 @@
     "dd5": 0.41417213608723935
    },
    "href": "/research/family-session-timing",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
+   "id": "research:family-vol-of-volume",
+   "slug": "family-vol-of-volume",
+   "kind": "research",
+   "name": "Volatility of volume",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "Volume-dispersion state",
+   "summary": "The primary object is the dispersion of minute volume, measured as the Shannon entropy of the 1-minute QQQ volume shares over the closing hour:",
+   "window": "2016-2026",
+   "cagr": 0.4555715167361749,
+   "dd": 0.7004183851208732,
+   "sharpe": 1.074624682626839,
+   "metrics": {
+    "cagr10": 0.4555715167361749,
+    "dd10": 0.7004183851208732,
+    "cagr5": 0.4555715167361749,
+    "dd5": 0.7004183851208732
+   },
+   "href": "/research/family-vol-of-volume",
    "runnable": false,
    "accent": "#9ae6a5",
    "tags": [
@@ -254,6 +394,34 @@
    "provenanceCount": 0
   },
   {
+   "id": "research:family-change-point",
+   "slug": "family-change-point",
+   "kind": "research",
+   "name": "Change-point regime",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "Online structural-break detection",
+   "summary": "The stated bar is TQQQ 36.72% CAGR / 82.29% max DD / 0.82 Sharpe. The local 1-minute benchmark is 36.15% / 82.29% / 0.80. The primary clears both at 1 bp, 5 bp and 10 bp, with a materially lower drawdown and lower volatility.",
+   "window": "2016-2026",
+   "cagr": 0.45293742387586544,
+   "dd": 0.5409739695081073,
+   "sharpe": 1.1364352461246676,
+   "metrics": {
+    "cagr10": 0.45293742387586544,
+    "dd10": 0.5409739695081073,
+    "cagr5": 0.45293742387586544,
+    "dd5": 0.5409739695081073
+   },
+   "href": "/research/family-change-point",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
    "id": "research:fast-trend-vol",
    "slug": "fast-trend-vol",
    "kind": "research",
@@ -273,6 +441,62 @@
     "dd5": 0.4025879247706894
    },
    "href": "/research/fast-trend-vol",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
+   "id": "research:family-hurst-persistence",
+   "slug": "family-hurst-persistence",
+   "kind": "research",
+   "name": "Hurst persistence",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "Hurst/variance-ratio regime",
+   "summary": "The stated bar is TQQQ 36.72% CAGR / 82.29% max DD / 0.82 Sharpe on daily closes. The local 1-minute bt.benchmark TQQQ is 36.15% / 82.29% / 0.80; the 0.57 pp difference is a mark-convention difference. The primary clears both at 1 bp, 5 bp and 10 bp.",
+   "window": "2016-2026",
+   "cagr": 0.430036508310808,
+   "dd": 0.5625289246942228,
+   "sharpe": 1.0500413963031756,
+   "metrics": {
+    "cagr10": 0.430036508310808,
+    "dd10": 0.5625289246942228,
+    "cagr5": 0.430036508310808,
+    "dd5": 0.5625289246942228
+   },
+   "href": "/research/family-hurst-persistence",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
+   "id": "research:family-weekday-seasonality",
+   "slug": "family-weekday-seasonality",
+   "kind": "research",
+   "name": "Weekday seasonality",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "Day-of-week exposure clock",
+   "summary": "This is a real weekday effect with a cost problem, not a robust above-TQQQ winner. The 10 bp margin is inside the noise of a single dev window. The report recommends the family as a candidate only with a low-cost execution assumption (1-5 bp); at 10 bp it is essentially a tie with TQQQ.",
+   "window": "2016-2026",
+   "cagr": 0.4284386715180568,
+   "dd": 0.7216821842454266,
+   "sharpe": 0.8963016025714363,
+   "metrics": {
+    "cagr10": 0.4284386715180568,
+    "dd10": 0.7216821842454266,
+    "cagr5": 0.4284386715180568,
+    "dd5": 0.7216821842454266
+   },
+   "href": "/research/family-weekday-seasonality",
    "runnable": false,
    "accent": "#9ae6a5",
    "tags": [
@@ -394,6 +618,230 @@
    "provenanceCount": 0
   },
   {
+   "id": "research:family-tqqq-decay",
+   "slug": "family-tqqq-decay",
+   "kind": "research",
+   "name": "TQQQ decay",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "Realized variance-drag timing",
+   "summary": "There are 209 fills across 105 independent fill days. Average weights are 13.2% QQQ, 50.4% TQQQ, 36.4% BIL \u2014 the strategy spends about a third of the sample in cash and half in TQQQ.",
+   "window": "2016-2026",
+   "cagr": 0.39999358404755636,
+   "dd": 0.37614770700583844,
+   "sharpe": 1.0917995252102342,
+   "metrics": {
+    "cagr10": 0.39999358404755636,
+    "dd10": 0.37614770700583844,
+    "cagr5": 0.39999358404755636,
+    "dd5": 0.37614770700583844
+   },
+   "href": "/research/family-tqqq-decay",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
+   "id": "research:family-realized-skew",
+   "slug": "family-realized-skew",
+   "kind": "research",
+   "name": "Realized skew",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "Intraday realized skewness",
+   "summary": "The stated bar is TQQQ 36.72% CAGR / 82.29% max DD / 0.82 Sharpe. The local 1-minute benchmark is 36.15% / 82.29% / 0.80.",
+   "window": "2016-2026",
+   "cagr": 0.38828022346177593,
+   "dd": 0.5398041890228424,
+   "sharpe": 0.9489063682773773,
+   "metrics": {
+    "cagr10": 0.38828022346177593,
+    "dd10": 0.5398041890228424,
+    "cagr5": 0.38828022346177593,
+    "dd5": 0.5398041890228424
+   },
+   "href": "/research/family-realized-skew",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
+   "id": "research:family-beta-rotation",
+   "slug": "family-beta-rotation",
+   "kind": "research",
+   "name": "Beta rotation",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "QQQ/SPY beta regime",
+   "summary": "There are 151 fills across 76 independent fill days (the activity floor is 100 fills or 30 events). Average weights are 69.0% QQQ, 27.9% TQQQ, 3.1% BIL.",
+   "window": "2016-2026",
+   "cagr": 0.3769799217420813,
+   "dd": 0.596266106305434,
+   "sharpe": 1.007125816838063,
+   "metrics": {
+    "cagr10": 0.3769799217420813,
+    "dd10": 0.596266106305434,
+    "cagr5": 0.3769799217420813,
+    "dd5": 0.596266106305434
+   },
+   "href": "/research/family-beta-rotation",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
+   "id": "research:family-kelly-sizing",
+   "slug": "family-kelly-sizing",
+   "kind": "research",
+   "name": "Kelly sizing",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "Fractional-Kelly exposure",
+   "summary": "Average weights are 14.8% QQQ, 64.9% TQQQ, 20.3% BIL. The book is aggressive: it holds TQQQ about two-thirds of the time and uses BIL only when the QQQ Kelly edge turns negative.",
+   "window": "2016-2026",
+   "cagr": 0.35857912748932796,
+   "dd": 0.5685764522337928,
+   "sharpe": 0.903207355145455,
+   "metrics": {
+    "cagr10": 0.35857912748932796,
+    "dd10": 0.5685764522337928,
+    "cagr5": 0.35857912748932796,
+    "dd5": 0.5685764522337928
+   },
+   "href": "/research/family-kelly-sizing",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
+   "id": "research:family-day-of-month",
+   "slug": "family-day-of-month",
+   "kind": "research",
+   "name": "Day-of-month seasonality",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "Day-of-month clock",
+   "summary": "The only input is the session's rank inside its calendar month:",
+   "window": "2016-2026",
+   "cagr": 0.35292172059110083,
+   "dd": 0.5975723742356736,
+   "sharpe": 0.8829158628421213,
+   "metrics": {
+    "cagr10": 0.35292172059110083,
+    "dd10": 0.5975723742356736,
+    "cagr5": 0.35292172059110083,
+    "dd5": 0.5975723742356736
+   },
+   "href": "/research/family-day-of-month",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
+   "id": "research:family-monthly-seasonality",
+   "slug": "family-monthly-seasonality",
+   "kind": "research",
+   "name": "Monthly seasonality",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "Month-of-year seasonal tilt",
+   "summary": "The qualifier is important: the strategy does not beat TQQQ in a typical month. Mean monthly excess is -0.11% (t = -0.19) and it wins only 33.3% of months. It compounds faster because it avoids the 2022 bear market (strategy -68.1% vs TQQQ -79.4%) and because the September exclusion removes four consecutive bad Septembers (2020-2023). The 2016-2019 sub-period lags TQQQ (39.8% vs 49.7%). This is a seasonal risk-reduction tilt, not a monthly alpha.",
+   "window": "2016-2026",
+   "cagr": 0.3445658523232511,
+   "dd": 0.7211602474704744,
+   "sharpe": 0.8041401553861585,
+   "metrics": {
+    "cagr10": 0.3445658523232511,
+    "dd10": 0.7211602474704744,
+    "cagr5": 0.3445658523232511,
+    "dd5": 0.7211602474704744
+   },
+   "href": "/research/family-monthly-seasonality",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
+   "id": "research:family-volume-clock",
+   "slug": "family-volume-clock",
+   "kind": "research",
+   "name": "Volume-clock overnight",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "Midday volume acceleration state",
+   "summary": "The strategy is an overnight TQQQ position gated by a volume-acceleration state measured at 13:00 ET:",
+   "window": "2016-2026",
+   "cagr": 0.2964880066021889,
+   "dd": 0.2669029251153544,
+   "sharpe": 1.2319336886997603,
+   "metrics": {
+    "cagr10": 0.2964880066021889,
+    "dd10": 0.2669029251153544,
+    "cagr5": 0.2964880066021889,
+    "dd5": 0.2669029251153544
+   },
+   "href": "/research/family-volume-clock",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
+   "id": "research:family-lead-lag-spillover",
+   "slug": "family-lead-lag-spillover",
+   "kind": "research",
+   "name": "SPY\u2192QQQ spillover",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "Cross-market lead-lag residual",
+   "summary": "The hypothesis has two layers:",
+   "window": "2016-2026",
+   "cagr": 0.27605494383270757,
+   "dd": 0.30919186698062995,
+   "sharpe": 0.894344348555544,
+   "metrics": {
+    "cagr10": 0.27605494383270757,
+    "dd10": 0.30919186698062995,
+    "cagr5": 0.27605494383270757,
+    "dd5": 0.30919186698062995
+   },
+   "href": "/research/family-lead-lag-spillover",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
    "id": "research:intraday-seasonality",
    "slug": "intraday-seasonality",
    "kind": "research",
@@ -413,6 +861,62 @@
     "dd5": 0.39236922880122205
    },
    "href": "/research/intraday-seasonality",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
+   "id": "research:family-dynamic-risk-parity",
+   "slug": "family-dynamic-risk-parity",
+   "kind": "research",
+   "name": "Dynamic risk parity",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "Rolling risk-contribution allocation",
+   "summary": "There are 251 fills across 126 independent fill days, so the activity floor is met. Average weights are 75.8% QQQ, 24.2% TQQQ, 0.0% BIL. Turnover is only 18x over eight years: the allocator is almost static.",
+   "window": "2016-2026",
+   "cagr": 0.26214422183234554,
+   "dd": 0.505911047069052,
+   "sharpe": 0.8727263860698147,
+   "metrics": {
+    "cagr10": 0.26214422183234554,
+    "dd10": 0.505911047069052,
+    "cagr5": 0.26214422183234554,
+    "dd5": 0.505911047069052
+   },
+   "href": "/research/family-dynamic-risk-parity",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
+   "id": "research:family-quarter-end-flow",
+   "slug": "family-quarter-end-flow",
+   "kind": "research",
+   "name": "Quarter-end flow",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "Quarter-end rebalancing window",
+   "summary": "For each calendar quarter, the window is:",
+   "window": "2016-2026",
+   "cagr": 0.25504614404258197,
+   "dd": 0.5200438240328384,
+   "sharpe": 0.8182869327709982,
+   "metrics": {
+    "cagr10": 0.25504614404258197,
+    "dd10": 0.5200438240328384,
+    "cagr5": 0.25504614404258197,
+    "dd5": 0.5200438240328384
+   },
+   "href": "/research/family-quarter-end-flow",
    "runnable": false,
    "accent": "#9ae6a5",
    "tags": [
@@ -646,6 +1150,34 @@
    "provenanceCount": 0
   },
   {
+   "id": "research:family-cpi-nfp-release",
+   "slug": "family-cpi-nfp-release",
+   "kind": "research",
+   "name": "CPI/NFP release",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "Macro release-window drift",
+   "summary": "The important honesty check: the CPI-day edge is not intraday. The CPI session's open-to-close return is only +3.9 bp (t = 0.13); the +81.9 bp open-to-open comes almost entirely from the close-to-next-open gap (~+78 bp). Because the proxy is fixed at calendar day 12 and the actual CPI release is usually a few days later, the overnight may be capturing the actual release morning. The strategy is still ex-ante and tradable, but the \"release-day drift\" label is too strong; it is a mid-month overnight window. NFP, which has an actual fixed release date (first Friday), shows no edge. That asymmetry is the main reason the family is rejected.",
+   "window": "2016-2026",
+   "cagr": 0.09970776695406847,
+   "dd": 0.25057922918118014,
+   "sharpe": 0.7372719077923001,
+   "metrics": {
+    "cagr10": 0.09970776695406847,
+    "dd10": 0.25057922918118014,
+    "cagr5": 0.09970776695406847,
+    "dd5": 0.25057922918118014
+   },
+   "href": "/research/family-cpi-nfp-release",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
    "id": "research:letf-rebalance-flow",
    "slug": "letf-rebalance-flow",
    "kind": "research",
@@ -665,6 +1197,34 @@
     "dd5": 0.42979669886652716
    },
    "href": "/research/letf-rebalance-flow",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
+   "id": "research:family-gap-continuation",
+   "slug": "family-gap-continuation",
+   "kind": "research",
+   "name": "Gap continuation",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "Opening gap continuation",
+   "summary": "Development window 2016-01-04 .. 2023-12-29, 1-minute marks, next-open fills, 2% band, long-only, weights >= 0, sum <= 1. The panel is requested with end=2023-12-29; no 2024-2026 bar is used. The only data inputs are the shared QQQ/TQQQ/BIL panel; the signal itself uses QQQ open/close, and the position is TQQQ.",
+   "window": "2016-2026",
+   "cagr": 0.06625642775843787,
+   "dd": 0.44736013747953207,
+   "sharpe": 0.527255271946234,
+   "metrics": {
+    "cagr10": 0.06625642775843787,
+    "dd10": 0.44736013747953207,
+    "cagr5": 0.06625642775843787,
+    "dd5": 0.44736013747953207
+   },
+   "href": "/research/family-gap-continuation",
    "runnable": false,
    "accent": "#9ae6a5",
    "tags": [

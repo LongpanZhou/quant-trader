@@ -1,0 +1,338 @@
+{
+ "slug": "family-beta-rotation",
+ "family": "beta-rotation",
+ "primary_object": "rolling QQQ-vs-SPY beta (level percentile and up/down asymmetry)",
+ "dev": {
+  "cagr": 0.42959138924038176,
+  "total_return": 16.348442915668638,
+  "max_drawdown": 0.47715757045973484,
+  "volatility": 0.3731202394438621,
+  "sharpe": 1.147519556423354,
+  "sortino": 1.653036788971958,
+  "exposure": 0.9994999232618816,
+  "fills": 151,
+  "turnover": 732.1344968646929,
+  "ending_equity": 1734844.291566864,
+  "years": 7.984312495246787
+ },
+ "windows": {
+  "dev": {
+   "1bp": {
+    "cagr": 0.42959138924038176,
+    "total_return": 16.348442915668638,
+    "max_drawdown": 0.47715757045973484,
+    "volatility": 0.3731202394438621,
+    "sharpe": 1.147519556423354,
+    "sortino": 1.653036788971958,
+    "exposure": 0.9994999232618816,
+    "fills": 151,
+    "turnover": 732.1344968646929,
+    "ending_equity": 1734844.291566864,
+    "years": 7.984312495246787
+   },
+   "5bp": {
+    "cagr": 0.4188175901202382,
+    "total_return": 15.331616156328018,
+    "max_drawdown": 0.4780102893949877,
+    "volatility": 0.37313368444804673,
+    "sharpe": 1.1271448390660121,
+    "sortino": 1.6235216775320664,
+    "exposure": 0.9994999232618816,
+    "fills": 151,
+    "turnover": 701.6633927209674,
+    "ending_equity": 1633161.6156328018,
+    "years": 7.984312495246787
+   },
+   "10bp": {
+    "cagr": 0.4054644821966624,
+    "total_return": 14.143981640653758,
+    "max_drawdown": 0.48216955027981,
+    "volatility": 0.3731732231245527,
+    "sharpe": 1.101634246413685,
+    "sortino": 1.5865161062532411,
+    "exposure": 0.9994999232618816,
+    "fills": 151,
+    "turnover": 665.5388690133923,
+    "ending_equity": 1514398.1640653757,
+    "years": 7.984312495246787
+   }
+  }
+ },
+ "window": {
+  "dev": [
+   "2016-01-04",
+   "2023-12-29"
+  ],
+  "holdout": "not loaded"
+ },
+ "benchmark": {
+  "tqqq_panel": {
+   "cagr": 0.3581,
+   "max_drawdown": 0.823,
+   "sharpe": 0.8
+  },
+  "tqqq_published_bar": {
+   "cagr": 0.3672,
+   "max_drawdown": 0.8229,
+   "sharpe": 0.82
+  }
+ },
+ "params": {
+  "beta_windows": [
+   42,
+   63
+  ],
+  "pct_lookback": 252,
+  "pct_tqqq": 0.6,
+  "pct_qqq": 0.8,
+  "asym_window": 126,
+  "asym_tqqq": 0.0,
+  "asym_qqq": 0.15
+ },
+ "stats": {
+  "1bp": {
+   "cagr": 0.42959138924038176,
+   "total_return": 16.348442915668638,
+   "max_drawdown": 0.47715757045973484,
+   "volatility": 0.3731202394438621,
+   "sharpe": 1.147519556423354,
+   "sortino": 1.653036788971958,
+   "exposure": 0.9994999232618816,
+   "fills": 151,
+   "turnover": 732.1344968646929,
+   "ending_equity": 1734844.291566864,
+   "years": 7.984312495246787
+  },
+  "5bp": {
+   "cagr": 0.4188175901202382,
+   "total_return": 15.331616156328018,
+   "max_drawdown": 0.4780102893949877,
+   "volatility": 0.37313368444804673,
+   "sharpe": 1.1271448390660121,
+   "sortino": 1.6235216775320664,
+   "exposure": 0.9994999232618816,
+   "fills": 151,
+   "turnover": 701.6633927209674,
+   "ending_equity": 1633161.6156328018,
+   "years": 7.984312495246787
+  },
+  "10bp": {
+   "cagr": 0.4054644821966624,
+   "total_return": 14.143981640653758,
+   "max_drawdown": 0.48216955027981,
+   "volatility": 0.3731732231245527,
+   "sharpe": 1.101634246413685,
+   "sortino": 1.5865161062532411,
+   "exposure": 0.9994999232618816,
+   "fills": 151,
+   "turnover": 665.5388690133923,
+   "ending_equity": 1514398.1640653757,
+   "years": 7.984312495246787
+  }
+ },
+ "events": 76,
+ "yearly": {
+  "2016": 0.2002883905242978,
+  "2017": 0.49136856974360366,
+  "2018": -0.018341703339767923,
+  "2019": 0.44875590915558683,
+  "2020": 1.7404505180191174,
+  "2021": 0.7830364366760931,
+  "2022": -0.394417336581635,
+  "2023": 1.3187286445121624
+ },
+ "subperiods": {
+  "2016-2019": {
+   "cagr": 0.27349385741031096,
+   "max_drawdown": 0.3061634936829566,
+   "sharpe": 22.113854814192315
+  },
+  "2020-2021": {
+   "cagr": 1.167650391813826,
+   "max_drawdown": 0.3389583474736796,
+   "sharpe": 36.368656592331206
+  },
+  "2022-2023": {
+   "cagr": 0.17364433053931538,
+   "max_drawdown": 0.4702380949635322,
+   "sharpe": 11.263249031401289
+  }
+ },
+ "corr_winners": {
+  "ratio-froth": 0.5711964206786352,
+  "vol-scaled-crash-stop": 0.7031094822459887,
+  "relative-value-tqqq": 0.7556597599028843,
+  "fomc-opex-window": 0.6638385335428073,
+  "family-session-timing": 0.6725181082416827,
+  "family-short-reversal": 0.7438263573091032,
+  "family-rebalance-flow": 0.7799991141329563,
+  "family-intraday-microstructure-day": 0.5175685874230486,
+  "family-ml-microstructure": 0.7390131666369533
+ },
+ "corr_range": [
+  0.5175685874230486,
+  0.7799991141329563
+ ],
+ "avg_weights": [
+  0.6903578528827038,
+  0.2788270377733598,
+  0.030815109343936383
+ ],
+ "static_avg_weights": {
+  "cagr": 0.2533150777202078,
+  "total_return": 5.0665781165923915,
+  "max_drawdown": 0.5346539900385018,
+  "volatility": 0.3346933559572939,
+  "sharpe": 0.8450941517473087,
+  "sortino": 1.1823030241469707,
+  "exposure": 0.9897323211913492,
+  "fills": 265,
+  "turnover": 17.868871975447135,
+  "ending_equity": 606657.8116592391,
+  "years": 7.984312495246787
+ },
+ "plateau": [
+  {
+   "cell": {
+    "beta_windows": [
+     42,
+     63
+    ],
+    "pct_tqqq": 0.5,
+    "asym_tqqq": 0.0
+   },
+   "cagr": 0.3741097444534278,
+   "max_drawdown": 0.47371655817870195,
+   "sharpe": 1.0785632927688582,
+   "fills": 139,
+   "turnover": 673.2580663695958
+  },
+  {
+   "cell": {
+    "beta_windows": [
+     42,
+     63
+    ],
+    "pct_tqqq": 0.6,
+    "asym_tqqq": 0.0
+   },
+   "cagr": 0.42959138924038176,
+   "max_drawdown": 0.47715757045973484,
+   "sharpe": 1.147519556423354,
+   "fills": 151,
+   "turnover": 732.1344968646929
+  },
+  {
+   "cell": {
+    "beta_windows": [
+     42,
+     63
+    ],
+    "pct_tqqq": 0.5,
+    "asym_tqqq": 0.05
+   },
+   "cagr": 0.4278668931467464,
+   "max_drawdown": 0.5097010624772772,
+   "sharpe": 1.095194060552185,
+   "fills": 151,
+   "turnover": 921.0695725399688
+  },
+  {
+   "cell": {
+    "beta_windows": [
+     42,
+     63
+    ],
+    "pct_tqqq": 0.6,
+    "asym_tqqq": 0.05
+   },
+   "cagr": 0.49811898065621385,
+   "max_drawdown": 0.5464349776672457,
+   "sharpe": 1.1176209625640612,
+   "fills": 135,
+   "turnover": 996.3425909394142
+  },
+  {
+   "cell": {
+    "beta_windows": [
+     63
+    ],
+    "pct_tqqq": 0.5,
+    "asym_tqqq": 0.0
+   },
+   "cagr": 0.30562932771053,
+   "max_drawdown": 0.5786454147981147,
+   "sharpe": 0.9222630333309566,
+   "fills": 143,
+   "turnover": 640.6050590330584
+  },
+  {
+   "cell": {
+    "beta_windows": [
+     63
+    ],
+    "pct_tqqq": 0.6,
+    "asym_tqqq": 0.0
+   },
+   "cagr": 0.391501877096037,
+   "max_drawdown": 0.5285544540232221,
+   "sharpe": 1.0512818906789931,
+   "fills": 139,
+   "turnover": 573.7242291980788
+  },
+  {
+   "cell": {
+    "beta_windows": [
+     63
+    ],
+    "pct_tqqq": 0.5,
+    "asym_tqqq": 0.05
+   },
+   "cagr": 0.324228181917287,
+   "max_drawdown": 0.6343292911648701,
+   "sharpe": 0.8968740336115277,
+   "fills": 127,
+   "turnover": 638.2348280759561
+  },
+  {
+   "cell": {
+    "beta_windows": [
+     63
+    ],
+    "pct_tqqq": 0.6,
+    "asym_tqqq": 0.05
+   },
+   "cagr": 0.4323660049584963,
+   "max_drawdown": 0.5884286145140469,
+   "sharpe": 1.0127965538457198,
+   "fills": 101,
+   "turnover": 487.7531613263715
+  }
+ ],
+ "placebo": {
+  "n": 100,
+  "cagr_p05": 0.08111733038205442,
+  "cagr_p50": 0.21150699259126138,
+  "cagr_p95": 0.35847355193284747,
+  "cagr_percentile_of_real": 1.0,
+  "sharpe_p05": 0.405225722739092,
+  "sharpe_p50": 0.6915136544315875,
+  "sharpe_p95": 1.0629997723420328,
+  "sharpe_percentile_of_real": 1.0,
+  "dd_p50": 0.6507083071076816
+ },
+ "kill_checks": {
+  "cagr_below_published_tqqq_bar": 0.0,
+  "drawdown_above_tqqq": false,
+  "cost_10bp_below_bar": 0.0,
+  "placebo_below_90pct": false,
+  "correlation_above_0.95": false,
+  "fewer_than_100_fills": false,
+  "fewer_than_30_events": false,
+  "negative_subperiod": false,
+  "static_blend_matches": 0.0
+ },
+ "verdict": "dev_pass",
+ "timing": "Signal uses daily closes through session t; target executed at the first bar open of t+1; 2% band; long only.",
+ "notes": "Beta uses local SPY daily adjusted closes, filtered to the requested panel end before use. No 2024-2026 rows are read during the development run."
+}

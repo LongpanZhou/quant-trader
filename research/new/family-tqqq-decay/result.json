@@ -1,0 +1,312 @@
+{
+ "slug": "family-tqqq-decay",
+ "family": "tqqq-decay",
+ "primary_object": "realised TQQQ-vs-3x-QQQ compounding decay relative to its structural level",
+ "dev": {
+  "cagr": 0.4547954979882749,
+  "total_return": 18.946267128589206,
+  "max_drawdown": 0.38331813911909807,
+  "volatility": 0.3825150600589972,
+  "sharpe": 1.1749207180810048,
+  "sortino": 1.6714002403335269,
+  "exposure": 0.9994999232618816,
+  "fills": 209,
+  "turnover": 1083.4959883582455,
+  "ending_equity": 1994626.7128589205,
+  "years": 7.984312495246787
+ },
+ "windows": {
+  "dev": {
+   "1bp": {
+    "cagr": 0.4547954979882749,
+    "total_return": 18.946267128589206,
+    "max_drawdown": 0.38331813911909807,
+    "volatility": 0.3825150600589972,
+    "sharpe": 1.1749207180810048,
+    "sortino": 1.6714002403335269,
+    "exposure": 0.9994999232618816,
+    "fills": 209,
+    "turnover": 1083.4959883582455,
+    "ending_equity": 1994626.7128589205,
+    "years": 7.984312495246787
+   },
+   "5bp": {
+    "cagr": 0.43964250365710744,
+    "total_return": 17.34656063945497,
+    "max_drawdown": 0.3833181391190982,
+    "volatility": 0.3825353056134951,
+    "sharpe": 1.147408655894021,
+    "sortino": 1.6321192208848891,
+    "exposure": 0.9994999232618816,
+    "fills": 209,
+    "turnover": 1019.8612786315877,
+    "ending_equity": 1834656.063945497,
+    "years": 7.984312495246787
+   },
+   "10bp": {
+    "cagr": 0.42092305003486596,
+    "total_return": 15.52612463301228,
+    "max_drawdown": 0.38475116023400147,
+    "volatility": 0.3825913224645065,
+    "sharpe": 1.112964178524297,
+    "sortino": 1.5828574893593943,
+    "exposure": 0.9994999232618816,
+    "fills": 209,
+    "turnover": 946.0952853406063,
+    "ending_equity": 1652612.463301228,
+    "years": 7.984312495246787
+   }
+  }
+ },
+ "window": {
+  "dev": [
+   "2016-01-04",
+   "2023-12-29"
+  ],
+  "holdout": "not loaded"
+ },
+ "benchmark": {
+  "tqqq_panel": {
+   "cagr": 0.3581,
+   "max_drawdown": 0.823,
+   "sharpe": 0.8
+  },
+  "tqqq_published_bar": {
+   "cagr": 0.3672,
+   "max_drawdown": 0.8229,
+   "sharpe": 0.82
+  }
+ },
+ "params": {
+  "fast_window": 21,
+  "slow_window": 252,
+  "tqqq_threshold": -0.1,
+  "qqq_threshold": 0.2
+ },
+ "stats": {
+  "1bp": {
+   "cagr": 0.4547954979882749,
+   "total_return": 18.946267128589206,
+   "max_drawdown": 0.38331813911909807,
+   "volatility": 0.3825150600589972,
+   "sharpe": 1.1749207180810048,
+   "sortino": 1.6714002403335269,
+   "exposure": 0.9994999232618816,
+   "fills": 209,
+   "turnover": 1083.4959883582455,
+   "ending_equity": 1994626.7128589205,
+   "years": 7.984312495246787
+  },
+  "5bp": {
+   "cagr": 0.43964250365710744,
+   "total_return": 17.34656063945497,
+   "max_drawdown": 0.3833181391190982,
+   "volatility": 0.3825353056134951,
+   "sharpe": 1.147408655894021,
+   "sortino": 1.6321192208848891,
+   "exposure": 0.9994999232618816,
+   "fills": 209,
+   "turnover": 1019.8612786315877,
+   "ending_equity": 1834656.063945497,
+   "years": 7.984312495246787
+  },
+  "10bp": {
+   "cagr": 0.42092305003486596,
+   "total_return": 15.52612463301228,
+   "max_drawdown": 0.38475116023400147,
+   "volatility": 0.3825913224645065,
+   "sharpe": 1.112964178524297,
+   "sortino": 1.5828574893593943,
+   "exposure": 0.9994999232618816,
+   "fills": 209,
+   "turnover": 946.0952853406063,
+   "ending_equity": 1652612.463301228,
+   "years": 7.984312495246787
+  }
+ },
+ "events": 105,
+ "yearly": {
+  "2016": 0.0009948008129505581,
+  "2017": 0.6803828372133682,
+  "2018": -0.027241501641092625,
+  "2019": 0.6036569995837671,
+  "2020": 1.599978770569093,
+  "2021": 0.5088515939744542,
+  "2022": -0.2323874875654186,
+  "2023": 1.4486994630031726
+ },
+ "subperiods": {
+  "2016-2019": {
+   "cagr": 0.2792963303844531,
+   "max_drawdown": 0.28430617704935435,
+   "sharpe": 21.944732668880942
+  },
+  "2020-2021": {
+   "cagr": 0.94181654908954,
+   "max_drawdown": 0.35380378139501434,
+   "sharpe": 29.800693195641482
+  },
+  "2022-2023": {
+   "cagr": 0.3792680447196157,
+   "max_drawdown": 0.3484753754091271,
+   "sharpe": 19.64583998501343
+  }
+ },
+ "corr_winners": {
+  "ratio-froth": 0.6486980465283949,
+  "vol-scaled-crash-stop": 0.6272771714800381,
+  "relative-value-tqqq": 0.7322421011862567,
+  "fomc-opex-window": 0.5378810505013175,
+  "family-session-timing": 0.5182041347033272,
+  "family-short-reversal": 0.478372007391691,
+  "family-rebalance-flow": 0.7154131135128189,
+  "family-intraday-microstructure-day": 0.40608302699287996,
+  "family-ml-microstructure": 0.6099888463005118
+ },
+ "corr_range": [
+  0.40608302699287996,
+  0.7322421011862567
+ ],
+ "avg_weights": [
+  0.1317097415506958,
+  0.5039761431411531,
+  0.3643141153081511
+ ],
+ "static_avg_weights": {
+  "cagr": 0.25887492810019497,
+  "total_return": 5.28481062678235,
+  "max_drawdown": 0.5668963238235851,
+  "volatility": 0.3626443432075101,
+  "sharpe": 0.8192784163915865,
+  "sortino": 1.1454080151654502,
+  "exposure": 0.9916128598284634,
+  "fills": 671,
+  "turnover": 47.36087627705579,
+  "ending_equity": 628481.062678235,
+  "years": 7.984312495246787
+ },
+ "plateau": [
+  {
+   "cell": {
+    "fast_window": 10,
+    "slow_window": 252,
+    "tqqq_threshold": -0.1
+   },
+   "cagr": 0.4237932213939988,
+   "max_drawdown": 0.5068009350704626,
+   "sharpe": 1.1122886530867009,
+   "fills": 389,
+   "turnover": 1757.6501844071638
+  },
+  {
+   "cell": {
+    "fast_window": 21,
+    "slow_window": 252,
+    "tqqq_threshold": -0.1
+   },
+   "cagr": 0.4547954979882749,
+   "max_drawdown": 0.38331813911909807,
+   "sharpe": 1.1749207180810048,
+   "fills": 209,
+   "turnover": 1083.4959883582455
+  },
+  {
+   "cell": {
+    "fast_window": 42,
+    "slow_window": 252,
+    "tqqq_threshold": -0.1
+   },
+   "cagr": 0.4728526247610356,
+   "max_drawdown": 0.3833181391190982,
+   "sharpe": 1.2059351259167626,
+   "fills": 145,
+   "turnover": 801.122663761989
+  },
+  {
+   "cell": {
+    "fast_window": 21,
+    "slow_window": 189,
+    "tqqq_threshold": -0.1
+   },
+   "cagr": 0.4263946498769138,
+   "max_drawdown": 0.5308031402285994,
+   "sharpe": 1.1007313442458557,
+   "fills": 301,
+   "turnover": 1334.8359555382108
+  },
+  {
+   "cell": {
+    "fast_window": 21,
+    "slow_window": 252,
+    "tqqq_threshold": -0.2
+   },
+   "cagr": 0.4135584445030742,
+   "max_drawdown": 0.38530193029004667,
+   "sharpe": 1.1554831909423045,
+   "fills": 301,
+   "turnover": 1505.597699224362
+  },
+  {
+   "cell": {
+    "fast_window": 21,
+    "slow_window": 252,
+    "tqqq_threshold": 0.0
+   },
+   "cagr": 0.47890473374616627,
+   "max_drawdown": 0.5177501432537337,
+   "sharpe": 1.179913183732639,
+   "fills": 207,
+   "turnover": 1064.3622550337068
+  },
+  {
+   "cell": {
+    "fast_window": 10,
+    "slow_window": 252,
+    "tqqq_threshold": 0.0
+   },
+   "cagr": 0.4977813085361038,
+   "max_drawdown": 0.4858738594203802,
+   "sharpe": 1.210793823399349,
+   "fills": 357,
+   "turnover": 2055.617534702883
+  },
+  {
+   "cell": {
+    "fast_window": 42,
+    "slow_window": 252,
+    "tqqq_threshold": 0.0
+   },
+   "cagr": 0.4250686079496009,
+   "max_drawdown": 0.5541122214456419,
+   "sharpe": 1.0867382160557784,
+   "fills": 147,
+   "turnover": 572.9202448854318
+  }
+ ],
+ "placebo": {
+  "n": 100,
+  "cagr_p05": 0.008027927158493675,
+  "cagr_p50": 0.19282389784623022,
+  "cagr_p95": 0.3686029145225622,
+  "cagr_percentile_of_real": 1.0,
+  "sharpe_p05": 0.2955169842336339,
+  "sharpe_p50": 0.6204306062478984,
+  "sharpe_p95": 0.9644257767225978,
+  "sharpe_percentile_of_real": 1.0,
+  "dd_p50": 0.727425881325032
+ },
+ "kill_checks": {
+  "cagr_below_published_tqqq_bar": 0.0,
+  "drawdown_above_tqqq": false,
+  "cost_10bp_below_bar": 0.0,
+  "placebo_below_90pct": false,
+  "correlation_above_0.95": false,
+  "fewer_than_100_fills": false,
+  "fewer_than_30_events": false,
+  "negative_subperiod": false,
+  "static_blend_matches": 0.0
+ },
+ "verdict": "dev_pass",
+ "timing": "Diagnostic drag uses close-to-close returns through session t; target executed at the first bar open of t+1; 2% band.",
+ "notes": "Drag is measured on the actual TQQQ and QQQ adjusted closes, not on a variance model. It embeds 3x variance drag plus financing/tracking noise. No 2024-2026 rows are read."
+}
