@@ -1,5 +1,0 @@
-panel: 781,880 bars, 2012 sessions, 2016-01-04 09:30:00-05:00 .. 2023-12-29 15:59:00-05:00
-states: {'sessions': 2012, 'risk_off_sessions': 452, 'deep_buy_sessions': 46, 'core_sessions': 1514, 'mean_equity': 0.6927932405566601, 'mean_tqqq': 0.009145129224652087}
-dev: CAGR 18.96%  DD 34.59%  Sharpe 1.11  corr 0.53
-wrote C:\Users\27175\Desktop\quant-trader-research\research\revisit\ratio-pairs\result.json
-{"slug": "ratio-pairs", "mode": "dev", "calls": 11, "error": null, "seconds": 2.8, "restored": ["restored result.json"], "match_score": null, "found": true, "kw": {"band": 0.02, "slippage_bps": 1.0, "start_equity": 100000.0}, "bars": 781490, "k": 3}

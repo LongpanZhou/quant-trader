@@ -14,11 +14,11 @@
   "reason": "Low-overlap family added 2026-11-28. Full 19.37% CAGR / 78.00% DD / 0.65 Sharpe; 383 full fills. Max winner correlation <=0.63, signal Jaccard <=0.55."
  },
  "paths": {
-  "report": "research/new/family-hyg-spy/report.md",
-  "hypothesis": "research/new/family-hyg-spy/HYPOTHESIS.md",
+  "report": "research/strategies/family-hyg-spy/report.md",
+  "hypothesis": "research/strategies/family-hyg-spy/HYPOTHESIS.md",
   "spec": null,
   "provenance": null,
-  "code": "research/new/family-hyg-spy/strategy.py",
+  "code": "research/strategies/family-hyg-spy/strategy.py",
   "code_public": "/data/research/code/family-hyg-spy.py"
  },
  "extracted": {

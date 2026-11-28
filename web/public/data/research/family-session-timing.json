@@ -14,11 +14,11 @@
   "reason": "Full 46.26% / 41.42% DD / 1.16 Sharpe, holdout 23.39%; audit exact with final-session boundary. Cost-fragile: 5 bp dev 29.35%, 10 bp 2.10%; 1 bp headline only."
  },
  "paths": {
-  "report": "research/new/family-session-timing/report.md",
-  "hypothesis": "research/new/family-session-timing/HYPOTHESIS.md",
+  "report": "research/strategies/family-session-timing/report.md",
+  "hypothesis": "research/strategies/family-session-timing/HYPOTHESIS.md",
   "spec": null,
   "provenance": null,
-  "code": "research/new/family-session-timing/strategy.py",
+  "code": "research/strategies/family-session-timing/strategy.py",
   "code_public": "/data/research/code/family-session-timing.py"
  },
  "extracted": {

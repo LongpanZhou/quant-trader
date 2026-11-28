@@ -191,12 +191,11 @@ def daily_returns(result: dict) -> pd.Series:
 
 
 def daily_marked(result: dict) -> dict:
-    eq = pd.Series(result["equity"], index=pd.DatetimeIndex(result["ts"]))
-    cash = pd.Series(result["cash"], index=pd.DatetimeIndex(result["ts"]))
-    last = eq.groupby(eq.index.date).last()
-    lastc = cash.groupby(cash.index.date).last()
-    tt = pd.DatetimeIndex([pd.Timestamp(x, tz="America/New_York") for x in last.index])
-    return bt.stats({"equity": last.to_numpy(), "cash": lastc.to_numpy(), "fills": 0,
+    # last equity / cash mark of each session (== groupby(index.date).last())
+    dates, _, last = bt.day_bounds(pd.DatetimeIndex(result["ts"]))
+    tt = pd.DatetimeIndex([pd.Timestamp(x, tz="America/New_York") for x in dates[last]])
+    return bt.stats({"equity": np.asarray(result["equity"])[last],
+                     "cash": np.asarray(result["cash"])[last], "fills": 0,
                      "turnover": 0.0, "ts": tt}, 252)
 
 

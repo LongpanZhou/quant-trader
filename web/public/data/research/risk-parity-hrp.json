@@ -9,16 +9,13 @@
   "sharpe": 0.6922421795500426
  },
  "status": "verified-full",
- "assessment": {
-  "verdict": "overlay-only",
-  "reason": "QQQ/TQQQ correlation 0.999 makes ERC a leverage choice; only 8 spike events; corr 0.78; Sharpe 0.69 < QQQ 0.92."
- },
+ "assessment": {},
  "paths": {
-  "report": "research/revisit/risk-parity-hrp/report.md",
-  "hypothesis": "research/revisit/risk-parity-hrp/HYPOTHESIS.md",
-  "spec": "research/revisit/risk-parity-hrp/SPEC.md",
-  "provenance": "research/revisit/risk-parity-hrp/PROVENANCE.md",
-  "code": "research/revisit/risk-parity-hrp/strategy.py",
+  "report": "research/strategies/risk-parity-hrp/report.md",
+  "hypothesis": "research/strategies/risk-parity-hrp/HYPOTHESIS.md",
+  "spec": "research/strategies/risk-parity-hrp/SPEC.md",
+  "provenance": "research/strategies/risk-parity-hrp/PROVENANCE.md",
+  "code": "research/strategies/risk-parity-hrp/strategy.py",
   "code_public": "/data/research/code/risk-parity-hrp.py"
  },
  "extracted": {

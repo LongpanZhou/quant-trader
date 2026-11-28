@@ -14,11 +14,11 @@
   "reason": "Full 45.29% CAGR / 54.10% DD / 1.14 Sharpe; 229 fills; above the TQQQ bar."
  },
  "paths": {
-  "report": "research/new/family-change-point/report.md",
-  "hypothesis": "research/new/family-change-point/HYPOTHESIS.md",
+  "report": "research/strategies/family-change-point/report.md",
+  "hypothesis": "research/strategies/family-change-point/HYPOTHESIS.md",
   "spec": null,
   "provenance": null,
-  "code": "research/new/family-change-point/strategy.py",
+  "code": "research/strategies/family-change-point/strategy.py",
   "code_public": "/data/research/code/family-change-point.py"
  },
  "extracted": {

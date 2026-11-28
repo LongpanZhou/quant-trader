@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { memo, useMemo } from "react";
 import type { SeriesPoint } from "@/lib/types";
 import { pct } from "@/lib/format";
 
@@ -67,7 +67,8 @@ function episodes(series: SeriesPoint[]): Episode[] {
   return out.sort((a, b) => a.depth - b.depth).slice(0, 3);
 }
 
-export function DrawdownEpisodes({ series }: { series: SeriesPoint[] }) {
+// Memoized: the lab pages re-render on every keystroke and slider tick.
+export const DrawdownEpisodes = memo(function DrawdownEpisodes({ series }: { series: SeriesPoint[] }) {
   const items = useMemo(() => episodes(series), [series]);
   return (
     <div className="space-y-2.5">
@@ -85,4 +86,4 @@ export function DrawdownEpisodes({ series }: { series: SeriesPoint[] }) {
       ))}
     </div>
   );
-}
+});

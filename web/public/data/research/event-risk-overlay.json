@@ -9,16 +9,13 @@
   "sharpe": 0.962359908485912
  },
  "status": "verified-full",
- "assessment": {
-  "verdict": "overlay-only",
-  "reason": "28.6% TQQQ beta supplies almost all 26.9% CAGR; event premium ~1%/yr; permutation p=0.245."
- },
+ "assessment": {},
  "paths": {
-  "report": "research/revisit/event-risk-overlay/report.md",
+  "report": "research/strategies/event-risk-overlay/report.md",
   "hypothesis": null,
   "spec": null,
   "provenance": null,
-  "code": "research/revisit/event-risk-overlay/strategy.py",
+  "code": "research/strategies/event-risk-overlay/strategy.py",
   "code_public": "/data/research/code/event-risk-overlay.py"
  },
  "extracted": {

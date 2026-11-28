@@ -14,11 +14,11 @@
   "reason": "External family added 2026-11-28. Full 24.97% CAGR / 58.89% DD / 0.75 Sharpe; 333 full fills."
  },
  "paths": {
-  "report": "research/new/family-homebuilder-rotation/report.md",
-  "hypothesis": "research/new/family-homebuilder-rotation/HYPOTHESIS.md",
+  "report": "research/strategies/family-homebuilder-rotation/report.md",
+  "hypothesis": "research/strategies/family-homebuilder-rotation/HYPOTHESIS.md",
   "spec": null,
   "provenance": null,
-  "code": "research/new/family-homebuilder-rotation/strategy.py",
+  "code": "research/strategies/family-homebuilder-rotation/strategy.py",
   "code_public": "/data/research/code/family-homebuilder-rotation.py"
  },
  "extracted": {

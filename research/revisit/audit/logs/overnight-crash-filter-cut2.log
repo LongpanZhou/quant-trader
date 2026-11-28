@@ -1,7 +1,0 @@
-{
-  "agent": "overnight-crash-filter",
-  "status": "rejected",
-  "corr_vs_165d_baseline": 0.284301641149126
-}
-dev      1bp CAGR   9.81%  DD 21.63%  Sharpe 0.74  fills 2,668
-{"slug": "overnight-crash-filter", "mode": "cut2", "calls": 6, "error": null, "seconds": 12.9, "restored": ["restored result.json"], "match_score": 1.0, "found": true, "kw": {"band": 0.02, "slippage_bps": 0.0, "start_equity": 100000.0}, "bars": 654958, "k": 3}

@@ -3,7 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "data": "node scripts/split-compare.mjs",
+    "predev": "node scripts/split-compare.mjs",
     "dev": "next dev",
+    "prebuild": "node scripts/split-compare.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"

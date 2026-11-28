@@ -5,8 +5,8 @@ import json
 from pathlib import Path
 
 ROOT = Path(r"C:\Users\27175\Desktop\quant-trader-research")
-HERE = ROOT / "research" / "revisit"
-NEW = ROOT / "research" / "new"
+HERE = ROOT / "research" / "strategies"
+NEW = HERE
 ALL = ROOT / "web" / "public" / "data" / "compare" / "all.json"
 OUT = ROOT / "web" / "public" / "data" / "research" / "rebuild.json"
 META = {s["slug"]: s for s in json.loads((NEW / "META.json").read_text(encoding="utf-8"))["strategies"]}

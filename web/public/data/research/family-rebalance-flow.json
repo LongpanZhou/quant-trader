@@ -14,11 +14,11 @@
   "reason": "Full 45.55% / 50.92% DD / 1.07 Sharpe, holdout 34.89%; audit exact. 5 bp dev 47.13%, 10 bp 42.88%; 8/8 grid cells and placebo p=0.02. Still a 3x flow beta, not independent alpha."
  },
  "paths": {
-  "report": "research/new/family-rebalance-flow/report.md",
-  "hypothesis": "research/new/family-rebalance-flow/HYPOTHESIS.md",
+  "report": "research/strategies/family-rebalance-flow/report.md",
+  "hypothesis": "research/strategies/family-rebalance-flow/HYPOTHESIS.md",
   "spec": null,
   "provenance": null,
-  "code": "research/new/family-rebalance-flow/strategy.py",
+  "code": "research/strategies/family-rebalance-flow/strategy.py",
   "code_public": "/data/research/code/family-rebalance-flow.py"
  },
  "extracted": {

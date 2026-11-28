@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { memo, useMemo } from "react";
 import {
   Area,
   AreaChart,
@@ -17,7 +17,8 @@ import { downsample, formatSeriesDate, pct, xTickLabel, xTicks } from "@/lib/for
 import { ChartTooltip } from "./chart-tooltip";
 import { LegendDot } from "./ui";
 
-export function DrawdownChart({
+// Memoized: the lab pages re-render on every keystroke and slider tick.
+export const DrawdownChart = memo(function DrawdownChart({
   series,
   strategyMax,
   qqqMax,
@@ -83,7 +84,7 @@ export function DrawdownChart({
             />
             <ReferenceLine y={0} stroke="#2a3037" />
             <Area
-              type="monotone"
+              type="linear"
               dataKey="drawdown"
               name="Strategy"
               stroke="#fb7185"
@@ -93,7 +94,7 @@ export function DrawdownChart({
               isAnimationActive={false}
             />
             <Area
-              type="monotone"
+              type="linear"
               dataKey="qqqDrawdown"
               name={benchmark}
               stroke="#52525b"
@@ -116,6 +117,6 @@ export function DrawdownChart({
       </div>
     </div>
   );
-}
+});
 
 

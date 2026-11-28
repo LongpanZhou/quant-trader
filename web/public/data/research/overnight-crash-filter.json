@@ -9,16 +9,13 @@
   "sharpe": 0.8086034236537867
  },
  "status": "verified-full",
- "assessment": {
-  "verdict": "unsupported",
-  "reason": "“Day Destroys the Night” predictor is a ~7-year EWMA, not yesterday’s sign; F1 t=0.23, F2 t=−0.51; static vol-matched mix dominates."
- },
+ "assessment": {},
  "paths": {
-  "report": "research/revisit/overnight-crash-filter/report.md",
+  "report": "research/strategies/overnight-crash-filter/report.md",
   "hypothesis": null,
   "spec": null,
-  "provenance": "research/revisit/overnight-crash-filter/PROVENANCE.md",
-  "code": "research/revisit/overnight-crash-filter/strategy.py",
+  "provenance": "research/strategies/overnight-crash-filter/PROVENANCE.md",
+  "code": "research/strategies/overnight-crash-filter/strategy.py",
   "code_public": "/data/research/code/overnight-crash-filter.py"
  },
  "extracted": {

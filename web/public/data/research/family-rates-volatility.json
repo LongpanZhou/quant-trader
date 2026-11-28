@@ -14,11 +14,11 @@
   "reason": "Full 38.80% CAGR / 41.94% DD / 1.06 Sharpe; 355 fills; above the TQQQ bar."
  },
  "paths": {
-  "report": "research/new/family-rates-volatility/report.md",
-  "hypothesis": "research/new/family-rates-volatility/HYPOTHESIS.md",
+  "report": "research/strategies/family-rates-volatility/report.md",
+  "hypothesis": "research/strategies/family-rates-volatility/HYPOTHESIS.md",
   "spec": null,
   "provenance": null,
-  "code": "research/new/family-rates-volatility/strategy.py",
+  "code": "research/strategies/family-rates-volatility/strategy.py",
   "code_public": "/data/research/code/family-rates-volatility.py"
  },
  "extracted": {

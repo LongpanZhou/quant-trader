@@ -14,11 +14,11 @@
   "reason": "Passes the full-window bar and causality audit. All 8 grid cells pass, but a 3-session execution delay drops dev CAGR to 33.6%; the edge is crash avoidance concentrated in 2020, and a simpler trend+spike sibling earns more raw CAGR."
  },
  "paths": {
-  "report": "research/new/vol-term-structure/report.md",
-  "hypothesis": "research/new/vol-term-structure/HYPOTHESIS.md",
+  "report": "research/strategies/vol-term-structure/report.md",
+  "hypothesis": "research/strategies/vol-term-structure/HYPOTHESIS.md",
   "spec": null,
   "provenance": null,
-  "code": "research/new/vol-term-structure/strategy.py",
+  "code": "research/strategies/vol-term-structure/strategy.py",
   "code_public": "/data/research/code/vol-term-structure.py"
  },
  "extracted": {

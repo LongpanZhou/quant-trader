@@ -14,11 +14,11 @@
   "reason": "Full 34.39% CAGR / 46.36% DD / 1.03 Sharpe; 2,124 fills; independent volume-asymmetry signal."
  },
  "paths": {
-  "report": "research/new/family-volume-skew/report.md",
-  "hypothesis": "research/new/family-volume-skew/HYPOTHESIS.md",
+  "report": "research/strategies/family-volume-skew/report.md",
+  "hypothesis": "research/strategies/family-volume-skew/HYPOTHESIS.md",
   "spec": null,
   "provenance": null,
-  "code": "research/new/family-volume-skew/strategy.py",
+  "code": "research/strategies/family-volume-skew/strategy.py",
   "code_public": "/data/research/code/family-volume-skew.py"
  },
  "extracted": {

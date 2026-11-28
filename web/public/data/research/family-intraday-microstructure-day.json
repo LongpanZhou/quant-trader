@@ -14,11 +14,11 @@
   "reason": "Full 40.97% / 47.42% DD / 1.05 Sharpe, holdout 32.55%; audit exact with final-session boundary. Cost-fragile: 5 bp dev 19.5%, 10 bp negative; 1 bp headline only."
  },
  "paths": {
-  "report": "research/new/family-intraday-microstructure-day/report.md",
-  "hypothesis": "research/new/family-intraday-microstructure-day/HYPOTHESIS.md",
+  "report": "research/strategies/family-intraday-microstructure-day/report.md",
+  "hypothesis": "research/strategies/family-intraday-microstructure-day/HYPOTHESIS.md",
   "spec": null,
   "provenance": null,
-  "code": "research/new/family-intraday-microstructure-day/strategy.py",
+  "code": "research/strategies/family-intraday-microstructure-day/strategy.py",
   "code_public": "/data/research/code/family-intraday-microstructure-day.py"
  },
  "extracted": {

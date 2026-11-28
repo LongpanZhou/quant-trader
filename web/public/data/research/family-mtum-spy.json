@@ -14,11 +14,11 @@
   "reason": "Low-overlap family added 2026-11-28. Full 34.06% CAGR / 57.97% DD / 0.88 Sharpe; 179 full fills. Max winner correlation 0.67, signal Jaccard 0.57."
  },
  "paths": {
-  "report": "research/new/family-mtum-spy/report.md",
-  "hypothesis": "research/new/family-mtum-spy/HYPOTHESIS.md",
+  "report": "research/strategies/family-mtum-spy/report.md",
+  "hypothesis": "research/strategies/family-mtum-spy/HYPOTHESIS.md",
   "spec": null,
   "provenance": null,
-  "code": "research/new/family-mtum-spy/strategy.py",
+  "code": "research/strategies/family-mtum-spy/strategy.py",
   "code_public": "/data/research/code/family-mtum-spy.py"
  },
  "extracted": {

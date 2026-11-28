@@ -14,11 +14,11 @@
   "reason": "Passes the full-window bar and causality audit. The ratio momentum is 99.7% explained by QQQ trend and variance, and 2022 is worse than QQQ; it is a leverage-cycle meter, not independent alpha."
  },
  "paths": {
-  "report": "research/new/relative-value-tqqq/report.md",
-  "hypothesis": "research/new/relative-value-tqqq/HYPOTHESIS.md",
+  "report": "research/strategies/relative-value-tqqq/report.md",
+  "hypothesis": "research/strategies/relative-value-tqqq/HYPOTHESIS.md",
   "spec": null,
   "provenance": null,
-  "code": "research/new/relative-value-tqqq/strategy.py",
+  "code": "research/strategies/relative-value-tqqq/strategy.py",
   "code_public": "/data/research/code/relative-value-tqqq.py"
  },
  "extracted": {

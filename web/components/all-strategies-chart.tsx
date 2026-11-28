@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { useEffect, useMemo, useRef, useState, type MouseEvent } from "react";
+import { memo, useEffect, useMemo, useRef, useState, type MouseEvent } from "react";
 import {
   Brush,
   CartesianGrid,
@@ -346,6 +346,84 @@ function ScatterPlot({
   );
 }
 
+// The 46-curve chart is the expensive part of this page: any prop change makes
+// Recharts recompute axes and points for every series. It is memoized on the
+// data, the visible set and the scale only. Hover highlighting is done with CSS
+// (see hoverStyle below), so hovering a legend chip, table row or scatter dot
+// never re-renders it.
+const CompareLines = memo(function CompareLines({
+  rows,
+  ticks,
+  visible,
+  scale,
+}: {
+  rows: Record<string, string | number | null>[];
+  ticks: string[];
+  visible: Curve[];
+  scale: "linear" | "log";
+}) {
+  return (
+    <ResponsiveContainer width="100%" height="100%">
+      <LineChart data={rows} margin={{ top: 8, right: 12, bottom: 4, left: -8 }}>
+        <CartesianGrid stroke="#22262c" strokeDasharray="4 6" vertical={false} />
+        <XAxis
+          dataKey="date"
+          ticks={ticks}
+          interval={0}
+          tickFormatter={(value: string) => value.slice(0, 4)}
+          tick={{ fill: "#9aa1ab", fontSize: 12 }}
+          axisLine={{ stroke: "#2a3037" }}
+          tickLine={false}
+        />
+        <YAxis
+          scale={scale}
+          domain={["auto", "auto"]}
+          tick={{ fill: "#9aa1ab", fontSize: 12 }}
+          axisLine={false}
+          tickLine={false}
+          tickFormatter={(value: number) => `${Math.round(value)}`}
+          width={46}
+        />
+        <Tooltip content={<CompareTooltip />} isAnimationActive={false} />
+        {visible.map((curve) => (
+          <Line
+            key={curve.id}
+            className={`cmp-line ${lineClass(curve.id)}`}
+            type="linear"
+            dataKey={curve.id}
+            name={curve.name}
+            stroke={curve.color}
+            strokeWidth={curve.id === "tqqq" ? 1.3 : 1.9}
+            strokeDasharray={curve.id === "tqqq" ? "4 4" : undefined}
+            dot={false}
+            connectNulls
+            isAnimationActive={false}
+            activeDot={{ r: 2.5, fill: curve.color, stroke: "#08090b", strokeWidth: 2 }}
+          />
+        ))}
+        <Brush
+          dataKey="date"
+          height={26}
+          stroke="#3f3f46"
+          fill="#0b0d10"
+          travellerWidth={8}
+          tickFormatter={(value: string) => value.slice(0, 4)}
+        />
+      </LineChart>
+    </ResponsiveContainer>
+  );
+});
+
+function lineClass(id: string) {
+  return `cmp-${id.replace(/[^a-zA-Z0-9_-]/g, "_")}`;
+}
+
+function hoverStyle(id: string | null) {
+  if (!id) return "";
+  const own = `.cmp-chart .cmp-line.${lineClass(id)} .recharts-line-curve`;
+  return `.cmp-chart .cmp-line .recharts-line-curve{stroke-opacity:.12}${own}{stroke-opacity:1;stroke-width:3}`;
+}
+
 export function AllStrategiesChart() {
   const [data, setData] = useState<Payload | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -356,7 +434,7 @@ export function AllStrategiesChart() {
   const [hovered, setHovered] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch("/data/compare/all.json?v=2026-11-28-44b", { cache: "no-store" })
+    fetch("/data/compare/all.min.json?v=2026-11-28-44b")
       .then((response) => {
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         return response.json();
@@ -422,11 +500,19 @@ export function AllStrategiesChart() {
     );
   }, [data, family, metricById]);
 
-  const visible =
-    data?.series.filter(
-      (curve) =>
-        curve.id === "tqqq" || curve.id === "qqq" || (inFamily(curve.id) && !hidden.has(curve.id)),
-    ) ?? [];
+  const visible = useMemo(
+    () =>
+      data?.series.filter(
+        (curve) =>
+          curve.id === "tqqq" || curve.id === "qqq" || (inFamily(curve.id) && !hidden.has(curve.id)),
+      ) ?? [],
+    [data, family, hidden, metricById],
+  );
+  const visibleIds = useMemo(() => new Set(visible.map((curve) => curve.id)), [visible]);
+  const visibleMetrics = useMemo(
+    () => (data?.metrics ?? []).filter((metric) => visibleIds.has(metric.id)),
+    [data, visibleIds],
+  );
 
   const toggle = (id: string) => {
     setHidden((current) => {
@@ -487,12 +573,14 @@ export function AllStrategiesChart() {
     applyAbove(above, next);
   };
 
-  const table = [...(data?.metrics ?? [])]
-    .filter((metric) => visible.some((curve) => curve.id === metric.id))
-    .sort((a, b) => {
-      const bench = (a.benchmark ? 1 : 0) - (b.benchmark ? 1 : 0);
-      return bench || b.cagr - a.cagr;
-    });
+  const table = useMemo(
+    () =>
+      [...visibleMetrics].sort((a, b) => {
+        const bench = (a.benchmark ? 1 : 0) - (b.benchmark ? 1 : 0);
+        return bench || b.cagr - a.cagr;
+      }),
+    [visibleMetrics],
+  );
 
   if (error) {
     return (
@@ -627,59 +715,9 @@ export function AllStrategiesChart() {
           })}
         </div>
 
-        <div className="h-[520px] w-full min-w-0">
-          <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={rows} margin={{ top: 8, right: 12, bottom: 4, left: -8 }}>
-              <CartesianGrid stroke="#22262c" strokeDasharray="4 6" vertical={false} />
-              <XAxis
-                dataKey="date"
-                ticks={ticks}
-                interval={0}
-                tickFormatter={(value: string) => value.slice(0, 4)}
-                tick={{ fill: "#9aa1ab", fontSize: 12 }}
-                axisLine={{ stroke: "#2a3037" }}
-                tickLine={false}
-              />
-              <YAxis
-                scale={scale}
-                domain={["auto", "auto"]}
-                tick={{ fill: "#9aa1ab", fontSize: 12 }}
-                axisLine={false}
-                tickLine={false}
-                tickFormatter={(value: number) => `${Math.round(value)}`}
-                width={46}
-              />
-              <Tooltip content={<CompareTooltip />} />
-              {visible.map((curve) => {
-                const isHovered = hovered === curve.id;
-                const dimmed = hovered !== null && !isHovered;
-                return (
-                  <Line
-                    key={curve.id}
-                    type="monotone"
-                    dataKey={curve.id}
-                    name={curve.name}
-                    stroke={curve.color}
-                    strokeWidth={isHovered ? 3 : curve.id === "tqqq" ? 1.3 : 1.9}
-                    strokeOpacity={dimmed ? 0.12 : 1}
-                    strokeDasharray={curve.id === "tqqq" ? "4 4" : undefined}
-                    dot={false}
-                    connectNulls
-                    isAnimationActive={false}
-                    activeDot={{ r: 2.5, fill: curve.color, stroke: "#08090b", strokeWidth: 2 }}
-                  />
-                );
-              })}
-              <Brush
-                dataKey="date"
-                height={26}
-                stroke="#3f3f46"
-                fill="#0b0d10"
-                travellerWidth={8}
-                tickFormatter={(value: string) => value.slice(0, 4)}
-              />
-            </LineChart>
-          </ResponsiveContainer>
+        <div className="cmp-chart h-[520px] w-full min-w-0">
+          <style>{hoverStyle(hovered)}</style>
+          <CompareLines rows={rows} ticks={ticks} visible={visible} scale={scale} />
         </div>
       </section>
 
@@ -696,9 +734,7 @@ export function AllStrategiesChart() {
             </p>
           </div>
           <ScatterPlot
-            metrics={data.metrics.filter((metric) =>
-              visible.some((curve) => curve.id === metric.id),
-            )}
+            metrics={visibleMetrics}
             colors={colorById}
             hoveredId={hovered}
             onHoverId={setHovered}

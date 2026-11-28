@@ -63,9 +63,21 @@ def _minute_buckets(ts1: pd.DatetimeIndex, rule: str) -> pd.DatetimeIndex:
     return buckets
 
 
-def to_minutes(ts_coarse: pd.DatetimeIndex, w_coarse: np.ndarray, ts1: pd.DatetimeIndex,
-               rule: str) -> np.ndarray:
-    """Hold coarse weights on minutes with the same fill times as the coarse run."""
+_SRC_CACHE: dict = {}
+
+
+def _minute_source(ts_coarse, ts1: pd.DatetimeIndex, rule: str):
+    """Coarse row held by each minute (-1 = before the first coarse fill).
+
+    Sweeps call `to_minutes` hundreds of times with the same calendars, so the
+    mapping is cached by the coarse timestamps' values and the minute index.
+    """
+    coarse_i8 = np.asarray(pd.DatetimeIndex(ts_coarse).asi8)
+    key = (rule, id(ts1), len(ts1), str(getattr(ts_coarse, "tz", None)),
+           len(coarse_i8), hash(coarse_i8.tobytes()))
+    hit = _SRC_CACHE.get(key)
+    if hit is not None and hit[0] is ts1:
+        return hit[1], hit[2]
     if rule == "1D":
         bucket1 = _minute_buckets(ts1, rule)
         coarse = pd.DatetimeIndex(ts_coarse).normalize()
@@ -77,9 +89,21 @@ def to_minutes(ts_coarse: pd.DatetimeIndex, w_coarse: np.ndarray, ts1: pd.Dateti
         raise ValueError(f"{(k < 0).sum()} minutes have no {rule} bar")
     last = np.r_[k[1:] != k[:-1], True]
     src = np.where(last, k, k - 1)
-    w = np.empty((len(ts1), w_coarse.shape[1]))
-    w[src >= 0] = w_coarse[src[src >= 0]]
-    w[src < 0] = (0.0, 0.0, 1.0)
+    before = src < 0
+    src = np.where(before, 0, src)
+    before = before if before.any() else None
+    _SRC_CACHE.clear()
+    _SRC_CACHE[key] = (ts1, src, before)
+    return src, before
+
+
+def to_minutes(ts_coarse: pd.DatetimeIndex, w_coarse: np.ndarray, ts1: pd.DatetimeIndex,
+               rule: str) -> np.ndarray:
+    """Hold coarse weights on minutes with the same fill times as the coarse run."""
+    src, before = _minute_source(ts_coarse, ts1, rule)
+    w = np.asarray(w_coarse, dtype=float).take(src, axis=0)
+    if before is not None:
+        w[before] = (0.0, 0.0, 1.0)
     return w
 
 

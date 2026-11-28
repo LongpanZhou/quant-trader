@@ -126,8 +126,29 @@ class Params:
 # --------------------------------------------------------------------------- #
 # causal signals
 # --------------------------------------------------------------------------- #
+_SIGNAL_CACHE: dict = {}
+
+
 def clock_signals(ts, opens, closes, p: Params) -> dict:
-    """Closing block return, its normaliser, block vol state.  All causal."""
+    """Closing block return, its normaliser, block vol state.  All causal.
+
+    Only four parameters enter the signals, and the variants, placebo and
+    neighbourhood reuse them, so results are memoised per panel and those
+    parameters.  The arrays are shared and must be treated as read-only.
+    """
+    key = (id(ts), id(opens), id(closes), p.close_window, p.close_ref,
+           p.vol_look, p.ref_look)
+    hit = _SIGNAL_CACHE.get(key)
+    if hit is not None and hit[0] is ts and hit[1] is opens and hit[2] is closes:
+        return dict(hit[3])
+    sig = _clock_signals(ts, opens, closes, p)
+    if len(_SIGNAL_CACHE) >= 32:
+        _SIGNAL_CACHE.clear()
+    _SIGNAL_CACHE[key] = (ts, opens, closes, sig)
+    return dict(sig)
+
+
+def _clock_signals(ts, opens, closes, p: Params) -> dict:
     starts, ends = session_bounds(ts)
     ns = len(starts)
     qc = closes[:, COL["QQQ"]]
@@ -211,19 +232,35 @@ def block_sizes(sig: dict, p: Params) -> tuple[np.ndarray, dict]:
 
 
 def weights_from_size(ts, starts, ends, size, p: Params) -> np.ndarray:
+    """Targets are set on a few bars per session and held until the next one."""
     ns, n = len(starts), len(ts)
-    idle = [0.0, 0.0, 1.0] if p.idle == "bil" else [0.0, 0.0, 0.0]
-    rows = np.full((n, 3), np.nan)
+    idle = (0.0, 0.0, 1.0) if p.idle == "bil" else (0.0, 0.0, 0.0)
+    marks = {}                                     # bar -> row; later writes win
     for k in range(ns):
         if k > 0 and size[k - 1] > 0:
             j = min(starts[k] + EXIT_BAR, ends[k])
-            rows[j - 1] = idle                     # exit at ~10:01
+            marks[(j - 1) % n] = idle              # exit at ~10:01
         s = size[k]
         if s > 0:
-            rows[ends[k] - 1] = [0.0, s, 0.0]      # entry at ~15:59
+            marks[(ends[k] - 1) % n] = (0.0, s, 0.0)   # entry at ~15:59
         else:
-            rows[ends[k] - 1] = idle
-    return pd.DataFrame(rows).ffill().fillna(0.0).to_numpy()
+            marks[(ends[k] - 1) % n] = idle
+    return _hold_rows(marks, n)
+
+
+def _hold_rows(marks: dict, n: int) -> np.ndarray:
+    """Forward-fill the marked rows over n bars, zeros before the first one.
+
+    Same result as filling an (n, 3) NaN array at the marks and running
+    `pd.DataFrame(rows).ffill().fillna(0.0).to_numpy()`.
+    """
+    out = np.zeros((n, 3))
+    if not marks:
+        return out
+    idx = np.fromiter(sorted(marks), dtype=np.int64, count=len(marks))
+    vals = np.array([marks[i] for i in idx.tolist()], dtype=float)
+    out[idx[0]:] = np.repeat(vals, np.diff(np.r_[idx, n]), axis=0)
+    return out
 
 
 def build_weights(ts, opens, closes, params: Params, sym: str = "TQQQ"
@@ -276,8 +313,10 @@ def run_window(w, ts, op, cl, lo, hi, slip):
 
 
 def daily_returns(res):
-    eq = pd.Series(res["equity"], index=res["ts"])
-    return eq.groupby(eq.index.date).last().pct_change().dropna()
+    """Session-close returns (same as grouping the minute equity by date)."""
+    dates, _, last = bt.day_bounds(res["ts"])
+    eq = pd.Series(np.asarray(res["equity"])[last], index=pd.Index(dates[last]))
+    return eq.pct_change().dropna()
 
 
 def pack(s: dict) -> dict:
@@ -319,13 +358,19 @@ def placebo(w, ts, op, cl, sig, p: Params, n_draws: int = 200, seed: int = 7) ->
     cagrs = []
     res, st = run_window(w, ts, op, cl, DEV_START, DEV_END, 1.0)
     real = st["cagr"]
-    for _ in range(n_draws):
+    # Same draws as run_window() one at a time, simulated in parallel batches.
+    i, j = slice_idx(ts, DEV_START, DEV_END)
+    batch = []
+    for d in range(n_draws):
         perm = rng.permutation(size_real.size)
         s = np.zeros_like(size_real)
         s[perm[:active.size]] = sizes
-        wp = weights_from_size(ts, sig["starts"], sig["ends"], s, p)
-        _, st = run_window(wp, ts, op, cl, DEV_START, DEV_END, 1.0)
-        cagrs.append(st["cagr"])
+        batch.append(weights_from_size(ts, sig["starts"], sig["ends"], s, p)[i:j])
+        if len(batch) == 12 or d == n_draws - 1:
+            for r in bt.simulate_many(ts[i:j], op[i:j], cl[i:j], batch,
+                                      band=0.02, slippage_bps=1.0):
+                cagrs.append(bt.stats(r, BARS_1M)["cagr"])
+            batch = []
     cagrs = np.array(cagrs)
     return {"n_draws": n_draws, "real_cagr": float(real),
             "placebo_mean": float(cagrs.mean()), "placebo_p95": float(np.percentile(cagrs, 95)),

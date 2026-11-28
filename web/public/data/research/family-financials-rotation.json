@@ -14,11 +14,11 @@
   "reason": "External family added 2026-11-28. Full 33.60% CAGR / 53.93% DD / 0.90 Sharpe; 333 full fills."
  },
  "paths": {
-  "report": "research/new/family-financials-rotation/report.md",
-  "hypothesis": "research/new/family-financials-rotation/HYPOTHESIS.md",
+  "report": "research/strategies/family-financials-rotation/report.md",
+  "hypothesis": "research/strategies/family-financials-rotation/HYPOTHESIS.md",
   "spec": null,
   "provenance": null,
-  "code": "research/new/family-financials-rotation/strategy.py",
+  "code": "research/strategies/family-financials-rotation/strategy.py",
   "code_public": "/data/research/code/family-financials-rotation.py"
  },
  "extracted": {

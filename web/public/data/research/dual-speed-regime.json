@@ -9,16 +9,13 @@
   "sharpe": 0.3476221609356034
  },
  "status": "verified-full",
- "assessment": {
-  "verdict": "overlay-only",
-  "reason": "Pre-registered intraday-only: 5.4%/1 bp, **−16.7%/5 bp**. Shipped variant adds `OVERNIGHT=True` and makes 28.8%; 90% of the gap is TQQQ overnight drift."
- },
+ "assessment": {},
  "paths": {
-  "report": "research/revisit/dual-speed-regime/report.md",
-  "hypothesis": "research/revisit/dual-speed-regime/HYPOTHESIS.md",
+  "report": "research/strategies/dual-speed-regime/report.md",
+  "hypothesis": "research/strategies/dual-speed-regime/HYPOTHESIS.md",
   "spec": null,
   "provenance": null,
-  "code": "research/revisit/dual-speed-regime/strategy.py",
+  "code": "research/strategies/dual-speed-regime/strategy.py",
   "code_public": "/data/research/code/dual-speed-regime.py"
  },
  "extracted": {

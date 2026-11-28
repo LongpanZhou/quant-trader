@@ -232,3 +232,126 @@ pub unsafe extern "C" fn simcore_simulate_many(
     });
     0
 }
+
+/// Weight validation in one pass: writes `[min weight, max row sum]`.
+///
+/// A NaN weight makes the minimum NaN (as numpy's `min` does), and a NaN or
+/// infinite row makes the row-sum maximum non-finite, so `bt._check_inputs`
+/// applies the same tests to these two numbers as to numpy's.
+///
+/// # Safety
+/// `weights` must reference `rows * k` contiguous f64 and `out` two f64.
+#[no_mangle]
+pub unsafe extern "C" fn simcore_check_weights(
+    rows: usize,
+    k: usize,
+    weights: *const f64,
+    out: *mut f64,
+) -> i32 {
+    if weights.is_null() || out.is_null() || k == 0 {
+        return 1;
+    }
+    let w = slice::from_raw_parts(weights, rows * k);
+    let mut wmin = f64::INFINITY;
+    let mut rowmax = f64::NEG_INFINITY;
+    let mut nan = false;
+    for row in w.chunks_exact(k) {
+        let mut s = row[0];
+        for &x in &row[1..] {
+            s += x;
+        }
+        for &x in row {
+            if x.is_nan() {
+                nan = true;
+            } else if x < wmin {
+                wmin = x;
+            }
+        }
+        if s.is_nan() {
+            rowmax = f64::NAN; // numpy's max propagates NaN
+            break;
+        }
+        if s > rowmax {
+            rowmax = s;
+        }
+    }
+    *out = if nan { f64::NAN } else { wmin };
+    *out.add(1) = rowmax;
+    0
+}
+
+/// `simcore_simulate_many` with one pointer per weight matrix, so callers
+/// need not copy the matrices into a single `m * n * k` block first.
+///
+/// # Safety
+/// `weights` holds `m` pointers, each to `n * k` contiguous f64; the other
+/// arrays are as for `simcore_simulate_many`.
+#[no_mangle]
+#[allow(clippy::too_many_arguments)]
+pub unsafe extern "C" fn simcore_simulate_many_ptrs(
+    m: usize,
+    n: usize,
+    k: usize,
+    opens: *const f64,
+    closes: *const f64,
+    weights: *const *const f64,
+    band: f64,
+    slip: f64,
+    start_equity: f64,
+    equity_out: *mut f64,
+    cash_out: *mut f64,
+    fills_out: *mut i64,
+    traded_out: *mut f64,
+    threads: usize,
+) -> i32 {
+    if opens.is_null() || closes.is_null() || weights.is_null() || equity_out.is_null() {
+        return 1;
+    }
+    let opens = slice::from_raw_parts(opens, n * k);
+    let closes = slice::from_raw_parts(closes, n * k);
+    let ptrs = slice::from_raw_parts(weights, m);
+    if ptrs.iter().any(|p| p.is_null()) {
+        return 1;
+    }
+    let mats: Vec<&[f64]> = ptrs.iter().map(|&p| slice::from_raw_parts(p, n * k)).collect();
+    let equity = slice::from_raw_parts_mut(equity_out, m * n);
+    let cash = slice::from_raw_parts_mut(cash_out, m * n);
+    let fills = slice::from_raw_parts_mut(fills_out, m);
+    let traded = slice::from_raw_parts_mut(traded_out, m);
+
+    let threads = threads.max(1).min(m.max(1));
+    let per = m.div_ceil(threads);
+    std::thread::scope(|scope| {
+        let mut eq_rest = &mut equity[..];
+        let mut cash_rest = &mut cash[..];
+        let mut f_rest = &mut fills[..];
+        let mut t_rest = &mut traded[..];
+        let mut first = 0usize;
+        while first < m {
+            let cnt = per.min(m - first);
+            let (eq_chunk, e2) = eq_rest.split_at_mut(cnt * n);
+            let (cash_chunk, c2) = cash_rest.split_at_mut(cnt * n);
+            let (f_chunk, f2) = f_rest.split_at_mut(cnt);
+            let (t_chunk, t2) = t_rest.split_at_mut(cnt);
+            eq_rest = e2;
+            cash_rest = c2;
+            f_rest = f2;
+            t_rest = t2;
+            let ws = &mats[first..first + cnt];
+            scope.spawn(move || {
+                for j in 0..cnt {
+                    let out = Out {
+                        equity: &mut eq_chunk[j * n..(j + 1) * n],
+                        cash: &mut cash_chunk[j * n..(j + 1) * n],
+                    };
+                    let (f, t) = run_one(n, k, opens, closes, ws[j], band, slip,
+                                         start_equity, out);
+                    f_chunk[j] = f;
+                    t_chunk[j] = t;
+                }
+            });
+            first += cnt;
+        }
+    });
+    0
+}

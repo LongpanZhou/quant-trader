@@ -14,11 +14,11 @@
   "reason": "Passes the full-window CAGR and drawdown bar, 8/8 grid cells, zero pre-cut weight drift. The pass is carried by 2020 and 2023 and by avoiding 2022; 2019 lost to TQQQ on both return and drawdown."
  },
  "paths": {
-  "report": "research/new/fast-trend-vol/report.md",
-  "hypothesis": "research/new/fast-trend-vol/HYPOTHESIS.md",
+  "report": "research/strategies/fast-trend-vol/report.md",
+  "hypothesis": "research/strategies/fast-trend-vol/HYPOTHESIS.md",
   "spec": null,
   "provenance": null,
-  "code": "research/new/fast-trend-vol/strategy.py",
+  "code": "research/strategies/fast-trend-vol/strategy.py",
   "code_public": "/data/research/code/fast-trend-vol.py"
  },
  "extracted": {

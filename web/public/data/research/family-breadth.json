@@ -14,11 +14,11 @@
   "reason": "Full 34.21% CAGR / 63.62% DD / 0.92 Sharpe; 743 fills; below the TQQQ bar."
  },
  "paths": {
-  "report": "research/new/family-breadth/report.md",
-  "hypothesis": "research/new/family-breadth/HYPOTHESIS.md",
+  "report": "research/strategies/family-breadth/report.md",
+  "hypothesis": "research/strategies/family-breadth/HYPOTHESIS.md",
   "spec": null,
   "provenance": null,
-  "code": "research/new/family-breadth/strategy.py",
+  "code": "research/strategies/family-breadth/strategy.py",
   "code_public": "/data/research/code/family-breadth.py"
  },
  "extracted": {

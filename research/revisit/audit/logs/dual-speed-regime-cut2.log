@@ -1,4 +1,0 @@
-dev 1bp  CAGR   1.55%  DD 38.02%  Sharpe 0.18  fills 5031
-corr vs 165d 0.333  status rejected
-wrote C:\Users\27175\Desktop\quant-trader-research\research\revisit\dual-speed-regime\result.json
-{"slug": "dual-speed-regime", "mode": "cut2", "calls": 4, "error": null, "seconds": 13.5, "restored": ["restored result.json"], "match_score": 1.0, "found": true, "kw": {"band": 0.02, "slippage_bps": 1.0, "start_equity": 100000.0}, "bars": 654958, "k": 3}

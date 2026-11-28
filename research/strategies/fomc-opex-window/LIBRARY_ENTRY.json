@@ -1,0 +1,18 @@
+{
+  "slug": "fomc-opex-window",
+  "name": "FOMC + post-OpEx window",
+  "family": "calendar",
+  "tagline": "Owns TQQQ in the FOMC intermeeting drift and the post-OpEx flow window, halved in volatility spikes and in BIL otherwise.",
+  "summary": "A standalone calendar strategy that holds TQQQ from FOMC decision +3 through +20 and from monthly OpEx +1 through +3, with BIL otherwise, and halves exposure when the 20-day/100-day TQQQ realised-vol ratio exceeds 1.25. The 2016-2023 development backtest at 1 bp earns 58.26% CAGR / 42.60% max drawdown / 1.36 Sharpe at 55.4% mean TQQQ exposure; the calendar is hardcoded ex-ante through 2026-10-23, and the 2024-2026 holdout has not been run.",
+  "dev": {
+    "cagr": 0.5825714553682508,
+    "max_drawdown": 0.4260049112997808,
+    "sharpe": 1.3623835939679978
+  },
+  "full": null,
+  "above_tqqq": false,
+  "status": "dev-only",
+  "caveat": "The dev CAGR is concentrated in 2020-2023: the calm 2016-2019 subperiod returns 34.4% (below the 36.72% bar and 15.6 pp below TQQQ) and the ex-2020 CAGR is 37.49%, only 0.8 pp above the bar.",
+  "source": "research/strategies/fomc-opex-window/report.md",
+  "visible": true
+}

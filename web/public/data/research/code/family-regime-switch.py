@@ -15,7 +15,7 @@ import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT / "research"))
-sys.path.insert(0, str(ROOT / "research" / "new"))
+sys.path.insert(0, str(ROOT / "research" / "strategies"))
 import bt  # noqa: E402
 import external  # noqa: E402
 import run_holdout as R  # noqa: E402

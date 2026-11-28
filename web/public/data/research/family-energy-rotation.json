@@ -14,11 +14,11 @@
   "reason": "Full 36.48% CAGR / 69.89% DD / 0.90 Sharpe; 447 fills; below the TQQQ bar."
  },
  "paths": {
-  "report": "research/new/family-energy-rotation/report.md",
-  "hypothesis": "research/new/family-energy-rotation/HYPOTHESIS.md",
+  "report": "research/strategies/family-energy-rotation/report.md",
+  "hypothesis": "research/strategies/family-energy-rotation/HYPOTHESIS.md",
   "spec": null,
   "provenance": null,
-  "code": "research/new/family-energy-rotation/strategy.py",
+  "code": "research/strategies/family-energy-rotation/strategy.py",
   "code_public": "/data/research/code/family-energy-rotation.py"
  },
  "extracted": {

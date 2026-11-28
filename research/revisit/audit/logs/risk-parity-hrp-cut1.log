@@ -1,5 +1,0 @@
-{
-  "status": "pending_test",
-  "corr_vs_165d_baseline": 0.8434128201832424
-}
-{"slug": "risk-parity-hrp", "mode": "cut1", "calls": 5, "error": null, "seconds": 11.4, "restored": ["restored result.json"], "match_score": 1.0, "found": true, "kw": {"band": 0.02, "slippage_bps": 1.0, "start_equity": 100000.0}, "bars": 409459, "k": 3}

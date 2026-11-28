@@ -14,11 +14,11 @@
   "reason": "Low-overlap family added 2026-11-28. Full 19.67% CAGR / 74.96% DD / 0.65 Sharpe; 557 full fills. Max winner correlation 0.60, signal Jaccard 0.48."
  },
  "paths": {
-  "report": "research/new/family-breakeven/report.md",
-  "hypothesis": "research/new/family-breakeven/HYPOTHESIS.md",
+  "report": "research/strategies/family-breakeven/report.md",
+  "hypothesis": "research/strategies/family-breakeven/HYPOTHESIS.md",
   "spec": null,
   "provenance": null,
-  "code": "research/new/family-breakeven/strategy.py",
+  "code": "research/strategies/family-breakeven/strategy.py",
   "code_public": "/data/research/code/family-breakeven.py"
  },
  "extracted": {

@@ -1,5 +1,6 @@
 "use client";
 
+import { memo } from "react";
 import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
 import type { Metrics } from "@/lib/types";
 import { compactMoney, multiple, num, pct, signedMoney } from "@/lib/format";
@@ -13,7 +14,8 @@ function Row({ label, value, tone = "" }: { label: string; value: string; tone?:
   );
 }
 
-export function TradePanel({
+// Memoized: the lab pages re-render on every keystroke and slider tick.
+export const TradePanel = memo(function TradePanel({
   metrics,
   compact = false,
 }: {
@@ -96,6 +98,6 @@ export function TradePanel({
       </div>
     </div>
   );
-}
+});
 
 

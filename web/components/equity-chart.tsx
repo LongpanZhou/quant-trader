@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { memo, useMemo, useState } from "react";
 import {
   Area,
   Brush,
@@ -18,7 +18,8 @@ import { downsample, formatSeriesDate, xTickLabel, xTicks } from "@/lib/format";
 import { ChartTooltip } from "./chart-tooltip";
 import { LegendDot } from "./ui";
 
-export function EquityChart({
+// Memoized: the lab pages re-render on every keystroke and slider tick.
+export const EquityChart = memo(function EquityChart({
   series,
   start,
   end,
@@ -122,7 +123,7 @@ export function EquityChart({
             />
             <ReferenceLine y={100} stroke="#2a3037" strokeDasharray="4 4" />
             <Area
-              type="monotone"
+              type="linear"
               dataKey="strategy"
               name="Strategy"
               stroke={accent}
@@ -133,7 +134,7 @@ export function EquityChart({
               activeDot={{ r: 3, fill: accent, stroke: "#08090b", strokeWidth: 2 }}
             />
             <Line
-              type="monotone"
+              type="linear"
               dataKey="qqq"
               name={benchmark}
               stroke="#71717a"
@@ -160,7 +161,7 @@ export function EquityChart({
       </div>
     </div>
   );
-}
+});
 
 
 

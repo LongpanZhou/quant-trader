@@ -14,11 +14,11 @@
   "reason": "Full 29.86% CAGR / 44.79% DD / 0.94 Sharpe; 719 fills; below the TQQQ bar."
  },
  "paths": {
-  "report": "research/new/family-sector-rotation/report.md",
-  "hypothesis": "research/new/family-sector-rotation/HYPOTHESIS.md",
+  "report": "research/strategies/family-sector-rotation/report.md",
+  "hypothesis": "research/strategies/family-sector-rotation/HYPOTHESIS.md",
   "spec": null,
   "provenance": null,
-  "code": "research/new/family-sector-rotation/strategy.py",
+  "code": "research/strategies/family-sector-rotation/strategy.py",
   "code_public": "/data/research/code/family-sector-rotation.py"
  },
  "extracted": {

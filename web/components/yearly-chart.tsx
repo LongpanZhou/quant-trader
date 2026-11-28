@@ -1,5 +1,6 @@
 "use client";
 
+import { memo } from "react";
 import {
   Bar,
   BarChart,
@@ -16,7 +17,8 @@ import { pct } from "@/lib/format";
 import { ChartTooltip } from "./chart-tooltip";
 import { LegendDot } from "./ui";
 
-export function YearlyChart({ yearly, benchmark }: { yearly: YearRow[]; benchmark: string }) {
+// Memoized: the lab pages re-render on every keystroke and slider tick.
+export const YearlyChart = memo(function YearlyChart({ yearly, benchmark }: { yearly: YearRow[]; benchmark: string }) {
   const data = yearly.map((row) => ({
     ...row,
     label: row.year,
@@ -92,6 +94,6 @@ export function YearlyChart({ yearly, benchmark }: { yearly: YearRow[]; benchmar
       </div>
     </div>
   );
-}
+});
 
 

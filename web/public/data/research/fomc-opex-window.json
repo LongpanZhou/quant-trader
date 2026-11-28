@@ -14,11 +14,11 @@
   "reason": "Full 52.77% / 40.64% DD / 1.28 Sharpe, holdout 40.99%; audit exact. 2020-2023 concentrated; ex-2020 only about 0.8 pp above the dev bar. Vol throttle is a sizing overlay, not the edge."
  },
  "paths": {
-  "report": "research/new/fomc-opex-window/report.md",
-  "hypothesis": "research/new/fomc-opex-window/HYPOTHESIS.md",
+  "report": "research/strategies/fomc-opex-window/report.md",
+  "hypothesis": "research/strategies/fomc-opex-window/HYPOTHESIS.md",
   "spec": null,
   "provenance": null,
-  "code": "research/new/fomc-opex-window/strategy.py",
+  "code": "research/strategies/fomc-opex-window/strategy.py",
   "code_public": "/data/research/code/fomc-opex-window.py"
  },
  "extracted": {

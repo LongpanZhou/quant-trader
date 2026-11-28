@@ -9,16 +9,13 @@
   "sharpe": 0.9569086320487205
  },
  "status": "verified-full",
- "assessment": {
-  "verdict": "plausible-but-weak",
-  "reason": "275 events, +70 bp, t=2.39; but the overnight leg earns −0.38%; the edge is next-day intraday dip-buying; −1.0% is the grid peak; 10 bp CAGR 7.6%."
- },
+ "assessment": {},
  "paths": {
-  "report": "research/revisit/intraday-seasonality/report.md",
-  "hypothesis": "research/revisit/intraday-seasonality/HYPOTHESIS.md",
-  "spec": "research/revisit/intraday-seasonality/SPEC.md",
+  "report": "research/strategies/intraday-seasonality/report.md",
+  "hypothesis": "research/strategies/intraday-seasonality/HYPOTHESIS.md",
+  "spec": "research/strategies/intraday-seasonality/SPEC.md",
   "provenance": null,
-  "code": "research/revisit/intraday-seasonality/strategy.py",
+  "code": "research/strategies/intraday-seasonality/strategy.py",
   "code_public": "/data/research/code/intraday-seasonality.py"
  },
  "extracted": {

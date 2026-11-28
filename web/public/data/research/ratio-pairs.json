@@ -9,16 +9,13 @@
   "sharpe": 1.1340444026468461
  },
  "status": "verified-full",
- "assessment": {
-  "verdict": "plausible-but-weak",
-  "reason": "Avellaneda–Zhang is an accounting identity; 97.8% of ratio extension is QQQ extension + variance; 18.96% dev ≈ QQQ 18.91%; ~90% QQQ."
- },
+ "assessment": {},
  "paths": {
-  "report": "research/revisit/ratio-pairs/report.md",
-  "hypothesis": "research/revisit/ratio-pairs/HYPOTHESIS.md",
+  "report": "research/strategies/ratio-pairs/report.md",
+  "hypothesis": "research/strategies/ratio-pairs/HYPOTHESIS.md",
   "spec": null,
-  "provenance": "research/revisit/ratio-pairs/PROVENANCE.md",
-  "code": "research/revisit/ratio-pairs/strategy.py",
+  "provenance": "research/strategies/ratio-pairs/PROVENANCE.md",
+  "code": "research/strategies/ratio-pairs/strategy.py",
   "code_public": "/data/research/code/ratio-pairs.py"
  },
  "extracted": {

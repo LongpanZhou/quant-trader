@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { memo, useEffect, useMemo, useState } from "react";
 import {
   Brush,
   CartesianGrid,
@@ -64,8 +64,13 @@ export type Detail = {
   code: string;
 };
 
-type CurveSeries = { id: string; name: string; color: string; values: (number | null)[] };
-type AllPayload = { start: string; end: string; dates: string[]; series: CurveSeries[] };
+type CurvePayload = {
+  start: string;
+  end: string;
+  dates: string[];
+  values: (number | null)[];
+  tqqq: (number | null)[] | null;
+};
 
 function host(url?: string | null) {
   if (!url) return "source";
@@ -95,31 +100,36 @@ function fmtPct(value: number | null | undefined) {
   return value == null ? "—" : pct(value);
 }
 
-export function CurveChart({ slug }: { slug: string }) {
-  const [payload, setPayload] = useState<AllPayload | null>(null);
+// Memoized: the lab pages re-render on every keystroke and slider tick.
+export const CurveChart = memo(function CurveChart({ slug }: { slug: string }) {
+  const [payload, setPayload] = useState<CurvePayload | null>(null);
   const [scale, setScale] = useState<"log" | "linear">("log");
 
   useEffect(() => {
-    fetch("/data/compare/all.json?v=2026-11-28-44b", { cache: "no-store" })
+    const controller = new AbortController();
+    setPayload(null);
+    fetch(`/data/compare/curves/${encodeURIComponent(slug)}.json?v=2026-11-28-44b`, {
+      signal: controller.signal,
+    })
       .then((response) => {
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        return response.json() as Promise<AllPayload>;
+        return response.json() as Promise<CurvePayload>;
       })
       .then(setPayload)
-      .catch(() => setPayload(null));
-  }, []);
+      .catch(() => {
+        if (!controller.signal.aborted) setPayload(null);
+      });
+    return () => controller.abort();
+  }, [slug]);
 
   const rows = useMemo(() => {
     if (!payload) return [];
-    const strategy = payload.series.find((item) => item.id === slug);
-    const benchmark = payload.series.find((item) => item.id === "tqqq");
-    if (!strategy) return [];
     return payload.dates.map((date, index) => ({
       date,
-      strategy: strategy.values[index],
-      tqqq: benchmark?.values[index] ?? null,
+      strategy: payload.values[index],
+      tqqq: payload.tqqq?.[index] ?? null,
     }));
-  }, [payload, slug]);
+  }, [payload]);
 
   const ticks = useMemo(() => {
     const out: string[] = [];
@@ -195,7 +205,7 @@ export function CurveChart({ slug }: { slug: string }) {
               }}
             />
             <Line
-              type="monotone"
+              type="linear"
               dataKey="tqqq"
               name="TQQQ"
               stroke="#71717a"
@@ -206,7 +216,7 @@ export function CurveChart({ slug }: { slug: string }) {
               isAnimationActive={false}
             />
             <Line
-              type="monotone"
+              type="linear"
               dataKey="strategy"
               name="Strategy"
               stroke="#9ae6a5"
@@ -228,7 +238,7 @@ export function CurveChart({ slug }: { slug: string }) {
       </div>
     </section>
   );
-}
+});
 
 function CodePanel({
   code,

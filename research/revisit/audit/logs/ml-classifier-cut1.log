@@ -1,7 +1,0 @@
-refits=39 switches=76
-dev 1bp: CAGR  15.27% DD 36.04% Sharpe 0.61 fills 153
-dev 5bp: CAGR  13.07% DD 36.18% Sharpe 0.55 fills 153
-dev 10bp: CAGR  10.39% DD 37.96% Sharpe 0.47 fills 153
-corr vs 165d baseline: 0.538
-wrote C:\Users\27175\Desktop\quant-trader-research\research\revisit\ml-classifier\result.json
-{"slug": "ml-classifier", "mode": "cut1", "calls": 5, "error": null, "seconds": 23.0, "restored": ["restored result.json"], "match_score": 1.0, "found": true, "kw": {"band": 0.02, "slippage_bps": 1.0, "start_equity": 100000.0}, "bars": 311417, "k": 3}

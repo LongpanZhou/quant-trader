@@ -14,11 +14,11 @@
   "reason": "Full 46.50% CAGR / 52.02% DD / 1.18 Sharpe; 293 fills; above the TQQQ bar."
  },
  "paths": {
-  "report": "research/new/family-crypto-risk-appetite/report.md",
-  "hypothesis": "research/new/family-crypto-risk-appetite/HYPOTHESIS.md",
+  "report": "research/strategies/family-crypto-risk-appetite/report.md",
+  "hypothesis": "research/strategies/family-crypto-risk-appetite/HYPOTHESIS.md",
   "spec": null,
   "provenance": null,
-  "code": "research/new/family-crypto-risk-appetite/strategy.py",
+  "code": "research/strategies/family-crypto-risk-appetite/strategy.py",
   "code_public": "/data/research/code/family-crypto-risk-appetite.py"
  },
  "extracted": {

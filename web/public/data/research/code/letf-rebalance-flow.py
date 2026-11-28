@@ -233,7 +233,7 @@ def baseline_daily_weights(qqq_close: np.ndarray) -> np.ndarray:
 def daily_equity(ts: pd.DatetimeIndex, equity: np.ndarray):
     """Last equity mark of each session."""
     d = pd.DatetimeIndex(ts).tz_convert("America/New_York").normalize()
-    uniq = pd.DatetimeIndex(sorted(set(d)))
+    uniq = d.unique().sort_values()   # == DatetimeIndex(sorted(set(d)))
     sess = np.searchsorted(uniq.values, d.values)
     starts = np.searchsorted(sess, np.arange(len(uniq)), side="left")
     ends = np.searchsorted(sess, np.arange(len(uniq)), side="right")

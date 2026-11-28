@@ -10,11 +10,11 @@ import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-REVISIT = ROOT / "research" / "revisit"
-NEW = ROOT / "research" / "new"
+REVISIT = ROOT / "research" / "strategies"
+NEW = REVISIT
 WEB = ROOT / "web"
 INDEX = WEB / "public" / "data" / "research" / "rebuild.json"
-AUDIT = REVISIT / "WHY_UNDERPERFORM.md"
+AUDIT = ROOT / "research" / "archive" / "revisit" / "WHY_UNDERPERFORM.md"
 OUT = WEB / "public" / "data" / "research"
 META = {s["slug"]: s for s in json.loads((NEW / "META.json").read_text(encoding="utf-8"))["strategies"]}
 LIBRARY_STATUS = {
@@ -26,7 +26,7 @@ VERIFIED_OVERRIDES = {
         "verdict": "Verified - trend/ratio overlay",
         "reason": "Clean 2016-2026 rerun: dev 61.56% / 39.11% / 1.47, "
                   "holdout 64.88%, full 62.21% / 36.65% daily-close DD / 1.43. "
-                  "Frozen wrapper and holdout in research/new/ratio-froth.",
+                  "Frozen wrapper and holdout in research/strategies/ratio-froth.",
     },
     "vol-scaled-crash-stop": {
         "verdict": "Verified - vol crash stop",
@@ -316,12 +316,7 @@ def main() -> None:
 
     for row in index["strategies"]:
         slug = row["slug"]
-        if slug in META:
-            base = NEW / slug
-        elif slug == "ratio-froth":
-            base = ROOT / "research" / "agents2" / "ratio-pairs"
-        else:
-            base = REVISIT / slug
+        base = REVISIT / slug
 
         report_path = first(base / "report.md")
         hyp_path = first(base / "HYPOTHESIS.md", base / "hypothesis.md")

@@ -9,16 +9,13 @@
   "sharpe": 0.6679942633274778
  },
  "status": "verified-full",
- "assessment": {
-  "verdict": "plausible-but-weak",
-  "reason": "QQQ-like: 20.7% dev vs QQQ 18.9%, Sharpe 0.81 vs 0.90; 23-feature k-means → forward-return map is own and the “unsupervised” label is misleading."
- },
+ "assessment": {},
  "paths": {
-  "report": "research/revisit/ml-classifier/report.md",
+  "report": "research/strategies/ml-classifier/report.md",
   "hypothesis": null,
   "spec": null,
   "provenance": null,
-  "code": "research/revisit/ml-classifier/strategy.py",
+  "code": "research/strategies/ml-classifier/strategy.py",
   "code_public": "/data/research/code/ml-classifier.py"
  },
  "extracted": {

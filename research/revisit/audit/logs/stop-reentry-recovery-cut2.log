@@ -1,7 +1,0 @@
-dev 2016-01-04 09:30:00-05:00 -> 2022-09-13 10:40:00-04:00  bars 654958  events 1  entries 1  stops 1  addons 0
-dev    1bp  CAGR   0.62%  DD  1.81%  Sharpe 0.40  fills    5  exp 100.0%
-dev    5bp  CAGR   0.60%  DD  1.85%  Sharpe 0.39  fills    5  exp 100.0%
-dev   10bp  CAGR   0.58%  DD  1.90%  Sharpe 0.38  fills    5  exp 100.0%
-corr vs 165d baseline: -0.010
-wrote C:\Users\27175\Desktop\quant-trader-research\research\revisit\stop-reentry-recovery\result.json
-{"slug": "stop-reentry-recovery", "mode": "cut2", "calls": 8, "error": null, "seconds": 13.2, "restored": ["restored result.json"], "match_score": 1.0, "found": true, "kw": {"band": 0.02, "slippage_bps": 1.0, "start_equity": 100000.0}, "bars": 654958, "k": 3}

@@ -14,11 +14,11 @@
   "reason": "Full 43.00% CAGR / 56.25% DD / 1.05 Sharpe; 437 fills; above the TQQQ bar."
  },
  "paths": {
-  "report": "research/new/family-hurst-persistence/report.md",
-  "hypothesis": "research/new/family-hurst-persistence/HYPOTHESIS.md",
+  "report": "research/strategies/family-hurst-persistence/report.md",
+  "hypothesis": "research/strategies/family-hurst-persistence/HYPOTHESIS.md",
   "spec": null,
   "provenance": null,
-  "code": "research/new/family-hurst-persistence/strategy.py",
+  "code": "research/strategies/family-hurst-persistence/strategy.py",
   "code_public": "/data/research/code/family-hurst-persistence.py"
  },
  "extracted": {

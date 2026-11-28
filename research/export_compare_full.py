@@ -9,10 +9,10 @@ import numpy as np
 import pandas as pd
 
 ROOT = Path(r"C:\Users\27175\Desktop\quant-trader-research")
-HERE = ROOT / "research" / "revisit"
-CURVES = HERE / "curves_full"
-NEW = ROOT / "research" / "new"
-NEW_CURVES = NEW / "curves"
+HERE = ROOT / "research" / "strategies"
+CURVES = HERE / "curves"
+NEW = HERE
+NEW_CURVES = CURVES
 META = json.loads((NEW / "META.json").read_text(encoding="utf-8"))
 VISIBLE = [s for s in META["strategies"] if s.get("visible", True)]
 LIBRARY = json.loads((NEW / "LIBRARY.json").read_text(encoding="utf-8"))
@@ -82,14 +82,6 @@ def stats(values: pd.Series) -> dict:
 def main():
     curves = {}
     for path in sorted(CURVES.glob("*.json")):
-        payload = json.loads(path.read_text())
-        curves[payload["slug"]] = pd.Series(
-            payload["values"], index=pd.to_datetime(payload["dates"])
-        )
-    for s in VISIBLE:
-        path = NEW_CURVES / f"{s['slug']}.json"
-        if not path.exists():
-            raise SystemExit(f"missing verified new curve: {path}")
         payload = json.loads(path.read_text())
         curves[payload["slug"]] = pd.Series(
             payload["values"], index=pd.to_datetime(payload["dates"])

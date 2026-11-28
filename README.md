@@ -68,8 +68,9 @@ Every addition has:
 - signal Jaccard ≤0.66 and raw correlation ≤0.693 against the nine original
   winners.
 
-See `research/new/NEW_FAMILIES.md`, `research/new/FAMILY_OVERLAP_AUDIT.md`, and
-`research/new/OBJECTIVE_FEASIBILITY.md` for the ledger and audit.
+See `research/strategies/NEW_FAMILIES.md`,
+`research/strategies/FAMILY_OVERLAP_AUDIT.md`, and
+`research/strategies/OBJECTIVE_FEASIBILITY.md` for the ledger and audit.
 
 ## Repository layout
 
@@ -77,8 +78,8 @@ See `research/new/NEW_FAMILIES.md`, `research/new/FAMILY_OVERLAP_AUDIT.md`, and
 src/                 Rust paper-trading engine and backtester
 web/                 Next.js dashboard (compare, research, lab)
 research/            Python research and verification
-research/new/        20-family programme, holdouts, overlap audit
-research/revisit/    original winner curves and final checks
+research/strategies/    all 44 strategies, shared harness, curves, holdouts, audits
+research/archive/       historical experiments kept for provenance
 data/external/       committed Yahoo daily cross-asset series
 configs/             TOML strategy/config files
 scripts/             data export and intraday backtest helpers
@@ -115,9 +116,9 @@ npm run start
 
 ```bash
 pip install pandas numpy pyarrow
-python research/revisit/final_check.py
-python research/new/check_all_holdouts.py
-python research/new/family_overlap_audit.py
+python research/strategies/final_check.py
+python research/strategies/check_all_holdouts.py
+python research/strategies/family_overlap_audit.py
 ```
 
 `check_all_holdouts.py` verifies that every holdout partitions cleanly and

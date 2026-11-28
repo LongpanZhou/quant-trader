@@ -1,10 +1,11 @@
 "use client";
 
-import { useMemo } from "react";
+import { memo, useMemo } from "react";
 import type { SeriesPoint } from "@/lib/types";
 import { maxAbs, monthName, monthlyGrid, pct } from "@/lib/format";
 
-export function MonthlyHeatmap({ series }: { series: SeriesPoint[] }) {
+// Memoized: the lab pages re-render on every keystroke and slider tick.
+export const MonthlyHeatmap = memo(function MonthlyHeatmap({ series }: { series: SeriesPoint[] }) {
   const { years, returns } = useMemo(() => monthlyGrid(series), [series]);
   const max = useMemo(() => maxAbs(Array.from(returns.values())), [returns]);
 
@@ -81,5 +82,5 @@ export function MonthlyHeatmap({ series }: { series: SeriesPoint[] }) {
       </p>
     </div>
   );
-}
+});
 

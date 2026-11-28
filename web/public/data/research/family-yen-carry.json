@@ -14,11 +14,11 @@
   "reason": "External family added 2026-11-28. Full 18.21% CAGR / 71.47% DD / 0.59 Sharpe; 399 full fills."
  },
  "paths": {
-  "report": "research/new/family-yen-carry/report.md",
-  "hypothesis": "research/new/family-yen-carry/HYPOTHESIS.md",
+  "report": "research/strategies/family-yen-carry/report.md",
+  "hypothesis": "research/strategies/family-yen-carry/HYPOTHESIS.md",
   "spec": null,
   "provenance": null,
-  "code": "research/new/family-yen-carry/strategy.py",
+  "code": "research/strategies/family-yen-carry/strategy.py",
   "code_public": "/data/research/code/family-yen-carry.py"
  },
  "extracted": {

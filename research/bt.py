@@ -59,6 +59,16 @@ HALF_DAYS = {
 _LOAD_1M_CACHE: dict = {}
 
 
+def _HM_NS(hour: int, minute: int) -> int:
+    return (hour * 60 + minute) * 60 * 10**9
+
+
+def _time_of_day_ns(ts: pd.Series) -> np.ndarray:
+    """Nanoseconds since local midnight for a tz-aware timestamp Series."""
+    local = ts.dt.tz_localize(None)
+    return (local - local.dt.normalize()).to_numpy().astype("timedelta64[ns]").astype(np.int64)
+
+
 def load_1m(symbol: str) -> pd.DataFrame:
     """Adjusted 1-minute bars in US/Eastern, regular session only."""
     src = DATA_DIR / f"{symbol}-1m.parquet"
@@ -68,14 +78,16 @@ def load_1m(symbol: str) -> pd.DataFrame:
         return cached
     df = pd.read_parquet(src)
     df["ts"] = pd.to_datetime(df["ts"], utc=True).dt.tz_convert("America/New_York")
-    df = df[
-        (df["ts"].dt.time >= pd.Timestamp("09:30").time())
-        & (df["ts"].dt.time < pd.Timestamp("16:00").time())
-    ].copy()
+    # Local time of day as integer ns: the same tests as comparing `.dt.time`
+    # (minute bars), without building a Python `time` object per row.
+    tod = _time_of_day_ns(df["ts"])
+    keep = (tod >= _HM_NS(9, 30)) & (tod < _HM_NS(16, 0))
+    df = df[keep].copy()
+    tod = tod[keep]
     df["date"] = df["ts"].dt.date
 
     # Half-days: discard after-hours prints after 13:00.
-    after_close = df["date"].isin(HALF_DAYS) & (df["ts"].dt.time > time(13, 0))
+    after_close = df["date"].isin(HALF_DAYS) & (tod > _HM_NS(13, 0))
     if after_close.any():
         df = df.loc[~after_close].copy()
 
@@ -93,7 +105,10 @@ def load_1m(symbol: str) -> pd.DataFrame:
     for column in ("open", "high", "low", "close"):
         df[column] = df[column] * df["factor"]
     out = df[["ts", "date", "open", "high", "low", "close", "volume"]]
-    _LOAD_1M_CACHE.clear()
+    # One entry per symbol: strategies alternate QQQ/TQQQ/BIL, which made a
+    # single-entry cache re-read every file.  Callers filter/copy, never mutate.
+    for old in [k for k in _LOAD_1M_CACHE if k[0] == symbol]:
+        del _LOAD_1M_CACHE[old]
     _LOAD_1M_CACHE[key] = out
     return out
 
@@ -208,7 +223,9 @@ def session_dates(ts: pd.DatetimeIndex) -> np.ndarray:
         return cached
     local = ts.tz_localize(None) if getattr(ts, "tz", None) is not None else ts
     dates = local.normalize().values.astype("datetime64[D]").astype(object)
-    _SESSION_DATE_CACHE.clear()
+    # A few entries: evaluations alternate between window slices of one panel.
+    while len(_SESSION_DATE_CACHE) >= 4:
+        _SESSION_DATE_CACHE.pop(next(iter(_SESSION_DATE_CACHE)))
     _SESSION_DATE_CACHE[key] = dates
     return dates
 
@@ -230,11 +247,12 @@ def day_bounds(ts: pd.DatetimeIndex):
     dates = session_dates(ts)
     key = id(dates)
     cached = _DAY_BOUNDS_CACHE.get(key)
-    if cached is not None:
+    if cached is not None and cached[0] is dates:
         return cached
     first, last = day_bounds_from_dates(dates)
     out = (dates, first, last)
-    _DAY_BOUNDS_CACHE.clear()
+    while len(_DAY_BOUNDS_CACHE) >= 4:
+        _DAY_BOUNDS_CACHE.pop(next(iter(_DAY_BOUNDS_CACHE)))
     _DAY_BOUNDS_CACHE[key] = out
     return out
 
@@ -247,11 +265,12 @@ def day_ids(ts: pd.DatetimeIndex) -> np.ndarray:
     dates, first, _ = day_bounds(ts)
     key = id(dates)
     cached = _DAY_ID_CACHE.get(key)
-    if cached is not None:
-        return cached
+    if cached is not None and cached[0] is dates:   # the entry pins `dates`,
+        return cached[1]                            # so its id is not reused
     out = np.repeat(np.arange(len(first)), np.diff(np.r_[first, len(dates)]))
-    _DAY_ID_CACHE.clear()
-    _DAY_ID_CACHE[key] = out
+    while len(_DAY_ID_CACHE) >= 4:
+        _DAY_ID_CACHE.pop(next(iter(_DAY_ID_CACHE)))
+    _DAY_ID_CACHE[key] = (dates, out)
     return out
 
 
@@ -310,6 +329,14 @@ def _load_simcore():
         lib.simcore_simulate_many.argtypes = [sz, sz, sz, pd_, pd_, pd_, d, d, d,
                                               pd_, pd_, pi, pd_, sz]
         lib.simcore_simulate_many.restype = ctypes.c_int32
+        # Newer entry points; an older DLL without them still works.
+        if hasattr(lib, "simcore_check_weights"):
+            lib.simcore_check_weights.argtypes = [sz, sz, pd_, pd_]
+            lib.simcore_check_weights.restype = ctypes.c_int32
+        if hasattr(lib, "simcore_simulate_many_ptrs"):
+            lib.simcore_simulate_many_ptrs.argtypes = [
+                sz, sz, sz, pd_, pd_, ctypes.POINTER(pd_), d, d, d, pd_, pd_, pi, pd_, sz]
+            lib.simcore_simulate_many_ptrs.restype = ctypes.c_int32
         return lib
     return None
 
@@ -321,17 +348,36 @@ def _ptr(a: np.ndarray, ctype=ctypes.c_double):
     return a.ctypes.data_as(ctypes.POINTER(ctype))
 
 
+def _weight_extremes(weights: np.ndarray) -> tuple[float, float]:
+    """(min weight, max row sum) of a contiguous float64 array (..., k)."""
+    k = weights.shape[-1]
+    if (_SIMCORE is not None and hasattr(_SIMCORE, "simcore_check_weights")
+            and weights.size and k):
+        out = np.empty(2)
+        rc = _SIMCORE.simcore_check_weights(weights.size // k, k, _ptr(weights), _ptr(out))
+        if rc == 0:
+            return float(out[0]), float(out[1])
+    wmin = float(weights.min())
+    if not np.isfinite(wmin) or wmin < -1e-9:
+        return wmin, 0.0
+    # Row sums by adding columns: the same left-to-right order as
+    # `weights.sum(axis=-1)` for k <= 8, without numpy's slow short-axis reduce.
+    rowsum = weights[..., 0].copy()
+    for j in range(1, k):
+        rowsum += weights[..., j]
+    return wmin, (float(rowsum.max()) if rowsum.size else 0.0)
+
+
 def _check_inputs(opens, closes, weights):
     weights = np.ascontiguousarray(weights, dtype=np.float64)
     n, k = weights.shape[-2:]
     if opens.shape != (n, k) or closes.shape != (n, k):
         raise ValueError("opens/closes/weights shapes do not match")
-    wmin = float(weights.min())
+    wmin, rowmax = _weight_extremes(weights)
     if not np.isfinite(wmin):
         raise ValueError("weights contain non-finite values")
     if wmin < -1e-9:
         raise ValueError("weights must be non-negative and sum to <= 1")
-    rowmax = float(weights.sum(axis=-1).max())
     if not np.isfinite(rowmax) or rowmax > 1.001:
         raise ValueError("weights must be non-negative and sum to <= 1")
     return weights, n, k
@@ -365,8 +411,10 @@ def simulate(
     weights, n, k = _check_inputs(opens, closes, weights)
     o = np.ascontiguousarray(opens, dtype=np.float64)
     c = np.ascontiguousarray(closes, dtype=np.float64)
-    equity = np.full(n, np.nan)
-    cash = np.full(n, np.nan)
+    # simcore writes every element when n >= 1, so skip the NaN pre-fill.
+    alloc = np.empty if n else (lambda shape: np.full(shape, np.nan))
+    equity = alloc(n)
+    cash = alloc(n)
     fills = np.zeros(1, dtype=np.int64)
     traded = np.zeros(1)
     rc = _SIMCORE.simcore_simulate(n, k, _ptr(o), _ptr(c), _ptr(weights), band,
@@ -401,19 +449,35 @@ def simulate_many(
     if _SIMCORE is None:
         return [simulate_python(ts, opens, closes, w, band, slippage_bps, start_equity)
                 for w in weights_list]
-    W, n, k = _check_inputs(opens, closes, np.stack([np.asarray(w, float) for w in weights_list]))
-    m = W.shape[0]
+    by_pointer = hasattr(_SIMCORE, "simcore_simulate_many_ptrs") and len(weights_list) > 0
+    if by_pointer:
+        # Validate each matrix in place and pass pointers: no stacked copy.
+        mats = [_check_inputs(opens, closes, w)[0] for w in weights_list]
+        n, k = mats[0].shape
+        m = len(mats)
+    else:
+        W, n, k = _check_inputs(opens, closes,
+                                np.stack([np.asarray(w, float) for w in weights_list]))
+        m = W.shape[0]
     o = np.ascontiguousarray(opens, dtype=np.float64)
     c = np.ascontiguousarray(closes, dtype=np.float64)
-    equity = np.full((m, n), np.nan)
-    cash = np.full((m, n), np.nan)
+    alloc = np.empty if n else (lambda shape: np.full(shape, np.nan))
+    equity = alloc((m, n))
+    cash = alloc((m, n))
     fills = np.zeros(m, dtype=np.int64)
     traded = np.zeros(m)
     threads = threads or int(os.environ.get("BT_THREADS", 0)) or os.cpu_count() or 1
-    rc = _SIMCORE.simcore_simulate_many(m, n, k, _ptr(o), _ptr(c), _ptr(W), band,
-                                        slippage_bps / 10_000.0, start_equity, _ptr(equity),
-                                        _ptr(cash), _ptr(fills, ctypes.c_int64),
-                                        _ptr(traded), threads)
+    if by_pointer:
+        ptrs = (ctypes.POINTER(ctypes.c_double) * m)(*[_ptr(w) for w in mats])
+        rc = _SIMCORE.simcore_simulate_many_ptrs(
+            m, n, k, _ptr(o), _ptr(c), ptrs, band, slippage_bps / 10_000.0, start_equity,
+            _ptr(equity), _ptr(cash), _ptr(fills, ctypes.c_int64), _ptr(traded), threads)
+    else:
+        rc = _SIMCORE.simcore_simulate_many(m, n, k, _ptr(o), _ptr(c), _ptr(W), band,
+                                            slippage_bps / 10_000.0, start_equity,
+                                            _ptr(equity), _ptr(cash),
+                                            _ptr(fills, ctypes.c_int64), _ptr(traded),
+                                            threads)
     if rc != 0:
         raise RuntimeError(f"simcore_simulate_many failed ({rc})")
     return [{"ts": ts, "equity": equity[j], "cash": cash[j], "fills": int(fills[j]),
@@ -542,19 +606,46 @@ def simulate_python(
     return out
 
 
+def _years(ts) -> float:
+    return (ts[-1] - ts[0]).total_seconds() / (365.25 * 86400)
+
+
+def _drawdown_buffer(eq: np.ndarray) -> np.ndarray:
+    """eq / running peak - 1 (the drawdown curve), in one buffer."""
+    tmp = np.maximum.accumulate(eq)
+    np.divide(eq, tmp, out=tmp)
+    np.subtract(tmp, 1.0, out=tmp)
+    return tmp
+
+
+def cagr_and_drawdown(result: dict) -> tuple[float, float]:
+    """`stats(result)["cagr"]` and `["max_drawdown"]` without the rest."""
+    eq = np.asarray(result["equity"], dtype=np.float64)
+    years = _years(result["ts"])
+    return (eq[-1] / eq[0]) ** (1.0 / years) - 1.0, float(-_drawdown_buffer(eq).min())
+
+
 def stats(result: dict, bars_per_year: float) -> dict:
-    eq = result["equity"]
-    rets = np.diff(eq) / eq[:-1]
-    years = (result["ts"][-1] - result["ts"][0]).total_seconds() / (365.25 * 86400)
-    peak = np.maximum.accumulate(eq)
-    downside = np.minimum(rets, 0.0)
+    # Same operations as the original one-liners, reusing scratch buffers
+    # (allocating ~6 fresh 1-minute-length arrays per call dominated sweeps).
+    eq = np.asarray(result["equity"], dtype=np.float64)
+    rets = np.subtract(eq[1:], eq[:-1])          # np.diff(eq)
+    np.divide(rets, eq[:-1], out=rets)
+    years = _years(result["ts"])
+    tmp = _drawdown_buffer(eq)
+    max_drawdown = float(-tmp.min())
     mean_ret = float(np.mean(rets))
     std_ret = float(np.std(rets, ddof=0))
-    downside_sq = float(np.mean(downside**2))
+    downside = np.minimum(rets, 0.0)
+    np.multiply(downside, downside, out=downside)  # downside**2
+    downside_sq = float(np.mean(downside))
+    np.subtract(eq, result["cash"], out=tmp)
+    np.divide(tmp, eq, out=tmp)
+    exposure = float(np.mean(tmp))
     return {
         "cagr": (eq[-1] / eq[0]) ** (1.0 / years) - 1.0,
         "total_return": eq[-1] / eq[0] - 1.0,
-        "max_drawdown": float(-(eq / peak - 1.0).min()),
+        "max_drawdown": max_drawdown,
         "volatility": std_ret * np.sqrt(bars_per_year),
         "sharpe": (
             mean_ret / std_ret * np.sqrt(bars_per_year)
@@ -566,7 +657,7 @@ def stats(result: dict, bars_per_year: float) -> dict:
         )
         if downside_sq > 0
         else 0.0,
-        "exposure": float(np.mean((eq - result["cash"]) / eq)),
+        "exposure": exposure,
         "fills": result["fills"],
         "turnover": result["turnover"],
         "ending_equity": float(eq[-1]),

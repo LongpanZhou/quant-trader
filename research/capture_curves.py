@@ -24,25 +24,74 @@ if result_path.exists():
 out = ROOT / "research" / "revisit" / "curves" / f"{slug}.json"
 out.parent.mkdir(parents=True, exist_ok=True)
 
+# Every engine call is recorded as (cagr, max_drawdown, daily curve) instead of
+# keeping the whole result: a sweep makes hundreds of 1-minute results (~13 MB
+# each), and only the one matching result.json is needed at the end.
 captured = []
 orig_run, orig_sim, orig_many = bt.run, bt.simulate, bt.run_many
 
 
+_DAY_NS = 86_400 * 10**9
+_SAFE_TOD_NS = 5 * 3600 * 10**9   # US/Eastern is UTC-4/-5
+
+
+def daily_curve(r):
+    """(session day numbers, last equity of each session), cheaply.
+
+    Equal to `eq.groupby(eq.index.date).last()`: every bar at or after 05:00
+    UTC lies on the same calendar day in New York and in UTC, so the local
+    session date is the UTC day number of the timestamp.
+    """
+    i8 = np.asarray(pd.DatetimeIndex(r["ts"]).asi8)
+    eq = np.asarray(r["equity"], dtype=float)
+    key = (len(i8), int(i8[0]), int(i8[-1]), int(i8[::997].sum()))
+    hit = _BOUNDS.get(key)
+    if hit is None:
+        day = i8 // _DAY_NS
+        if ((i8 - day * _DAY_NS) >= _SAFE_TOD_NS).all():
+            last = np.r_[np.flatnonzero(day[1:] != day[:-1]), len(day) - 1]
+            hit = (day[last], last)
+        else:
+            hit = (None, None)
+        if len(_BOUNDS) >= 8:
+            _BOUNDS.clear()
+        _BOUNDS[key] = hit
+    days, last = hit
+    if days is None:
+        s = pd.Series(eq, index=pd.DatetimeIndex(r["ts"]))
+        d = s.groupby(s.index.date).last()
+        return (np.array([np.datetime64(x, "D").astype(np.int64) for x in d.index]),
+                d.to_numpy(float))
+    return days, eq[last]
+
+
+_BOUNDS: dict = {}
+
+
+def record(r):
+    try:
+        cagr, mdd = bt.cagr_and_drawdown(r)
+        captured.append((cagr, mdd, daily_curve(r)))
+    except Exception:
+        pass  # not a usable equity result (the old matcher skipped these too)
+
+
 def run(*a, **k):
     r = orig_run(*a, **k)
-    captured.append(r)
+    record(r)
     return r
 
 
 def sim(*a, **k):
     r = orig_sim(*a, **k)
-    captured.append(r)
+    record(r)
     return r
 
 
 def many(*a, **k):
     rs = orig_many(*a, **k)
-    captured.extend(rs)
+    for r in rs:
+        record(r)
     return rs
 
 
@@ -72,27 +121,22 @@ if previous_result and result_path.exists():
 
 stored = json.loads(result_path.read_text())["windows"]["dev"]["1bp"]
 match = None
-for r in captured:
-    try:
-        s = bt.stats(r, 252 * 390)
-    except Exception:
-        continue
-    if (abs(s["cagr"] - stored["cagr"]) < 1e-6
-            and abs(s["max_drawdown"] - stored["max_drawdown"]) < 1e-6):
-        match = r
+for cagr, mdd, curve in captured:
+    if (abs(cagr - stored["cagr"]) < 1e-6
+            and abs(mdd - stored["max_drawdown"]) < 1e-6):
+        match = curve
         break
 
 if match is None:
     print("NO MATCH", slug, "captured", len(captured))
     raise SystemExit(2)
 
-eq = pd.Series(match["equity"], index=pd.DatetimeIndex(match["ts"]))
-daily = eq.groupby(eq.index.date).last()
-daily = daily / daily.iloc[0] * 100.0
+days, values = match
+values = values / values[0] * 100.0
 payload = {
     "slug": slug,
-    "dates": [str(d) for d in daily.index],
-    "values": [float(v) for v in daily.to_numpy()],
+    "dates": [str(d) for d in days.astype("datetime64[D]")],
+    "values": [float(v) for v in values],
 }
 out.write_text(json.dumps(payload), encoding="utf-8")
-print("WROTE", out, len(daily), "days", "last", round(float(daily.iloc[-1]), 1))
+print("WROTE", out, len(values), "days", "last", round(float(values[-1]), 1))

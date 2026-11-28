@@ -1,2 +1,0 @@
-wrote C:\Users\27175\Desktop\quant-trader-research\research\revisit\drawdown-regime\result.json
-{"slug": "drawdown-regime", "mode": "dev", "calls": 4, "error": null, "seconds": 4.5, "restored": [], "match_score": null, "found": true, "kw": {"band": 0.02, "slippage_bps": 1.0, "start_equity": 100000.0}, "bars": 781880, "k": 3}

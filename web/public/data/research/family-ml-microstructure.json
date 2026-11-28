@@ -14,11 +14,11 @@
   "reason": "Full 41.03% / 44.51% DD / 1.02 Sharpe, holdout 20.45%; audit exact. Dev 49.81% at 1 bp, 48.46% at 5 bp, 46.79% at 10 bp - the most cost-robust of the six new families."
  },
  "paths": {
-  "report": "research/new/family-ml-microstructure/report.md",
-  "hypothesis": "research/new/family-ml-microstructure/HYPOTHESIS.md",
+  "report": "research/strategies/family-ml-microstructure/report.md",
+  "hypothesis": "research/strategies/family-ml-microstructure/HYPOTHESIS.md",
   "spec": null,
   "provenance": null,
-  "code": "research/new/family-ml-microstructure/strategy.py",
+  "code": "research/strategies/family-ml-microstructure/strategy.py",
   "code_public": "/data/research/code/family-ml-microstructure.py"
  },
  "extracted": {

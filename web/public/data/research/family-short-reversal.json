@@ -14,11 +14,11 @@
   "reason": "Full 49.54% / 66.46% DD / 0.99 Sharpe, holdout 62.12%; audit exact. The rolling exit chains dip clusters (mean 9.2 sessions), 2022 loses 62.8%, and the DD is high; stops/vol sizing did not improve it."
  },
  "paths": {
-  "report": "research/new/family-short-reversal/report.md",
-  "hypothesis": "research/new/family-short-reversal/HYPOTHESIS.md",
+  "report": "research/strategies/family-short-reversal/report.md",
+  "hypothesis": "research/strategies/family-short-reversal/HYPOTHESIS.md",
   "spec": null,
   "provenance": null,
-  "code": "research/new/family-short-reversal/strategy.py",
+  "code": "research/strategies/family-short-reversal/strategy.py",
   "code_public": "/data/research/code/family-short-reversal.py"
  },
  "extracted": {

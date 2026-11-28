@@ -1,0 +1,21 @@
+{
+ "slug": "vol-scaled-crash-stop",
+ "family": "vol-crash",
+ "window": {"dev": ["2016-01-04", "2023-12-29"], "holdout": "not loaded"},
+ "windows": {
+  "dev": {
+   "1bp": {
+    "cagr": 0.5765,
+    "max_drawdown": 0.3788,
+    "sharpe": 1.3866
+   }
+  }
+ },
+ "rules": "Default long TQQQ with inverse-ATR sizing; exit to BIL for the rest of the session and the night when TQQQ falls 0.70x ATR (capped 2.5-4%) below the session open; re-enter next session.",
+ "notes": {
+  "provenance": "Legacy vol-scaled-crash-stop, frozen wrapper in research/strategies/vol-scaled-crash-stop.",
+  "status": "clean full rerun; shared-runner adapter verified against the original OHLC/ATR path."
+ },
+ "passed_dev_bar": true,
+ "status": "dev_pass"
+}
