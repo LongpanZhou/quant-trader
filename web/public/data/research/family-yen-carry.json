@@ -1,0 +1,50 @@
+{
+ "slug": "family-yen-carry",
+ "name": "Yen carry",
+ "tagline": "USDJPY carry/safe-haven impulse",
+ "summary": "External yen-carry family; full-window holdout.",
+ "metrics": {
+  "cagr": 0.18205562483857207,
+  "dd": 0.7146786989622318,
+  "sharpe": 0.5915139333785726
+ },
+ "status": "verified-full",
+ "assessment": {
+  "verdict": "Verified - external family",
+  "reason": "External family added 2026-11-28. Full 18.21% CAGR / 71.47% DD / 0.59 Sharpe; 399 full fills."
+ },
+ "paths": {
+  "report": "research/new/family-yen-carry/report.md",
+  "hypothesis": "research/new/family-yen-carry/HYPOTHESIS.md",
+  "spec": null,
+  "provenance": null,
+  "code": "research/new/family-yen-carry/strategy.py",
+  "code_public": "/data/research/code/family-yen-carry.py"
+ },
+ "extracted": {
+  "hypothesis": false,
+  "spec": false,
+  "provenance": true
+ },
+ "decision": "External yen-carry family; full-window holdout.",
+ "rules": [],
+ "papers": [],
+ "provenance_cards": [
+  {
+   "idea": "quant-trader research program",
+   "source": "Own test",
+   "url": null,
+   "source_type": "Own test",
+   "role": "own test",
+   "role_detail": "",
+   "evidence": "Pre-registered development test on 2016-2023 and a one-shot 2024-2026 holdout; implementation and results are in report.md and strategy.py.",
+   "confidence": ""
+  }
+ ],
+ "rejected_sources": [],
+ "report_md": "# Yen carry — report\n\n**Slug:** `family-yen-carry`  \n**Dev:** 12.29% CAGR / 72.99% DD / 0.48 Sharpe, 311 fills.  \n**Full:** 18.21% CAGR / 71.47% DD / 0.59 Sharpe, 399 fills.  \n\nUSDJPY 40-session direction: positive -> TQQQ, negative -> BIL. The family is\nactive but well below the TQQQ CAGR bar; it is a low-correlation FX research\nrecord, not a winner. The full holdout was 36.87% CAGR with a 36.71% drawdown.\n",
+ "hypothesis_md": "# Yen carry / safe-haven impulse\n\n**Slug:** `family-yen-carry`  \n**Family:** yen-carry  \n**Primary object:** USDJPY 40-session change.\n\nA sharply stronger yen is a global carry-unwind/safe-haven signal; a stable or\nrising USDJPY supports risk appetite. Hold TQQQ when the 40-session USDJPY\nchange is positive, BIL when negative. Signal at close; next-open fill;\nlong-only, 2% band, 1 bp headline.\n",
+ "spec_md": "",
+ "provenance_md": "## Own test\n\n- **quant-trader research program** - Pre-registered development test on 2016-2023 and a one-shot 2024-2026 holdout; implementation and results are in `report.md` and `strategy.py`.",
+ "code": "\"\"\"yen replacement family.\"\"\"\nfrom __future__ import annotations\nimport sys\nfrom pathlib import Path\nsys.path.insert(0, str(Path(__file__).resolve().parents[1]))\nimport ext_style\n\ndef build_weights(ts, opens, closes):\n    return ext_style.make_weights(ts, opens, closes, \"yen\")\n\nif __name__ == \"__main__\":\n    ext_style.run_main(\"yen\")\n"
+}

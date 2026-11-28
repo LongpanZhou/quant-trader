@@ -86,34 +86,6 @@
    "provenanceCount": 0
   },
   {
-   "id": "research:family-tail-hedge-overlay",
-   "slug": "family-tail-hedge-overlay",
-   "kind": "research",
-   "name": "Tail-hedge overlay",
-   "group": "Strategy",
-   "status": "Strategy",
-   "tagline": "Fast-crash synthetic inverse hedge",
-   "summary": "The bt.stats invested fraction is 100% because both TQQQ and the synthetic inverse are invested assets. The useful exposure split is mean TQQQ 86.35%, mean inverse 13.65%, mean BIL 0%. The inverse is held on 27.3% of bars; there are 742 trigger sessions out of 2,012 (36.9%). The mean hedge weight while active is 50%.",
-   "window": "2016-2026",
-   "cagr": 0.6638359589899234,
-   "dd": 0.38200356528820767,
-   "sharpe": 1.3146340972232886,
-   "metrics": {
-    "cagr10": 0.6638359589899234,
-    "dd10": 0.38200356528820767,
-    "cagr5": 0.6638359589899234,
-    "dd5": 0.38200356528820767
-   },
-   "href": "/research/family-tail-hedge-overlay",
-   "runnable": false,
-   "accent": "#9ae6a5",
-   "tags": [
-    "2016-2026"
-   ],
-   "papersCount": 0,
-   "provenanceCount": 0
-  },
-  {
    "id": "research:family-close-location",
    "slug": "family-close-location",
    "kind": "research",
@@ -506,34 +478,6 @@
    "provenanceCount": 0
   },
   {
-   "id": "research:family-gold-safe-haven",
-   "slug": "family-gold-safe-haven",
-   "kind": "research",
-   "name": "Gold safe-haven",
-   "group": "Strategy",
-   "status": "Strategy",
-   "tagline": "GLD/QQQ safe-haven demand",
-   "summary": "External gold-safe-haven family; one-shot full holdout.",
-   "window": "2016-2026",
-   "cagr": 0.42694718355703376,
-   "dd": 0.7473374497591969,
-   "sharpe": 0.8880186860035495,
-   "metrics": {
-    "cagr10": 0.42694718355703376,
-    "dd10": 0.7473374497591969,
-    "cagr5": 0.42694718355703376,
-    "dd5": 0.7473374497591969
-   },
-   "href": "/research/family-gold-safe-haven",
-   "runnable": false,
-   "accent": "#9ae6a5",
-   "tags": [
-    "2016-2026"
-   ],
-   "papersCount": 0,
-   "provenanceCount": 0
-  },
-  {
    "id": "research:vol-term-structure",
    "slug": "vol-term-structure",
    "kind": "research",
@@ -553,34 +497,6 @@
     "dd5": 0.35795913584596806
    },
    "href": "/research/vol-term-structure",
-   "runnable": false,
-   "accent": "#9ae6a5",
-   "tags": [
-    "2016-2026"
-   ],
-   "papersCount": 0,
-   "provenanceCount": 0
-  },
-  {
-   "id": "research:family-dollar-regime",
-   "slug": "family-dollar-regime",
-   "kind": "research",
-   "name": "Dollar regime",
-   "group": "Strategy",
-   "status": "Strategy",
-   "tagline": "UUP dollar impulse",
-   "summary": "External dollar-regime family; one-shot full holdout.",
-   "window": "2016-2026",
-   "cagr": 0.41455173290892167,
-   "dd": 0.7148701919837473,
-   "sharpe": 0.8930733122165264,
-   "metrics": {
-    "cagr10": 0.41455173290892167,
-    "dd10": 0.7148701919837473,
-    "cagr5": 0.41455173290892167,
-    "dd5": 0.7148701919837473
-   },
-   "href": "/research/family-dollar-regime",
    "runnable": false,
    "accent": "#9ae6a5",
    "tags": [
@@ -777,6 +693,34 @@
     "dd5": 0.6330069679946597
    },
    "href": "/research/family-vix-term-structure",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
+   "id": "research:family-style-rotation",
+   "slug": "family-style-rotation",
+   "kind": "research",
+   "name": "Style rotation",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "IWF/IWD growth-vs-value leadership",
+   "summary": "External style-rotation family; full-window holdout.",
+   "window": "2016-2026",
+   "cagr": 0.3798167230801135,
+   "dd": 0.6989160359593212,
+   "sharpe": 0.915686635936342,
+   "metrics": {
+    "cagr10": 0.3798167230801135,
+    "dd10": 0.6989160359593212,
+    "cagr5": 0.3798167230801135,
+    "dd5": 0.6989160359593212
+   },
+   "href": "/research/family-style-rotation",
    "runnable": false,
    "accent": "#9ae6a5",
    "tags": [
@@ -1038,6 +982,34 @@
    "provenanceCount": 0
   },
   {
+   "id": "research:family-yen-carry",
+   "slug": "family-yen-carry",
+   "kind": "research",
+   "name": "Yen carry",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "USDJPY carry/safe-haven impulse",
+   "summary": "External yen-carry family; full-window holdout.",
+   "window": "2016-2026",
+   "cagr": 0.18205562483857207,
+   "dd": 0.7146786989622318,
+   "sharpe": 0.5915139333785726,
+   "metrics": {
+    "cagr10": 0.18205562483857207,
+    "dd10": 0.7146786989622318,
+    "cagr5": 0.18205562483857207,
+    "dd5": 0.7146786989622318
+   },
+   "href": "/research/family-yen-carry",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
    "id": "research:time-of-day",
    "slug": "time-of-day",
    "kind": "research",
@@ -1141,6 +1113,34 @@
     "dd5": 0.6355113529285439
    },
    "href": "/research/intraday-momentum",
+   "runnable": false,
+   "accent": "#9ae6a5",
+   "tags": [
+    "2016-2026"
+   ],
+   "papersCount": 0,
+   "provenanceCount": 0
+  },
+  {
+   "id": "research:family-lowvol-rotation",
+   "slug": "family-lowvol-rotation",
+   "kind": "research",
+   "name": "Low-vol rotation",
+   "group": "Strategy",
+   "status": "Strategy",
+   "tagline": "USMV/SPY defensive-vs-market leadership",
+   "summary": "External lowvol-rotation family; full-window holdout.",
+   "window": "2016-2026",
+   "cagr": 0.13312367046089446,
+   "dd": 0.7095491403152666,
+   "sharpe": 0.5054453130609082,
+   "metrics": {
+    "cagr10": 0.13312367046089446,
+    "dd10": 0.7095491403152666,
+    "cagr5": 0.13312367046089446,
+    "dd5": 0.7095491403152666
+   },
+   "href": "/research/family-lowvol-rotation",
    "runnable": false,
    "accent": "#9ae6a5",
    "tags": [

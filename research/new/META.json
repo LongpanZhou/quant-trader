@@ -153,16 +153,6 @@
    "visible": true
   },
   {
-   "slug": "family-tail-hedge-overlay",
-   "name": "Tail-hedge overlay",
-   "tagline": "Fast-crash synthetic inverse hedge",
-   "summary": "The bt.stats invested fraction is 100% because both TQQQ and the synthetic inverse are invested assets. The useful exposure split is mean TQQQ 86.35%, mean inverse 13.65%, mean BIL 0%. The inverse is held on 27.3% of bars; there are 742 trigger sessions out of 2,012 (36.9%). The mean hedge weight while active is 50%.",
-   "verdict": "Verified - new family",
-   "reason": "Full 66.38% CAGR / 38.20% DD / 1.31 Sharpe; 5325 fills; above the TQQQ bar.",
-   "family": "tail-hedge-overlay",
-   "visible": true
-  },
-  {
    "slug": "family-close-location",
    "name": "Close-location value",
    "tagline": "Close-at-low five-session reversal",
@@ -323,26 +313,6 @@
    "visible": true
   },
   {
-   "slug": "family-dollar-regime",
-   "name": "Dollar regime",
-   "tagline": "UUP dollar impulse",
-   "summary": "External dollar-regime family; one-shot full holdout.",
-   "verdict": "Verified - external family",
-   "reason": "External family added 2026-11-28. Full 41.46% CAGR / 71.49% DD / 0.89 Sharpe; 131 full fills.",
-   "family": "dollar-regime",
-   "visible": true
-  },
-  {
-   "slug": "family-gold-safe-haven",
-   "name": "Gold safe-haven",
-   "tagline": "GLD/QQQ safe-haven demand",
-   "summary": "External gold-safe-haven family; one-shot full holdout.",
-   "verdict": "Verified - external family",
-   "reason": "External family added 2026-11-28. Full 42.69% CAGR / 74.73% DD / 0.89 Sharpe; 121 full fills.",
-   "family": "gold-safe-haven",
-   "visible": true
-  },
-  {
    "slug": "family-oil-shock",
    "name": "Oil shock",
    "tagline": "USO energy shock",
@@ -350,6 +320,36 @@
    "verdict": "Verified - external family",
    "reason": "External family added 2026-11-28. Full 46.95% CAGR / 60.07% DD / 0.97 Sharpe; 349 full fills.",
    "family": "oil-shock",
+   "visible": true
+  },
+  {
+   "slug": "family-style-rotation",
+   "name": "Style rotation",
+   "tagline": "IWF/IWD growth-vs-value leadership",
+   "summary": "External style-rotation family; full-window holdout.",
+   "verdict": "Verified - external family",
+   "reason": "External family added 2026-11-28. Full 37.98% CAGR / 69.89% DD / 0.92 Sharpe; 341 full fills.",
+   "family": "style-rotation",
+   "visible": true
+  },
+  {
+   "slug": "family-yen-carry",
+   "name": "Yen carry",
+   "tagline": "USDJPY carry/safe-haven impulse",
+   "summary": "External yen-carry family; full-window holdout.",
+   "verdict": "Verified - external family",
+   "reason": "External family added 2026-11-28. Full 18.21% CAGR / 71.47% DD / 0.59 Sharpe; 399 full fills.",
+   "family": "yen-carry",
+   "visible": true
+  },
+  {
+   "slug": "family-lowvol-rotation",
+   "name": "Low-vol rotation",
+   "tagline": "USMV/SPY defensive-vs-market leadership",
+   "summary": "External lowvol-rotation family; full-window holdout.",
+   "verdict": "Verified - external family",
+   "reason": "External family added 2026-11-28. Full 13.31% CAGR / 70.95% DD / 0.51 Sharpe; 295 full fills.",
+   "family": "lowvol-rotation",
    "visible": true
   }
  ],

@@ -44,7 +44,7 @@ export function StrategyCatalog() {
   const [filter, setFilter] = useState<Filter>("All");
 
   useEffect(() => {
-    fetch("/data/catalog/strategies.json?v=2026-11-28-43g", { cache: "no-store" })
+    fetch("/data/catalog/strategies.json?v=2026-11-28-43s", { cache: "no-store" })
       .then((response) => response.json() as Promise<{ strategies: CatalogItem[] }>)
       .then((payload) => setItems(payload.strategies))
       .catch(() => setItems([]));

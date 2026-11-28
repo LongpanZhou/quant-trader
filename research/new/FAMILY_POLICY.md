@@ -4,7 +4,7 @@ The website lists every research strategy. The rule is about **above-TQQQ**
 strategies: one verified winner per family. Non-performers remain research
 records and do not affect the one-winner count.
 
-## Verified above-TQQQ family winners (23)
+## Verified above-TQQQ family winners (22)
 
 | Family | Winner | Full CAGR | Full DD | Full Sharpe |
 |---|---|---:|---:|---:|

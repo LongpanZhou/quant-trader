@@ -3,15 +3,6 @@
  "window": "2016-2026",
  "strategies": [
   {
-   "slug": "family-tail-hedge-overlay",
-   "name": "Tail-hedge overlay",
-   "tagline": "Fast-crash synthetic inverse hedge",
-   "summary": "The bt.stats invested fraction is 100% because both TQQQ and the synthetic inverse are invested assets. The useful exposure split is mean TQQQ 86.35%, mean inverse 13.65%, mean BIL 0%. The inverse is held on 27.3% of bars; there are 742 trigger sessions out of 2,012 (36.9%). The mean hedge weight while active is 50%.",
-   "cagr": 0.6638359589899234,
-   "dd": 0.38200356528820767,
-   "sharpe": 1.3146340972232886
-  },
-  {
    "slug": "family-close-location",
    "name": "Close-location value",
    "tagline": "Close-at-low five-session reversal",
@@ -138,15 +129,6 @@
    "sharpe": 1.0500413963031756
   },
   {
-   "slug": "family-gold-safe-haven",
-   "name": "Gold safe-haven",
-   "tagline": "GLD/QQQ safe-haven demand",
-   "summary": "External gold-safe-haven family; one-shot full holdout.",
-   "cagr": 0.42694718355703376,
-   "dd": 0.7473374497591969,
-   "sharpe": 0.8880186860035495
-  },
-  {
    "slug": "vol-term-structure",
    "name": "Volatility term structure",
    "tagline": "Splits TQQQ exposure between a 165-day trend sleeve and a RV20/RV60 term-structure sleeve, with an acute-spike kill switch.",
@@ -154,15 +136,6 @@
    "cagr": 0.4248092715440892,
    "dd": 0.35795913584596806,
    "sharpe": 1.1509971557524818
-  },
-  {
-   "slug": "family-dollar-regime",
-   "name": "Dollar regime",
-   "tagline": "UUP dollar impulse",
-   "summary": "External dollar-regime family; one-shot full holdout.",
-   "cagr": 0.41455173290892167,
-   "dd": 0.7148701919837473,
-   "sharpe": 0.8930733122165264
   },
   {
    "slug": "family-ml-microstructure",
@@ -226,6 +199,15 @@
    "cagr": 0.3867835998333937,
    "dd": 0.6330069679946597,
    "sharpe": 0.9251152281267017
+  },
+  {
+   "slug": "family-style-rotation",
+   "name": "Style rotation",
+   "tagline": "IWF/IWD growth-vs-value leadership",
+   "summary": "External style-rotation family; full-window holdout.",
+   "cagr": 0.3798167230801135,
+   "dd": 0.6989160359593212,
+   "sharpe": 0.915686635936342
   },
   {
    "slug": "family-beta-rotation",
@@ -309,6 +291,15 @@
    "sharpe": 1.1340444026468461
   },
   {
+   "slug": "family-yen-carry",
+   "name": "Yen carry",
+   "tagline": "USDJPY carry/safe-haven impulse",
+   "summary": "External yen-carry family; full-window holdout.",
+   "cagr": 0.18205562483857207,
+   "dd": 0.7146786989622318,
+   "sharpe": 0.5915139333785726
+  },
+  {
    "slug": "time-of-day",
    "name": "Closing-pressure overnight carry",
    "tagline": "The overnight+first-30m block pays because it settles the previous session's closing pressure, so it should be held selectively after a sold close rather than every night.",
@@ -343,6 +334,15 @@
    "cagr": 0.14654800584623517,
    "dd": 0.6355113529285439,
    "sharpe": 0.6119122198650161
+  },
+  {
+   "slug": "family-lowvol-rotation",
+   "name": "Low-vol rotation",
+   "tagline": "USMV/SPY defensive-vs-market leadership",
+   "summary": "External lowvol-rotation family; full-window holdout.",
+   "cagr": 0.13312367046089446,
+   "dd": 0.7095491403152666,
+   "sharpe": 0.5054453130609082
   },
   {
    "slug": "intraday-mean-reversion",

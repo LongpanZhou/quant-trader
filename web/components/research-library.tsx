@@ -20,7 +20,7 @@ export function ResearchLibrary() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch("/data/research/rebuild.json?v=2026-11-28-43g", { cache: "no-store" })
+    fetch("/data/research/rebuild.json?v=2026-11-28-43s", { cache: "no-store" })
       .then((response) => {
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         return response.json() as Promise<Payload>;
